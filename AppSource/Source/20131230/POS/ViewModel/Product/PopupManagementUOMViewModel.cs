@@ -85,9 +85,9 @@ namespace CPC.POS.ViewModel
             get
             {
                 if (SelectedProduct == null)
-                    return AllowAccessPermission;
+                    return UserPermissions.AllowAccessProductPermission;
 
-                return SelectedProduct.BaseUOMId != 0 && AllowAccessPermission;
+                return SelectedProduct.BaseUOMId != 0 && UserPermissions.AllowAccessProductPermission;
             }
         }
 
@@ -100,7 +100,7 @@ namespace CPC.POS.ViewModel
             {
                 if (SelectedProduct == null)
                     return false;
-                return SelectedProduct.ItemTypeId == (short)ItemTypes.Stockable && AllowAccessPermission;
+                return SelectedProduct.ItemTypeId == (short)ItemTypes.Stockable && UserPermissions.AllowAccessProductPermission;
             }
         }
 
@@ -146,7 +146,7 @@ namespace CPC.POS.ViewModel
             foreach (base_ProductUOMModel productUOMModel in SelectedProduct.ProductUOMCollection)
             {
                 productUOMModel.PropertyChanged += new PropertyChangedEventHandler(productUOMModel_PropertyChanged);
-                productUOMModel.IsChecked = productUOMModel.UOMId > 0 && AllowAccessPermission;
+                productUOMModel.IsChecked = productUOMModel.UOMId > 0 && UserPermissions.AllowAccessProductPermission;
             }
 
             // Turn off IsDirty & IsNew
@@ -235,7 +235,7 @@ namespace CPC.POS.ViewModel
             if (Int16.TryParse(param.ToString(), out uomID))
                 uomID = Int16.Parse(param.ToString());
 
-            return uomID > 0 && AllowAccessPermission;
+            return uomID > 0 && UserPermissions.AllowAccessProductPermission;
         }
 
         /// <summary>
@@ -443,35 +443,43 @@ namespace CPC.POS.ViewModel
         /// <returns></returns>
         private bool IsDuplicateUPC(base_ProductModel productModel, string barcode)
         {
-            if (string.IsNullOrWhiteSpace(barcode))
-                return false;
+            try
+            {
+                if (string.IsNullOrWhiteSpace(barcode))
+                    return false;
 
-            // Check duplicate in collection
-            List<string> barcodes = productModel.ProductUOMCollection.Where(x => !string.IsNullOrWhiteSpace(x.UPC)).Select(x => x.UPC).ToList();
-            if (!string.IsNullOrWhiteSpace(productModel.Barcode))
-                barcodes.Add(productModel.Barcode);
-            if (barcodes.Count(x => x.Equals(barcode)) > 1)
+                // Check duplicate in collection
+                List<string> barcodes = productModel.ProductUOMCollection.Where(x => !string.IsNullOrWhiteSpace(x.UPC)).Select(x => x.UPC).ToList();
+                if (!string.IsNullOrWhiteSpace(productModel.Barcode))
+                    barcodes.Add(productModel.Barcode);
+                if (barcodes.Count(x => x.Equals(barcode)) > 1)
+                    return true;
+
+                // Create predicate
+                Expression<Func<base_Product, bool>> predicate = PredicateBuilder.True<base_Product>();
+
+                // Get all products that IsPurge is false
+                predicate = predicate.And(x => x.IsPurge == false && !x.Resource.Equals(productModel.Resource));
+
+                // Get all products that duplicate barcode
+                predicate = predicate.And(x => x.Barcode.ToLower().Equals(barcode));
+
+                // Create predicate
+                Expression<Func<base_ProductUOM, bool>> predicateUOM = PredicateBuilder.True<base_ProductUOM>();
+
+                // Get all ProductUOM that IsPurge is false
+                predicateUOM = predicateUOM.And(x => x.base_ProductStore.base_Product.IsPurge == false && !x.base_ProductStore.base_Product.Resource.Equals(productModel.Resource));
+
+                // Get all ProductUOM that duplicate barcode
+                predicateUOM = predicateUOM.And(x => x.UPC.ToLower().Equals(barcode));
+
+                return _productRepository.GetIQueryable(predicate).Count() > 0 || _productUOMRepository.GetIQueryable(predicateUOM).Count() > 0;
+            }
+            catch (Exception ex)
+            {
+                _log4net.Error(ex);
                 return true;
-
-            // Create predicate
-            Expression<Func<base_Product, bool>> predicate = PredicateBuilder.True<base_Product>();
-
-            // Get all products that IsPurge is false
-            predicate = predicate.And(x => x.IsPurge == false && !x.Resource.Equals(productModel.Resource));
-
-            // Get all products that duplicate barcode
-            predicate = predicate.And(x => x.Barcode.ToLower().Equals(barcode));
-
-            // Create predicate
-            Expression<Func<base_ProductUOM, bool>> predicateUOM = PredicateBuilder.True<base_ProductUOM>();
-
-            // Get all ProductUOM that IsPurge is false
-            predicateUOM = predicateUOM.And(x => x.base_ProductStore.base_Product.IsPurge == false && !x.base_ProductStore.base_Product.Resource.Equals(productModel.Resource));
-
-            // Get all ProductUOM that duplicate barcode
-            predicateUOM = predicateUOM.And(x => x.UPC.ToLower().Equals(barcode));
-
-            return _productRepository.GetIQueryable(predicate).Count() > 0 || _productUOMRepository.GetIQueryable(predicateUOM).Count() > 0;
+            }
         }
 
         /// <summary>
@@ -481,35 +489,43 @@ namespace CPC.POS.ViewModel
         /// <returns></returns>
         private bool IsDuplicateALU(base_ProductModel productModel, string barcode)
         {
-            if (string.IsNullOrWhiteSpace(barcode))
-                return false;
+            try
+            {
+                if (string.IsNullOrWhiteSpace(barcode))
+                    return false;
 
-            // Check duplicate in collection
-            List<string> barcodes = productModel.ProductUOMCollection.Where(x => !string.IsNullOrWhiteSpace(x.ALU)).Select(x => x.ALU).ToList();
-            if (!string.IsNullOrWhiteSpace(productModel.ALU))
-                barcodes.Add(productModel.ALU);
-            if (barcodes.Count(x => x.Equals(barcode)) > 1)
+                // Check duplicate in collection
+                List<string> barcodes = productModel.ProductUOMCollection.Where(x => !string.IsNullOrWhiteSpace(x.ALU)).Select(x => x.ALU).ToList();
+                if (!string.IsNullOrWhiteSpace(productModel.ALU))
+                    barcodes.Add(productModel.ALU);
+                if (barcodes.Count(x => x.Equals(barcode)) > 1)
+                    return true;
+
+                // Create predicate
+                Expression<Func<base_Product, bool>> predicate = PredicateBuilder.True<base_Product>();
+
+                // Get all products that IsPurge is false
+                predicate = predicate.And(x => x.IsPurge == false && !x.Resource.Equals(productModel.Resource));
+
+                // Get all products that duplicate barcode
+                predicate = predicate.And(x => x.ALU.ToLower().Equals(barcode));
+
+                // Create predicate
+                Expression<Func<base_ProductUOM, bool>> predicateUOM = PredicateBuilder.True<base_ProductUOM>();
+
+                // Get all ProductUOM that IsPurge is false
+                predicateUOM = predicateUOM.And(x => x.base_ProductStore.base_Product.IsPurge == false && !x.base_ProductStore.base_Product.Resource.Equals(productModel.Resource));
+
+                // Get all ProductUOM that duplicate barcode
+                predicateUOM = predicateUOM.And(x => x.ALU.ToLower().Equals(barcode));
+
+                return _productRepository.GetIQueryable(predicate).Count() > 0 || _productUOMRepository.GetIQueryable(predicateUOM).Count() > 0;
+            }
+            catch (Exception ex)
+            {
+                _log4net.Error(ex);
                 return true;
-
-            // Create predicate
-            Expression<Func<base_Product, bool>> predicate = PredicateBuilder.True<base_Product>();
-
-            // Get all products that IsPurge is false
-            predicate = predicate.And(x => x.IsPurge == false && !x.Resource.Equals(productModel.Resource));
-
-            // Get all products that duplicate barcode
-            predicate = predicate.And(x => x.ALU.ToLower().Equals(barcode));
-
-            // Create predicate
-            Expression<Func<base_ProductUOM, bool>> predicateUOM = PredicateBuilder.True<base_ProductUOM>();
-
-            // Get all ProductUOM that IsPurge is false
-            predicateUOM = predicateUOM.And(x => x.base_ProductStore.base_Product.IsPurge == false && !x.base_ProductStore.base_Product.Resource.Equals(productModel.Resource));
-
-            // Get all ProductUOM that duplicate barcode
-            predicateUOM = predicateUOM.And(x => x.ALU.ToLower().Equals(barcode));
-
-            return _productRepository.GetIQueryable(predicate).Count() > 0 || _productUOMRepository.GetIQueryable(predicateUOM).Count() > 0;
+            }
         }
 
         #endregion
@@ -545,7 +561,7 @@ namespace CPC.POS.ViewModel
                     }
 
                     // Set permission edit product UOM detail
-                    productUOMModel.AllowEditProductUOMDetail = productUOMModel.UOMId != 0 && AllowAccessPermission;
+                    productUOMModel.AllowEditProductUOMDetail = productUOMModel.UOMId != 0 && UserPermissions.AllowAccessProductPermission;
                     break;
                 case "BaseUnitNumber":
                     // Update average cost

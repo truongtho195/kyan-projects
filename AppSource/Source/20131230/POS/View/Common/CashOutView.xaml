@@ -580,7 +580,7 @@
                                                               IsReadOnly="True"
                                                               ConverterCulture="{x:Static pos:Define.ConverterCulture}"
                                                               CurrencyStringFormat="{x:Static pos:Define.CurrencyFormat}"
-                                                              Value="{Binding CashFlowModel.CloseCashTotal, Mode=OneWay}" />
+                                                              Value="{Binding CashFlowModel.CloseCashTotal, Mode=OneWay}" Style="{DynamicResource TextBoxPayment}" />
 
                                 <TextBlock x:Name="txtblCashTotal"
                                            Text="Cash Total"
@@ -610,7 +610,7 @@
                                                               IsReadOnly="True"
                                                               ConverterCulture="{x:Static pos:Define.ConverterCulture}"
                                                               CurrencyStringFormat="{x:Static pos:Define.CurrencyFormat}"
-                                                              Value="{Binding CashFlowModel.CreditCashTotal, Mode=OneWay}" />
+                                                              Value="{Binding CashFlowModel.CreditCashTotal, Mode=OneWay}" Style="{DynamicResource TextBoxPayment}" />
 
                                 <TextBlock x:Name="txtblCreditTotal"
                                            Text="CreditTotal"
@@ -618,7 +618,7 @@
                                            HorizontalAlignment="Left"
                                            Margin="5,5,0,0"
                                            d:LayoutOverrides="Height, GridBox"
-                                           VerticalAlignment="Top" />
+                                           VerticalAlignment="Top" Style="{DynamicResource TextBlockPayment}" />
 
                             </Grid>
 

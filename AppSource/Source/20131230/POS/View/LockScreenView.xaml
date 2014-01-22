@@ -22,23 +22,20 @@
                 BorderThickness="5"
                 CornerRadius="5">
             <Grid x:Name="grdContentLogin1">
-                <Rectangle x:Name="UserControl_Background_Image"
-                           Fill="{DynamicResource UserControl_Background_Image}" />
+                <Rectangle x:Name="UserControl_Background_Image" Fill="{DynamicResource UserControl_Background_Image}" />
                 <Border x:Name="brdContentLogin"
                         Margin="10,10,10,10"
                         Background="{DynamicResource TimeClockDisplayBackground}"
                         BorderBrush="{DynamicResource TimeClockDisplayBorder}"
                         BorderThickness="1,1,1,1"
                         CornerRadius="5,5,5,5">
-                    <Grid x:Name="grdContentLogin"
-                          Margin="5,5,5,5">
+                    <Grid x:Name="grdContentLogin" Margin="5,5,5,5">
                         <Grid.RowDefinitions>
                             <RowDefinition Height="124" />
                             <RowDefinition Height="40" />
                             <RowDefinition />
                         </Grid.RowDefinitions>
-                        <Grid x:Name="grdLogoCompany"
-                              HorizontalAlignment="Stretch">
+                        <Grid x:Name="grdLogoCompany" HorizontalAlignment="Stretch">
                             <Rectangle x:Name="bgInOut"
                                        Grid.RowSpan="2"
                                        Grid.ColumnSpan="2"
@@ -61,8 +58,7 @@
                                        Style="{DynamicResource TextBlockNormal}"
                                        TextWrapping="Wrap">
                                 <Run Text="{DynamicResource LP_TextBlock_Transaction1}" />
-                                <Run FontWeight="Bold"
-                                     Text="{Binding LoginName, Mode=OneWay}" />
+                                <Run FontWeight="Bold" Text="{Binding LoginName, Mode=OneWay}" />
                                 <Run Text="{DynamicResource LP_TextBlock_Transaction2}" />
                             </TextBlock>
                         </Border>
@@ -88,7 +84,11 @@
                                                                   HorizontalAlignment="Left"
                                                                   MaxLength="50"
                                                                   Padding="20,0,2,0"
-                                                                  Text="{Binding UserName, Mode=TwoWay, NotifyOnValidationError=True, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True}"
+                                                                  Text="{Binding UserName,
+                                                                                 Mode=TwoWay,
+                                                                                 NotifyOnValidationError=True,
+                                                                                 UpdateSourceTrigger=PropertyChanged,
+                                                                                 ValidatesOnDataErrors=True}"
                                                                   TextWrapping="NoWrap" />
                             <Rectangle x:Name="imgUser"
                                        Width="16"
@@ -111,7 +111,11 @@
                                          HorizontalAlignment="Left"
                                          VerticalContentAlignment="Center"
                                          CPC_Helper:PasswordHelper.BindPassword="true"
-                                         CPC_Helper:PasswordHelper.BoundPassword="{Binding UserPassword, Mode=TwoWay, NotifyOnValidationError=True, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True}"
+                                         CPC_Helper:PasswordHelper.BoundPassword="{Binding UserPassword,
+                                                                                           Mode=TwoWay,
+                                                                                           NotifyOnValidationError=True,
+                                                                                           UpdateSourceTrigger=PropertyChanged,
+                                                                                           ValidatesOnDataErrors=True}"
                                          Padding="20,0,2,0"
                                          PasswordChar="*" />
                             <Rectangle x:Name="imgPassword"
@@ -129,12 +133,12 @@
                                        VerticalAlignment="Top"
                                        Fill="{DynamicResource Spilter_Line_Background}" />
                             <Button x:Name="btnLogin"
-                                    Command="{Binding LoginCommand}"
                                     Grid.Row="5"
                                     Width="80"
                                     Height="28"
                                     HorizontalAlignment="Center"
                                     VerticalAlignment="Center"
+                                    Command="{Binding LoginCommand}"
                                     IsDefault="True">
                                 <StackPanel x:Name="stkpBtnLogin"
                                             HorizontalAlignment="Center"

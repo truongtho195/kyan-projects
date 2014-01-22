@@ -291,6 +291,80 @@ namespace CPC.POS.Repository
             return UnitOfWork.GetRangeDescending<base_Guest, TKey>(ignoreCount, takeCount, keySelector, expression);
         }
 
+
+
+        public base_Guest CreateDefaultCustomer()
+        {
+            int defaultGuest = Define.DefaultGuestId;
+
+            try
+            {
+                string guidString = defaultGuest.ToString("00000000-0000-0000-0000-00000000000#");
+                Guid defaultGuid = Guid.Parse(guidString);
+                IQueryable<base_Guest> query= UnitOfWork.GetIQueryable<base_Guest>(x => x.Resource == defaultGuid);
+                if (query.Any())
+                    return query.FirstOrDefault();
+
+                UnitOfWork.BeginTransaction();
+                base_Guest customer = new base_Guest();
+                customer.GuestNo = defaultGuest.ToString("00000000000#");
+                
+                customer.LastName = "Guest";
+                customer.FirstName = "Guest";
+                customer.Resource = defaultGuid;
+                customer.IsActived = true;
+                customer.IsPurged = true;
+                customer.DateCreated = DateTimeExt.Now;
+                customer.DateUpdated = DateTimeExt.Now;
+                customer.UserCreated = Define.USER.LoginName;
+                customer.UserUpdated = Define.USER.LoginName;
+
+                //Bill & Ship Address
+                base_GuestAddress billAddress = new base_GuestAddress();
+                billAddress.IsDefault = true;
+                billAddress.AddressTypeId = 2;
+                billAddress.AddressLine1 = "Unknow";
+                billAddress.AddressLine2 = "Unknow";
+                billAddress.City = "Unknow";
+                billAddress.Resource = Guid.NewGuid();
+                billAddress.GuestResource = customer.Resource.ToString();
+                billAddress.DateCreated = DateTimeExt.Now;
+                billAddress.DateUpdated = DateTimeExt.Now;
+                billAddress.UserCreated = Define.USER.LoginName;
+                billAddress.UserUpdated = Define.USER.LoginName;
+
+                customer.base_GuestAddress.Add(billAddress);
+
+                //Ship Address
+                base_GuestAddress shipAddress = new base_GuestAddress();
+                shipAddress.AddressTypeId = 3;
+                shipAddress.AddressLine1 = "Unknow";
+                shipAddress.AddressLine2 = "Unknow";
+                shipAddress.City = "Unknow";
+                shipAddress.GuestResource = customer.Resource.ToString();
+                shipAddress.Resource = Guid.NewGuid();
+                shipAddress.DateCreated = DateTimeExt.Now;
+                shipAddress.DateUpdated = DateTimeExt.Now;
+                shipAddress.UserCreated = Define.USER.LoginName;
+                shipAddress.UserUpdated = Define.USER.LoginName;
+
+                customer.base_GuestAddress.Add(shipAddress);
+                
+                UnitOfWork.Add<base_Guest>(customer);
+                UnitOfWork.Commit();
+
+                UnitOfWork.CommitTransaction();
+                
+                return customer;
+            }
+            catch (Exception ex)
+            {
+                UnitOfWork.RollbackTransaction();
+                throw ex;
+            }
+        }
+
+
         #endregion
     }
 }

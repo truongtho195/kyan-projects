@@ -254,6 +254,44 @@ namespace CPC.POS
 
             }
         }
+
+        #endregion
+
+        #region OpenFrontEndView
+
+        /// <summary>
+        /// Open front End View
+        /// </summary>
+        private void OpenFrontEndView()
+        {
+            try
+            {
+                //initital Front End View
+                SalesOrderFrontHandView saleOrderFrontHandView = new SalesOrderFrontHandView();
+
+                //Initial ViewModel
+                SalesOrderFrontHandViewModel saleOrderFrontHandViewModel = new SalesOrderFrontHandViewModel();
+
+                saleOrderFrontHandView.DataContext = saleOrderFrontHandViewModel;
+
+                //saleOrderFrontHandView.Closing += (sender, e) =>
+                //{
+                //    // Get can close main window
+                //    bool result = saleOrderFrontHandViewModel.CloseCommand.CanExecute(null);
+                //    if (!result)
+                //        saleOrderFrontHandViewModel.CloseCommand.Execute(null);
+                //    e.Cancel = result;
+
+                   
+                //};
+
+                saleOrderFrontHandView.Show();
+            }
+            catch (Exception ex)
+            {
+                m_Logger.Error(ex);
+            }
+        }
         #endregion
 
         #region LogOutCallback
@@ -304,6 +342,7 @@ namespace CPC.POS
         {
             try
             {
+
                 // If user been verified, close the loginView
                 if (null != this._loginView)
                 {
@@ -313,7 +352,13 @@ namespace CPC.POS
                 this.IsUserAuthenicated = IsVerified;
                 //To clear data on base_UserLogDetail table.
                 App.ClearDataOnUserLog();
-                this.OpenMainWindowView();
+                
+                //Temp Go to Front or Back End(Check with Config)
+                bool isBackEnd = true;
+                if (isBackEnd)
+                    this.OpenMainWindowView();
+                else
+                    this.OpenFrontEndView();
             }
             catch (Exception ex)
             {

@@ -3,10 +3,12 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Collections.Specialized;
 using System.ComponentModel;
+using System.Globalization;
 using System.Linq;
 using System.Linq.Expressions;
 using System.Windows;
 using System.Windows.Data;
+using CPC.DragDrop;
 using CPC.Helper;
 using CPC.POS.Database;
 using CPC.POS.Model;
@@ -16,13 +18,10 @@ using CPC.Toolkit.Base;
 using CPC.Toolkit.Command;
 using CPCToolkitExt.DataGridControl;
 using CPCToolkitExtLibraries;
-using System.Globalization;
-using System.Threading;
-using System.Threading.Tasks;
 
 namespace CPC.POS.ViewModel
 {
-    public class SalesOrderViewModel : OrderViewModel
+    public class SalesOrderViewModel : OrderViewModel, IDropTarget
     {
         #region Define
 
@@ -37,13 +36,11 @@ namespace CPC.POS.ViewModel
         private base_ResourceReturnRepository _resourceReturnRepository = new base_ResourceReturnRepository();
         private base_ResourceReturnDetailRepository _resourceReturnDetailRepository = new base_ResourceReturnDetailRepository();
         private base_ProductGroupRepository _productGroupRepository = new base_ProductGroupRepository();
-
-
         private base_ProductStoreRepository _productStoreRespository = new base_ProductStoreRepository();
         private base_ProductUOMRepository _productUOMRepository = new base_ProductUOMRepository();
 
-
         private SalesOrderAdvanceSearchViewModel _salesOrderAdvanceSearchViewModel = new SalesOrderAdvanceSearchViewModel();
+        //private BackgroundWorker _saleOrderBgWorker = new BackgroundWorker { WorkerReportsProgress = true };
 
         private enum SaleOrderTab
         {
@@ -55,6 +52,8 @@ namespace CPC.POS.ViewModel
 
 
         private bool IsAdvanced { get; set; }
+
+
         #endregion
 
         #region Constructors
@@ -64,6 +63,10 @@ namespace CPC.POS.ViewModel
         {
             _requireProductCard = true;
             LoadDynamicData();
+
+            //_saleOrderBgWorker.DoWork+=new DoWorkEventHandler(_saleOrderBgWorker_DoWork);
+            //_saleOrderBgWorker.ProgressChanged +=new ProgressChangedEventHandler(_saleOrderBgWorker_ProgressChanged);
+            //_saleOrderBgWorker.RunWorkerCompleted +=new RunWorkerCompletedEventHandler(_saleOrderBgWorker_RunWorkerCompleted);
 
             //Get value from config
             IsIncludeReturnFee = Define.CONFIGURATION.IsIncludeReturnFee;
@@ -275,7 +278,9 @@ namespace CPC.POS.ViewModel
                 if (_filterText != value)
                 {
                     _filterText = value;
+                    ResetTimer();
                     OnPropertyChanged(() => FilterText);
+
                 }
             }
         }
@@ -569,6 +574,9 @@ namespace CPC.POS.ViewModel
 
         protected override void OnSearchCommandExecute(object param)
         {
+            if (_waitingTimer != null)
+                _waitingTimer.Stop();
+
             Keyword = FilterText ?? string.Empty;
             IsAdvanced = false;
 
@@ -576,14 +584,18 @@ namespace CPC.POS.ViewModel
             _salesOrderAdvanceSearchViewModel.ResetKeyword();
 
             //Create & Execute Search Simple
-            Expression<Func<base_SaleOrder, bool>> predicate = CreateSimpleSearchPredicate(Keyword);
-            LoadDataByPredicate(predicate, false, 0);
+            _predicate = CreateSimpleSearchPredicate(Keyword);
+            LoadDataByPredicate(_predicate, false, 0);
 
-
+            //Case 2 : use the same backgroud worker
+            //SaleOrderCollection.Clear();
+            //if (!_saleOrderBgWorker.IsBusy)
+            //    _saleOrderBgWorker.RunWorkerAsync();
         }
 
-        #endregion
 
+
+        #endregion
 
         #region SearchProductCommand
         protected override bool OnSearchProductCommandCanExecute(object param)
@@ -626,7 +638,6 @@ namespace CPC.POS.ViewModel
             BarcodeProduct = string.Empty;
         }
         #endregion
-
 
         #region DoubleClickCommand
 
@@ -701,18 +712,20 @@ namespace CPC.POS.ViewModel
         /// </summary>
         private void OnLoadStepCommandExecute(object param)
         {
-            Expression<Func<base_SaleOrder, bool>> predicate = PredicateBuilder.True<base_SaleOrder>();
+            _predicate = PredicateBuilder.True<base_SaleOrder>();
             if (IsAdvanced) //Current is use advanced search
             {
-                predicate = _salesOrderAdvanceSearchViewModel.SearchAdvancePredicate;
+                _predicate = _salesOrderAdvanceSearchViewModel.SearchAdvancePredicate;
             }
             else //Simple Search
             {
                 if (!string.IsNullOrWhiteSpace(FilterText))//Load Step Current With Search Current with Search
-                    predicate = CreateSimpleSearchPredicate(Keyword); //CreatePredicateWithConditionSearch(Keyword);           
+                    _predicate = CreateSimpleSearchPredicate(Keyword); //CreatePredicateWithConditionSearch(Keyword);           
             }
 
-            LoadDataByPredicate(predicate, false, SaleOrderCollection.Count);
+            LoadDataByPredicate(_predicate, false, SaleOrderCollection.Count);
+
+            //_saleOrderBgWorker.RunWorkerAsync();
         }
         #endregion
 
@@ -1063,7 +1076,6 @@ namespace CPC.POS.ViewModel
             ShowShipTab(SelectedSaleOrder);
         }
         #endregion
-
 
         #region PaymentHistoryDetailCommand
         /// <summary>
@@ -1713,51 +1725,6 @@ namespace CPC.POS.ViewModel
         }
 
         /// <summary>
-        /// Load Product From Database
-        /// </summary>
-        //protected override void LoadProducts()
-        //{
-        //    base.LoadProducts();
-        //    //if (!ProductCollection.Any(x => x.IsCoupon))
-        //    //{
-        //    //    string strGuidPatern = "{0}{0}{0}{0}{0}{0}{0}{0}-{0}{0}{0}{0}-{0}{0}{0}{0}-{0}{0}{0}{0}-{0}{0}{0}{0}{0}{0}{0}{0}{0}{0}{0}{0}";
-        //    //    string strCodePatern = "{0}{0}{0}{0}{0}{0}{0}{0}{0}{0}{0}{0}{0}{0}{0}";
-
-        //    //    Guid giftCardGuid = Guid.Parse(string.Format(strGuidPatern, 1));
-        //    //    if (Define.CONFIGURATION.AcceptedPaymentMethod.Value.Has(PaymentMethod.GiftCard) && !ProductCollection.Any(x => x.Resource.Equals(giftCardGuid)))
-        //    //    {
-        //    //        base_ProductModel couponItem = new base_ProductModel();
-        //    //        ComboItem card = Common.PaymentMethods.FirstOrDefault(x => x.Value.Equals((short)PaymentMethod.GiftCard));
-        //    //        couponItem.ProductName = card.Text;
-        //    //        //Using for CardTypeId
-        //    //        couponItem.ProductCategoryId = card.Value;
-        //    //        couponItem.Code = string.Format(strCodePatern, 1);//64 : PaymentMethod.GiftCard
-
-        //    //        couponItem.Resource = giftCardGuid;
-        //    //        couponItem.IsOpenItem = true;
-        //    //        couponItem.IsCoupon = true;
-        //    //        ProductCollection.Add(couponItem);
-        //    //    }
-
-        //    //    Guid giftCertificateGuid = Guid.Parse(string.Format(strGuidPatern, 2));
-        //    //    if (Define.CONFIGURATION.AcceptedPaymentMethod.Value.Has(PaymentMethod.GiftCertificate) && !ProductCollection.Any(x => x.Resource.Equals(giftCertificateGuid)))
-        //    //    {
-        //    //        base_ProductModel couponItem = new base_ProductModel();
-        //    //        ComboItem card = Common.PaymentMethods.FirstOrDefault(x => x.Value.Equals((short)PaymentMethod.GiftCertificate));
-        //    //        //Using for CardTypeId
-        //    //        couponItem.ProductCategoryId = card.Value;
-        //    //        couponItem.ProductName = card.Text;
-        //    //        couponItem.Code = string.Format(strCodePatern, 2);//128 : PaymentMethod.GiftCertificate
-        //    //        couponItem.Resource = giftCertificateGuid;
-        //    //        couponItem.IsOpenItem = true;
-        //    //        couponItem.IsCoupon = true;
-        //    //        ProductCollection.Add(couponItem);
-        //    //    }
-
-        //    //}
-        //}
-
-        /// <summary>
         /// Load Store from db
         /// </summary>
         private void LoadStores()
@@ -2101,7 +2068,7 @@ namespace CPC.POS.ViewModel
                 //Search deciaml
                 decimal decimalValue = 0;
 
-                if (decimal.TryParse(keyword, NumberStyles.Number, Define.ConverterCulture.NumberFormat, out decimalValue))
+                if (decimal.TryParse(keyword, NumberStyles.Number, Define.ConverterCulture.NumberFormat, out decimalValue) && decimalValue != 0)
                 {
                     //Total 
                     predicate = predicate.Or(x => x.Total == decimalValue);
@@ -2159,92 +2126,100 @@ namespace CPC.POS.ViewModel
         /// 
         protected override base_SaleOrderModel CreateNewSaleOrder()
         {
-            _selectedSaleOrder = new base_SaleOrderModel();
-            _selectedSaleOrder.Shift = Define.ShiftCode;
-            _selectedSaleOrder.IsTaxExemption = false;
-            _selectedSaleOrder.IsConverted = true;
-            _selectedSaleOrder.IsLocked = false;
-            _selectedSaleOrder.SONumber = DateTime.Now.ToString(Define.GuestNoFormat);
-            _saleOrderRepository.SOCardGenerate(_selectedSaleOrder, _selectedSaleOrder.SONumber);
-            _selectedSaleOrder.DateCreated = DateTime.Now;
-            _selectedSaleOrder.BookingChanel = Convert.ToInt16(Common.BookingChannel.First().ObjValue);
-            _selectedSaleOrder.StoreCode = Define.StoreCode;//Default StoreCode
-            _selectedSaleOrder.OrderDate = DateTime.Now;
-            _selectedSaleOrder.RequestShipDate = DateTime.Now;
-            _selectedSaleOrder.UserCreated = Define.USER != null ? Define.USER.LoginName : string.Empty;
-            _selectedSaleOrder.TaxPercent = 0;
-            _selectedSaleOrder.TaxAmount = 0;
-            _selectedSaleOrder.Deposit = 0;
-            _selectedSaleOrder.OrderStatus = (short)SaleOrderStatus.Open;
-            _selectedSaleOrder.ItemStatus = Common.StatusSalesOrders.SingleOrDefault(x => Convert.ToInt16(x.ObjValue).Equals(_selectedSaleOrder.OrderStatus));
-            _selectedSaleOrder.Mark = MarkType.SaleOrder.ToDescription();
-            _selectedSaleOrder.TermNetDue = 0;
-            _selectedSaleOrder.TermDiscountPercent = 0;
-            _selectedSaleOrder.TermPaidWithinDay = 0;
-            _selectedSaleOrder.PaymentTermDescription = string.Empty;
-            //Set Price Schema
-            _selectedSaleOrder.PriceSchemaId = 1;
-            _selectedSaleOrder.PriceLevelItem = Common.PriceSchemas.SingleOrDefault(x => Convert.ToInt16(x.ObjValue).Equals(_selectedSaleOrder.PriceSchemaId));
+            try
+            {
+                _selectedSaleOrder = new base_SaleOrderModel();
+                _selectedSaleOrder.Shift = Define.ShiftCode;
+                _selectedSaleOrder.IsTaxExemption = false;
+                _selectedSaleOrder.IsConverted = true;
+                _selectedSaleOrder.IsLocked = false;
+                _selectedSaleOrder.SONumber = DateTime.Now.ToString(Define.GuestNoFormat);
+                _saleOrderRepository.SOCardGenerate(_selectedSaleOrder, _selectedSaleOrder.SONumber);
+                _selectedSaleOrder.DateCreated = DateTime.Now;
+                _selectedSaleOrder.BookingChanel = Convert.ToInt16(Common.BookingChannel.First().ObjValue);
+                _selectedSaleOrder.StoreCode = Define.StoreCode;//Default StoreCode
+                _selectedSaleOrder.OrderDate = DateTime.Now;
+                _selectedSaleOrder.RequestShipDate = DateTime.Now;
+                _selectedSaleOrder.UserCreated = Define.USER != null ? Define.USER.LoginName : string.Empty;
+                _selectedSaleOrder.TaxPercent = 0;
+                _selectedSaleOrder.TaxAmount = 0;
+                _selectedSaleOrder.Deposit = 0;
+                _selectedSaleOrder.OrderStatus = (short)SaleOrderStatus.Open;
+                _selectedSaleOrder.ItemStatus = Common.StatusSalesOrders.SingleOrDefault(x => Convert.ToInt16(x.ObjValue).Equals(_selectedSaleOrder.OrderStatus));
+                _selectedSaleOrder.Mark = MarkType.SaleOrder.ToDescription();
+                _selectedSaleOrder.TermNetDue = 0;
+                _selectedSaleOrder.TermDiscountPercent = 0;
+                _selectedSaleOrder.TermPaidWithinDay = 0;
+                _selectedSaleOrder.PaymentTermDescription = string.Empty;
+                //Set Price Schema
+                _selectedSaleOrder.PriceSchemaId = 1;
+                _selectedSaleOrder.PriceLevelItem = Common.PriceSchemas.SingleOrDefault(x => Convert.ToInt16(x.ObjValue).Equals(_selectedSaleOrder.PriceSchemaId));
 
-            _selectedSaleOrder.TaxExemption = string.Empty;
-            _selectedSaleOrder.SaleRep = EmployeeCollection.FirstOrDefault().GuestNo;
-            _selectedSaleOrder.Resource = Guid.NewGuid();
-            _selectedSaleOrder.WeightUnit = Common.ShipUnits.First().Value;
-            _selectedSaleOrder.IsDeposit = Define.CONFIGURATION.AcceptedPaymentMethod.HasValue ? Define.CONFIGURATION.AcceptedPaymentMethod.Value.Has(16) : false;//Accept Payment with deposit
-            _selectedSaleOrder.WeightUnit = Define.CONFIGURATION.DefaultShipUnit.HasValue ? Define.CONFIGURATION.DefaultShipUnit.Value : Convert.ToInt16(Common.ShipUnits.First().ObjValue);
-            _selectedSaleOrder.IsHiddenErrorColumn = true;
+                _selectedSaleOrder.TaxExemption = string.Empty;
+                _selectedSaleOrder.SaleRep = EmployeeCollection.FirstOrDefault().GuestNo;
+                _selectedSaleOrder.Resource = Guid.NewGuid();
+                _selectedSaleOrder.WeightUnit = Common.ShipUnits.First().Value;
+                _selectedSaleOrder.IsDeposit = Define.CONFIGURATION.AcceptedPaymentMethod.HasValue ? Define.CONFIGURATION.AcceptedPaymentMethod.Value.Has(16) : false;//Accept Payment with deposit
+                _selectedSaleOrder.WeightUnit = Define.CONFIGURATION.DefaultShipUnit.HasValue ? Define.CONFIGURATION.DefaultShipUnit.Value : Convert.ToInt16(Common.ShipUnits.First().ObjValue);
+                _selectedSaleOrder.IsHiddenErrorColumn = true;
 
-            _selectedSaleOrder.TaxLocation = Convert.ToInt32(Define.CONFIGURATION.DefaultSaleTaxLocation);
-            _selectedSaleOrder.TaxCode = Define.CONFIGURATION.DefaultTaxCodeNewDepartment;
-            //Get TaxLocation
-            _selectedSaleOrder.TaxLocationModel = SaleTaxLocationCollection.SingleOrDefault(x => x.Id == _selectedSaleOrder.TaxLocation);
+                _selectedSaleOrder.TaxLocation = Convert.ToInt32(Define.CONFIGURATION.DefaultSaleTaxLocation);
+                _selectedSaleOrder.TaxCode = Define.CONFIGURATION.DefaultTaxCodeNewDepartment;
+                //Get TaxLocation
+                _selectedSaleOrder.TaxLocationModel = SaleTaxLocationCollection.SingleOrDefault(x => x.Id == _selectedSaleOrder.TaxLocation);
 
-            //Create a sale order detail collection
-            _selectedSaleOrder.SaleOrderDetailCollection = new CollectionBase<base_SaleOrderDetailModel>();
-            _selectedSaleOrder.SaleOrderDetailCollection.CollectionChanged += new NotifyCollectionChangedEventHandler(SaleOrderDetailCollection_CollectionChanged);
+                //Create a sale order detail collection
+                _selectedSaleOrder.SaleOrderDetailCollection = new CollectionBase<base_SaleOrderDetailModel>();
+                _selectedSaleOrder.SaleOrderDetailCollection.CollectionChanged += new NotifyCollectionChangedEventHandler(SaleOrderDetailCollection_CollectionChanged);
 
-            //create a sale order Ship Collection
-            _selectedSaleOrder.SaleOrderShipCollection = new CollectionBase<base_SaleOrderShipModel>();
-            _selectedSaleOrder.SaleOrderShippedCollection = new CollectionBase<base_SaleOrderDetailModel>();
+                //create a sale order Ship Collection
+                _selectedSaleOrder.SaleOrderShipCollection = new CollectionBase<base_SaleOrderShipModel>();
+                _selectedSaleOrder.SaleOrderShippedCollection = new CollectionBase<base_SaleOrderDetailModel>();
 
-            // Create new payment collection
-            _selectedSaleOrder.PaymentCollection = new ObservableCollection<base_ResourcePaymentModel>();
+                // Create new payment collection
+                _selectedSaleOrder.PaymentCollection = new ObservableCollection<base_ResourcePaymentModel>();
 
-            //ReturnModel & ReturnDetailCollection
-            _selectedSaleOrder.ReturnModel = new base_ResourceReturnModel();
-            _selectedSaleOrder.ReturnModel.DocumentNo = SelectedSaleOrder.SONumber;
-            _selectedSaleOrder.ReturnModel.DocumentResource = SelectedSaleOrder.Resource.ToString();
-            _selectedSaleOrder.ReturnModel.TotalAmount = SelectedSaleOrder.Total;
-            _selectedSaleOrder.ReturnModel.Resource = Guid.NewGuid();
-            _selectedSaleOrder.ReturnModel.TotalRefund = 0;
-            _selectedSaleOrder.ReturnModel.TotalAmount = 0;
-            _selectedSaleOrder.ReturnModel.Mark = "SO";
-            _selectedSaleOrder.ReturnModel.UserCreated = Define.USER != null ? Define.USER.LoginName : string.Empty;
-            _selectedSaleOrder.ReturnModel.DateCreated = DateTime.Today;
-            _selectedSaleOrder.ReturnModel.IsDirty = false;
-            _selectedSaleOrder.ReturnModel.ReturnDetailCollection = new CollectionBase<base_ResourceReturnDetailModel>();
-            _selectedSaleOrder.ReturnModel.ReturnDetailCollection.CollectionChanged += ReturnDetailCollection_CollectionChanged;
-            _selectedSaleOrder.SaleOrderShipDetailCollection = new CollectionBase<base_SaleOrderShipDetailModel>();
-            //Additional
-            _selectedSaleOrder.BillAddressModel = new base_GuestAddressModel() { AddressTypeId = (int)AddressType.Billing, IsDirty = false };
-            _selectedSaleOrder.ShipAddressModel = new base_GuestAddressModel() { AddressTypeId = (int)AddressType.Shipping, IsDirty = false };
+                //ReturnModel & ReturnDetailCollection
+                _selectedSaleOrder.ReturnModel = new base_ResourceReturnModel();
+                _selectedSaleOrder.ReturnModel.DocumentNo = SelectedSaleOrder.SONumber;
+                _selectedSaleOrder.ReturnModel.DocumentResource = SelectedSaleOrder.Resource.ToString();
+                _selectedSaleOrder.ReturnModel.TotalAmount = SelectedSaleOrder.Total;
+                _selectedSaleOrder.ReturnModel.Resource = Guid.NewGuid();
+                _selectedSaleOrder.ReturnModel.TotalRefund = 0;
+                _selectedSaleOrder.ReturnModel.TotalAmount = 0;
+                _selectedSaleOrder.ReturnModel.Mark = "SO";
+                _selectedSaleOrder.ReturnModel.UserCreated = Define.USER != null ? Define.USER.LoginName : string.Empty;
+                _selectedSaleOrder.ReturnModel.DateCreated = DateTime.Today;
+                _selectedSaleOrder.ReturnModel.IsDirty = false;
+                _selectedSaleOrder.ReturnModel.ReturnDetailCollection = new CollectionBase<base_ResourceReturnDetailModel>();
+                _selectedSaleOrder.ReturnModel.ReturnDetailCollection.CollectionChanged += ReturnDetailCollection_CollectionChanged;
+                _selectedSaleOrder.SaleOrderShipDetailCollection = new CollectionBase<base_SaleOrderShipDetailModel>();
+                //Additional
+                _selectedSaleOrder.BillAddressModel = new base_GuestAddressModel() { AddressTypeId = (int)AddressType.Billing, IsDirty = false };
+                _selectedSaleOrder.ShipAddressModel = new base_GuestAddressModel() { AddressTypeId = (int)AddressType.Shipping, IsDirty = false };
 
-            //GuestRewardSaleOrder
-            _selectedSaleOrder.GuestRewardSaleOrderModel = new base_GuestRewardSaleOrderModel();
+                //GuestRewardSaleOrder
+                _selectedSaleOrder.GuestRewardSaleOrderModel = new base_GuestRewardSaleOrderModel();
 
-            _selectedCustomer = null;
-            OnPropertyChanged(() => SelectedCustomer);
+                _selectedCustomer = null;
+                OnPropertyChanged(() => SelectedCustomer);
 
-            //Set to fist tab & skip TabChanged Methods in SelectedTabIndex property
-            _selectedTabIndex = 0;
-            OnPropertyChanged(() => SelectedTabIndex);
-            SetAllowChangeOrder(_selectedSaleOrder);
-            _selectedSaleOrder.IsDirty = false;
-            _selectedSaleOrder.PropertyChanged += new PropertyChangedEventHandler(SelectedSaleOrder_PropertyChanged);
-            _selectedSaleOrder.ReturnModel.PropertyChanged += new PropertyChangedEventHandler(ReturnModel_PropertyChanged);
-            OnPropertyChanged(() => SelectedSaleOrder);
-            OnPropertyChanged(() => AllowSOShipping);
-            OnPropertyChanged(() => AllowSOReturn);
+                //Set to fist tab & skip TabChanged Methods in SelectedTabIndex property
+                _selectedTabIndex = 0;
+                OnPropertyChanged(() => SelectedTabIndex);
+                SetAllowChangeOrder(_selectedSaleOrder);
+                _selectedSaleOrder.IsDirty = false;
+                _selectedSaleOrder.PropertyChanged += new PropertyChangedEventHandler(SelectedSaleOrder_PropertyChanged);
+                _selectedSaleOrder.ReturnModel.PropertyChanged += new PropertyChangedEventHandler(ReturnModel_PropertyChanged);
+                OnPropertyChanged(() => SelectedSaleOrder);
+                OnPropertyChanged(() => AllowSOShipping);
+                OnPropertyChanged(() => AllowSOReturn);
+            }
+            catch (Exception ex)
+            {
+                _log4net.Error(ex);
+                Xceed.Wpf.Toolkit.MessageBox.Show(ex.Message, Language.GetMsg("ErrorCaption"), MessageBoxButton.OK, MessageBoxImage.Error);
+            }
             return _selectedSaleOrder;
         }
 
@@ -2253,31 +2228,39 @@ namespace CPC.POS.ViewModel
         /// </summary>
         private void SetSelectedSaleOrderFromAnother()
         {
-            if (SaleOrderId > 0)
+            try
             {
-                SetSelectedSaleOrderFromDbOrCollection();
-                //Calc Onhand
-                foreach (base_SaleOrderDetailModel saleOrderDetailModel in SelectedSaleOrder.SaleOrderDetailCollection)
+                if (SaleOrderId > 0)
                 {
-                    if (!saleOrderDetailModel.IsQuantityAccepted)
+                    SetSelectedSaleOrderFromDbOrCollection();
+                    //Calc Onhand
+                    foreach (base_SaleOrderDetailModel saleOrderDetailModel in SelectedSaleOrder.SaleOrderDetailCollection)
                     {
-                        saleOrderDetailModel.IsQuantityAccepted = true;
-                        _saleOrderRepository.CalcOnHandStore(SelectedSaleOrder, saleOrderDetailModel);
+                        if (!saleOrderDetailModel.IsQuantityAccepted)
+                        {
+                            saleOrderDetailModel.IsQuantityAccepted = true;
+                            _saleOrderRepository.CalcOnHandStore(SelectedSaleOrder, saleOrderDetailModel);
+                        }
                     }
+
+                    SetSelectedCustomer();
+
+                    SetAllowChangeOrder(SelectedSaleOrder);
+                    ShowShipTab(SelectedSaleOrder);
+                    SelectedSaleOrder.IsDirty = false;
+
+                    //Changed tab
+                    _selectedTabIndex = (int)SaleOrderSelectedTab;
+                    OnPropertyChanged(() => SelectedTabIndex);
+                    _saleOrderId = 0;
+                    IsSearchMode = false;
+                    IsForceFocused = true;
                 }
-
-                SetSelectedCustomer();
-
-                SetAllowChangeOrder(SelectedSaleOrder);
-                ShowShipTab(SelectedSaleOrder);
-                SelectedSaleOrder.IsDirty = false;
-
-                //Changed tab
-                _selectedTabIndex = (int)SaleOrderSelectedTab;
-                OnPropertyChanged(() => SelectedTabIndex);
-                _saleOrderId = 0;
-                IsSearchMode = false;
-                IsForceFocused = true;
+            }
+            catch (Exception ex)
+            {
+                _log4net.Error(ex);
+                Xceed.Wpf.Toolkit.MessageBox.Show(ex.Message, Language.GetMsg("ErrorCaption"), MessageBoxButton.OK, MessageBoxImage.Error);
             }
         }
 
@@ -2286,29 +2269,37 @@ namespace CPC.POS.ViewModel
         /// </summary>
         private void SetSelectedSaleOrderFromDbOrCollection()
         {
-            if (SaleOrderCollection.Any(x => x.Id.Equals(SaleOrderId)))
+            try
             {
-                _selectedSaleOrder = SaleOrderCollection.SingleOrDefault(x => x.Id.Equals(SaleOrderId));
-            }
-            else
-            {
-                lock (UnitOfWork.Locker)
+                if (SaleOrderCollection.Any(x => x.Id.Equals(SaleOrderId)))
                 {
-                    //If Current SaleOrder loading not yet
-                    base_SaleOrder saleOrder = _saleOrderRepository.Get(x => x.Id.Equals(SaleOrderId));
-                    if (saleOrder != null)
+                    _selectedSaleOrder = SaleOrderCollection.SingleOrDefault(x => x.Id.Equals(SaleOrderId));
+                }
+                else
+                {
+                    lock (UnitOfWork.Locker)
                     {
-                        _selectedSaleOrder = new base_SaleOrderModel(saleOrder);
-                        SetSaleOrderToModel(SelectedSaleOrder);
+                        //If Current SaleOrder loading not yet
+                        base_SaleOrder saleOrder = _saleOrderRepository.Get(x => x.Id.Equals(SaleOrderId));
+                        if (saleOrder != null)
+                        {
+                            _selectedSaleOrder = new base_SaleOrderModel(saleOrder);
+                            SetSaleOrderToModel(SelectedSaleOrder);
+                        }
                     }
                 }
-            }
 
-            if (SelectedSaleOrder != null)
+                if (SelectedSaleOrder != null)
+                {
+                    SetSaleOrderRelation(SelectedSaleOrder, true);
+                    SetSelectedCustomer();
+                    OnPropertyChanged(() => SelectedSaleOrder);
+                }
+            }
+            catch (Exception ex)
             {
-                SetSaleOrderRelation(SelectedSaleOrder, true);
-                SetSelectedCustomer();
-                OnPropertyChanged(() => SelectedSaleOrder);
+                _log4net.Error(ex);
+                Xceed.Wpf.Toolkit.MessageBox.Show(ex.Message, Language.GetMsg("ErrorCaption"), MessageBoxButton.OK, MessageBoxImage.Error);
             }
         }
 
@@ -2422,63 +2413,351 @@ namespace CPC.POS.ViewModel
         /// </summary>
         private void InsertSaleOrder(base_SaleOrderModel saleOrderModel)
         {
-            if (SelectedSaleOrder.IsNew)
+            try
             {
-                UpdateCustomerAddress(SelectedSaleOrder.BillAddressModel);
-                SelectedSaleOrder.BillAddressId = SelectedSaleOrder.BillAddressModel.Id;
-                UpdateCustomerAddress(SelectedSaleOrder.ShipAddressModel);
-                SelectedSaleOrder.ShipAddressId = SelectedSaleOrder.ShipAddressModel.Id;
-                //Sale Order Detail Model
-                foreach (base_SaleOrderDetailModel saleOrderDetailModel in SelectedSaleOrder.SaleOrderDetailCollection)
+                if (SelectedSaleOrder.IsNew)
                 {
-                    if (saleOrderDetailModel.ProductModel.IsCoupon)
+                    UpdateCustomerAddress(SelectedSaleOrder.BillAddressModel);
+                    SelectedSaleOrder.BillAddressId = SelectedSaleOrder.BillAddressModel.Id;
+                    UpdateCustomerAddress(SelectedSaleOrder.ShipAddressModel);
+                    SelectedSaleOrder.ShipAddressId = SelectedSaleOrder.ShipAddressModel.Id;
+                    //Sale Order Detail Model
+                    foreach (base_SaleOrderDetailModel saleOrderDetailModel in SelectedSaleOrder.SaleOrderDetailCollection)
                     {
-                        if (saleOrderDetailModel.CouponCardModel.IsNew)
+                        if (saleOrderDetailModel.ProductModel.IsCoupon)
                         {
-                            saleOrderDetailModel.CouponCardModel.GuestResourcePurchased = SelectedSaleOrder.GuestModel.Resource.ToString();
-                            saleOrderDetailModel.CouponCardModel.GuestGiftedResource = SelectedSaleOrder.GuestModel.Resource.ToString();
-                            saleOrderDetailModel.CouponCardModel.RemainingAmount = saleOrderDetailModel.CouponCardModel.InitialAmount;
-                            saleOrderDetailModel.CouponCardModel.PurchaseDate = DateTime.Now;
-                            saleOrderDetailModel.CouponCardModel.DateCreated = DateTime.Now;
+                            if (saleOrderDetailModel.CouponCardModel.IsNew)
+                            {
+                                saleOrderDetailModel.CouponCardModel.GuestResourcePurchased = SelectedSaleOrder.GuestModel.Resource.ToString();
+                                saleOrderDetailModel.CouponCardModel.GuestGiftedResource = SelectedSaleOrder.GuestModel.Resource.ToString();
+                                saleOrderDetailModel.CouponCardModel.RemainingAmount = saleOrderDetailModel.CouponCardModel.InitialAmount;
+                                saleOrderDetailModel.CouponCardModel.PurchaseDate = DateTime.Now;
+                                saleOrderDetailModel.CouponCardModel.DateCreated = DateTime.Now;
+                            }
+                            saleOrderDetailModel.CouponCardModel.ToEntity();
                         }
-                        saleOrderDetailModel.CouponCardModel.ToEntity();
+
+                        _saleOrderRepository.UpdateCustomerQuantity(saleOrderDetailModel, SelectedSaleOrder.StoreCode, saleOrderDetailModel.Quantity);
+
+                        saleOrderDetailModel.ToEntity();
+                        SelectedSaleOrder.base_SaleOrder.base_SaleOrderDetail.Add(saleOrderDetailModel.base_SaleOrderDetail);
+                    }
+                    _productRepository.Commit();
+
+                    SavePaymentCollection(SelectedSaleOrder);
+
+                    SelectedSaleOrder.Shift = Define.ShiftCode;
+                    SelectedSaleOrder.DateUpdated = DateTime.Now;
+                    SelectedSaleOrder.DateCreated = DateTime.Now;
+                    SelectedSaleOrder.UserCreated = Define.USER != null ? Define.USER.LoginName : string.Empty;
+                    SelectedSaleOrder.ToEntity();
+                    _saleOrderRepository.Add(SelectedSaleOrder.base_SaleOrder);
+
+                    _saleOrderRepository.Commit();
+                    SelectedSaleOrder.EndUpdate();
+                    //Set ID
+                    SelectedSaleOrder.ToModel();
+                    SelectedSaleOrder.EndUpdate();
+                    foreach (base_SaleOrderDetailModel saleOrderDetailModel in SelectedSaleOrder.SaleOrderDetailCollection)
+                    {
+                        if (saleOrderDetailModel.ProductModel.IsCoupon)
+                        {
+                            saleOrderDetailModel.CouponCardModel.EndUpdate();
+                        }
+                        saleOrderDetailModel.ToModel();
+
+                        saleOrderDetailModel.EndUpdate();
                     }
 
-                    _saleOrderRepository.UpdateCustomerQuantity(saleOrderDetailModel, SelectedSaleOrder.StoreCode, saleOrderDetailModel.Quantity);
-
-                    saleOrderDetailModel.ToEntity();
-                    SelectedSaleOrder.base_SaleOrder.base_SaleOrderDetail.Add(saleOrderDetailModel.base_SaleOrderDetail);
+                    if (SelectedSaleOrder.PaymentCollection != null)
+                    {
+                        foreach (base_ResourcePaymentModel paymentModel in SelectedSaleOrder.PaymentCollection.Where(x => x.IsNew))
+                        {
+                            paymentModel.ToModel();
+                            //Update or Add New PaymentDetail
+                            if (paymentModel.PaymentDetailCollection != null)
+                            {
+                                foreach (base_ResourcePaymentDetailModel paymentDetailModel in paymentModel.PaymentDetailCollection.Where(x => x.IsNew))
+                                {
+                                    paymentDetailModel.ToModel();
+                                    paymentDetailModel.EndUpdate();
+                                }
+                            }
+                            paymentModel.EndUpdate();
+                        }
+                    }
+                    SaleOrderCollection.Insert(0, SelectedSaleOrder);
+                    TotalSaleOrder++;
+                    ShowShipTab(SelectedSaleOrder);
+                    _numberNewItem++;
                 }
+            }
+            catch (Exception ex)
+            {
+                _log4net.Error(ex);
+                throw ex;
+            }
+        }
+
+        /// <summary>
+        /// Insert New sale order
+        /// </summary>
+        private void UpdateSaleOrder(base_SaleOrderModel saleOrderModel)
+        {
+            try
+            {
+                //Usefull for situation : Order 5 unit after ship 2 unit , change order qty to 2 unit 
+                //=> that order is full shipped but not set that current quantity because conflit with condition "Allow Change Order" when full shipping, may be make order disable
+                SetShipStatus(saleOrderModel);
+                //Insert or update address for customer
+                UpdateCustomerAddress(saleOrderModel.BillAddressModel);
+
+                UpdateCustomerAddress(saleOrderModel.ShipAddressModel);
+
+                #region SaleOrderDetail
+
+                //Delete SaleOrderDetail
+                if (saleOrderModel.SaleOrderDetailCollection.DeletedItems.Any())
+                {
+                    foreach (base_SaleOrderDetailModel saleOrderDetailModel in saleOrderModel.SaleOrderDetailCollection.DeletedItems)
+                    {
+                        if (saleOrderDetailModel.ProductModel != null && saleOrderDetailModel.ProductModel.IsCoupon)
+                        {
+                            saleOrderDetailModel.CouponCardModel.ResetCard();
+                            saleOrderDetailModel.CouponCardModel.ToEntity();
+                        }
+                        //Get quantity from entity to substract store(avoid quantity in model is changed)
+                        _saleOrderRepository.UpdateCustomerQuantity(saleOrderDetailModel, saleOrderModel.base_SaleOrder.StoreCode, saleOrderDetailModel.base_SaleOrderDetail.Quantity, false/*descrease quantity*/);
+                        _saleOrderDetailRepository.Delete(saleOrderDetailModel.base_SaleOrderDetail);
+                    }
+                    _saleOrderDetailRepository.Commit();
+                    saleOrderModel.SaleOrderDetailCollection.DeletedItems.Clear();
+                }
+
+                if (saleOrderModel.IsVoided)
+                {
+                    foreach (base_SaleOrderDetailModel saleOrderDetailModel in saleOrderModel.SaleOrderDetailCollection)
+                    {
+                        if (saleOrderDetailModel.ProductModel != null && saleOrderDetailModel.ProductModel.IsCoupon)
+                        {
+                            saleOrderDetailModel.CouponCardModel.ResetCard();
+                            saleOrderDetailModel.CouponCardModel.ToEntity();
+                        }
+                        _saleOrderRepository.UpdateCustomerQuantity(saleOrderDetailModel, saleOrderModel.base_SaleOrder.StoreCode, saleOrderDetailModel.base_SaleOrderDetail.Quantity, false/*descrease quantity*/);
+                    }
+                }
+                else
+                {
+                    //Sale Order Detail Model
+                    foreach (base_SaleOrderDetailModel saleOrderDetailModel in saleOrderModel.SaleOrderDetailCollection.Where(x => x.IsDirty))
+                    {
+                        if (saleOrderDetailModel.ProductModel != null && saleOrderDetailModel.ProductModel.IsCoupon)
+                        {
+                            if (saleOrderDetailModel.CouponCardModel.IsNew)
+                            {
+                                saleOrderDetailModel.CouponCardModel.GuestResourcePurchased = saleOrderModel.GuestModel.Resource.ToString();
+                                saleOrderDetailModel.CouponCardModel.GuestGiftedResource = saleOrderModel.GuestModel.Resource.ToString();
+                                saleOrderDetailModel.CouponCardModel.RemainingAmount = saleOrderDetailModel.CouponCardModel.InitialAmount;
+                                saleOrderDetailModel.CouponCardModel.PurchaseDate = DateTime.Now;
+                                saleOrderDetailModel.CouponCardModel.DateCreated = DateTime.Now;
+                            }
+                            saleOrderDetailModel.CouponCardModel.ToEntity();
+                        }
+
+                        //Need to check difference store code (user change to another store)
+                        if (saleOrderModel.StoreCode.Equals(saleOrderModel.base_SaleOrder.StoreCode))
+                        {
+                            if (saleOrderDetailModel.Quantity != saleOrderDetailModel.base_SaleOrderDetail.Quantity || saleOrderDetailModel.UOMId != saleOrderDetailModel.base_SaleOrderDetail.UOMId) //addition quantity
+                            {
+                                _saleOrderRepository.UpdateCustomerQuantityChanged(saleOrderDetailModel, saleOrderModel.StoreCode);
+                            }
+                        }
+                        else
+                        {
+                            //Subtract quantity from "old store"(user change to another store)
+                            _saleOrderRepository.UpdateCustomerQuantity(saleOrderDetailModel, saleOrderModel.base_SaleOrder.StoreCode, saleOrderDetailModel.base_SaleOrderDetail.Quantity, false/*descrease quantity*/);
+                            //Add quantity to new store
+                            _saleOrderRepository.UpdateCustomerQuantity(saleOrderDetailModel, saleOrderModel.StoreCode, saleOrderDetailModel.Quantity);
+                        }
+
+                        saleOrderDetailModel.ToEntity();
+                        if (saleOrderDetailModel.IsNew)
+                            saleOrderModel.base_SaleOrder.base_SaleOrderDetail.Add(saleOrderDetailModel.base_SaleOrderDetail);
+                        saleOrderDetailModel.EndUpdate();
+                    }
+                }
+                #endregion
+
+                #region SaleOrderShip
+                SaveSaleOrderShipCollection(saleOrderModel);
+                #endregion
+
+                #region SaleOrderReturn
+                if (saleOrderModel.ReturnModel != null)
+                {
+                    bool calcGuestReward = false;
+
+                    saleOrderModel.ReturnModel.ToEntity();
+                    //Update Refund for SaleOrder
+                    saleOrderModel.RefundedAmount = saleOrderModel.ReturnModel.TotalRefund < 0 ? saleOrderModel.ReturnModel.TotalRefund * -1 : saleOrderModel.ReturnModel.TotalRefund;
+
+                    if (saleOrderModel.ReturnModel.IsNew && saleOrderModel.ReturnModel.ReturnDetailCollection.DeletedItems.Any())
+                    {
+                        foreach (base_ResourceReturnDetailModel returnDetailModel in saleOrderModel.ReturnModel.ReturnDetailCollection.DeletedItems.Where(x => !x.IsTemporary))
+                            _resourceReturnDetailRepository.Delete(returnDetailModel.base_ResourceReturnDetail);
+                    }
+                    //Clear which item deleted in collection
+                    saleOrderModel.ReturnModel.ReturnDetailCollection.DeletedItems.Clear();
+
+                    var reward = GetReward(saleOrderModel.OrderDate.Value.Date);
+
+                    //Amount Of product is Eligible reward returned
+                    decimal productReturnRewardAmount = 0;
+
+                    //Total Reward After Return 
+                    decimal totalRewardBeforeReturn = 0;
+                    if (reward != null)
+                        totalRewardBeforeReturn = saleOrderModel.GuestModel.PurchaseDuringTrackingPeriod / reward.PurchaseThreshold;
+
+                    foreach (base_ResourceReturnDetailModel returnDetailModel in saleOrderModel.ReturnModel.ReturnDetailCollection.Where(x => x.IsDirty))
+                    {
+                        if (returnDetailModel.SaleOrderDetailModel.ProductModel != null)
+                        {
+                            if (returnDetailModel.SaleOrderDetailModel.ProductModel.IsCoupon)
+                            {
+                                returnDetailModel.SaleOrderDetailModel.CouponCardModel.Status = (short)StatusBasic.Deactive;
+                                returnDetailModel.SaleOrderDetailModel.CouponCardModel.ToEntity();
+                            }
+                            else
+                            {
+                                decimal totalQuantityBaseUom = 0;
+                                if (!returnDetailModel.base_ResourceReturnDetail.IsReturned && returnDetailModel.IsReturned)//New Item Return
+                                {
+                                    base_ProductUOMModel baseUnitProduct = returnDetailModel.SaleOrderDetailModel.ProductUOMCollection.SingleOrDefault(x => x.UOMId.Equals(returnDetailModel.SaleOrderDetailModel.UOMId));
+
+                                    if (baseUnitProduct != null)
+                                    {
+                                        decimal quantityBaseUnit = baseUnitProduct.BaseUnitNumber;
+
+                                        totalQuantityBaseUom = quantityBaseUnit * returnDetailModel.ReturnQty;
+                                        //Update Product Profit
+                                        _productRepository.UpdateProductStore(returnDetailModel.ProductResource, saleOrderModel.StoreCode, 0, 0, totalQuantityBaseUom, returnDetailModel.Price * returnDetailModel.ReturnQty, true);
+
+                                        //Increase Store for return product
+                                        _productRepository.UpdateOnHandQuantity(returnDetailModel.ProductResource, saleOrderModel.StoreCode, totalQuantityBaseUom);
+
+                                        //Calculate return commission for Employee & Manager
+                                        CommissionReturn(saleOrderModel, returnDetailModel);
+
+                                        //Subtract PurchaseTrackingPeriod with Product Eligible Reward
+                                        if (returnDetailModel.SaleOrderDetailModel.ProductModel.IsEligibleForReward)
+                                        {
+                                            calcGuestReward = true;
+                                            productReturnRewardAmount += (returnDetailModel.Amount);// + returnDetailModel.VAT
+                                        }
+                                    }
+                                }
+                            }
+                        }
+
+
+                        //Has Payment & Create reward (Has sum in PurchaseDuringTrackingPeriod)
+                        if (saleOrderModel.GuestRewardSaleOrderModel != null && !string.IsNullOrWhiteSpace(saleOrderModel.GuestRewardSaleOrderModel.SaleOrderResource))
+                            saleOrderModel.GuestModel.PurchaseDuringTrackingPeriod -= productReturnRewardAmount;
+
+                        returnDetailModel.ToEntity();
+                        if (returnDetailModel.IsNew)
+                            saleOrderModel.ReturnModel.base_ResourceReturn.base_ResourceReturnDetail.Add(returnDetailModel.base_ResourceReturnDetail);
+                    }
+
+                    //Handle Return Reward For reward Member
+                    if (saleOrderModel.GuestModel.IsRewardMember && calcGuestReward && reward != null)
+                    {
+                        //CustomerReturnReward(saleOrderModel, reward, productReturnRewardAmount, totalRewardBeforeReturn, false/*UpdateValue & delete reward*/);
+                        //Calculate Next Reward
+                        saleOrderModel.GuestModel.RequirePurchaseNextReward = reward.PurchaseThreshold - ((saleOrderModel.GuestModel.PurchaseDuringTrackingPeriod / reward.PurchaseThreshold) % 1) * reward.PurchaseThreshold;
+                    }
+
+                    //SaveStoreCardReturned
+                    SaveStoreCardReturned(saleOrderModel);
+
+                    if (saleOrderModel.ReturnModel.IsNew)
+                        _resourceReturnRepository.Add(saleOrderModel.ReturnModel.base_ResourceReturn);
+                    _resourceReturnRepository.Commit();
+
+                    //Check Has any Return
+                    saleOrderModel.IsReturned = saleOrderModel.ReturnModel.ReturnDetailCollection.Any(x => x.IsReturned);
+
+                    calcGuestReward = false;
+                    //Update ID
+                    saleOrderModel.ReturnModel.Id = saleOrderModel.ReturnModel.base_ResourceReturn.Id;
+                    saleOrderModel.ReturnModel.EndUpdate();
+
+                    foreach (base_ResourceReturnDetailModel returnDetailModel in saleOrderModel.ReturnModel.ReturnDetailCollection.Where(x => x.IsDirty))
+                    {
+                        returnDetailModel.Id = returnDetailModel.base_ResourceReturnDetail.Id;
+                        returnDetailModel.ResourceReturnId = returnDetailModel.base_ResourceReturnDetail.ResourceReturnId;
+                        returnDetailModel.EndUpdate();
+                    }
+
+                }
+                #endregion
+
+                #region Payment
+                SavePaymentCollection(saleOrderModel);
+                #endregion
+
+                #region Commission
+                if (saleOrderModel.CommissionCollection != null && saleOrderModel.CommissionCollection.Any())
+                {
+                    foreach (base_SaleCommissionModel saleCommissionModel in saleOrderModel.CommissionCollection)
+                    {
+                        saleCommissionModel.ToEntity();
+                        if (saleCommissionModel.IsNew)
+                            _saleCommissionRepository.Add(saleCommissionModel.base_SaleCommission);
+                    }
+                    _saleCommissionRepository.Commit();
+                    saleOrderModel.CommissionCollection.Clear();
+                }
+                #endregion
+
+                saleOrderModel.UserUpdated = Define.USER != null ? Define.USER.LoginName : string.Empty;
+                //set dateUpdate
+                saleOrderModel.DateUpdated = DateTime.Now;
+
+                saleOrderModel.ToEntity();
+                _saleOrderRepository.Commit();
                 _productRepository.Commit();
 
-                SavePaymentCollection(SelectedSaleOrder);
-
-                SelectedSaleOrder.Shift = Define.ShiftCode;
-                SelectedSaleOrder.DateUpdated = DateTime.Now;
-                SelectedSaleOrder.DateCreated = DateTime.Now;
-                SelectedSaleOrder.UserCreated = Define.USER != null ? Define.USER.LoginName : string.Empty;
-                SelectedSaleOrder.ToEntity();
-                _saleOrderRepository.Add(SelectedSaleOrder.base_SaleOrder);
-
-                _saleOrderRepository.Commit();
-                SelectedSaleOrder.EndUpdate();
                 //Set ID
-                SelectedSaleOrder.ToModel();
-                SelectedSaleOrder.EndUpdate();
-                foreach (base_SaleOrderDetailModel saleOrderDetailModel in SelectedSaleOrder.SaleOrderDetailCollection)
+                #region Update Id & Set End Update
+                saleOrderModel.ToModel();
+                saleOrderModel.EndUpdate();
+                foreach (base_SaleOrderDetailModel saleOrderDetailModel in saleOrderModel.SaleOrderDetailCollection)
                 {
-                    if (saleOrderDetailModel.ProductModel.IsCoupon)
+                    if (saleOrderDetailModel.ProductModel != null && saleOrderDetailModel.ProductModel.IsCoupon)
                     {
                         saleOrderDetailModel.CouponCardModel.EndUpdate();
                     }
                     saleOrderDetailModel.ToModel();
-
                     saleOrderDetailModel.EndUpdate();
                 }
 
-                if (SelectedSaleOrder.PaymentCollection != null)
+                foreach (base_SaleOrderShipModel saleOrderShipModel in saleOrderModel.SaleOrderShipCollection)
                 {
-                    foreach (base_ResourcePaymentModel paymentModel in SelectedSaleOrder.PaymentCollection.Where(x => x.IsNew))
+                    saleOrderShipModel.ToModel();
+                    foreach (base_SaleOrderShipDetailModel saleOrderShipDetailModel in saleOrderShipModel.SaleOrderShipDetailCollection)
+                    {
+                        saleOrderShipDetailModel.ToModel();
+                        saleOrderShipDetailModel.EndUpdate();
+                    }
+                    saleOrderShipModel.EndUpdate();
+                }
+
+                //Update ID For Payment
+                if (saleOrderModel.PaymentCollection != null)
+                {
+                    foreach (base_ResourcePaymentModel paymentModel in saleOrderModel.PaymentCollection.Where(x => x.IsNew))
                     {
                         paymentModel.ToModel();
                         //Update or Add New PaymentDetail
@@ -2493,286 +2772,14 @@ namespace CPC.POS.ViewModel
                         paymentModel.EndUpdate();
                     }
                 }
-                SaleOrderCollection.Insert(0, SelectedSaleOrder);
-                TotalSaleOrder++;
-                ShowShipTab(SelectedSaleOrder);
-                _numberNewItem++;
+                #endregion
+                ShowShipTab(saleOrderModel);
             }
-        }
-
-        /// <summary>
-        /// Insert New sale order
-        /// </summary>
-        private void UpdateSaleOrder(base_SaleOrderModel saleOrderModel)
-        {
-            //Usefull for situation : Order 5 unit after ship 2 unit , change order qty to 2 unit 
-            //=> that order is full shipped but not set that current quantity because conflit with condition "Allow Change Order" when full shipping, may be make order disable
-            SetShipStatus(saleOrderModel);
-            //Insert or update address for customer
-            UpdateCustomerAddress(saleOrderModel.BillAddressModel);
-
-            UpdateCustomerAddress(saleOrderModel.ShipAddressModel);
-
-            #region SaleOrderDetail
-
-            //Delete SaleOrderDetail
-            if (saleOrderModel.SaleOrderDetailCollection.DeletedItems.Any())
+            catch (Exception ex)
             {
-                foreach (base_SaleOrderDetailModel saleOrderDetailModel in saleOrderModel.SaleOrderDetailCollection.DeletedItems)
-                {
-                    if (saleOrderDetailModel.ProductModel != null && saleOrderDetailModel.ProductModel.IsCoupon)
-                    {
-                        saleOrderDetailModel.CouponCardModel.ResetCard();
-                        saleOrderDetailModel.CouponCardModel.ToEntity();
-                    }
-                    //Get quantity from entity to substract store(avoid quantity in model is changed)
-                    _saleOrderRepository.UpdateCustomerQuantity(saleOrderDetailModel, saleOrderModel.base_SaleOrder.StoreCode, saleOrderDetailModel.base_SaleOrderDetail.Quantity, false/*descrease quantity*/);
-                    _saleOrderDetailRepository.Delete(saleOrderDetailModel.base_SaleOrderDetail);
-                }
-                _saleOrderDetailRepository.Commit();
-                saleOrderModel.SaleOrderDetailCollection.DeletedItems.Clear();
+                _log4net.Error(ex);
+                throw ex;
             }
-
-            if (saleOrderModel.IsVoided)
-            {
-                foreach (base_SaleOrderDetailModel saleOrderDetailModel in saleOrderModel.SaleOrderDetailCollection)
-                {
-                    if (saleOrderDetailModel.ProductModel != null && saleOrderDetailModel.ProductModel.IsCoupon)
-                    {
-                        saleOrderDetailModel.CouponCardModel.ResetCard();
-                        saleOrderDetailModel.CouponCardModel.ToEntity();
-                    }
-                    _saleOrderRepository.UpdateCustomerQuantity(saleOrderDetailModel, saleOrderModel.base_SaleOrder.StoreCode, saleOrderDetailModel.base_SaleOrderDetail.Quantity, false/*descrease quantity*/);
-                }
-            }
-            else
-            {
-                //Sale Order Detail Model
-                foreach (base_SaleOrderDetailModel saleOrderDetailModel in saleOrderModel.SaleOrderDetailCollection.Where(x => x.IsDirty))
-                {
-                    if (saleOrderDetailModel.ProductModel != null && saleOrderDetailModel.ProductModel.IsCoupon)
-                    {
-                        if (saleOrderDetailModel.CouponCardModel.IsNew)
-                        {
-                            saleOrderDetailModel.CouponCardModel.GuestResourcePurchased = saleOrderModel.GuestModel.Resource.ToString();
-                            saleOrderDetailModel.CouponCardModel.GuestGiftedResource = saleOrderModel.GuestModel.Resource.ToString();
-                            saleOrderDetailModel.CouponCardModel.RemainingAmount = saleOrderDetailModel.CouponCardModel.InitialAmount;
-                            saleOrderDetailModel.CouponCardModel.PurchaseDate = DateTime.Now;
-                            saleOrderDetailModel.CouponCardModel.DateCreated = DateTime.Now;
-                        }
-                        saleOrderDetailModel.CouponCardModel.ToEntity();
-                    }
-
-                    //Need to check difference store code (user change to another store)
-                    if (saleOrderModel.StoreCode.Equals(saleOrderModel.base_SaleOrder.StoreCode))
-                    {
-                        if (saleOrderDetailModel.Quantity != saleOrderDetailModel.base_SaleOrderDetail.Quantity || saleOrderDetailModel.UOMId != saleOrderDetailModel.base_SaleOrderDetail.UOMId) //addition quantity
-                        {
-                            _saleOrderRepository.UpdateCustomerQuantityChanged(saleOrderDetailModel, saleOrderModel.StoreCode);
-                        }
-                    }
-                    else
-                    {
-                        //Subtract quantity from "old store"(user change to another store)
-                        _saleOrderRepository.UpdateCustomerQuantity(saleOrderDetailModel, saleOrderModel.base_SaleOrder.StoreCode, saleOrderDetailModel.base_SaleOrderDetail.Quantity, false/*descrease quantity*/);
-                        //Add quantity to new store
-                        _saleOrderRepository.UpdateCustomerQuantity(saleOrderDetailModel, saleOrderModel.StoreCode, saleOrderDetailModel.Quantity);
-                    }
-
-                    saleOrderDetailModel.ToEntity();
-                    if (saleOrderDetailModel.IsNew)
-                        saleOrderModel.base_SaleOrder.base_SaleOrderDetail.Add(saleOrderDetailModel.base_SaleOrderDetail);
-                    saleOrderDetailModel.EndUpdate();
-                }
-            }
-            #endregion
-
-            #region SaleOrderShip
-            SaveSaleOrderShipCollection(saleOrderModel);
-            #endregion
-
-            #region SaleOrderReturn
-            if (saleOrderModel.ReturnModel != null)
-            {
-                bool calcGuestReward = false;
-
-                saleOrderModel.ReturnModel.ToEntity();
-                //Update Refund for SaleOrder
-                saleOrderModel.RefundedAmount = saleOrderModel.ReturnModel.TotalRefund < 0 ? saleOrderModel.ReturnModel.TotalRefund * -1 : saleOrderModel.ReturnModel.TotalRefund;
-
-                if (saleOrderModel.ReturnModel.IsNew && saleOrderModel.ReturnModel.ReturnDetailCollection.DeletedItems.Any())
-                {
-                    foreach (base_ResourceReturnDetailModel returnDetailModel in saleOrderModel.ReturnModel.ReturnDetailCollection.DeletedItems.Where(x => !x.IsTemporary))
-                        _resourceReturnDetailRepository.Delete(returnDetailModel.base_ResourceReturnDetail);
-                }
-                //Clear which item deleted in collection
-                saleOrderModel.ReturnModel.ReturnDetailCollection.DeletedItems.Clear();
-
-                var reward = GetReward(saleOrderModel.OrderDate.Value.Date);
-
-                //Amount Of product is Eligible reward returned
-                decimal productReturnRewardAmount = 0;
-
-                //Total Reward After Return 
-                decimal totalRewardBeforeReturn = 0;
-                if (reward != null)
-                    totalRewardBeforeReturn = saleOrderModel.GuestModel.PurchaseDuringTrackingPeriod / reward.PurchaseThreshold;
-
-                foreach (base_ResourceReturnDetailModel returnDetailModel in saleOrderModel.ReturnModel.ReturnDetailCollection.Where(x => x.IsDirty))
-                {
-                    if (returnDetailModel.SaleOrderDetailModel.ProductModel != null)
-                    {
-                        if (returnDetailModel.SaleOrderDetailModel.ProductModel.IsCoupon)
-                        {
-                            returnDetailModel.SaleOrderDetailModel.CouponCardModel.Status = (short)StatusBasic.Deactive;
-                            returnDetailModel.SaleOrderDetailModel.CouponCardModel.ToEntity();
-                        }
-                        else
-                        {
-                            decimal totalQuantityBaseUom = 0;
-                            if (!returnDetailModel.base_ResourceReturnDetail.IsReturned && returnDetailModel.IsReturned)//New Item Return
-                            {
-                                base_ProductUOMModel baseUnitProduct = returnDetailModel.SaleOrderDetailModel.ProductUOMCollection.SingleOrDefault(x => x.UOMId.Equals(returnDetailModel.SaleOrderDetailModel.UOMId));
-
-                                if (baseUnitProduct != null)
-                                {
-                                    decimal quantityBaseUnit = baseUnitProduct.BaseUnitNumber;
-
-                                    totalQuantityBaseUom = quantityBaseUnit * returnDetailModel.ReturnQty;
-                                    //Update Product Profit
-                                    _productRepository.UpdateProductStore(returnDetailModel.ProductResource, saleOrderModel.StoreCode, 0, 0, totalQuantityBaseUom, returnDetailModel.Price * returnDetailModel.ReturnQty, true);
-
-                                    //Increase Store for return product
-                                    _productRepository.UpdateOnHandQuantity(returnDetailModel.ProductResource, saleOrderModel.StoreCode, totalQuantityBaseUom);
-
-                                    //Calculate return commission for Employee & Manager
-                                    CommissionReturn(saleOrderModel, returnDetailModel);
-
-                                    //Subtract PurchaseTrackingPeriod with Product Eligible Reward
-                                    if (returnDetailModel.SaleOrderDetailModel.ProductModel.IsEligibleForReward)
-                                    {
-                                        calcGuestReward = true;
-                                        productReturnRewardAmount += (returnDetailModel.Amount);// + returnDetailModel.VAT
-                                    }
-                                }
-                            }
-                        }
-                    }
-
-
-                    //Has Payment & Create reward (Has sum in PurchaseDuringTrackingPeriod)
-                    if (saleOrderModel.GuestRewardSaleOrderModel != null && !string.IsNullOrWhiteSpace(saleOrderModel.GuestRewardSaleOrderModel.SaleOrderResource))
-                        saleOrderModel.GuestModel.PurchaseDuringTrackingPeriod -= productReturnRewardAmount;
-
-                    returnDetailModel.ToEntity();
-                    if (returnDetailModel.IsNew)
-                        saleOrderModel.ReturnModel.base_ResourceReturn.base_ResourceReturnDetail.Add(returnDetailModel.base_ResourceReturnDetail);
-                }
-
-                //Handle Return Reward For reward Member
-                if (saleOrderModel.GuestModel.IsRewardMember && calcGuestReward && reward != null)
-                {
-                    //CustomerReturnReward(saleOrderModel, reward, productReturnRewardAmount, totalRewardBeforeReturn, false/*UpdateValue & delete reward*/);
-                    //Calculate Next Reward
-                    saleOrderModel.GuestModel.RequirePurchaseNextReward = reward.PurchaseThreshold - ((saleOrderModel.GuestModel.PurchaseDuringTrackingPeriod / reward.PurchaseThreshold) % 1) * reward.PurchaseThreshold;
-                }
-
-                //SaveStoreCardReturned
-                SaveStoreCardReturned(saleOrderModel);
-
-                if (saleOrderModel.ReturnModel.IsNew)
-                    _resourceReturnRepository.Add(saleOrderModel.ReturnModel.base_ResourceReturn);
-                _resourceReturnRepository.Commit();
-
-                //Check Has any Return
-                saleOrderModel.IsReturned = saleOrderModel.ReturnModel.ReturnDetailCollection.Any(x => x.IsReturned);
-
-                calcGuestReward = false;
-                //Update ID
-                saleOrderModel.ReturnModel.Id = saleOrderModel.ReturnModel.base_ResourceReturn.Id;
-                saleOrderModel.ReturnModel.EndUpdate();
-
-                foreach (base_ResourceReturnDetailModel returnDetailModel in saleOrderModel.ReturnModel.ReturnDetailCollection.Where(x => x.IsDirty))
-                {
-                    returnDetailModel.Id = returnDetailModel.base_ResourceReturnDetail.Id;
-                    returnDetailModel.ResourceReturnId = returnDetailModel.base_ResourceReturnDetail.ResourceReturnId;
-                    returnDetailModel.EndUpdate();
-                }
-
-            }
-            #endregion
-
-            #region Payment
-            SavePaymentCollection(saleOrderModel);
-            #endregion
-
-            #region Commission
-            if (saleOrderModel.CommissionCollection != null && saleOrderModel.CommissionCollection.Any())
-            {
-                foreach (base_SaleCommissionModel saleCommissionModel in saleOrderModel.CommissionCollection)
-                {
-                    saleCommissionModel.ToEntity();
-                    if (saleCommissionModel.IsNew)
-                        _saleCommissionRepository.Add(saleCommissionModel.base_SaleCommission);
-                }
-                _saleCommissionRepository.Commit();
-                saleOrderModel.CommissionCollection.Clear();
-            }
-            #endregion
-
-            saleOrderModel.UserUpdated = Define.USER != null ? Define.USER.LoginName : string.Empty;
-            //set dateUpdate
-            saleOrderModel.DateUpdated = DateTime.Now;
-
-            saleOrderModel.ToEntity();
-            _saleOrderRepository.Commit();
-            _productRepository.Commit();
-
-            //Set ID
-            #region Update Id & Set End Update
-            saleOrderModel.ToModel();
-            saleOrderModel.EndUpdate();
-            foreach (base_SaleOrderDetailModel saleOrderDetailModel in saleOrderModel.SaleOrderDetailCollection)
-            {
-                if (saleOrderDetailModel.ProductModel != null && saleOrderDetailModel.ProductModel.IsCoupon)
-                {
-                    saleOrderDetailModel.CouponCardModel.EndUpdate();
-                }
-                saleOrderDetailModel.ToModel();
-                saleOrderDetailModel.EndUpdate();
-            }
-
-            foreach (base_SaleOrderShipModel saleOrderShipModel in saleOrderModel.SaleOrderShipCollection)
-            {
-                saleOrderShipModel.ToModel();
-                foreach (base_SaleOrderShipDetailModel saleOrderShipDetailModel in saleOrderShipModel.SaleOrderShipDetailCollection)
-                {
-                    saleOrderShipDetailModel.ToModel();
-                    saleOrderShipDetailModel.EndUpdate();
-                }
-                saleOrderShipModel.EndUpdate();
-            }
-
-            //Update ID For Payment
-            if (saleOrderModel.PaymentCollection != null)
-            {
-                foreach (base_ResourcePaymentModel paymentModel in saleOrderModel.PaymentCollection.Where(x => x.IsNew))
-                {
-                    paymentModel.ToModel();
-                    //Update or Add New PaymentDetail
-                    if (paymentModel.PaymentDetailCollection != null)
-                    {
-                        foreach (base_ResourcePaymentDetailModel paymentDetailModel in paymentModel.PaymentDetailCollection.Where(x => x.IsNew))
-                        {
-                            paymentDetailModel.ToModel();
-                            paymentDetailModel.EndUpdate();
-                        }
-                    }
-                    paymentModel.EndUpdate();
-                }
-            }
-            #endregion
-            ShowShipTab(saleOrderModel);
         }
 
         /// <summary>
@@ -2825,146 +2832,154 @@ namespace CPC.POS.ViewModel
         /// </summary>
         private void SaleOrderPayment()
         {
-            if (SelectedSaleOrder.IsNew)
-                return;
-
-            bool? resultReward;//True : go to payment process, False : Break process
-            bool isPayFull = false;
-
-            //Show Reward Form
-            //Need check has any Guest Reward
-            //Show Reward only SaleOrder Payment
-            #region Check & Apply Reward
-
-            resultReward = ConfirmNApplyReward(ref isPayFull);
-
-            #endregion "Check & Apply Reward"
-
-            if (resultReward == true)
+            try
             {
-                SelectedSaleOrder.RewardValueApply = 0;
+                if (SelectedSaleOrder.IsNew)
+                    return;
 
-                //Calc Subtotal user apply reward
-                if (SelectedSaleOrder.GuestModel.GuestRewardCollection != null && SelectedSaleOrder.GuestModel.GuestRewardCollection.Any())
+                bool? resultReward;//True : go to payment process, False : Break process
+                bool isPayFull = false;
+
+                //Show Reward Form
+                //Need check has any Guest Reward
+                //Show Reward only SaleOrder Payment
+                #region Check & Apply Reward
+
+                resultReward = ConfirmNApplyReward(ref isPayFull);
+
+                #endregion "Check & Apply Reward"
+
+                if (resultReward == true)
                 {
-                    base_RewardManager rewardProgram = GetReward();
+                    SelectedSaleOrder.RewardValueApply = 0;
 
-                    base_GuestRewardModel guestRewardModel = SelectedSaleOrder.GuestModel.GuestRewardCollection.FirstOrDefault();
-                    guestRewardModel.GuestRewardDetailCollection = new ObservableCollection<base_GuestRewardDetailModel>();
-
-                    //Reward Detail
-                    base_GuestRewardDetailModel guestRewardDetailModel = null;
-                    if (guestRewardModel != null)
+                    //Calc Subtotal user apply reward
+                    if (SelectedSaleOrder.GuestModel.GuestRewardCollection != null && SelectedSaleOrder.GuestModel.GuestRewardCollection.Any())
                     {
-                        decimal subTotal = 0;
-                        if (Define.CONFIGURATION.IsRewardOnTax)//Check reward include tax ?
-                            subTotal = SelectedSaleOrder.SubTotal - SelectedSaleOrder.DiscountAmount + SelectedSaleOrder.TaxAmount + SelectedSaleOrder.Shipping;
-                        else
-                            subTotal = SelectedSaleOrder.SubTotal - SelectedSaleOrder.DiscountAmount + SelectedSaleOrder.Shipping;
+                        base_RewardManager rewardProgram = GetReward();
 
+                        base_GuestRewardModel guestRewardModel = SelectedSaleOrder.GuestModel.GuestRewardCollection.FirstOrDefault();
+                        guestRewardModel.GuestRewardDetailCollection = new ObservableCollection<base_GuestRewardDetailModel>();
 
-                        decimal rewardAmountRemain = guestRewardModel.RewardValueEarned - guestRewardModel.base_GuestReward.base_GuestRewardDetail.Sum(x => x.RewardRedeemed);
-
-
-                        //Update Subtoal After apply reward redeem && 
-                        decimal depositeTotal = SelectedSaleOrder.PaymentCollection != null ? SelectedSaleOrder.PaymentCollection.Where(x => x.IsDeposit.Value).Sum(x => x.TotalPaid) : 0;
-                        if (rewardAmountRemain > subTotal - depositeTotal)
-                            SelectedSaleOrder.RewardValueApply = subTotal - depositeTotal;
-                        else
-                            SelectedSaleOrder.RewardValueApply = rewardAmountRemain;
-
-                        guestRewardDetailModel = new base_GuestRewardDetailModel()
+                        //Reward Detail
+                        base_GuestRewardDetailModel guestRewardDetailModel = null;
+                        if (guestRewardModel != null)
                         {
-                            SaleOrderNo = SelectedSaleOrder.SONumber,
-                            SaleOrderResource = SelectedSaleOrder.Resource.ToString(),
-                            RewardRedeemed = SelectedSaleOrder.RewardValueApply,
-                            DateApplied = DateTime.Now,
-                            Sign = "-",
-
-                        };
+                            decimal subTotal = 0;
+                            if (Define.CONFIGURATION.IsRewardOnTax)//Check reward include tax ?
+                                subTotal = SelectedSaleOrder.SubTotal - SelectedSaleOrder.DiscountAmount + SelectedSaleOrder.TaxAmount + SelectedSaleOrder.Shipping;
+                            else
+                                subTotal = SelectedSaleOrder.SubTotal - SelectedSaleOrder.DiscountAmount + SelectedSaleOrder.Shipping;
 
 
-                        //Update Reward Value
-                        guestRewardModel.TotalRewardRedeemed += guestRewardDetailModel.RewardRedeemed;
+                            decimal rewardAmountRemain = guestRewardModel.RewardValueEarned - guestRewardModel.base_GuestReward.base_GuestRewardDetail.Sum(x => x.RewardRedeemed);
 
-                        //Add Reward Detail To Collection
-                        if (guestRewardDetailModel != null)
-                        {
-                            guestRewardModel.GuestRewardDetailCollection.Add(guestRewardDetailModel);
+
+                            //Update Subtoal After apply reward redeem && 
+                            decimal depositeTotal = SelectedSaleOrder.PaymentCollection != null ? SelectedSaleOrder.PaymentCollection.Where(x => x.IsDeposit.Value).Sum(x => x.TotalPaid) : 0;
+                            if (rewardAmountRemain > subTotal - depositeTotal)
+                                SelectedSaleOrder.RewardValueApply = subTotal - depositeTotal;
+                            else
+                                SelectedSaleOrder.RewardValueApply = rewardAmountRemain;
+
+                            guestRewardDetailModel = new base_GuestRewardDetailModel()
+                            {
+                                SaleOrderNo = SelectedSaleOrder.SONumber,
+                                SaleOrderResource = SelectedSaleOrder.Resource.ToString(),
+                                RewardRedeemed = SelectedSaleOrder.RewardValueApply,
+                                DateApplied = DateTime.Now,
+                                Sign = "-",
+
+                            };
+
+
+                            //Update Reward Value
+                            guestRewardModel.TotalRewardRedeemed += guestRewardDetailModel.RewardRedeemed;
+
+                            //Add Reward Detail To Collection
+                            if (guestRewardDetailModel != null)
+                            {
+                                guestRewardModel.GuestRewardDetailCollection.Add(guestRewardDetailModel);
+                            }
                         }
                     }
-                }
-                //Update total have to paid
-                if (SelectedSaleOrder.RewardValueApply != 0)
-                    SelectedSaleOrder.RewardAmount = SelectedSaleOrder.Total - SelectedSaleOrder.RewardValueApply;
+                    //Update total have to paid
+                    if (SelectedSaleOrder.RewardValueApply != 0)
+                        SelectedSaleOrder.RewardAmount = SelectedSaleOrder.Total - SelectedSaleOrder.RewardValueApply;
 
-                ///Return Product Proccess
+                    ///Return Product Proccess
 
-                //Subtract total of refunded in Return process
-                decimal refunded = SelectedSaleOrder.ReturnModel != null ? SelectedSaleOrder.ReturnModel.TotalRefund : 0;
+                    //Subtract total of refunded in Return process
+                    decimal refunded = SelectedSaleOrder.ReturnModel != null ? SelectedSaleOrder.ReturnModel.TotalRefund : 0;
 
-                //Handle subtract money when has some product is return
-                decimal returnValue = 0;
-                if (SelectedSaleOrder.ReturnModel.ReturnDetailCollection.Any())
-                {
-                    returnValue = SelectedSaleOrder.ReturnModel.ReturnDetailCollection.Where(x => x.IsReturned).Sum(x => x.Amount + x.VAT - x.RewardRedeem - ((x.Amount * SelectedSaleOrder.DiscountPercent) / 100));
-                }
-
-                ///End Return Product Proccess
-
-                decimal paidValue = SelectedSaleOrder.PaymentCollection.Sum(x => x.TotalPaid - x.Change);//Incluce deposit
-                decimal balance = SelectedSaleOrder.RewardAmount - returnValue - paidValue;
-
-                decimal totalDeposit = 0;
-                decimal lastPayment = 0;
-                if (SelectedSaleOrder.PaymentCollection != null)
-                {
-                    totalDeposit = SelectedSaleOrder.PaymentCollection.Where(x => x.IsDeposit.Value).Sum(x => x.TotalPaid);
-                    base_ResourcePaymentModel lastPaymentModel = SelectedSaleOrder.PaymentCollection.Where(x => !x.IsDeposit.Value && x.TotalPaid > 0).OrderBy(x => x.DateCreated).LastOrDefault();
-                    if (lastPaymentModel != null)
-                        lastPayment = lastPaymentModel.TotalPaid;
-                }
-
-                //Show Payment
-                SalesOrderPaymenViewModel paymentViewModel = new SalesOrderPaymenViewModel(SelectedSaleOrder, balance, totalDeposit, lastPayment, isPayFull);
-                bool? dialogResult = _dialogService.ShowDialog<SalesOrderPaymentView>(_ownerViewModel, paymentViewModel, Language.GetMsg("SO_Title_Payment"));
-                if (dialogResult == true)
-                {
-                    //Calc Reward , redeem & update subtotal
-                    CalcRedeemReward(SelectedSaleOrder);
-
-                    if (Define.CONFIGURATION.DefaultCashiedUserName ?? false)
-                        paymentViewModel.PaymentModel.Cashier = Define.USER.LoginName;
-                    paymentViewModel.PaymentModel.Shift = Define.ShiftCode;
-                    // Add new payment to collection
-                    SelectedSaleOrder.PaymentCollection.Add(paymentViewModel.PaymentModel);
-
-                    SelectedSaleOrder.Paid = SelectedSaleOrder.PaymentCollection.Where(x => !x.IsDeposit.Value && x.TotalPaid > 0).Sum(x => x.TotalPaid - x.Change);
-                    SelectedSaleOrder.CalcBalance();
-
-                    //Full Payment
-                    if (SelectedSaleOrder.Paid + SelectedSaleOrder.Deposit.Value >= SelectedSaleOrder.RewardAmount - returnValue)
+                    //Handle subtract money when has some product is return
+                    decimal returnValue = 0;
+                    if (SelectedSaleOrder.ReturnModel.ReturnDetailCollection.Any())
                     {
-                        SaleOrderFullPaymentProcess();
+                        returnValue = SelectedSaleOrder.ReturnModel.ReturnDetailCollection.Where(x => x.IsReturned).Sum(x => x.Amount + x.VAT - x.RewardRedeem - ((x.Amount * SelectedSaleOrder.DiscountPercent) / 100));
                     }
-                }
-                else
-                {
-                    if (SelectedSaleOrder.GuestModel != null //Need for Quotation
-                        && SelectedSaleOrder.GuestModel.GuestRewardCollection != null)
-                    {
-                        //Clear Reward Apply
-                        SelectedSaleOrder.GuestModel.GuestRewardCollection.Clear();
 
-                        SelectedSaleOrder.IsRedeeem = false;
+                    ///End Return Product Proccess
+
+                    decimal paidValue = SelectedSaleOrder.PaymentCollection.Sum(x => x.TotalPaid - x.Change);//Incluce deposit
+                    decimal balance = SelectedSaleOrder.RewardAmount - returnValue - paidValue;
+
+                    decimal totalDeposit = 0;
+                    decimal lastPayment = 0;
+                    if (SelectedSaleOrder.PaymentCollection != null)
+                    {
+                        totalDeposit = SelectedSaleOrder.PaymentCollection.Where(x => x.IsDeposit.Value).Sum(x => x.TotalPaid);
+                        base_ResourcePaymentModel lastPaymentModel = SelectedSaleOrder.PaymentCollection.Where(x => !x.IsDeposit.Value && x.TotalPaid > 0).OrderBy(x => x.DateCreated).LastOrDefault();
+                        if (lastPaymentModel != null)
+                            lastPayment = lastPaymentModel.TotalPaid;
                     }
-                    SelectedSaleOrder.RewardAmount = SelectedSaleOrder.Total;
+
+                    //Show Payment
+                    SalesOrderPaymenViewModel paymentViewModel = new SalesOrderPaymenViewModel(SelectedSaleOrder, balance, totalDeposit, lastPayment, isPayFull);
+                    bool? dialogResult = _dialogService.ShowDialog<SalesOrderPaymentView>(_ownerViewModel, paymentViewModel, Language.GetMsg("SO_Title_Payment"));
+                    if (dialogResult == true)
+                    {
+                        //Calc Reward , redeem & update subtotal
+                        CalcRedeemReward(SelectedSaleOrder);
+
+                        if (Define.CONFIGURATION.DefaultCashiedUserName ?? false)
+                            paymentViewModel.PaymentModel.Cashier = Define.USER.LoginName;
+                        paymentViewModel.PaymentModel.Shift = Define.ShiftCode;
+                        // Add new payment to collection
+                        SelectedSaleOrder.PaymentCollection.Add(paymentViewModel.PaymentModel);
+
+                        SelectedSaleOrder.Paid = SelectedSaleOrder.PaymentCollection.Where(x => !x.IsDeposit.Value && x.TotalPaid > 0).Sum(x => x.TotalPaid - x.Change);
+                        SelectedSaleOrder.CalcBalance();
+
+                        //Full Payment
+                        if (SelectedSaleOrder.Paid + SelectedSaleOrder.Deposit.Value >= SelectedSaleOrder.RewardAmount - returnValue)
+                        {
+                            SaleOrderFullPaymentProcess();
+                        }
+                    }
+                    else
+                    {
+                        if (SelectedSaleOrder.GuestModel != null //Need for Quotation
+                            && SelectedSaleOrder.GuestModel.GuestRewardCollection != null)
+                        {
+                            //Clear Reward Apply
+                            SelectedSaleOrder.GuestModel.GuestRewardCollection.Clear();
+
+                            SelectedSaleOrder.IsRedeeem = false;
+                        }
+                        SelectedSaleOrder.RewardAmount = SelectedSaleOrder.Total;
+                    }
+                    // Reset reward apply after use
+                    SelectedSaleOrder.RewardValueApply = 0;
                 }
-                // Reset reward apply after use
-                SelectedSaleOrder.RewardValueApply = 0;
+
+                SetAllowChangeOrder(SelectedSaleOrder);
             }
-
-            SetAllowChangeOrder(SelectedSaleOrder);
+            catch (Exception ex)
+            {
+                _log4net.Error(ex);
+                Xceed.Wpf.Toolkit.MessageBox.Show(ex.Message, Language.GetMsg("ErrorCaption"), MessageBoxButton.OK, MessageBoxImage.Error);
+            }
         }
 
         #region Commissions
@@ -2977,88 +2992,96 @@ namespace CPC.POS.ViewModel
         /// <param name="returnDetailModel"></param>
         private void CommissionReturn(base_SaleOrderModel saleOrderModel, base_ResourceReturnDetailModel returnDetailModel)
         {
-            if (saleOrderModel.CommissionCollection == null)
-                saleOrderModel.CommissionCollection = new CollectionBase<base_SaleCommissionModel>();
-
-            //get SaleRep of this Customer
-            Guid customerGuid = Guid.Parse(saleOrderModel.CustomerResource);
-            //Get Customer with CustomerResource
-            base_GuestModel customerModel = CustomerCollection.SingleOrDefault(x => x.Resource == customerGuid);
-            if (customerModel == null || !customerModel.SaleRepId.HasValue)
-                return;
-
-            base_GuestModel employeeModel = EmployeeCollection.SingleOrDefault(x => x.Id == customerModel.SaleRepId);
-            if (employeeModel == null)
-                return;
-
-            string employeeResource = employeeModel.Resource.ToString();
-            IQueryable<base_SaleCommission> saleCommissions = _saleCommissionRepository.GetIQueryable(x => x.GuestResource.Equals(employeeResource) && x.SaleOrderDetailResource.Equals(returnDetailModel.OrderDetailResource) && x.ProductResource.Equals(returnDetailModel.ProductResource));
-            if (saleCommissions.Any())
+            try
             {
-                base_SaleCommissionModel employeeCommission = new base_SaleCommissionModel();
-                employeeCommission.Remark = MarkType.SaleOrderReturn.ToDescription();
-                employeeCommission.GuestResource = employeeModel.Resource.ToString();
-                employeeCommission.Sign = "-";
-                employeeCommission.Mark = "E";
-                employeeCommission.SOResource = saleOrderModel.Resource.ToString();
-                employeeCommission.SONumber = saleOrderModel.SONumber;
-                employeeCommission.SOTotal = saleOrderModel.RewardAmount;
-                employeeCommission.SODate = saleOrderModel.OrderDate;
-                employeeCommission.SaleOrderDetailResource = returnDetailModel.OrderDetailResource;
-                employeeCommission.ProductResource = returnDetailModel.ProductResource;
-                employeeCommission.Attribute = returnDetailModel.SaleOrderDetailModel.ProductModel.Attribute;
-                employeeCommission.Size = returnDetailModel.SaleOrderDetailModel.ProductModel.Size;
-                employeeCommission.Quanity = returnDetailModel.ReturnQty;
-                employeeCommission.RegularPrice = returnDetailModel.SaleOrderDetailModel.RegularPrice;
-                employeeCommission.Price = returnDetailModel.SaleOrderDetailModel.SalePrice;
-                employeeCommission.Amount = returnDetailModel.Amount;
-                employeeCommission.ComissionPercent = employeeModel.CommissionPercent;
+                if (saleOrderModel.CommissionCollection == null)
+                    saleOrderModel.CommissionCollection = new CollectionBase<base_SaleCommissionModel>();
 
+                //get SaleRep of this Customer
+                Guid customerGuid = Guid.Parse(saleOrderModel.CustomerResource);
+                //Get Customer with CustomerResource
+                base_GuestModel customerModel = CustomerCollection.SingleOrDefault(x => x.Resource == customerGuid);
+                if (customerModel == null || !customerModel.SaleRepId.HasValue)
+                    return;
 
-                if (returnDetailModel.SaleOrderDetailModel.ProductModel.CommissionUnit == 1) //$
-                    employeeCommission.CommissionAmount = returnDetailModel.SaleOrderDetailModel.ProductModel.ComissionPercent;
-                else
+                base_GuestModel employeeModel = EmployeeCollection.SingleOrDefault(x => x.Id == customerModel.SaleRepId);
+                if (employeeModel == null)
+                    return;
+
+                string employeeResource = employeeModel.Resource.ToString();
+                IQueryable<base_SaleCommission> saleCommissions = _saleCommissionRepository.GetIQueryable(x => x.GuestResource.Equals(employeeResource) && x.SaleOrderDetailResource.Equals(returnDetailModel.OrderDetailResource) && x.ProductResource.Equals(returnDetailModel.ProductResource));
+                if (saleCommissions.Any())
                 {
-                    decimal comissionOfProduct = (returnDetailModel.SaleOrderDetailModel.ProductModel.ComissionPercent * employeeCommission.Amount.Value) / 100;
-                    employeeCommission.CommissionAmount = (comissionOfProduct * employeeCommission.ComissionPercent) / 100;
-                }
+                    base_SaleCommissionModel employeeCommission = new base_SaleCommissionModel();
+                    employeeCommission.Remark = MarkType.SaleOrderReturn.ToDescription();
+                    employeeCommission.GuestResource = employeeModel.Resource.ToString();
+                    employeeCommission.Sign = "-";
+                    employeeCommission.Mark = "E";
+                    employeeCommission.SOResource = saleOrderModel.Resource.ToString();
+                    employeeCommission.SONumber = saleOrderModel.SONumber;
+                    employeeCommission.SOTotal = saleOrderModel.RewardAmount;
+                    employeeCommission.SODate = saleOrderModel.OrderDate;
+                    employeeCommission.SaleOrderDetailResource = returnDetailModel.OrderDetailResource;
+                    employeeCommission.ProductResource = returnDetailModel.ProductResource;
+                    employeeCommission.Attribute = returnDetailModel.SaleOrderDetailModel.ProductModel.Attribute;
+                    employeeCommission.Size = returnDetailModel.SaleOrderDetailModel.ProductModel.Size;
+                    employeeCommission.Quanity = returnDetailModel.ReturnQty;
+                    employeeCommission.RegularPrice = returnDetailModel.SaleOrderDetailModel.RegularPrice;
+                    employeeCommission.Price = returnDetailModel.SaleOrderDetailModel.SalePrice;
+                    employeeCommission.Amount = returnDetailModel.Amount;
+                    employeeCommission.ComissionPercent = employeeModel.CommissionPercent;
 
-                saleOrderModel.CommissionCollection.Add(employeeCommission);
 
-                ///when get manager not get with Employee.ManagerResource, because manager may by change to another one, that manager is not received after
-                //Get Manager get commission from this SaleOrder to subtract product return
-                string saleOrderResource = saleOrderModel.Resource.ToString();
-                //Manger(mark=M) get commssion (Sign : '+') of product (ProductResource) from SaleOrderDetail (SaleOrderDetailResource) of SaleOrder (saleOrderResource)
-                base_SaleCommission mangerCommission = _saleCommissionRepository.Get(x => x.Sign.Equals("+") && x.Mark.Equals("M") && x.SOResource.Equals(saleOrderResource) && x.SaleOrderDetailResource.Equals(returnDetailModel.OrderDetailResource) && x.ProductResource.Equals(returnDetailModel.ProductResource));
-                if (mangerCommission != null)//manger get Commission
-                {
-                    base_GuestModel managerModel = EmployeeCollection.SingleOrDefault(x => x.Resource.ToString().Equals(mangerCommission.GuestResource));
-                    if (managerModel != null)
+                    if (returnDetailModel.SaleOrderDetailModel.ProductModel.CommissionUnit == 1) //$
+                        employeeCommission.CommissionAmount = returnDetailModel.SaleOrderDetailModel.ProductModel.ComissionPercent;
+                    else
                     {
-                        base_SaleCommissionModel managerCommssionReturn = new base_SaleCommissionModel();
-                        managerCommssionReturn.Remark = MarkType.SaleOrderReturn.ToDescription();
-                        managerCommssionReturn.GuestResource = managerModel.Resource.ToString();
-                        managerCommssionReturn.Sign = "-";
-                        managerCommssionReturn.Mark = "M";
-                        managerCommssionReturn.SOResource = saleOrderModel.Resource.ToString();
-                        managerCommssionReturn.SONumber = saleOrderModel.SONumber;
-                        managerCommssionReturn.SOTotal = saleOrderModel.RewardAmount;
-                        managerCommssionReturn.SODate = saleOrderModel.OrderDate;
-                        managerCommssionReturn.SaleOrderDetailResource = returnDetailModel.OrderDetailResource;
-                        managerCommssionReturn.ProductResource = returnDetailModel.ProductResource;
-                        managerCommssionReturn.Attribute = returnDetailModel.SaleOrderDetailModel.ProductModel.Attribute;
-                        managerCommssionReturn.Size = returnDetailModel.SaleOrderDetailModel.ProductModel.Size;
-                        managerCommssionReturn.Quanity = returnDetailModel.ReturnQty;
-                        managerCommssionReturn.RegularPrice = returnDetailModel.SaleOrderDetailModel.RegularPrice;
-                        managerCommssionReturn.Price = returnDetailModel.SaleOrderDetailModel.SalePrice;
-                        managerCommssionReturn.Amount = returnDetailModel.Amount;
-                        managerCommssionReturn.ComissionPercent = employeeModel.CommissionPercent;
+                        decimal comissionOfProduct = (returnDetailModel.SaleOrderDetailModel.ProductModel.ComissionPercent * employeeCommission.Amount.Value) / 100;
+                        employeeCommission.CommissionAmount = (comissionOfProduct * employeeCommission.ComissionPercent) / 100;
+                    }
 
-                        managerCommssionReturn.CommissionAmount = (employeeCommission.CommissionAmount * managerCommssionReturn.ComissionPercent) / 100;
+                    saleOrderModel.CommissionCollection.Add(employeeCommission);
 
-                        saleOrderModel.CommissionCollection.Add(managerCommssionReturn);
+                    ///when get manager not get with Employee.ManagerResource, because manager may by change to another one, that manager is not received after
+                    //Get Manager get commission from this SaleOrder to subtract product return
+                    string saleOrderResource = saleOrderModel.Resource.ToString();
+                    //Manger(mark=M) get commssion (Sign : '+') of product (ProductResource) from SaleOrderDetail (SaleOrderDetailResource) of SaleOrder (saleOrderResource)
+                    base_SaleCommission mangerCommission = _saleCommissionRepository.Get(x => x.Sign.Equals("+") && x.Mark.Equals("M") && x.SOResource.Equals(saleOrderResource) && x.SaleOrderDetailResource.Equals(returnDetailModel.OrderDetailResource) && x.ProductResource.Equals(returnDetailModel.ProductResource));
+                    if (mangerCommission != null)//manger get Commission
+                    {
+                        base_GuestModel managerModel = EmployeeCollection.SingleOrDefault(x => x.Resource.ToString().Equals(mangerCommission.GuestResource));
+                        if (managerModel != null)
+                        {
+                            base_SaleCommissionModel managerCommssionReturn = new base_SaleCommissionModel();
+                            managerCommssionReturn.Remark = MarkType.SaleOrderReturn.ToDescription();
+                            managerCommssionReturn.GuestResource = managerModel.Resource.ToString();
+                            managerCommssionReturn.Sign = "-";
+                            managerCommssionReturn.Mark = "M";
+                            managerCommssionReturn.SOResource = saleOrderModel.Resource.ToString();
+                            managerCommssionReturn.SONumber = saleOrderModel.SONumber;
+                            managerCommssionReturn.SOTotal = saleOrderModel.RewardAmount;
+                            managerCommssionReturn.SODate = saleOrderModel.OrderDate;
+                            managerCommssionReturn.SaleOrderDetailResource = returnDetailModel.OrderDetailResource;
+                            managerCommssionReturn.ProductResource = returnDetailModel.ProductResource;
+                            managerCommssionReturn.Attribute = returnDetailModel.SaleOrderDetailModel.ProductModel.Attribute;
+                            managerCommssionReturn.Size = returnDetailModel.SaleOrderDetailModel.ProductModel.Size;
+                            managerCommssionReturn.Quanity = returnDetailModel.ReturnQty;
+                            managerCommssionReturn.RegularPrice = returnDetailModel.SaleOrderDetailModel.RegularPrice;
+                            managerCommssionReturn.Price = returnDetailModel.SaleOrderDetailModel.SalePrice;
+                            managerCommssionReturn.Amount = returnDetailModel.Amount;
+                            managerCommssionReturn.ComissionPercent = employeeModel.CommissionPercent;
+
+                            managerCommssionReturn.CommissionAmount = (employeeCommission.CommissionAmount * managerCommssionReturn.ComissionPercent) / 100;
+
+                            saleOrderModel.CommissionCollection.Add(managerCommssionReturn);
+                        }
                     }
                 }
+            }
+            catch (Exception ex)
+            {
+                _log4net.Error(ex);
+                Xceed.Wpf.Toolkit.MessageBox.Show(ex.Message, Language.GetMsg("ErrorCaption"), MessageBoxButton.OK, MessageBoxImage.Error);
             }
         }
 
@@ -3068,50 +3091,58 @@ namespace CPC.POS.ViewModel
         /// <param name="saleOrderModel"></param>
         private void CalcCommissionForReturn(base_SaleOrderModel saleOrderModel)
         {
-            ComboItem item = Common.BookingChannel.SingleOrDefault(x => x.Value == SelectedSaleOrder.BookingChanel);
-            if (item.Flag)//True : this booking channel dont use commission
-                return;
-
-            if (saleOrderModel.CommissionCollection == null)
-                saleOrderModel.CommissionCollection = new CollectionBase<base_SaleCommissionModel>();
-
-            Guid customerGuid = Guid.Parse(saleOrderModel.CustomerResource);
-            //Get Customer with CustomerResource
-            base_GuestModel customerModel = CustomerCollection.Where(x => x.Resource == customerGuid).SingleOrDefault();
-            if (customerModel != null && customerModel.SaleRepId.HasValue)
+            try
             {
-                base_GuestModel employeeModel = EmployeeCollection.Where(x => x.Id == customerModel.SaleRepId).SingleOrDefault();
-                string remarkReturn = MarkType.SaleOrderReturn.ToDescription();
-                base_SaleCommission saleCommission = _saleCommissionRepository.Get(x => x.Sign.Equals("-") && x.Remark.Equals(remarkReturn) && x.GuestResource == employeeModel.ResourceString && x.SOResource.Equals(saleOrderModel.ResourceString));
-                if (saleCommission == null)
+                ComboItem item = Common.BookingChannel.SingleOrDefault(x => x.Value == SelectedSaleOrder.BookingChanel);
+                if (item.Flag)//True : this booking channel dont use commission
+                    return;
+
+                if (saleOrderModel.CommissionCollection == null)
+                    saleOrderModel.CommissionCollection = new CollectionBase<base_SaleCommissionModel>();
+
+                Guid customerGuid = Guid.Parse(saleOrderModel.CustomerResource);
+                //Get Customer with CustomerResource
+                base_GuestModel customerModel = CustomerCollection.Where(x => x.Resource == customerGuid).SingleOrDefault();
+                if (customerModel != null && customerModel.SaleRepId.HasValue)
                 {
-                    base_SaleCommissionModel newSaleCommission = new base_SaleCommissionModel();
-                    newSaleCommission.ComissionPercent = employeeModel.CommissionPercent;
-                    newSaleCommission.GuestResource = employeeModel.Resource.ToString();
-                    newSaleCommission.Remark = MarkType.SaleOrderReturn.ToDescription();
-                    newSaleCommission.Sign = "-";
-                    newSaleCommission.SODate = saleOrderModel.OrderDate;
-                    newSaleCommission.SONumber = saleOrderModel.SONumber;
-                    newSaleCommission.SOResource = saleOrderModel.Resource.ToString();
-                    newSaleCommission.SOTotal = saleOrderModel.Paid + saleOrderModel.Deposit;
-                    newSaleCommission.CommissionAmount = saleOrderModel.ReturnModel.TotalRefund * newSaleCommission.ComissionPercent / 100;
-                    saleOrderModel.CommissionCollection.Add(newSaleCommission);
-                }
-                else
-                {
-                    base_SaleCommissionModel UpdateSaleCommission = new base_SaleCommissionModel(saleCommission);
-                    UpdateSaleCommission.SOTotal = saleOrderModel.Paid + saleOrderModel.Deposit;
-                    UpdateSaleCommission.CommissionAmount = saleOrderModel.ReturnModel.TotalRefund * UpdateSaleCommission.ComissionPercent / 100;
-                    if (saleOrderModel.CommissionCollection.Any(x => x.Sign.Equals("-")))
+                    base_GuestModel employeeModel = EmployeeCollection.Where(x => x.Id == customerModel.SaleRepId).SingleOrDefault();
+                    string remarkReturn = MarkType.SaleOrderReturn.ToDescription();
+                    base_SaleCommission saleCommission = _saleCommissionRepository.Get(x => x.Sign.Equals("-") && x.Remark.Equals(remarkReturn) && x.GuestResource == employeeModel.ResourceString && x.SOResource.Equals(saleOrderModel.ResourceString));
+                    if (saleCommission == null)
                     {
-                        base_SaleCommissionModel updateCommisionModel = saleOrderModel.CommissionCollection.SingleOrDefault(x => x.Sign.Equals("-"));
-                        updateCommisionModel = UpdateSaleCommission;
+                        base_SaleCommissionModel newSaleCommission = new base_SaleCommissionModel();
+                        newSaleCommission.ComissionPercent = employeeModel.CommissionPercent;
+                        newSaleCommission.GuestResource = employeeModel.Resource.ToString();
+                        newSaleCommission.Remark = MarkType.SaleOrderReturn.ToDescription();
+                        newSaleCommission.Sign = "-";
+                        newSaleCommission.SODate = saleOrderModel.OrderDate;
+                        newSaleCommission.SONumber = saleOrderModel.SONumber;
+                        newSaleCommission.SOResource = saleOrderModel.Resource.ToString();
+                        newSaleCommission.SOTotal = saleOrderModel.Paid + saleOrderModel.Deposit;
+                        newSaleCommission.CommissionAmount = saleOrderModel.ReturnModel.TotalRefund * newSaleCommission.ComissionPercent / 100;
+                        saleOrderModel.CommissionCollection.Add(newSaleCommission);
                     }
                     else
                     {
-                        saleOrderModel.CommissionCollection.Add(UpdateSaleCommission);
+                        base_SaleCommissionModel UpdateSaleCommission = new base_SaleCommissionModel(saleCommission);
+                        UpdateSaleCommission.SOTotal = saleOrderModel.Paid + saleOrderModel.Deposit;
+                        UpdateSaleCommission.CommissionAmount = saleOrderModel.ReturnModel.TotalRefund * UpdateSaleCommission.ComissionPercent / 100;
+                        if (saleOrderModel.CommissionCollection.Any(x => x.Sign.Equals("-")))
+                        {
+                            base_SaleCommissionModel updateCommisionModel = saleOrderModel.CommissionCollection.SingleOrDefault(x => x.Sign.Equals("-"));
+                            updateCommisionModel = UpdateSaleCommission;
+                        }
+                        else
+                        {
+                            saleOrderModel.CommissionCollection.Add(UpdateSaleCommission);
+                        }
                     }
                 }
+            }
+            catch (Exception ex)
+            {
+                _log4net.Error(ex);
+                Xceed.Wpf.Toolkit.MessageBox.Show(ex.Message, Language.GetMsg("ErrorCaption"), MessageBoxButton.OK, MessageBoxImage.Error);
             }
         }
 
@@ -3121,11 +3152,19 @@ namespace CPC.POS.ViewModel
         /// <param name="saleOrderModel"></param>
         private void DeleteSaleCommission(base_SaleOrderModel saleOrderModel)
         {
-            base_SaleCommission saleCommission = _saleCommissionRepository.GetAll().ToList().SingleOrDefault(x => x.SOResource.Equals(saleOrderModel.Resource.ToString()));
-            if (saleCommission != null)
+            try
             {
-                _saleCommissionRepository.Delete(saleCommission);
-                _saleCommissionRepository.Commit();
+                base_SaleCommission saleCommission = _saleCommissionRepository.GetAll().ToList().SingleOrDefault(x => x.SOResource.Equals(saleOrderModel.Resource.ToString()));
+                if (saleCommission != null)
+                {
+                    _saleCommissionRepository.Delete(saleCommission);
+                    _saleCommissionRepository.Commit();
+                }
+            }
+            catch (Exception ex)
+            {
+                _log4net.Error(ex);
+                Xceed.Wpf.Toolkit.MessageBox.Show(ex.Message, Language.GetMsg("ErrorCaption"), MessageBoxButton.OK, MessageBoxImage.Error);
             }
         }
         #endregion
@@ -3180,55 +3219,63 @@ namespace CPC.POS.ViewModel
             base_RewardManager rewardProgram = GetReward();
 
             bool? resultReward;
-            //Apply reward when customer is a reward member(isRewardMember) && if reward has End Date, after reward program ending collect reward 
-            if (SelectedSaleOrder.GuestModel.IsRewardMember && (rewardProgram.IsNoEndDay || (!rewardProgram.IsNoEndDay && rewardProgram.EndDate < SelectedSaleOrder.OrderDate)))
+            try
             {
-                bool isRewardOnDiscount = Define.CONFIGURATION.IsRewardOnDiscount ?? false;
-                bool isApplyRewardDiscount = isRewardOnDiscount || (!isRewardOnDiscount && SelectedSaleOrder.DiscountPercent == 0);
-                if (isApplyRewardDiscount && SelectedSaleOrder.PaymentCollection != null
-                           && !SelectedSaleOrder.PaymentCollection.Any(x => !x.IsDeposit.Value) /* This order is paid with multi pay*/)
+                //Apply reward when customer is a reward member(isRewardMember) && if reward has End Date, after reward program ending collect reward 
+                if (SelectedSaleOrder.GuestModel.IsRewardMember && (rewardProgram.IsNoEndDay || (!rewardProgram.IsNoEndDay && rewardProgram.EndDate < SelectedSaleOrder.OrderDate)))
                 {
-                    //Confirm User want to Payment Full
-                    //msg: You have some rewards, you need to pay fully and use these rewards. Do you?
-                    MessageBoxResult confirmPayFull = Xceed.Wpf.Toolkit.MessageBox.Show(Language.GetMsg("SO_Message_NotifyPayfullUseReward"), Language.GetMsg("POSCaption"), MessageBoxButton.YesNo, MessageBoxImage.Warning, MessageBoxResult.Yes);
-                    if (confirmPayFull.Equals(MessageBoxResult.Yes))//User Payment full
+                    bool isRewardOnDiscount = Define.CONFIGURATION.IsRewardOnDiscount ?? false;
+                    bool isApplyRewardDiscount = isRewardOnDiscount || (!isRewardOnDiscount && SelectedSaleOrder.DiscountPercent == 0);
+                    if (isApplyRewardDiscount && SelectedSaleOrder.PaymentCollection != null
+                               && !SelectedSaleOrder.PaymentCollection.Any(x => !x.IsDeposit.Value) /* This order is paid with multi pay*/)
                     {
-                        isPayFull = true;
-                        int ViewActionType;
-
-                        VerifyRedeemRewardViewModel verifyRedeemRewardViewModel = new VerifyRedeemRewardViewModel(SelectedSaleOrder);
-                        resultReward = _dialogService.ShowDialog<ConfirmMemberRedeemRewardView>(_ownerViewModel, verifyRedeemRewardViewModel, Language.GetMsg("SO_Message_RedeemReward") + "Validate reward Code");
-                        ViewActionType = (int)verifyRedeemRewardViewModel.ViewActionType;
-
-                        if (resultReward == true)
+                        //Confirm User want to Payment Full
+                        //msg: You have some rewards, you need to pay fully and use these rewards. Do you?
+                        MessageBoxResult confirmPayFull = Xceed.Wpf.Toolkit.MessageBox.Show(Language.GetMsg("SO_Message_NotifyPayfullUseReward"), Language.GetMsg("POSCaption"), MessageBoxButton.YesNo, MessageBoxImage.Warning, MessageBoxResult.Yes);
+                        if (confirmPayFull.Equals(MessageBoxResult.Yes))//User Payment full
                         {
-                            if (ViewActionType == (int)VerifyRedeemRewardViewModel.ReeedemRewardType.Redeemded)
+                            isPayFull = true;
+                            int ViewActionType;
+
+                            VerifyRedeemRewardViewModel verifyRedeemRewardViewModel = new VerifyRedeemRewardViewModel(SelectedSaleOrder);
+                            resultReward = _dialogService.ShowDialog<ConfirmMemberRedeemRewardView>(_ownerViewModel, verifyRedeemRewardViewModel, Language.GetMsg("SO_Message_RedeemReward") + "Validate reward Code");
+                            ViewActionType = (int)verifyRedeemRewardViewModel.ViewActionType;
+
+                            if (resultReward == true)
                             {
-                                SelectedSaleOrder.RewardValueApply = 0;
-                                isPayFull = false;
+                                if (ViewActionType == (int)VerifyRedeemRewardViewModel.ReeedemRewardType.Redeemded)
+                                {
+                                    SelectedSaleOrder.RewardValueApply = 0;
+                                    isPayFull = false;
+                                }
+                                else
+                                    SelectedSaleOrder.IsRedeeem = true;//Customer used reward
                             }
-                            else
-                                SelectedSaleOrder.IsRedeeem = true;//Customer used reward
+                        }
+                        else
+                        {
+                            //Customer don't want to apply reward & full payment 
+                            isPayFull = false;
+                            //proccess can open Payment Popup but not need to full payment
+                            resultReward = true;
                         }
                     }
                     else
                     {
-                        //Customer don't want to apply reward & full payment 
-                        isPayFull = false;
-                        //proccess can open Payment Popup but not need to full payment
+                        //User has payment
                         resultReward = true;
                     }
                 }
                 else
                 {
-                    //User has payment
+                    //Customer is not a Reward member
                     resultReward = true;
                 }
             }
-            else
+            catch (Exception ex)
             {
-                //Customer is not a Reward member
-                resultReward = true;
+                _log4net.Error(ex);
+                throw ex;
             }
 
             return resultReward;
@@ -3241,29 +3288,37 @@ namespace CPC.POS.ViewModel
         /// <param name="saleOrderModel"></param>
         private void CalcRedeemReward(base_SaleOrderModel saleOrderModel)
         {
-            if (!saleOrderModel.GuestModel.IsRewardMember)
-                return;
-            //Calc Subtotal user apply reward
-            if (saleOrderModel.GuestModel.GuestRewardCollection.Any())
+            try
             {
-                base_GuestRewardModel guestRewardModel = saleOrderModel.GuestModel.GuestRewardCollection.FirstOrDefault();
-                guestRewardModel.AppliedDate = DateTime.Today;
-
-                guestRewardModel.CalculateRewardBalance();
-
-                //Reward Is Empty => Set Status
-                if (guestRewardModel.RewardBalance == 0)
+                if (!saleOrderModel.GuestModel.IsRewardMember)
+                    return;
+                //Calc Subtotal user apply reward
+                if (saleOrderModel.GuestModel.GuestRewardCollection.Any())
                 {
-                    guestRewardModel.IsApply = true;
-                    guestRewardModel.Status = (short)GuestRewardStatus.Redeemed;
-                }
-                //Set Total Reward Redeemed
-                saleOrderModel.GuestModel.TotalRewardRedeemed += guestRewardModel.TotalRewardRedeemed;
+                    base_GuestRewardModel guestRewardModel = saleOrderModel.GuestModel.GuestRewardCollection.FirstOrDefault();
+                    guestRewardModel.AppliedDate = DateTime.Today;
 
-                //Update Reward Redeemed to Reward manager
-                base_RewardManager rewardManager = _rewardManagerRepository.Get(x => x.Id.Equals(guestRewardModel.RewardId));
-                if (rewardManager != null)
-                    rewardManager.TotalRewardRedeemed += guestRewardModel.TotalRewardRedeemed;
+                    guestRewardModel.CalculateRewardBalance();
+
+                    //Reward Is Empty => Set Status
+                    if (guestRewardModel.RewardBalance == 0)
+                    {
+                        guestRewardModel.IsApply = true;
+                        guestRewardModel.Status = (short)GuestRewardStatus.Redeemed;
+                    }
+                    //Set Total Reward Redeemed
+                    saleOrderModel.GuestModel.TotalRewardRedeemed += guestRewardModel.TotalRewardRedeemed;
+
+                    //Update Reward Redeemed to Reward manager
+                    base_RewardManager rewardManager = _rewardManagerRepository.Get(x => x.Id.Equals(guestRewardModel.RewardId));
+                    if (rewardManager != null)
+                        rewardManager.TotalRewardRedeemed += guestRewardModel.TotalRewardRedeemed;
+                }
+            }
+            catch (Exception ex)
+            {
+                _log4net.Error(ex);
+                Xceed.Wpf.Toolkit.MessageBox.Show(ex.Message, Language.GetMsg("ErrorCaption"), MessageBoxButton.OK, MessageBoxImage.Error);
             }
         }
 
@@ -3274,74 +3329,162 @@ namespace CPC.POS.ViewModel
         /// <param name="saleOrderModel"></param>
         private void CreateNewReward(base_SaleOrderModel saleOrderModel, decimal totalProductReward)
         {
-            if (!saleOrderModel.GuestModel.IsRewardMember)
-                return;
-
-            var reward = GetReward();
-
-            //Reward Amount calculate for Member with member Type(Brozen,Gold,Silver..)
-            decimal rewardAmount = 0;
-            int totalOfReward = 0;
-            if (reward != null && reward.Status.Is(StatusBasic.Active) && saleOrderModel.GuestModel.MembershipValidated != null && (reward.IsNoEndDay || (!reward.IsNoEndDay && reward.EndDate >= SelectedSaleOrder.OrderDate)))
+            try
             {
-                //Check if not set Purchase Threshold
-                if (saleOrderModel.GuestModel.RequirePurchaseNextReward == 0)
-                    saleOrderModel.GuestModel.RequirePurchaseNextReward = reward.PurchaseThreshold;
+                if (!saleOrderModel.GuestModel.IsRewardMember)
+                    return;
 
-                if (reward.RewardType.Equals(0))//Standard Program Type
-                {
-                    rewardAmount = reward.RewardAmount;
-                }
-                else //Tier Program Type
-                {
-                    rewardAmount = GetRewardAmountWithLevel(saleOrderModel.GuestModel.MembershipValidated.MemberType, reward);
-                }
+                var reward = GetReward();
 
-                //No Cut Off :Current SaleOrder with amount of product reward  is more than PurchaseThreshold, customer will be receviced a reward
-                if (reward.CutOffType.Is(CutOffType.NoCutOff)) //If totalProductReward of current SaleOrder >=  reward.PurchaseThreshold => Create Reward
+                //Reward Amount calculate for Member with member Type(Brozen,Gold,Silver..)
+                decimal rewardAmount = 0;
+                int totalOfReward = 0;
+                if (reward != null && reward.Status.Is(StatusBasic.Active) && saleOrderModel.GuestModel.MembershipValidated != null && (reward.IsNoEndDay || (!reward.IsNoEndDay && reward.EndDate >= SelectedSaleOrder.OrderDate)))
                 {
-                    if (reward.IsIncrementalWithNoCutOff)
+                    //Check if not set Purchase Threshold
+                    if (saleOrderModel.GuestModel.RequirePurchaseNextReward == 0)
+                        saleOrderModel.GuestModel.RequirePurchaseNextReward = reward.PurchaseThreshold;
+
+                    if (reward.RewardType.Equals(0))//Standard Program Type
+                    {
+                        rewardAmount = reward.RewardAmount;
+                    }
+                    else //Tier Program Type
+                    {
+                        rewardAmount = GetRewardAmountWithLevel(saleOrderModel.GuestModel.MembershipValidated.MemberType, reward);
+                    }
+
+                    //No Cut Off :Current SaleOrder with amount of product reward  is more than PurchaseThreshold, customer will be receviced a reward
+                    if (reward.CutOffType.Is(CutOffType.NoCutOff)) //If totalProductReward of current SaleOrder >=  reward.PurchaseThreshold => Create Reward
+                    {
+                        if (reward.IsIncrementalWithNoCutOff)
+                        {
+                            //Total Product Reward purchased
+                            decimal totalOfPurchase = totalProductReward + (reward.PurchaseThreshold - saleOrderModel.GuestModel.RequirePurchaseNextReward);
+                            if (totalOfPurchase >= reward.PurchaseThreshold)
+                            {
+                                totalOfReward = Convert.ToInt32(Math.Truncate(totalOfPurchase / reward.PurchaseThreshold));
+                                //Create 1 Reward with total of reward amount
+                                decimal rewardSetupAmount = totalOfReward * rewardAmount;
+
+                                //Create new Reward
+                                base_GuestRewardModel guestRewardModel = CreateNewGuestReward(saleOrderModel, reward, rewardSetupAmount);
+
+
+                                //Add To Collection History Create Reward
+                                if (saleOrderModel.GuestRewardSaleOrderModel.IsNew)
+                                {
+                                    //Add To Collection History Create Reward
+                                    base_GuestRewardSaleOrderModel guestRewardSaleOrderModel = new base_GuestRewardSaleOrderModel
+                                    {
+                                        SaleOrderResource = saleOrderModel.Resource.ToString(),
+                                        SaleOrderNo = saleOrderModel.SONumber,
+                                        SaleAmount = totalProductReward
+                                    };
+                                    saleOrderModel.GuestRewardSaleOrderModel = guestRewardSaleOrderModel;
+                                }
+
+                                if (reward.RewardAmtType.Is(RewardType.Money))
+                                {
+                                    saleOrderModel.GuestRewardSaleOrderModel.CashRewardEarned = guestRewardModel.RewardValueEarned;
+                                }
+                                else
+                                {
+                                    saleOrderModel.GuestRewardSaleOrderModel.PointRewardEarned = guestRewardModel.RewardValueEarned;
+                                }
+
+                                //Update ref to Save GuestRewardId
+                                saleOrderModel.GuestRewardSaleOrderModel.RewardRef = guestRewardModel.GetHashCode().ToString();
+
+                                //Add to Temp Collection to Insert to db
+                                saleOrderModel.GuestModel.GuestRewardCollection.DeletedItems.Add(guestRewardModel);
+                            }
+
+                            //Calculate Require Purchase Next Reward
+                            //A is PurchaseDuringTrackingPeriod
+                            //P is PurchaseThreshold
+                            //R is RequirePurchaseNextReward
+                            //R = P - (A/P % 2 * P)
+
+                            saleOrderModel.GuestModel.RequirePurchaseNextReward = reward.PurchaseThreshold - ((saleOrderModel.GuestModel.PurchaseDuringTrackingPeriod / reward.PurchaseThreshold) % 1) * reward.PurchaseThreshold;
+
+                        }
+                        else //Noe Cut Off with none accumulation
+                        {
+                            //Total PurchaseThreshold is enoungh to create reward & Order in Start & EndDate.
+                            if (totalProductReward >= reward.PurchaseThreshold)
+                            {
+                                //Total Reward customer received
+                                totalOfReward = Convert.ToInt32(Math.Truncate(totalProductReward / reward.PurchaseThreshold));
+
+                                //Create 1 Reward with total of reward amount
+                                decimal rewardSetupAmount = totalOfReward * rewardAmount;
+
+                                //Create new Reward
+                                base_GuestRewardModel guestRewardModel = CreateNewGuestReward(saleOrderModel, reward, rewardSetupAmount);
+
+
+                                if (saleOrderModel.GuestRewardSaleOrderModel.IsNew)
+                                {
+                                    //Add To Collection History Create Reward
+                                    base_GuestRewardSaleOrderModel guestRewardSaleOrderModel = new base_GuestRewardSaleOrderModel
+                                    {
+                                        SaleOrderResource = saleOrderModel.Resource.ToString(),
+                                        SaleOrderNo = saleOrderModel.SONumber,
+                                        SaleAmount = totalProductReward
+                                    };
+                                    saleOrderModel.GuestRewardSaleOrderModel = guestRewardSaleOrderModel;
+                                }
+
+                                //Update Value
+                                if (reward.RewardAmtType.Is(RewardType.Money))
+                                {
+                                    saleOrderModel.GuestRewardSaleOrderModel.CashRewardEarned = guestRewardModel.RewardValueEarned;
+                                }
+                                else
+                                {
+                                    saleOrderModel.GuestRewardSaleOrderModel.PointRewardEarned = guestRewardModel.RewardValueEarned;
+                                }
+
+                                //Update ref to Save GuestRewardId
+                                saleOrderModel.GuestRewardSaleOrderModel.RewardRef = guestRewardModel.GetHashCode().ToString();
+
+                                //Add to Temp Collection to Insert to db
+                                saleOrderModel.GuestModel.GuestRewardCollection.DeletedItems.Add(guestRewardModel);
+                            }
+                            //Require next reward is Purchase Threshold
+                            saleOrderModel.GuestModel.RequirePurchaseNextReward = reward.PurchaseThreshold;
+                        }
+                    }
+                    else //Cash Point & Date => Need to Sum TotalCashReward
                     {
                         //Total Product Reward purchased
                         decimal totalOfPurchase = totalProductReward + (reward.PurchaseThreshold - saleOrderModel.GuestModel.RequirePurchaseNextReward);
-                        if (totalOfPurchase >= reward.PurchaseThreshold)
+                        totalOfReward = Convert.ToInt32(Math.Truncate(totalOfPurchase / reward.PurchaseThreshold));
+
+                        //Add To Collection History Create Reward
+                        if (saleOrderModel.GuestRewardSaleOrderModel.IsNew)
                         {
-                            totalOfReward = Convert.ToInt32(Math.Truncate(totalOfPurchase / reward.PurchaseThreshold));
-                            //Create 1 Reward with total of reward amount
-                            decimal rewardSetupAmount = totalOfReward * rewardAmount;
-
-                            //Create new Reward
-                            base_GuestRewardModel guestRewardModel = CreateNewGuestReward(saleOrderModel, reward, rewardSetupAmount);
-
-
                             //Add To Collection History Create Reward
-                            if (saleOrderModel.GuestRewardSaleOrderModel.IsNew)
+                            base_GuestRewardSaleOrderModel guestRewardSaleOrderModel = new base_GuestRewardSaleOrderModel
                             {
-                                //Add To Collection History Create Reward
-                                base_GuestRewardSaleOrderModel guestRewardSaleOrderModel = new base_GuestRewardSaleOrderModel
-                                {
-                                    SaleOrderResource = saleOrderModel.Resource.ToString(),
-                                    SaleOrderNo = saleOrderModel.SONumber,
-                                    SaleAmount = totalProductReward
-                                };
-                                saleOrderModel.GuestRewardSaleOrderModel = guestRewardSaleOrderModel;
-                            }
-
-                            if (reward.RewardAmtType.Is(RewardType.Money))
-                            {
-                                saleOrderModel.GuestRewardSaleOrderModel.CashRewardEarned = guestRewardModel.RewardValueEarned;
-                            }
-                            else
-                            {
-                                saleOrderModel.GuestRewardSaleOrderModel.PointRewardEarned = guestRewardModel.RewardValueEarned;
-                            }
-
-                            //Update ref to Save GuestRewardId
-                            saleOrderModel.GuestRewardSaleOrderModel.RewardRef = guestRewardModel.GetHashCode().ToString();
-
-                            //Add to Temp Collection to Insert to db
-                            saleOrderModel.GuestModel.GuestRewardCollection.DeletedItems.Add(guestRewardModel);
+                                SaleOrderResource = saleOrderModel.Resource.ToString(),
+                                SaleOrderNo = saleOrderModel.SONumber,
+                                SaleAmount = totalProductReward
+                            };
+                            saleOrderModel.GuestRewardSaleOrderModel = guestRewardSaleOrderModel;
                         }
+
+
+                        if (reward.RewardAmtType.Is(RewardType.Money))
+                        {
+                            saleOrderModel.GuestRewardSaleOrderModel.CashRewardEarned = totalOfReward * rewardAmount;
+                        }
+                        else
+                        {
+                            saleOrderModel.GuestRewardSaleOrderModel.PointRewardEarned = totalOfReward * rewardAmount;
+                        }
+
 
                         //Calculate Require Purchase Next Reward
                         //A is PurchaseDuringTrackingPeriod
@@ -3350,125 +3493,45 @@ namespace CPC.POS.ViewModel
                         //R = P - (A/P % 2 * P)
 
                         saleOrderModel.GuestModel.RequirePurchaseNextReward = reward.PurchaseThreshold - ((saleOrderModel.GuestModel.PurchaseDuringTrackingPeriod / reward.PurchaseThreshold) % 1) * reward.PurchaseThreshold;
-
                     }
-                    else //Noe Cut Off with none accumulation
+
+
+                    //Notify to Cashier about reward customer earned ? 
+                    if (reward.IsInformCashier)
                     {
-                        //Total PurchaseThreshold is enoungh to create reward & Order in Start & EndDate.
-                        if (totalProductReward >= reward.PurchaseThreshold)
+
+                        if (saleOrderModel.GuestModel.GuestRewardCollection.DeletedItems.Any())
                         {
-                            //Total Reward customer received
-                            totalOfReward = Convert.ToInt32(Math.Truncate(totalProductReward / reward.PurchaseThreshold));
+                            string rewardProgram = string.Empty;
+                            //Total Of Reward customer received
+                            int totalRewardReceived = saleOrderModel.GuestModel.GuestRewardCollection.DeletedItems.Count();
 
-                            //Create 1 Reward with total of reward amount
-                            decimal rewardSetupAmount = totalOfReward * rewardAmount;
+                            base_GuestRewardModel guestRewardReceived = saleOrderModel.GuestModel.GuestRewardCollection.DeletedItems.FirstOrDefault();
 
-                            //Create new Reward
-                            base_GuestRewardModel guestRewardModel = CreateNewGuestReward(saleOrderModel, reward, rewardSetupAmount);
-
-
-                            if (saleOrderModel.GuestRewardSaleOrderModel.IsNew)
+                            string msgExpireDate = guestRewardReceived.ExpireDate.HasValue ? guestRewardReceived.ExpireDate.Value.ToString(Define.DateFormat) : Language.GetMsg("SO_Message_RewardNeverExpired");
+                            if (reward.RewardAmtType.Equals((int)RewardType.Money))
                             {
-                                //Add To Collection History Create Reward
-                                base_GuestRewardSaleOrderModel guestRewardSaleOrderModel = new base_GuestRewardSaleOrderModel
-                                {
-                                    SaleOrderResource = saleOrderModel.Resource.ToString(),
-                                    SaleOrderNo = saleOrderModel.SONumber,
-                                    SaleAmount = totalProductReward
-                                };
-                                saleOrderModel.GuestRewardSaleOrderModel = guestRewardSaleOrderModel;
+                                rewardProgram = string.Format(Language.GetMsg("SO_Message_RewardAmount"), string.Format(Define.ConverterCulture, Define.CurrencyFormat, guestRewardReceived.RewardValueEarned));
+
+                                //Msg : You are received : {0} reward(s) {1}  \nExpire Date : {2}
+                                Xceed.Wpf.Toolkit.MessageBox.Show(string.Format(Language.GetMsg("SO_Message_ReceivedReward").ToString().Replace("\\n", "\n"), totalRewardReceived, rewardProgram, msgExpireDate), Language.GetMsg("POSCaption"), MessageBoxButton.OK, MessageBoxImage.Information, MessageBoxResult.OK);
+                            }
+                            else if (reward.RewardAmtType.Equals((int)RewardType.Point))
+                            {
+                                rewardProgram = string.Format(Language.GetMsg("SO_Message_RewardAmount"), string.Format(Define.ConverterCulture, Define.DecimalFormat, guestRewardReceived.RewardValueEarned));
+                                //Msg : You are received : {0} reward(s) {1} point  \nExpire Date : {2}
+                                decimal pointReward = rewardAmount * totalOfReward;
+                                Xceed.Wpf.Toolkit.MessageBox.Show(string.Format(Language.GetMsg("SO_Message_ReceivedPointReward").ToString().Replace("\\n", "\n"), totalRewardReceived, rewardProgram, msgExpireDate), Language.GetMsg("POSCaption"), MessageBoxButton.OK, MessageBoxImage.Information, MessageBoxResult.OK);
                             }
 
-                            //Update Value
-                            if (reward.RewardAmtType.Is(RewardType.Money))
-                            {
-                                saleOrderModel.GuestRewardSaleOrderModel.CashRewardEarned = guestRewardModel.RewardValueEarned;
-                            }
-                            else
-                            {
-                                saleOrderModel.GuestRewardSaleOrderModel.PointRewardEarned = guestRewardModel.RewardValueEarned;
-                            }
-
-                            //Update ref to Save GuestRewardId
-                            saleOrderModel.GuestRewardSaleOrderModel.RewardRef = guestRewardModel.GetHashCode().ToString();
-
-                            //Add to Temp Collection to Insert to db
-                            saleOrderModel.GuestModel.GuestRewardCollection.DeletedItems.Add(guestRewardModel);
                         }
-                        //Require next reward is Purchase Threshold
-                        saleOrderModel.GuestModel.RequirePurchaseNextReward = reward.PurchaseThreshold;
                     }
                 }
-                else //Cash Point & Date => Need to Sum TotalCashReward
-                {
-                    //Total Product Reward purchased
-                    decimal totalOfPurchase = totalProductReward + (reward.PurchaseThreshold - saleOrderModel.GuestModel.RequirePurchaseNextReward);
-                    totalOfReward = Convert.ToInt32(Math.Truncate(totalOfPurchase / reward.PurchaseThreshold));
-
-                    //Add To Collection History Create Reward
-                    if (saleOrderModel.GuestRewardSaleOrderModel.IsNew)
-                    {
-                        //Add To Collection History Create Reward
-                        base_GuestRewardSaleOrderModel guestRewardSaleOrderModel = new base_GuestRewardSaleOrderModel
-                        {
-                            SaleOrderResource = saleOrderModel.Resource.ToString(),
-                            SaleOrderNo = saleOrderModel.SONumber,
-                            SaleAmount = totalProductReward
-                        };
-                        saleOrderModel.GuestRewardSaleOrderModel = guestRewardSaleOrderModel;
-                    }
-
-
-                    if (reward.RewardAmtType.Is(RewardType.Money))
-                    {
-                        saleOrderModel.GuestRewardSaleOrderModel.CashRewardEarned = totalOfReward * rewardAmount;
-                    }
-                    else
-                    {
-                        saleOrderModel.GuestRewardSaleOrderModel.PointRewardEarned = totalOfReward * rewardAmount;
-                    }
-
-
-                    //Calculate Require Purchase Next Reward
-                    //A is PurchaseDuringTrackingPeriod
-                    //P is PurchaseThreshold
-                    //R is RequirePurchaseNextReward
-                    //R = P - (A/P % 2 * P)
-
-                    saleOrderModel.GuestModel.RequirePurchaseNextReward = reward.PurchaseThreshold - ((saleOrderModel.GuestModel.PurchaseDuringTrackingPeriod / reward.PurchaseThreshold) % 1) * reward.PurchaseThreshold;
-                }
-
-
-                //Notify to Cashier about reward customer earned ? 
-                if (reward.IsInformCashier)
-                {
-
-                    if (saleOrderModel.GuestModel.GuestRewardCollection.DeletedItems.Any())
-                    {
-                        string rewardProgram = string.Empty;
-                        //Total Of Reward customer received
-                        int totalRewardReceived = saleOrderModel.GuestModel.GuestRewardCollection.DeletedItems.Count();
-
-                        base_GuestRewardModel guestRewardReceived = saleOrderModel.GuestModel.GuestRewardCollection.DeletedItems.FirstOrDefault();
-
-                        string msgExpireDate = guestRewardReceived.ExpireDate.HasValue ? guestRewardReceived.ExpireDate.Value.ToString(Define.DateFormat) : Language.GetMsg("SO_Message_RewardNeverExpired");
-                        if (reward.RewardAmtType.Equals((int)RewardType.Money))
-                        {
-                            rewardProgram = string.Format(Language.GetMsg("SO_Message_RewardAmount"), string.Format(Define.ConverterCulture, Define.CurrencyFormat, guestRewardReceived.RewardValueEarned));
-
-                            //Msg : You are received : {0} reward(s) {1}  \nExpire Date : {2}
-                            Xceed.Wpf.Toolkit.MessageBox.Show(string.Format(Language.GetMsg("SO_Message_ReceivedReward").ToString().Replace("\\n", "\n"), totalRewardReceived, rewardProgram, msgExpireDate), Language.GetMsg("POSCaption"), MessageBoxButton.OK, MessageBoxImage.Information, MessageBoxResult.OK);
-                        }
-                        else if (reward.RewardAmtType.Equals((int)RewardType.Point))
-                        {
-                            rewardProgram = string.Format(Language.GetMsg("SO_Message_RewardAmount"), string.Format(Define.ConverterCulture, Define.DecimalFormat, guestRewardReceived.RewardValueEarned));
-                            //Msg : You are received : {0} reward(s) {1} point  \nExpire Date : {2}
-                            decimal pointReward = rewardAmount * totalOfReward;
-                            Xceed.Wpf.Toolkit.MessageBox.Show(string.Format(Language.GetMsg("SO_Message_ReceivedPointReward").ToString().Replace("\\n", "\n"), totalRewardReceived, rewardProgram, msgExpireDate), Language.GetMsg("POSCaption"), MessageBoxButton.OK, MessageBoxImage.Information, MessageBoxResult.OK);
-                        }
-
-                    }
-                }
+            }
+            catch (Exception ex)
+            {
+                _log4net.Error(ex);
+                Xceed.Wpf.Toolkit.MessageBox.Show(ex.Message, Language.GetMsg("ErrorCaption"), MessageBoxButton.OK, MessageBoxImage.Error);
             }
         }
 
@@ -3483,62 +3546,71 @@ namespace CPC.POS.ViewModel
         /// <returns></returns>
         private base_GuestRewardModel CreateNewGuestReward(base_SaleOrderModel saleOrderModel, base_RewardManager reward, decimal rewardSetupAmounts)
         {
-            DateTime currentDate = DateTime.Now;
-            base_GuestRewardModel guestRewardModel = new base_GuestRewardModel();
-            guestRewardModel.EarnedDate = DateTime.Today;
-            guestRewardModel.IsApply = false;
-            guestRewardModel.RewardId = reward.Id;
-            guestRewardModel.GuestId = saleOrderModel.GuestModel.Id;
-            guestRewardModel.Remark = string.Empty;
+            try
+            {
+                DateTime currentDate = DateTime.Now;
+                base_GuestRewardModel guestRewardModel = new base_GuestRewardModel();
+                guestRewardModel.EarnedDate = DateTime.Today;
+                guestRewardModel.IsApply = false;
+                guestRewardModel.RewardId = reward.Id;
+                guestRewardModel.GuestId = saleOrderModel.GuestModel.Id;
+                guestRewardModel.Remark = string.Empty;
 
-            //Reward Earned by Cash
-            if (reward.RewardAmtType.Is(RewardType.Money))
-            {
-                guestRewardModel.RewardValueEarned = rewardSetupAmounts;
-            }
-            else
-            {
-                decimal pointToMoney = rewardSetupAmounts * reward.DollarConverter / reward.PointConverter;
-                guestRewardModel.RewardValueEarned = pointToMoney;
-            }
+                //Reward Earned by Cash
+                if (reward.RewardAmtType.Is(RewardType.Money))
+                {
+                    guestRewardModel.RewardValueEarned = rewardSetupAmounts;
+                }
+                else
+                {
+                    decimal pointToMoney = rewardSetupAmounts * reward.DollarConverter / reward.PointConverter;
+                    guestRewardModel.RewardValueEarned = pointToMoney;
+                }
 
 
-            //Rewward create with another reward
-            guestRewardModel.RewardValueApplied = saleOrderModel.Total - saleOrderModel.RewardAmount;
+                //Rewward create with another reward
+                guestRewardModel.RewardValueApplied = saleOrderModel.Total - saleOrderModel.RewardAmount;
 
-            currentDate = currentDate.AddSeconds(1);
-            string idCard = currentDate.ToString("yyMMddHHmmss");
-            string scancode = string.Empty;
-            byte[] codeImage = null;
-            if (BarCodeGenerate(idCard, out scancode, out codeImage))
+                currentDate = currentDate.AddSeconds(1);
+                string idCard = currentDate.ToString("yyMMddHHmmss");
+                string scancode = string.Empty;
+                byte[] codeImage = null;
+                if (BarCodeGenerate(idCard, out scancode, out codeImage))
+                {
+                    guestRewardModel.ScanCode = scancode;
+                    guestRewardModel.ScanCodeImg = codeImage;
+                }
+
+                //Set Block reward redeemption for ??? days after earned
+                if (reward.IsBlockRedemption && reward.RedemptionAfterDays > 0)
+                {
+                    guestRewardModel.Status = (short)GuestRewardStatus.Pending;
+                    guestRewardModel.ActivedDate = guestRewardModel.EarnedDate.Value.AddDays(reward.RedemptionAfterDays);
+                }
+                else
+                {
+                    guestRewardModel.Status = (int)GuestRewardStatus.Available;
+                    guestRewardModel.ActivedDate = guestRewardModel.EarnedDate.Value;
+                }
+                //Set Expired Date For Reward
+                if (reward.RewardExpiration != 0)//RewardExpiration =0 (Never Expired)
+                {
+                    int expireDay = Convert.ToInt32(Common.RewardExpirationTypes.Single(x => Convert.ToInt32(x.ObjValue) == reward.RewardExpiration).Detail);
+                    guestRewardModel.ExpireDate = guestRewardModel.ActivedDate.Value.AddDays(expireDay);
+                }
+                else
+                {
+                    guestRewardModel.ExpireDate = null;
+                }
+                guestRewardModel.CalculateRewardBalance();
+                return guestRewardModel;
+            }
+            catch (Exception ex)
             {
-                guestRewardModel.ScanCode = scancode;
-                guestRewardModel.ScanCodeImg = codeImage;
+                _log4net.Error(ex);
+                throw ex;
             }
 
-            //Set Block reward redeemption for ??? days after earned
-            if (reward.IsBlockRedemption && reward.RedemptionAfterDays > 0)
-            {
-                guestRewardModel.Status = (short)GuestRewardStatus.Pending;
-                guestRewardModel.ActivedDate = guestRewardModel.EarnedDate.Value.AddDays(reward.RedemptionAfterDays);
-            }
-            else
-            {
-                guestRewardModel.Status = (int)GuestRewardStatus.Available;
-                guestRewardModel.ActivedDate = guestRewardModel.EarnedDate.Value;
-            }
-            //Set Expired Date For Reward
-            if (reward.RewardExpiration != 0)//RewardExpiration =0 (Never Expired)
-            {
-                int expireDay = Convert.ToInt32(Common.RewardExpirationTypes.Single(x => Convert.ToInt32(x.ObjValue) == reward.RewardExpiration).Detail);
-                guestRewardModel.ExpireDate = guestRewardModel.ActivedDate.Value.AddDays(expireDay);
-            }
-            else
-            {
-                guestRewardModel.ExpireDate = null;
-            }
-            guestRewardModel.CalculateRewardBalance();
-            return guestRewardModel;
         }
 
         /// <summary>
@@ -3566,28 +3638,31 @@ namespace CPC.POS.ViewModel
         /// <param name="saleOrderModel"></param>
         private void CalcRewardReturn(base_SaleOrderModel saleOrderModel)
         {
-            var reward = GetReward(saleOrderModel.OrderDate.Value.Date);
+            var reward = GetReward();
 
-            //Amount Of product is Eligible reward returned
-            decimal productReturnRewardAmount = 0;
-
-            //Total Reward After Return 
-            decimal totalRewardAfterReturn = saleOrderModel.GuestModel.PurchaseDuringTrackingPeriod / reward.PurchaseThreshold;
-
-            foreach (base_ResourceReturnDetailModel returnDetailModel in saleOrderModel.ReturnModel.ReturnDetailCollection.Where(x => x.SaleOrderDetailModel.ProductModel.IsEligibleForReward))
+            //Check reward is existed & if reward is no endDate => check reward is redeem,otherwise orderdate is out of enddate
+            if (reward != null && (reward.IsNoEndDay || (!reward.IsNoEndDay && reward.EndDate <= saleOrderModel.OrderDate.Value)))
             {
-                if (returnDetailModel.SaleOrderDetailModel.ProductModel != null && !returnDetailModel.SaleOrderDetailModel.ProductModel.IsCoupon)
+                //Amount Of product is Eligible reward returned
+                decimal productReturnRewardAmount = 0;
+                //Total Reward After Return 
+                decimal totalRewardAfterReturn = saleOrderModel.GuestModel.PurchaseDuringTrackingPeriod / reward.PurchaseThreshold;
+
+                foreach (base_ResourceReturnDetailModel returnDetailModel in saleOrderModel.ReturnModel.ReturnDetailCollection.Where(x => x.SaleOrderDetailModel.ProductModel.IsEligibleForReward))
                 {
-                    //New Item
-                    if (returnDetailModel.IsReturned && !returnDetailModel.base_ResourceReturnDetail.IsReturned)
-                        productReturnRewardAmount += returnDetailModel.Amount;// + returnDetailModel.VAT
+                    if (returnDetailModel.SaleOrderDetailModel.ProductModel != null && !returnDetailModel.SaleOrderDetailModel.ProductModel.IsCoupon)
+                    {
+                        //New Item
+                        if (returnDetailModel.IsReturned && !returnDetailModel.base_ResourceReturnDetail.IsReturned)
+                            productReturnRewardAmount += returnDetailModel.Amount;// + returnDetailModel.VAT
+                    }
                 }
-            }
 
-            //Handle Return Reward For reward Member
-            if (saleOrderModel.GuestModel.IsRewardMember)
-            {
-                CustomerReturnReward(saleOrderModel, reward, productReturnRewardAmount, totalRewardAfterReturn);
+                //Handle Return Reward For reward Member
+                if (saleOrderModel.GuestModel.IsRewardMember)
+                {
+                    CustomerReturnReward(saleOrderModel, reward, productReturnRewardAmount, totalRewardAfterReturn);
+                }
             }
         }
 
@@ -3603,81 +3678,142 @@ namespace CPC.POS.ViewModel
         /// <param name="isCalcTemp">Not delete reward & update value to membership</param>
         private void CustomerReturnReward(base_SaleOrderModel saleOrderModel, base_RewardManager reward, decimal productReturnRewardAmount, decimal totalRewardAfterReturn, bool isCalcTemp = true)
         {
-            if (reward != null && saleOrderModel.Balance == 0)
+            try
             {
-                string saleOrderResource = saleOrderModel.Resource.ToString();
-                decimal rewardAmount = 0;
-                if (reward.RewardType.Equals(0))//Standard Program Type
+                if (reward != null && saleOrderModel.Balance == 0)
                 {
-                    rewardAmount = reward.RewardAmount;
-                }
-                else //Tier Program Type
-                {
-                    rewardAmount = GetRewardAmountWithLevel(saleOrderModel.GuestModel.MembershipValidated.MemberType, reward);
-                }
-
-                base_GuestRewardModel guestRewardModel;
-
-                if (reward.CutOffType.Is(CutOffType.NoCutOff))
-                {
-                    #region NoCutOff
-                    base_GuestRewardSaleOrder guestRewardSaleOrder = _guestRewardSaleOrderRepository.Get(x => x.SaleOrderResource.Equals(saleOrderResource));
-                    if (guestRewardSaleOrder != null)
+                    string saleOrderResource = saleOrderModel.Resource.ToString();
+                    decimal rewardAmount = 0;
+                    if (reward.RewardType.Equals(0))//Standard Program Type
                     {
-                        base_GuestReward guestRewardUpdate = saleOrderModel.GuestModel.base_Guest.base_GuestReward.SingleOrDefault(x => x.Id.Equals(guestRewardSaleOrder.GuestRewardId));
-                        if (guestRewardUpdate != null)
+                        rewardAmount = reward.RewardAmount;
+                    }
+                    else //Tier Program Type
+                    {
+                        rewardAmount = GetRewardAmountWithLevel(saleOrderModel.GuestModel.MembershipValidated.MemberType, reward);
+                    }
+
+                    base_GuestRewardModel guestRewardModel;
+
+                    if (reward.CutOffType.Is(CutOffType.NoCutOff))
+                    {
+                        #region NoCutOff
+                        base_GuestRewardSaleOrder guestRewardSaleOrder = _guestRewardSaleOrderRepository.Get(x => x.SaleOrderResource.Equals(saleOrderResource));
+                        if (guestRewardSaleOrder != null)
                         {
-                            guestRewardModel = new base_GuestRewardModel(guestRewardUpdate);
-
-                            if (guestRewardModel.Id > 0)
+                            base_GuestReward guestRewardUpdate = saleOrderModel.GuestModel.base_Guest.base_GuestReward.SingleOrDefault(x => x.Id.Equals(guestRewardSaleOrder.GuestRewardId));
+                            if (guestRewardUpdate != null)
                             {
-                                if (reward.IsIncrementalWithNoCutOff)
+                                guestRewardModel = new base_GuestRewardModel(guestRewardUpdate);
+
+                                if (guestRewardModel.Id > 0)
                                 {
-                                    // reward is returned base on quantity of product returned
-                                    decimal rewardReturn = (productReturnRewardAmount / reward.PurchaseThreshold);
-
-                                    decimal amountRewardAddToAnother = 0;
-                                    if ((rewardReturn % 1) > 0)
-                                        amountRewardAddToAnother = reward.PurchaseThreshold - (rewardReturn % 1);
-
-                                    //Total Return is ($Reward Earn) - ($RewardReturn) - (Reward redeem(used))
-                                    guestRewardModel.TotalRewardReturned = guestRewardModel.RewardValueEarned - (rewardReturn * rewardAmount) - guestRewardModel.TotalRewardRedeemed - amountRewardAddToAnother;
-                                    if (guestRewardModel.TotalRewardReturned < 0)
-                                        guestRewardModel.TotalRewardReturned *= -1;
-
-                                    //Calculate balance
-                                    guestRewardModel.CalculateRewardBalance();
-                                }
-                                else //With Not Incremental
-                                {
-                                    if (guestRewardModel != null)
+                                    if (reward.IsIncrementalWithNoCutOff)
                                     {
-                                        decimal totalRewardProductReturn = productReturnRewardAmount + (guestRewardModel.TotalRewardReturned * rewardAmount);
-                                        //Total Reward customer received
-                                        decimal amountRewardReceived = guestRewardModel.RewardValueEarned - (Convert.ToInt32(Math.Truncate(totalRewardProductReturn / reward.PurchaseThreshold)) * rewardAmount);
-                                        //total Reward Return is Reward before Return subtract for reward received currently
-                                        guestRewardModel.TotalRewardReturned = guestRewardModel.TotalRewardRedeemed - amountRewardReceived;
+                                        // reward is returned base on quantity of product returned
+                                        decimal rewardReturn = (productReturnRewardAmount / reward.PurchaseThreshold);
+
+                                        decimal amountRewardAddToAnother = 0;
+                                        if ((rewardReturn % 1) > 0)
+                                            amountRewardAddToAnother = reward.PurchaseThreshold - (rewardReturn % 1);
+
+                                        //Total Return is ($Reward Earn) - ($RewardReturn) - (Reward redeem(used))
+                                        guestRewardModel.TotalRewardReturned = guestRewardModel.RewardValueEarned - (rewardReturn * rewardAmount) - guestRewardModel.TotalRewardRedeemed - amountRewardAddToAnother;
+                                        if (guestRewardModel.TotalRewardReturned < 0)
+                                            guestRewardModel.TotalRewardReturned *= -1;
+
                                         //Calculate balance
                                         guestRewardModel.CalculateRewardBalance();
                                     }
-                                }
+                                    else //With Not Incremental
+                                    {
+                                        if (guestRewardModel != null)
+                                        {
+                                            decimal totalRewardProductReturn = productReturnRewardAmount + (guestRewardModel.TotalRewardReturned * rewardAmount);
+                                            //Total Reward customer received
+                                            decimal amountRewardReceived = guestRewardModel.RewardValueEarned - (Convert.ToInt32(Math.Truncate(totalRewardProductReturn / reward.PurchaseThreshold)) * rewardAmount);
+                                            //total Reward Return is Reward before Return subtract for reward received currently
+                                            guestRewardModel.TotalRewardReturned = guestRewardModel.TotalRewardRedeemed - amountRewardReceived;
+                                            //Calculate balance
+                                            guestRewardModel.CalculateRewardBalance();
+                                        }
+                                    }
 
-                                //Update Value & Calculate Customer Need to Reward return by cash
-                                if (guestRewardModel != null)
+                                    //Update Value & Calculate Customer Need to Reward return by cash
+                                    if (guestRewardModel != null)
+                                    {
+                                        //Update Status
+                                        if (guestRewardModel.RewardBalance == 0)
+                                        {
+                                            guestRewardModel.Status = (short)GuestRewardStatus.Removed;
+                                        }
+
+                                        //Customer is using reward more than amount of reward customer received after returned
+                                        if (guestRewardModel.RewardBalance < 0)
+                                        {
+                                            saleOrderModel.ReturnModel.Redeemed = (guestRewardModel.RewardBalance * -1); //Sum amount of cash customer need to pay to store
+                                        }
+
+                                        //Add Or Update To Reward Collection Delete to Update value for Guest Reward
+
+                                        //Remove Item Existed
+                                        base_GuestRewardModel rewardUpdate = saleOrderModel.GuestModel.GuestRewardCollection.DeletedItems.SingleOrDefault(x => x.Id.Equals(guestRewardModel.Id));
+                                        if (rewardUpdate != null)
+                                            saleOrderModel.GuestModel.GuestRewardCollection.DeletedItems.Remove(rewardUpdate);
+                                        //Add To Collection
+                                        saleOrderModel.GuestModel.GuestRewardCollection.DeletedItems.Add(guestRewardModel);
+                                    }
+                                }
+                            }
+                        }
+                        #endregion
+                    }
+                    else //Cash Point && Cut Off Date
+                    {
+                        #region Cash Point & Cut Off
+                        short avaliableStatus = (short)GuestRewardStatus.Available;
+                        short PendingStatus = (short)GuestRewardStatus.Pending;
+                        decimal totalRewardReturn = productReturnRewardAmount / reward.PurchaseThreshold;
+                        decimal rewardReturnAmount = totalRewardReturn * rewardAmount;
+                        DateTime lastPayment = saleOrderModel.PaymentCollection.OrderBy(x => x.DateCreated).LastOrDefault().DateCreated;
+
+                        //Get Guest reward Sale Order to know guestReward
+
+                        if (saleOrderModel.GuestRewardSaleOrderModel != null)
+                        {
+                            //Get Guest Reward existed?
+                            base_GuestReward guestReward = saleOrderModel.GuestModel.base_Guest.base_GuestReward.SingleOrDefault(x => x.Id.Equals(saleOrderModel.GuestRewardSaleOrderModel.GuestRewardId) && (x.Status.Equals(avaliableStatus) || x.Status.Equals(PendingStatus)));
+                            if (guestReward != null)
+                            {
+                                guestRewardModel = new base_GuestRewardModel(guestReward);
+
+                                if (guestRewardModel != null && guestRewardModel.Id > 0)//Return Reward by subtract which existed
                                 {
-                                    //Update Status
+
+                                    decimal returnRemain = 0;
+
+                                    if (guestRewardModel.RewardBalance >= rewardReturnAmount)
+                                    {
+                                        //subtract All Return Reward Amount
+                                        returnRemain = rewardReturnAmount;
+                                    }
+                                    else
+                                    {
+                                        //Subtract all guest reward existed
+                                        returnRemain = guestReward.RewardBalance;
+                                    }
+                                    //Update return
+                                    guestRewardModel.TotalRewardReturned += returnRemain;
+                                    //Calculate balance
+                                    guestRewardModel.CalculateRewardBalance();
+
+                                    rewardReturnAmount -= returnRemain;
+
+                                    //Set Status Guest Reward
                                     if (guestRewardModel.RewardBalance == 0)
                                     {
                                         guestRewardModel.Status = (short)GuestRewardStatus.Removed;
                                     }
-
-                                    //Customer is using reward more than amount of reward customer received after returned
-                                    if (guestRewardModel.RewardBalance < 0)
-                                    {
-                                        saleOrderModel.ReturnModel.Redeemed = (guestRewardModel.RewardBalance * -1); //Sum amount of cash customer need to pay to store
-                                    }
-
-                                    //Add Or Update To Reward Collection Delete to Update value for Guest Reward
 
                                     //Remove Item Existed
                                     base_GuestRewardModel rewardUpdate = saleOrderModel.GuestModel.GuestRewardCollection.DeletedItems.SingleOrDefault(x => x.Id.Equals(guestRewardModel.Id));
@@ -3686,76 +3822,23 @@ namespace CPC.POS.ViewModel
                                     //Add To Collection
                                     saleOrderModel.GuestModel.GuestRewardCollection.DeletedItems.Add(guestRewardModel);
                                 }
+
+                                //remain reward return need to paid by cash to Store if ()
+                                if (rewardReturnAmount > 0)
+                                {
+                                    //Customer is using reward more than amount of reward customer received after returned
+                                    saleOrderModel.ReturnModel.Redeemed = rewardReturnAmount; //Sum amount of cash customer need to pay to store
+                                }
                             }
                         }
+                        #endregion
                     }
-                    #endregion
                 }
-                else //Cash Point && Cut Off Date
-                {
-                    #region Cash Point & Cut Off
-                    short avaliableStatus = (short)GuestRewardStatus.Available;
-                    short PendingStatus = (short)GuestRewardStatus.Pending;
-                    decimal totalRewardReturn = productReturnRewardAmount / reward.PurchaseThreshold;
-                    decimal rewardReturnAmount = totalRewardReturn * rewardAmount;
-                    DateTime lastPayment = saleOrderModel.PaymentCollection.OrderBy(x => x.DateCreated).LastOrDefault().DateCreated;
-
-                    //Get Guest reward Sale Order to know guestReward
-
-                    if (saleOrderModel.GuestRewardSaleOrderModel != null)
-                    {
-                        //Get Guest Reward existed?
-                        base_GuestReward guestReward = saleOrderModel.GuestModel.base_Guest.base_GuestReward.SingleOrDefault(x => x.Id.Equals(saleOrderModel.GuestRewardSaleOrderModel.GuestRewardId) && (x.Status.Equals(avaliableStatus) || x.Status.Equals(PendingStatus)));
-                        if (guestReward != null)
-                        {
-                            guestRewardModel = new base_GuestRewardModel(guestReward);
-
-                            if (guestRewardModel != null && guestRewardModel.Id > 0)//Return Reward by subtract which existed
-                            {
-
-                                decimal returnRemain = 0;
-
-                                if (guestRewardModel.RewardBalance >= rewardReturnAmount)
-                                {
-                                    //subtract All Return Reward Amount
-                                    returnRemain = rewardReturnAmount;
-                                }
-                                else
-                                {
-                                    //Subtract all guest reward existed
-                                    returnRemain = guestReward.RewardBalance;
-                                }
-                                //Update return
-                                guestRewardModel.TotalRewardReturned += returnRemain;
-                                //Calculate balance
-                                guestRewardModel.CalculateRewardBalance();
-
-                                rewardReturnAmount -= returnRemain;
-
-                                //Set Status Guest Reward
-                                if (guestRewardModel.RewardBalance == 0)
-                                {
-                                    guestRewardModel.Status = (short)GuestRewardStatus.Removed;
-                                }
-
-                                //Remove Item Existed
-                                base_GuestRewardModel rewardUpdate = saleOrderModel.GuestModel.GuestRewardCollection.DeletedItems.SingleOrDefault(x => x.Id.Equals(guestRewardModel.Id));
-                                if (rewardUpdate != null)
-                                    saleOrderModel.GuestModel.GuestRewardCollection.DeletedItems.Remove(rewardUpdate);
-                                //Add To Collection
-                                saleOrderModel.GuestModel.GuestRewardCollection.DeletedItems.Add(guestRewardModel);
-                            }
-
-                            //remain reward return need to paid by cash to Store if ()
-                            if (rewardReturnAmount > 0)
-                            {
-                                //Customer is using reward more than amount of reward customer received after returned
-                                saleOrderModel.ReturnModel.Redeemed = rewardReturnAmount; //Sum amount of cash customer need to pay to store
-                            }
-                        }
-                    }
-                    #endregion
-                }
+            }
+            catch (Exception ex)
+            {
+                _log4net.Error(ex);
+                Xceed.Wpf.Toolkit.MessageBox.Show(ex.Message, Language.GetMsg("ErrorCaption"), MessageBoxButton.OK, MessageBoxImage.Error);
             }
         }
 
@@ -3770,46 +3853,54 @@ namespace CPC.POS.ViewModel
         private decimal CalculateReturnTax(base_ResourceReturnModel returnModel, base_SaleOrderModel saleOrderModel)
         {
             decimal result = 0;
-            if (saleOrderModel.TaxLocationModel != null && saleOrderModel.TaxLocationModel.TaxCodeModel != null)
+            try
             {
-                if (saleOrderModel.IsTaxExemption)
+                if (saleOrderModel.TaxLocationModel != null && saleOrderModel.TaxLocationModel.TaxCodeModel != null)
                 {
-                    result = 0;
-                }
-                else if (Convert.ToInt32(saleOrderModel.TaxLocationModel.TaxCodeModel.TaxOption).Is((int)SalesTaxOption.Multi))
-                {
-                    saleOrderModel.TaxPercent = 0;
-
-                    foreach (base_ResourceReturnDetailModel returnDetailModel in returnModel.ReturnDetailCollection.Where(x => x.IsReturned))
+                    if (saleOrderModel.IsTaxExemption)
                     {
-                        if (returnDetailModel.SaleOrderDetailModel.ProductModel != null && !returnDetailModel.SaleOrderDetailModel.ProductModel.IsCoupon)//18/06/2013: not calculate tax for coupon
-                            result += _saleOrderRepository.CalcMultiTaxForItem(saleOrderModel.TaxLocationModel.SaleTaxLocationOptionCollection, returnDetailModel.Amount, returnDetailModel.SaleOrderDetailModel.SalePrice);
+                        result = 0;
                     }
-                }
-                else if (Convert.ToInt32(saleOrderModel.TaxLocationModel.TaxCodeModel.TaxOption).Is((int)SalesTaxOption.Price))
-                {
-                    saleOrderModel.TaxPercent = 0;
-                    base_SaleTaxLocationOptionModel saleTaxLocationOptionModel = saleOrderModel.TaxLocationModel.TaxCodeModel.SaleTaxLocationOptionCollection.FirstOrDefault();
-                    foreach (base_ResourceReturnDetailModel returnDetailModel in returnModel.ReturnDetailCollection.Where(x => x.IsReturned))
+                    else if (Convert.ToInt32(saleOrderModel.TaxLocationModel.TaxCodeModel.TaxOption).Is((int)SalesTaxOption.Multi))
                     {
-                        if (returnDetailModel.SaleOrderDetailModel.ProductModel != null && !returnDetailModel.SaleOrderDetailModel.ProductModel.IsCoupon)
-                            result += _saleOrderRepository.CalcPriceDependentItem(returnDetailModel.Amount, returnDetailModel.SaleOrderDetailModel.SalePrice, saleTaxLocationOptionModel);
-                    }
-                }
-                else
-                {
+                        saleOrderModel.TaxPercent = 0;
 
-
-                    base_SaleTaxLocationOptionModel taxOptionModel = saleOrderModel.TaxLocationModel.TaxCodeModel.SaleTaxLocationOptionCollection.FirstOrDefault();
-                    if (taxOptionModel != null)
-                    {
                         foreach (base_ResourceReturnDetailModel returnDetailModel in returnModel.ReturnDetailCollection.Where(x => x.IsReturned))
                         {
-                            result += returnDetailModel.Amount * taxOptionModel.TaxRate / 100;
+                            if (returnDetailModel.SaleOrderDetailModel.ProductModel != null && !returnDetailModel.SaleOrderDetailModel.ProductModel.IsCoupon)//18/06/2013: not calculate tax for coupon
+                                result += _saleOrderRepository.CalcMultiTaxForItem(saleOrderModel.TaxLocationModel.SaleTaxLocationOptionCollection, returnDetailModel.Amount, returnDetailModel.SaleOrderDetailModel.SalePrice);
                         }
                     }
-                }
+                    else if (Convert.ToInt32(saleOrderModel.TaxLocationModel.TaxCodeModel.TaxOption).Is((int)SalesTaxOption.Price))
+                    {
+                        saleOrderModel.TaxPercent = 0;
+                        base_SaleTaxLocationOptionModel saleTaxLocationOptionModel = saleOrderModel.TaxLocationModel.TaxCodeModel.SaleTaxLocationOptionCollection.FirstOrDefault();
+                        foreach (base_ResourceReturnDetailModel returnDetailModel in returnModel.ReturnDetailCollection.Where(x => x.IsReturned))
+                        {
+                            if (returnDetailModel.SaleOrderDetailModel.ProductModel != null && !returnDetailModel.SaleOrderDetailModel.ProductModel.IsCoupon)
+                                result += _saleOrderRepository.CalcPriceDependentItem(returnDetailModel.Amount, returnDetailModel.SaleOrderDetailModel.SalePrice, saleTaxLocationOptionModel);
+                        }
+                    }
+                    else
+                    {
 
+
+                        base_SaleTaxLocationOptionModel taxOptionModel = saleOrderModel.TaxLocationModel.TaxCodeModel.SaleTaxLocationOptionCollection.FirstOrDefault();
+                        if (taxOptionModel != null)
+                        {
+                            foreach (base_ResourceReturnDetailModel returnDetailModel in returnModel.ReturnDetailCollection.Where(x => x.IsReturned))
+                            {
+                                result += returnDetailModel.Amount * taxOptionModel.TaxRate / 100;
+                            }
+                        }
+                    }
+
+                }
+            }
+            catch (Exception ex)
+            {
+                _log4net.Error(ex);
+                Xceed.Wpf.Toolkit.MessageBox.Show(ex.Message, Language.GetMsg("ErrorCaption"), MessageBoxButton.OK, MessageBoxImage.Error);
             }
             return result;
         }
@@ -3823,58 +3914,66 @@ namespace CPC.POS.ViewModel
         /// </summary>
         private void ReturnAll()
         {
-            if (SelectedSaleOrder.SaleOrderShipDetailCollection != null)
+            try
             {
-                foreach (base_SaleOrderDetailModel saleOrderDetailModel in SelectedSaleOrder.SaleOrderDetailCollection)
+                if (SelectedSaleOrder.SaleOrderShipDetailCollection != null)
                 {
-                    if (SelectedSaleOrder.SaleOrderShipDetailCollection.Any(x => x.SaleOrderDetailResource.Equals(saleOrderDetailModel.Resource.ToString())))
+                    foreach (base_SaleOrderDetailModel saleOrderDetailModel in SelectedSaleOrder.SaleOrderDetailCollection)
                     {
-                        base_ResourceReturnDetailModel returnDetailModel = new base_ResourceReturnDetailModel();
-                        returnDetailModel.SaleOrderDetailModel = saleOrderDetailModel;
-                        returnDetailModel.OrderDetailResource = saleOrderDetailModel.Resource.ToString();
-                        returnDetailModel.SaleOrderModel = SelectedSaleOrder;
-                        returnDetailModel.IsParent = (returnDetailModel.SaleOrderDetailModel.ProductModel != null && returnDetailModel.SaleOrderDetailModel.ProductModel.ItemTypeId.Equals((short)ItemTypes.Group));
-                        CalculateRemainReturnQty(returnDetailModel, true);
-
-                        //Gift Card Is Used
-                        if (returnDetailModel.SaleOrderDetailModel.ProductModel != null && returnDetailModel.SaleOrderDetailModel.ProductModel.IsCoupon && saleOrderDetailModel.CouponCardModel.InitialAmount > saleOrderDetailModel.CouponCardModel.RemainingAmount)
+                        if (SelectedSaleOrder.SaleOrderShipDetailCollection.Any(x => x.SaleOrderDetailResource.Equals(saleOrderDetailModel.Resource.ToString())))
                         {
-                            continue;
-                        }
+                            base_ResourceReturnDetailModel returnDetailModel = new base_ResourceReturnDetailModel();
+                            returnDetailModel.SaleOrderDetailModel = saleOrderDetailModel;
+                            returnDetailModel.OrderDetailResource = saleOrderDetailModel.Resource.ToString();
+                            returnDetailModel.SaleOrderModel = SelectedSaleOrder;
+                            returnDetailModel.IsParent = (returnDetailModel.SaleOrderDetailModel.ProductModel != null && returnDetailModel.SaleOrderDetailModel.ProductModel.ItemTypeId.Equals((short)ItemTypes.Group));
+                            CalculateRemainReturnQty(returnDetailModel, true);
 
-                        if (returnDetailModel.ReturnQty > 0)
-                        {
-                            returnDetailModel.ProductResource = saleOrderDetailModel.ProductResource;
-                            returnDetailModel.ItemCode = saleOrderDetailModel.ItemCode;
-                            returnDetailModel.ItemName = saleOrderDetailModel.ItemName;
-                            returnDetailModel.ItemAtribute = saleOrderDetailModel.ItemAtribute;
-                            returnDetailModel.ItemSize = saleOrderDetailModel.ItemSize;
-                            returnDetailModel.UnitName = saleOrderDetailModel.UnitName;
-                            returnDetailModel.Price = saleOrderDetailModel.SalePrice;
-                            returnDetailModel.Amount = returnDetailModel.Price * returnDetailModel.ReturnQty;
-                            CalcReturnQtyBaseUnit(returnDetailModel, returnDetailModel.SaleOrderDetailModel);
-                            returnDetailModel.IsTemporary = false;
-                            //Existed item not return & the same of SaleOrderDetailResource=>update Return Qty
-                            if (SelectedSaleOrder.ReturnModel.ReturnDetailCollection.Where(x => !x.IsReturned && x.OrderDetailResource.Equals(returnDetailModel.OrderDetailResource)).Any())
+                            //Gift Card Is Used
+                            if (returnDetailModel.SaleOrderDetailModel.ProductModel != null && returnDetailModel.SaleOrderDetailModel.ProductModel.IsCoupon && saleOrderDetailModel.CouponCardModel.InitialAmount > saleOrderDetailModel.CouponCardModel.RemainingAmount)
                             {
-                                base_ResourceReturnDetailModel returnDetailModelUpdate = SelectedSaleOrder.ReturnModel.ReturnDetailCollection.SingleOrDefault(x => !x.IsReturned && x.OrderDetailResource.Equals(returnDetailModel.OrderDetailResource));
-                                returnDetailModelUpdate.ReturnQty += returnDetailModel.ReturnQty;
+                                continue;
                             }
-                            else
+
+                            if (returnDetailModel.ReturnQty > 0)
                             {
-
-
-                                SelectedSaleOrder.ReturnModel.ReturnDetailCollection.Add(returnDetailModel);
+                                returnDetailModel.ProductResource = saleOrderDetailModel.ProductResource;
+                                returnDetailModel.ItemCode = saleOrderDetailModel.ItemCode;
+                                returnDetailModel.ItemName = saleOrderDetailModel.ItemName;
+                                returnDetailModel.ItemAtribute = saleOrderDetailModel.ItemAtribute;
+                                returnDetailModel.ItemSize = saleOrderDetailModel.ItemSize;
+                                returnDetailModel.UnitName = saleOrderDetailModel.UnitName;
+                                returnDetailModel.Price = saleOrderDetailModel.SalePrice;
+                                returnDetailModel.Amount = returnDetailModel.Price * returnDetailModel.ReturnQty;
+                                CalcReturnQtyBaseUnit(returnDetailModel, returnDetailModel.SaleOrderDetailModel);
                                 returnDetailModel.IsTemporary = false;
-                            }
+                                //Existed item not return & the same of SaleOrderDetailResource=>update Return Qty
+                                if (SelectedSaleOrder.ReturnModel.ReturnDetailCollection.Where(x => !x.IsReturned && x.OrderDetailResource.Equals(returnDetailModel.OrderDetailResource)).Any())
+                                {
+                                    base_ResourceReturnDetailModel returnDetailModelUpdate = SelectedSaleOrder.ReturnModel.ReturnDetailCollection.SingleOrDefault(x => !x.IsReturned && x.OrderDetailResource.Equals(returnDetailModel.OrderDetailResource));
+                                    returnDetailModelUpdate.ReturnQty += returnDetailModel.ReturnQty;
+                                }
+                                else
+                                {
 
-                            returnDetailModel.VAT = _saleOrderRepository.CalculateReturnDetailTax(returnDetailModel, SelectedSaleOrder);
-                            CalcReturnDetailRewardRedeem(SelectedSaleOrder, returnDetailModel);
-                            CalcReturnDetailSubTotal(SelectedSaleOrder, returnDetailModel);
+
+                                    SelectedSaleOrder.ReturnModel.ReturnDetailCollection.Add(returnDetailModel);
+                                    returnDetailModel.IsTemporary = false;
+                                }
+
+                                returnDetailModel.VAT = _saleOrderRepository.CalculateReturnDetailTax(returnDetailModel, SelectedSaleOrder);
+                                CalcReturnDetailRewardRedeem(SelectedSaleOrder, returnDetailModel);
+                                CalcReturnDetailSubTotal(SelectedSaleOrder, returnDetailModel);
+                            }
                         }
                     }
+                    CalculateReturnSubtotal(SelectedSaleOrder);
                 }
-                CalculateReturnSubtotal(SelectedSaleOrder);
+            }
+            catch (Exception ex)
+            {
+                _log4net.Error(ex);
+                Xceed.Wpf.Toolkit.MessageBox.Show(ex.Message, Language.GetMsg("ErrorCaption"), MessageBoxButton.OK, MessageBoxImage.Error);
             }
         }
 
@@ -3884,33 +3983,41 @@ namespace CPC.POS.ViewModel
         /// </summary>
         private void CheckReturned()
         {
-            if (SelectedSaleOrder == null)
-                return;
-            var allReturn = SelectedSaleOrder.ReturnModel.ReturnDetailCollection.Where(x => !x.IsTemporary && x.SaleOrderDetailModel != null);
-
-
-            foreach (var item in allReturn)
+            try
             {
-                decimal totalReturn = allReturn.Where(x => x.OrderDetailResource.Equals(item.OrderDetailResource)).Sum(x => x.ReturnQty);
-                decimal totalShipped = SelectedSaleOrder.SaleOrderShippedCollection.Where(x => x.Resource.ToString().Equals(item.OrderDetailResource)).Sum(x => x.PickQty);
-                totalShipped += SelectedSaleOrder.SaleOrderShippedCollection.DeletedItems.Where(x => x.Resource.ToString().Equals(item.OrderDetailResource)).Sum(x => x.PickQty);
-                if (totalShipped <= totalReturn)
+                if (SelectedSaleOrder == null)
+                    return;
+                var allReturn = SelectedSaleOrder.ReturnModel.ReturnDetailCollection.Where(x => !x.IsTemporary && x.SaleOrderDetailModel != null);
+
+
+                foreach (var item in allReturn)
                 {
-                    base_SaleOrderDetailModel saleOrderShippedModel = SelectedSaleOrder.SaleOrderShippedCollection.SingleOrDefault(x => x.Resource.ToString().Equals(item.OrderDetailResource));
-                    if (saleOrderShippedModel != null)
-                        SelectedSaleOrder.SaleOrderShippedCollection.Remove(saleOrderShippedModel);
-                }
-                else
-                {
-                    base_SaleOrderDetailModel saleOrderShippedRemoved = SelectedSaleOrder.SaleOrderShippedCollection.DeletedItems.SingleOrDefault(x => x.Resource.ToString().Equals(item.OrderDetailResource));
-                    if (saleOrderShippedRemoved != null)
+                    decimal totalReturn = allReturn.Where(x => x.OrderDetailResource.Equals(item.OrderDetailResource)).Sum(x => x.ReturnQty);
+                    decimal totalShipped = SelectedSaleOrder.SaleOrderShippedCollection.Where(x => x.Resource.ToString().Equals(item.OrderDetailResource)).Sum(x => x.PickQty);
+                    totalShipped += SelectedSaleOrder.SaleOrderShippedCollection.DeletedItems.Where(x => x.Resource.ToString().Equals(item.OrderDetailResource)).Sum(x => x.PickQty);
+                    if (totalShipped <= totalReturn)
                     {
-                        //add To CollectionShipped
-                        SelectedSaleOrder.SaleOrderShippedCollection.Add(saleOrderShippedRemoved);
-                        //Remove In Collection DeletedItems
-                        SelectedSaleOrder.SaleOrderShippedCollection.DeletedItems.Remove(saleOrderShippedRemoved);
+                        base_SaleOrderDetailModel saleOrderShippedModel = SelectedSaleOrder.SaleOrderShippedCollection.SingleOrDefault(x => x.Resource.ToString().Equals(item.OrderDetailResource));
+                        if (saleOrderShippedModel != null)
+                            SelectedSaleOrder.SaleOrderShippedCollection.Remove(saleOrderShippedModel);
+                    }
+                    else
+                    {
+                        base_SaleOrderDetailModel saleOrderShippedRemoved = SelectedSaleOrder.SaleOrderShippedCollection.DeletedItems.SingleOrDefault(x => x.Resource.ToString().Equals(item.OrderDetailResource));
+                        if (saleOrderShippedRemoved != null)
+                        {
+                            //add To CollectionShipped
+                            SelectedSaleOrder.SaleOrderShippedCollection.Add(saleOrderShippedRemoved);
+                            //Remove In Collection DeletedItems
+                            SelectedSaleOrder.SaleOrderShippedCollection.DeletedItems.Remove(saleOrderShippedRemoved);
+                        }
                     }
                 }
+            }
+            catch (Exception ex)
+            {
+                _log4net.Error(ex);
+                Xceed.Wpf.Toolkit.MessageBox.Show(ex.Message, Language.GetMsg("ErrorCaption"), MessageBoxButton.OK, MessageBoxImage.Error);
             }
         }
 
@@ -3920,28 +4027,36 @@ namespace CPC.POS.ViewModel
         /// <param name="selectedReturnDetail"></param>
         private void CheckReturned(base_ResourceReturnDetailModel selectedReturnDetail)
         {
-            if (SelectedSaleOrder.ReturnModel.ReturnDetailCollection.Any(x => x.OrderDetailResource.Equals(selectedReturnDetail.OrderDetailResource)))
+            try
             {
-                base_SaleOrderDetailModel saleOrderShippedRemoved = SelectedSaleOrder.SaleOrderShippedCollection.DeletedItems.SingleOrDefault(x => x.Resource.ToString().Equals(selectedReturnDetail.OrderDetailResource));
-                if (saleOrderShippedRemoved != null)
+                if (SelectedSaleOrder.ReturnModel.ReturnDetailCollection.Any(x => x.OrderDetailResource.Equals(selectedReturnDetail.OrderDetailResource)))
                 {
-                    SelectedSaleOrder.SaleOrderShippedCollection.Add(saleOrderShippedRemoved);
-                    SelectedSaleOrder.SaleOrderShippedCollection.DeletedItems.Remove(saleOrderShippedRemoved);
-                }
-                //Remove Item Returned All
-                //Get Item Diffrent with Current Item Selected
-                var saleOrderShipped = SelectedSaleOrder.SaleOrderShippedCollection.Where(x => !x.Resource.ToString().Equals(selectedReturnDetail.OrderDetailResource));
-                foreach (base_SaleOrderDetailModel saleOrderShippedModel in saleOrderShipped.ToList())
-                {
-                    decimal totalReturn = SelectedSaleOrder.ReturnModel.ReturnDetailCollection.Where(x => !x.IsTemporary && x.SaleOrderDetailModel != null && x.SaleOrderDetailModel.Resource.Equals(saleOrderShippedModel.Resource)).Sum(x => x.ReturnQty);
-                    decimal totalShipped = saleOrderShippedModel.PickQty;
-                    totalShipped += SelectedSaleOrder.SaleOrderShippedCollection.DeletedItems.Where(x => x.Resource.Equals(saleOrderShippedModel.Resource)).Sum(x => x.PickQty);
-                    if (totalShipped <= totalReturn)
+                    base_SaleOrderDetailModel saleOrderShippedRemoved = SelectedSaleOrder.SaleOrderShippedCollection.DeletedItems.SingleOrDefault(x => x.Resource.ToString().Equals(selectedReturnDetail.OrderDetailResource));
+                    if (saleOrderShippedRemoved != null)
                     {
-                        SelectedSaleOrder.SaleOrderShippedCollection.Remove(saleOrderShippedModel);
+                        SelectedSaleOrder.SaleOrderShippedCollection.Add(saleOrderShippedRemoved);
+                        SelectedSaleOrder.SaleOrderShippedCollection.DeletedItems.Remove(saleOrderShippedRemoved);
                     }
-                }
+                    //Remove Item Returned All
+                    //Get Item Diffrent with Current Item Selected
+                    var saleOrderShipped = SelectedSaleOrder.SaleOrderShippedCollection.Where(x => !x.Resource.ToString().Equals(selectedReturnDetail.OrderDetailResource));
+                    foreach (base_SaleOrderDetailModel saleOrderShippedModel in saleOrderShipped.ToList())
+                    {
+                        decimal totalReturn = SelectedSaleOrder.ReturnModel.ReturnDetailCollection.Where(x => !x.IsTemporary && x.SaleOrderDetailModel != null && x.SaleOrderDetailModel.Resource.Equals(saleOrderShippedModel.Resource)).Sum(x => x.ReturnQty);
+                        decimal totalShipped = saleOrderShippedModel.PickQty;
+                        totalShipped += SelectedSaleOrder.SaleOrderShippedCollection.DeletedItems.Where(x => x.Resource.Equals(saleOrderShippedModel.Resource)).Sum(x => x.PickQty);
+                        if (totalShipped <= totalReturn)
+                        {
+                            SelectedSaleOrder.SaleOrderShippedCollection.Remove(saleOrderShippedModel);
+                        }
+                    }
 
+                }
+            }
+            catch (Exception ex)
+            {
+                _log4net.Error(ex);
+                Xceed.Wpf.Toolkit.MessageBox.Show(ex.Message, Language.GetMsg("ErrorCaption"), MessageBoxButton.OK, MessageBoxImage.Error);
             }
         }
 
@@ -3952,14 +4067,22 @@ namespace CPC.POS.ViewModel
         /// <param name="IsCalcAll">false : Calculate quantity is returned not include current item</param>
         private void CalculateRemainReturnQty(base_ResourceReturnDetailModel returnDetailModel, bool IsCalcAll = false)
         {
-            decimal TotalItemReturn = 0;
+            try
+            {
+                decimal TotalItemReturn = 0;
 
-            if (IsCalcAll)
-                TotalItemReturn = SelectedSaleOrder.ReturnModel.ReturnDetailCollection.Where(x => x.OrderDetailResource.Equals(returnDetailModel.OrderDetailResource)).Sum(x => x.ReturnQty);
-            else
-                TotalItemReturn = SelectedSaleOrder.ReturnModel.ReturnDetailCollection.Where(x => !x.Resource.Equals(returnDetailModel.Resource) && x.OrderDetailResource.Equals(returnDetailModel.OrderDetailResource)).Sum(x => x.ReturnQty);
-            decimal remainQuantity = SelectedSaleOrder.SaleOrderShippedCollection.Where(x => x.Resource.ToString().Equals(returnDetailModel.OrderDetailResource)).Sum(x => Convert.ToDecimal(x.PickQty)) - TotalItemReturn;
-            returnDetailModel.ReturnQty = remainQuantity;
+                if (IsCalcAll)
+                    TotalItemReturn = SelectedSaleOrder.ReturnModel.ReturnDetailCollection.Where(x => x.OrderDetailResource.Equals(returnDetailModel.OrderDetailResource)).Sum(x => x.ReturnQty);
+                else
+                    TotalItemReturn = SelectedSaleOrder.ReturnModel.ReturnDetailCollection.Where(x => !x.Resource.Equals(returnDetailModel.Resource) && x.OrderDetailResource.Equals(returnDetailModel.OrderDetailResource)).Sum(x => x.ReturnQty);
+                decimal remainQuantity = SelectedSaleOrder.SaleOrderShippedCollection.Where(x => x.Resource.ToString().Equals(returnDetailModel.OrderDetailResource)).Sum(x => Convert.ToDecimal(x.PickQty)) - TotalItemReturn;
+                returnDetailModel.ReturnQty = remainQuantity;
+            }
+            catch (Exception ex)
+            {
+                _log4net.Error(ex);
+                Xceed.Wpf.Toolkit.MessageBox.Show(ex.Message, Language.GetMsg("ErrorCaption"), MessageBoxButton.OK, MessageBoxImage.Error);
+            }
         }
 
         /// <summary>
@@ -3968,15 +4091,23 @@ namespace CPC.POS.ViewModel
         /// <param name="saleOrderModel"></param>
         private void CalculateReturnSubtotal(base_SaleOrderModel saleOrderModel)
         {
-            if (saleOrderModel.ReturnModel != null && saleOrderModel.ReturnModel.ReturnDetailCollection.Any())
+            try
             {
-                //saleOrderModel.ReturnModel.SubTotal = saleOrderModel.ReturnModel.ReturnDetailCollection.Sum(x => x.Amount);
-                decimal subtotal = saleOrderModel.ReturnModel.ReturnDetailCollection.Sum(x => x.Amount + x.VAT - x.RewardRedeem - ((x.Amount * saleOrderModel.DiscountPercent) / 100));
-                int decimalPlace = Define.CONFIGURATION.DecimalPlaces ?? 0;
-                saleOrderModel.ReturnModel.SubTotal = subtotal;// Math.Round(Math.Round(subtotal, decimalPlace) - 0.01M, MidpointRounding.AwayFromZero);
+                if (saleOrderModel.ReturnModel != null && saleOrderModel.ReturnModel.ReturnDetailCollection.Any())
+                {
+                    //saleOrderModel.ReturnModel.SubTotal = saleOrderModel.ReturnModel.ReturnDetailCollection.Sum(x => x.Amount);
+                    decimal subtotal = saleOrderModel.ReturnModel.ReturnDetailCollection.Sum(x => x.Amount + x.VAT - x.RewardRedeem - ((x.Amount * saleOrderModel.DiscountPercent) / 100));
+                    int decimalPlace = Define.CONFIGURATION.DecimalPlaces ?? 0;
+                    saleOrderModel.ReturnModel.SubTotal = subtotal;// Math.Round(Math.Round(subtotal, decimalPlace) - 0.01M, MidpointRounding.AwayFromZero);
+                }
+                else
+                    saleOrderModel.ReturnModel.SubTotal = 0;
             }
-            else
-                saleOrderModel.ReturnModel.SubTotal = 0;
+            catch (Exception ex)
+            {
+                _log4net.Error(ex);
+                Xceed.Wpf.Toolkit.MessageBox.Show(ex.Message, Language.GetMsg("ErrorCaption"), MessageBoxButton.OK, MessageBoxImage.Error);
+            }
         }
 
         /// <summary>
@@ -4018,71 +4149,78 @@ namespace CPC.POS.ViewModel
         /// </summary>
         private void SaleOrderFullPaymentProcess()
         {
-            if (SelectedSaleOrder.GuestModel.IsRewardMember && SelectedSaleOrder.GuestModel.MembershipValidated != null)//Only for Reward Member & validated is a membership
+            try
             {
-                decimal totalProductReward = 0;
-                if (SelectedSaleOrder.SaleOrderDetailCollection.Any(x => x.ProductModel.IsEligibleForReward))
+                if (SelectedSaleOrder.GuestModel.IsRewardMember && SelectedSaleOrder.GuestModel.MembershipValidated != null)//Only for Reward Member & validated is a membership
                 {
-                    foreach (base_SaleOrderDetailModel saleOrderDetailModel in SelectedSaleOrder.SaleOrderDetailCollection.Where(x => x.ProductModel.IsEligibleForReward))
+                    decimal totalProductReward = 0;
+                    if (SelectedSaleOrder.SaleOrderDetailCollection.Any(x => x.ProductModel.IsEligibleForReward))
                     {
-                        //Quantity of return after Payment
-                        decimal returnQty = SelectedSaleOrder.ReturnModel.ReturnDetailCollection.Where(x => x.IsReturned && x.OrderDetailResource.Equals(saleOrderDetailModel.Resource.ToString())).Sum(x => x.ReturnQty);
+                        foreach (base_SaleOrderDetailModel saleOrderDetailModel in SelectedSaleOrder.SaleOrderDetailCollection.Where(x => x.ProductModel.IsEligibleForReward))
+                        {
+                            //Quantity of return after Payment
+                            decimal returnQty = SelectedSaleOrder.ReturnModel.ReturnDetailCollection.Where(x => x.IsReturned && x.OrderDetailResource.Equals(saleOrderDetailModel.Resource.ToString())).Sum(x => x.ReturnQty);
 
-                        //Amount of order detail include returnqty
-                        decimal amountOrderDetail = (saleOrderDetailModel.Quantity - returnQty) * saleOrderDetailModel.SalePrice;
+                            //Amount of order detail include returnqty
+                            decimal amountOrderDetail = (saleOrderDetailModel.Quantity - returnQty) * saleOrderDetailModel.SalePrice;
 
-                        //Tax collected on SaleOrderDetail
-                        decimal orderDetailTax = _saleOrderRepository.CalculateSaleOrderDetailTax(saleOrderDetailModel, SelectedSaleOrder, amountOrderDetail);
+                            //Tax collected on SaleOrderDetail
+                            decimal orderDetailTax = _saleOrderRepository.CalculateSaleOrderDetailTax(saleOrderDetailModel, SelectedSaleOrder, amountOrderDetail);
 
-                        totalProductReward += (amountOrderDetail);// + orderDetailTax);
+                            totalProductReward += (amountOrderDetail);// + orderDetailTax);
+                        }
+                    }
+                    //PurchaseDuringTrackingPeriod is a total product reward is purchased
+                    SelectedSaleOrder.GuestModel.PurchaseDuringTrackingPeriod += totalProductReward;
+
+                    //Check IsCalRewardAfterRedeem Config
+                    bool isRewardApplied = SelectedSaleOrder.IsRedeeem;
+                    if (Define.CONFIGURATION.IsCalRewardAfterRedeem //Calc reward anyway
+                        || (!Define.CONFIGURATION.IsCalRewardAfterRedeem && !isRewardApplied))//calc new reward when so not apply redeem
+                    {
+                        CreateNewReward(SelectedSaleOrder, totalProductReward);
                     }
                 }
-                //PurchaseDuringTrackingPeriod is a total product reward is purchased
-                SelectedSaleOrder.GuestModel.PurchaseDuringTrackingPeriod += totalProductReward;
 
-                //Check IsCalRewardAfterRedeem Config
-                bool isRewardApplied = SelectedSaleOrder.IsRedeeem;
-                if (Define.CONFIGURATION.IsCalRewardAfterRedeem //Calc reward anyway
-                    || (!Define.CONFIGURATION.IsCalRewardAfterRedeem && !isRewardApplied))//calc new reward when so not apply redeem
+                //Update Card Manager IsSold if existed
+                if (SelectedSaleOrder.SaleOrderDetailCollection.Any(x => x.ProductModel != null && x.ProductModel.IsCoupon))
                 {
-                    CreateNewReward(SelectedSaleOrder, totalProductReward);
+                    foreach (base_SaleOrderDetailModel saleOrderDetailModel in SelectedSaleOrder.SaleOrderDetailCollection.Where(x => x.ProductModel.IsCoupon))
+                    {
+                        saleOrderDetailModel.CouponCardModel.IsSold = true;
+                        //Turn isdirty on for saleOrderDetail
+                        saleOrderDetailModel.IsDirty = true;
+                    }
                 }
-            }
 
-            //Update Card Manager IsSold if existed
-            if (SelectedSaleOrder.SaleOrderDetailCollection.Any(x => x.ProductModel != null && x.ProductModel.IsCoupon))
-            {
-                foreach (base_SaleOrderDetailModel saleOrderDetailModel in SelectedSaleOrder.SaleOrderDetailCollection.Where(x => x.ProductModel.IsCoupon))
+                if (SelectedSaleOrder.Mark.Equals(MarkType.SaleOrder.ToDescription()))
                 {
-                    saleOrderDetailModel.CouponCardModel.IsSold = true;
-                    //Turn isdirty on for saleOrderDetail
-                    saleOrderDetailModel.IsDirty = true;
+                    SelectedSaleOrder.OrderStatus = (short)SaleOrderStatus.PaidInFull;
                 }
-            }
+                else
+                {
+                    SelectedSaleOrder.OrderStatus = (short)SaleOrderStatus.Close;//Set status to close when SO convert from Layaway/workorder/Quote
+                }
 
-            if (SelectedSaleOrder.Mark.Equals(MarkType.SaleOrder.ToDescription()))
-            {
-                SelectedSaleOrder.OrderStatus = (short)SaleOrderStatus.PaidInFull;
-            }
-            else
-            {
-                SelectedSaleOrder.OrderStatus = (short)SaleOrderStatus.Close;//Set status to close when SO convert from Layaway/workorder/Quote
-            }
+                //Calculate & create commission for Employee
+                SaveSaleCommission(SelectedSaleOrder);
 
-            //Calculate & create commission for Employee
-            SaveSaleCommission(SelectedSaleOrder);
+                SaveSalesOrder(SelectedSaleOrder);
 
-            SaveSalesOrder(SelectedSaleOrder);
+                //Clear Guest Collection After Save
+                if (SelectedSaleOrder.GuestModel.IsRewardMember && SelectedSaleOrder.GuestModel.GuestRewardCollection != null)
+                    SelectedSaleOrder.GuestModel.GuestRewardCollection.Clear();
 
-            //Clear Guest Collection After Save
-            if (SelectedSaleOrder.GuestModel.IsRewardMember && SelectedSaleOrder.GuestModel.GuestRewardCollection != null)
-                SelectedSaleOrder.GuestModel.GuestRewardCollection.Clear();
+                SendEmailToCustomer();
 
-            SendEmailToCustomer();
-
-            //Not change to search when layaway cause after paid user may be execute shipping process
-            if (!SelectedSaleOrder.Mark.Equals(MarkType.Layaway.ToDescription()))
                 this.IsSearchMode = true;
+            }
+            catch (Exception ex)
+            {
+                _log4net.Error(ex);
+                Xceed.Wpf.Toolkit.MessageBox.Show(ex.ToString(), Language.GetMsg("ErrorCaption"), MessageBoxButton.OK, MessageBoxImage.Error, MessageBoxResult.OK);
+
+            }
         }
 
         /// <summary>
@@ -4090,21 +4228,29 @@ namespace CPC.POS.ViewModel
         /// </summary>
         private void StoreChanged()
         {
-            foreach (base_SaleOrderDetailModel saleOrderDetailModel in this.SelectedSaleOrder.SaleOrderDetailCollection)
+            try
             {
-                SetPriceUOM(saleOrderDetailModel);
+                foreach (base_SaleOrderDetailModel saleOrderDetailModel in this.SelectedSaleOrder.SaleOrderDetailCollection)
+                {
+                    SetPriceUOM(saleOrderDetailModel);
 
-                CalculateDiscount(saleOrderDetailModel);
+                    CalculateDiscount(saleOrderDetailModel);
 
-                _saleOrderRepository.CalcOnHandStore(SelectedSaleOrder, saleOrderDetailModel);
+                    _saleOrderRepository.CalcOnHandStore(SelectedSaleOrder, saleOrderDetailModel);
 
-                saleOrderDetailModel.CalcSubTotal();
+                    saleOrderDetailModel.CalcSubTotal();
 
-                saleOrderDetailModel.CalcDueQty();
+                    saleOrderDetailModel.CalcDueQty();
 
-                saleOrderDetailModel.CalUnfill();
+                    saleOrderDetailModel.CalUnfill();
+                }
+                SelectedSaleOrder.CalcSubTotal();
             }
-            SelectedSaleOrder.CalcSubTotal();
+            catch (Exception ex)
+            {
+                _log4net.Error(ex);
+                Xceed.Wpf.Toolkit.MessageBox.Show(ex.Message, Language.GetMsg("ErrorCaption"), MessageBoxButton.OK, MessageBoxImage.Error);
+            }
         }
 
         /// <summary>
@@ -4171,86 +4317,98 @@ namespace CPC.POS.ViewModel
         /// <param name="param"></param>
         private void ShippedProcess(object param)
         {
-            //msg : "Do you want to ship?"
-            MessageBoxResult result = Xceed.Wpf.Toolkit.MessageBox.Show(Language.GetMsg("SO_Message_ConfirmShipItem"), Language.GetMsg("POSCaption"), MessageBoxButton.YesNo, MessageBoxImage.Warning, MessageBoxResult.Yes);
-            base_SaleOrderShipModel saleOrderShipModel = param as base_SaleOrderShipModel;
-            if (result.Is(MessageBoxResult.Yes))
+            try
             {
-
-                saleOrderShipModel.IsShipped = saleOrderShipModel.IsChecked;
-
-                SelectedSaleOrder.ShippedBox = Convert.ToInt16(SelectedSaleOrder.SaleOrderShipCollection.Count(x => x.IsShipped));
-
-                SelectedSaleOrder.RaiseAnyShipped();
-
-                SetShipStatus(SelectedSaleOrder);
-
-                if (SelectedSaleOrder.PaymentCollection == null)
-                    SelectedSaleOrder.PaymentCollection = new ObservableCollection<base_ResourcePaymentModel>();
-
-                //Set Referrence value Refund fee from config
-                if (Define.CONFIGURATION.IsIncludeReturnFee || (SelectedSaleOrder.ReturnModel.ReturnFeePercent == 0 && SelectedSaleOrder.ReturnModel.ReturnFee == 0))
-                    SelectedSaleOrder.ReturnModel.ReturnFeePercent = Define.CONFIGURATION.ReturnFeePercent;
-
-                foreach (base_SaleOrderShipDetailModel saleOrderShipDetailModel in saleOrderShipModel.SaleOrderShipDetailCollection)
+                UnitOfWork.BeginTransaction();
+                //msg : "Do you want to ship?"
+                MessageBoxResult result = Xceed.Wpf.Toolkit.MessageBox.Show(Language.GetMsg("SO_Message_ConfirmShipItem"), Language.GetMsg("POSCaption"), MessageBoxButton.YesNo, MessageBoxImage.Warning, MessageBoxResult.Yes);
+                base_SaleOrderShipModel saleOrderShipModel = param as base_SaleOrderShipModel;
+                if (result.Is(MessageBoxResult.Yes))
                 {
-                    saleOrderShipDetailModel.SaleOrderDetailModel = SelectedSaleOrder.SaleOrderDetailCollection.SingleOrDefault(x => x.Resource.ToString().Equals(saleOrderShipDetailModel.SaleOrderDetailResource));
-                    base_SaleOrderShipDetailModel saleOrderShipClone = saleOrderShipDetailModel.Clone();
-                    saleOrderShipClone.SaleOrderDetailModel = saleOrderShipDetailModel.SaleOrderDetailModel;
 
-                    SelectedSaleOrder.SaleOrderShipDetailCollection.Add(saleOrderShipClone);
+                    saleOrderShipModel.IsShipped = saleOrderShipModel.IsChecked;
 
-                    //Set for return Collection
-                    //Existed item SaleOrderShippedDetail in Shipped Collection
-                    if (SelectedSaleOrder.SaleOrderShippedCollection.Any(x => x.Resource.ToString().Equals(saleOrderShipDetailModel.SaleOrderDetailResource))
-                        || SelectedSaleOrder.SaleOrderShippedCollection.DeletedItems.Any(x => x.Resource.ToString().Equals(saleOrderShipDetailModel.SaleOrderDetailResource)))
+                    SelectedSaleOrder.ShippedBox = Convert.ToInt16(SelectedSaleOrder.SaleOrderShipCollection.Count(x => x.IsShipped));
+
+                    SelectedSaleOrder.RaiseAnyShipped();
+
+                    SetShipStatus(SelectedSaleOrder);
+
+                    if (SelectedSaleOrder.PaymentCollection == null)
+                        SelectedSaleOrder.PaymentCollection = new ObservableCollection<base_ResourcePaymentModel>();
+
+                    //Set Referrence value Refund fee from config
+                    if (Define.CONFIGURATION.IsIncludeReturnFee || (SelectedSaleOrder.ReturnModel.ReturnFeePercent == 0 && SelectedSaleOrder.ReturnModel.ReturnFee == 0))
+                        SelectedSaleOrder.ReturnModel.ReturnFeePercent = Define.CONFIGURATION.ReturnFeePercent;
+
+                    foreach (base_SaleOrderShipDetailModel saleOrderShipDetailModel in saleOrderShipModel.SaleOrderShipDetailCollection)
                     {
-                        base_SaleOrderDetailModel saleOrderDetailModel = SelectedSaleOrder.SaleOrderShippedCollection.SingleOrDefault(x => x.Resource.ToString().Equals(saleOrderShipDetailModel.SaleOrderDetailResource));
-                        if (saleOrderDetailModel != null)
+                        saleOrderShipDetailModel.SaleOrderDetailModel = SelectedSaleOrder.SaleOrderDetailCollection.SingleOrDefault(x => x.Resource.ToString().Equals(saleOrderShipDetailModel.SaleOrderDetailResource));
+                        base_SaleOrderShipDetailModel saleOrderShipClone = saleOrderShipDetailModel.Clone();
+                        saleOrderShipClone.SaleOrderDetailModel = saleOrderShipDetailModel.SaleOrderDetailModel;
+
+                        SelectedSaleOrder.SaleOrderShipDetailCollection.Add(saleOrderShipClone);
+
+                        //Set for return Collection
+                        //Existed item SaleOrderShippedDetail in Shipped Collection
+                        if (SelectedSaleOrder.SaleOrderShippedCollection.Any(x => x.Resource.ToString().Equals(saleOrderShipDetailModel.SaleOrderDetailResource))
+                            || SelectedSaleOrder.SaleOrderShippedCollection.DeletedItems.Any(x => x.Resource.ToString().Equals(saleOrderShipDetailModel.SaleOrderDetailResource)))
                         {
-                            saleOrderDetailModel.PickQty = SelectedSaleOrder.SaleOrderShipDetailCollection.Where(x => x.SaleOrderDetailResource.Equals(saleOrderDetailModel.Resource.ToString())).Sum(x => x.PackedQty);
-                            saleOrderDetailModel.SubTotal = saleOrderDetailModel.PickQty * saleOrderDetailModel.SalePrice;
+                            base_SaleOrderDetailModel saleOrderDetailModel = SelectedSaleOrder.SaleOrderShippedCollection.SingleOrDefault(x => x.Resource.ToString().Equals(saleOrderShipDetailModel.SaleOrderDetailResource));
+                            if (saleOrderDetailModel != null)
+                            {
+                                saleOrderDetailModel.PickQty = SelectedSaleOrder.SaleOrderShipDetailCollection.Where(x => x.SaleOrderDetailResource.Equals(saleOrderDetailModel.Resource.ToString())).Sum(x => x.PackedQty);
+                                saleOrderDetailModel.SubTotal = saleOrderDetailModel.PickQty * saleOrderDetailModel.SalePrice;
+                            }
+                            else
+                            {
+                                base_SaleOrderDetailModel saleOrderShippedRemoved = SelectedSaleOrder.SaleOrderShippedCollection.DeletedItems.SingleOrDefault(x => x.Resource.ToString().Equals(saleOrderShipDetailModel.SaleOrderDetailResource));
+                                if (saleOrderShippedRemoved != null)
+                                {
+                                    SelectedSaleOrder.SaleOrderShippedCollection.Add(saleOrderShippedRemoved);
+                                    SelectedSaleOrder.SaleOrderShippedCollection.DeletedItems.Remove(saleOrderShippedRemoved);
+                                }
+                            }
                         }
                         else
                         {
-                            base_SaleOrderDetailModel saleOrderShippedRemoved = SelectedSaleOrder.SaleOrderShippedCollection.DeletedItems.SingleOrDefault(x => x.Resource.ToString().Equals(saleOrderShipDetailModel.SaleOrderDetailResource));
-                            if (saleOrderShippedRemoved != null)
-                            {
-                                SelectedSaleOrder.SaleOrderShippedCollection.Add(saleOrderShippedRemoved);
-                                SelectedSaleOrder.SaleOrderShippedCollection.DeletedItems.Remove(saleOrderShippedRemoved);
-                            }
+                            base_SaleOrderDetailModel saleOrderDetailModel = SelectedSaleOrder.SaleOrderDetailCollection.SingleOrDefault(x => x.Resource.ToString().Equals(saleOrderShipDetailModel.SaleOrderDetailResource)).Clone();
+                            saleOrderDetailModel.PickQty = saleOrderShipDetailModel.PackedQty;
+                            saleOrderDetailModel.SubTotal = saleOrderDetailModel.PickQty * saleOrderDetailModel.SalePrice;
+                            SelectedSaleOrder.SaleOrderShippedCollection.Add(saleOrderDetailModel);
                         }
-                    }
-                    else
-                    {
-                        base_SaleOrderDetailModel saleOrderDetailModel = SelectedSaleOrder.SaleOrderDetailCollection.SingleOrDefault(x => x.Resource.ToString().Equals(saleOrderShipDetailModel.SaleOrderDetailResource)).Clone();
-                        saleOrderDetailModel.PickQty = saleOrderShipDetailModel.PackedQty;
-                        saleOrderDetailModel.SubTotal = saleOrderDetailModel.PickQty * saleOrderDetailModel.SalePrice;
-                        SelectedSaleOrder.SaleOrderShippedCollection.Add(saleOrderDetailModel);
-                    }
 
-                    //lock quantity Combobox when item is shipped
-                    Guid saleOrderShipDetailResource = Guid.Parse(saleOrderShipDetailModel.SaleOrderDetailResource);
-                    base_SaleOrderDetailModel lockUOM = SelectedSaleOrder.SaleOrderDetailCollection.SingleOrDefault(x => x.Resource.Equals(saleOrderShipDetailResource));
-                    if (lockUOM != null && !lockUOM.IsReadOnlyUOM)
-                    {
-                        lockUOM.IsReadOnlyUOM = true;
-                    }
+                        //lock quantity Combobox when item is shipped
+                        Guid saleOrderShipDetailResource = Guid.Parse(saleOrderShipDetailModel.SaleOrderDetailResource);
+                        base_SaleOrderDetailModel lockUOM = SelectedSaleOrder.SaleOrderDetailCollection.SingleOrDefault(x => x.Resource.Equals(saleOrderShipDetailResource));
+                        if (lockUOM != null && !lockUOM.IsReadOnlyUOM)
+                        {
+                            lockUOM.IsReadOnlyUOM = true;
+                        }
 
+                    }
+                    _saleOrderRepository.UpdateQtyOrderNRelate(SelectedSaleOrder);
+                    SelectedSaleOrder.SetFullPayment();
+                    //Save SaleOrder After Shipped
+                    UpdateSaleOrder(SelectedSaleOrder);
+                    _productRepository.Commit();
+                    //Lock Order if any item is shipped
+                    SetAllowChangeOrder(SelectedSaleOrder);
+                    UnitOfWork.CommitTransaction();
                 }
-                _saleOrderRepository.UpdateQtyOrderNRelate(SelectedSaleOrder);
-                SelectedSaleOrder.SetFullPayment();
-                //Save SaleOrder After Shipped
-                UpdateSaleOrder(SelectedSaleOrder);
-                _productRepository.Commit();
-                //Lock Order if any item is shipped
-                SetAllowChangeOrder(SelectedSaleOrder);
-            }
-            else
-            {
+                else
+                {
 
-                saleOrderShipModel.IsChecked = false;
-                saleOrderShipModel.IsShipped = false;
+                    saleOrderShipModel.IsChecked = false;
+                    saleOrderShipModel.IsShipped = false;
+                }
+            }
+            catch (Exception ex)
+            {
+                UnitOfWork.RollbackTransaction();
+                _log4net.Error(ex);
+                Xceed.Wpf.Toolkit.MessageBox.Show(ex.ToString(), Language.GetMsg("ErrorCaption"), MessageBoxButton.OK, MessageBoxImage.Error, MessageBoxResult.OK);
+
             }
         }
 
@@ -4278,16 +4436,24 @@ namespace CPC.POS.ViewModel
         /// <param name="saleOrderModel"></param>
         private void SaveStoreCardReturned(base_SaleOrderModel saleOrderModel)
         {
-            if (saleOrderModel.ReturnModel.StoreCardCollection.Any())
+            try
             {
-                foreach (base_CardManagementModel cardModel in saleOrderModel.ReturnModel.StoreCardCollection)
+                if (saleOrderModel.ReturnModel.StoreCardCollection.Any())
                 {
-                    cardModel.ToEntity();
-                    if (cardModel.IsNew)
-                        _cardManagementRepository.Add(cardModel.base_CardManagement);
+                    foreach (base_CardManagementModel cardModel in saleOrderModel.ReturnModel.StoreCardCollection)
+                    {
+                        cardModel.ToEntity();
+                        if (cardModel.IsNew)
+                            _cardManagementRepository.Add(cardModel.base_CardManagement);
+                    }
+                    _cardManagementRepository.Commit();
+                    saleOrderModel.ReturnModel.StoreCardCollection.Clear();
                 }
-                _cardManagementRepository.Commit();
-                saleOrderModel.ReturnModel.StoreCardCollection.Clear();
+            }
+            catch (Exception ex)
+            {
+                _log4net.Error(ex);
+                Xceed.Wpf.Toolkit.MessageBox.Show(ex.Message, Language.GetMsg("ErrorCaption"), MessageBoxButton.OK, MessageBoxImage.Error);
             }
         }
 
@@ -4297,14 +4463,20 @@ namespace CPC.POS.ViewModel
         /// </summary>
         private void OpenSOAdvanceSearch()
         {
+            if (_waitingTimer != null)
+                _waitingTimer.Stop();
             _salesOrderAdvanceSearchViewModel.CustomerCollection = this.CustomerCollection.ToList();
             _salesOrderAdvanceSearchViewModel.LoadData("SaleOrder");
             bool? dialogResult = _dialogService.ShowDialog<SalesOrderAdvanceSearchView>(_ownerViewModel, _salesOrderAdvanceSearchViewModel, Language.GetMsg("C104"));
             if (dialogResult == true)
             {
                 IsAdvanced = true;
-                Expression<Func<base_SaleOrder, bool>> predicate = _salesOrderAdvanceSearchViewModel.SearchAdvancePredicate;
-                LoadDataByPredicate(predicate, false, 0);
+                _predicate = _salesOrderAdvanceSearchViewModel.SearchAdvancePredicate;
+
+                SaleOrderCollection.Clear();
+                LoadDataByPredicate(_predicate, false, 0);
+
+                //_saleOrderBgWorker.RunWorkerAsync();
             }
         }
 
@@ -4313,15 +4485,27 @@ namespace CPC.POS.ViewModel
         /// </summary>
         private void SendEmailToCustomer()
         {
+
             //Send Email To Customer
             if (Define.CONFIGURATION.IsSendEmailCustomer && !string.IsNullOrWhiteSpace(SelectedSaleOrder.GuestModel.Email))
             {
                 MessageBoxResult result = Xceed.Wpf.Toolkit.MessageBox.Show(Language.GetMsg("SO_Message_ConfirmSendEmailToCustomer"), Language.GetMsg("POSCaption"), MessageBoxButton.YesNo, MessageBoxImage.Warning, MessageBoxResult.Yes);
                 if (result.Equals(MessageBoxResult.Yes))
                 {
-                    ReportViewModel rtp = new ReportViewModel(null, "rptSODetails", "", "Receipt", SelectedSaleOrder);
+                    BackgroundWorker bg = new BackgroundWorker();
+                    bg.DoWork += (sender, e) =>
+                    {
+                        IsBusy = true;
+                        ReportViewModel rtp = new ReportViewModel(null, "rptSODetails", "", "Receipt", SelectedSaleOrder);
+                    };
+                    bg.RunWorkerCompleted += (sender, e) =>
+                    {
+                        IsBusy = false;
+                    };
+                    bg.RunWorkerAsync();
                 }
             }
+
         }
 
         /// <summary>
@@ -4332,21 +4516,30 @@ namespace CPC.POS.ViewModel
         /// <param name="returnDetailModel"></param>
         private bool OpenCardCreation(base_SaleOrderModel saleOrderModel, base_ResourceReturnDetailModel returnDetailModel)
         {
-            GiftCardCreationViewModel viewModel = new GiftCardCreationViewModel();
-            viewModel.Amount = returnDetailModel.Amount;
-            bool? dialogResult = _dialogService.ShowDialog<GiftCardCreationView>(_ownerViewModel, viewModel, "Gift Card Creation");
-            if (dialogResult ?? false)
+            try
             {
-                //Update Customer Purchase & CustomerGifted
-                viewModel.StoreCardModel.GuestResourcePurchased = saleOrderModel.GuestModel.Resource.ToString();
-                viewModel.StoreCardModel.GuestGiftedResource = saleOrderModel.GuestModel.Resource.ToString();
-                viewModel.StoreCardModel.PurchaseDate = DateTime.Now;
-                returnDetailModel.StoreCardNo = viewModel.StoreCardModel.CardNumber;
-                saleOrderModel.ReturnModel.StoreCardCollection.Add(viewModel.StoreCardModel);
-                return true;
+                GiftCardCreationViewModel viewModel = new GiftCardCreationViewModel();
+                viewModel.Amount = returnDetailModel.Amount;
+                bool? dialogResult = _dialogService.ShowDialog<GiftCardCreationView>(_ownerViewModel, viewModel, "Gift Card Creation");
+                if (dialogResult ?? false)
+                {
+                    //Update Customer Purchase & CustomerGifted
+                    viewModel.StoreCardModel.GuestResourcePurchased = saleOrderModel.GuestModel.Resource.ToString();
+                    viewModel.StoreCardModel.GuestGiftedResource = saleOrderModel.GuestModel.Resource.ToString();
+                    viewModel.StoreCardModel.PurchaseDate = DateTime.Now;
+                    returnDetailModel.StoreCardNo = viewModel.StoreCardModel.CardNumber;
+                    saleOrderModel.ReturnModel.StoreCardCollection.Add(viewModel.StoreCardModel);
+                    return true;
+                }
+            }
+            catch (Exception ex)
+            {
+                _log4net.Error(ex);
+                Xceed.Wpf.Toolkit.MessageBox.Show(ex.Message, Language.GetMsg("ErrorCaption"), MessageBoxButton.OK, MessageBoxImage.Error);
             }
             return false;
         }
+
 
         /// <summary>
         /// Generate Barcode For Reward
@@ -4358,19 +4551,29 @@ namespace CPC.POS.ViewModel
         {
             barCodeId = string.Empty;
             barCodeImage = null;
-            if (!string.IsNullOrWhiteSpace(code))
+            try
             {
-                using (BarcodeLib.Barcode barCode = new BarcodeLib.Barcode())
+                if (!string.IsNullOrWhiteSpace(code))
                 {
-                    barCode.IncludeLabel = true;
-                    barCode.Encode(BarcodeLib.TYPE.EAN13, code, 200, 70);
-                    barCodeImage = barCode.Encoded_Image_Bytes;
-                    barCodeId = barCode.RawData;
-                    return true;
+                    using (BarcodeLib.Barcode barCode = new BarcodeLib.Barcode())
+                    {
+                        barCode.IncludeLabel = true;
+                        barCode.Encode(Define.CONFIGURATION.DefaultScanMethodType, code, 200, 70);
+                        barCodeImage = barCode.Encoded_Image_Bytes;
+                        barCodeId = barCode.RawData;
+                        return true;
+                    }
                 }
+            }
+            catch (Exception ex)
+            {
+                _log4net.Error(ex);
+                Xceed.Wpf.Toolkit.MessageBox.Show(ex.Message, Language.GetMsg("ErrorCaption"), MessageBoxButton.OK, MessageBoxImage.Error);
             }
             return false;
         }
+
+
         #endregion
 
         #region Propertychanged
@@ -4404,7 +4607,7 @@ namespace CPC.POS.ViewModel
                     break;
                 case "ProductTaxAmount":
                 case "ShipTaxAmount":
-                    if (saleOrderModel.TaxLocationModel != null && saleOrderModel.TaxLocationModel.TaxCodeModel.IsTaxAfterDiscount)
+                    if (saleOrderModel.TaxLocationModel != null && saleOrderModel.TaxLocationModel.TaxCodeModel != null && saleOrderModel.TaxLocationModel.TaxCodeModel.IsTaxAfterDiscount)
                         saleOrderModel.TaxAmount = saleOrderModel.ProductTaxAmount + saleOrderModel.ShipTaxAmount - saleOrderModel.DiscountAmount;
                     else
                         saleOrderModel.TaxAmount = saleOrderModel.ShipTaxAmount + saleOrderModel.ProductTaxAmount;
@@ -4466,7 +4669,7 @@ namespace CPC.POS.ViewModel
             switch (e.PropertyName)
             {
                 case "SalePrice":
-                    saleOrderDetailModel.SalePriceChanged();
+                    saleOrderDetailModel.SalePriceChanged(false);
                     saleOrderDetailModel.CalcSubTotal();
                     CalculateMultiNPriceTax();
                     _saleOrderRepository.CheckToShowDatagridRowDetail(saleOrderDetailModel);
@@ -4496,6 +4699,7 @@ namespace CPC.POS.ViewModel
                     if (!saleOrderDetailModel.ProductModel.IsSerialTracking)
                     {
                         BreakSODetailChange = true;
+                        //Calculate Discount with exited discount after that
                         _saleOrderRepository.CalcProductDiscount(SelectedSaleOrder, saleOrderDetailModel);
                         BreakSODetailChange = false;
                     }
@@ -4518,9 +4722,11 @@ namespace CPC.POS.ViewModel
                 case "UOMId":
                     SetPriceUOM(saleOrderDetailModel);
 
-                    BreakSODetailChange = true;
-                    _saleOrderRepository.CalcProductDiscount(SelectedSaleOrder, saleOrderDetailModel);
-                    BreakSODetailChange = false;
+                    //BreakSODetailChange = true;
+                    ////Calculate Discount with exited discount after that
+                    //_saleOrderRepository.CalcProductDiscount(SelectedSaleOrder, saleOrderDetailModel);
+                    //BreakSODetailChange = false;
+                    CalculateDiscount(saleOrderDetailModel);
 
                     _saleOrderRepository.CalcOnHandStore(SelectedSaleOrder, saleOrderDetailModel);
 
@@ -4783,6 +4989,61 @@ namespace CPC.POS.ViewModel
 
         #endregion
 
+        #region Events
+        private void _saleOrderBgWorker_DoWork(object sender, DoWorkEventArgs e)
+        {
+            if (Define.DisplayLoading)
+                IsBusy = true;
+
+            Expression<Func<base_SaleOrder, bool>> predicateAll = PredicateBuilder.True<base_SaleOrder>();
+            predicateAll = predicateAll.And(x => x.IsConverted && !x.IsVoided && !x.IsPurge && !x.IsLocked).And(_predicate);
+            if (Define.StoreCode != 0)
+            {
+                predicateAll = predicateAll.And(x => x.StoreCode.Equals(Define.StoreCode));
+            }
+
+            //Cout all SaleOrder in Data base show on grid
+            lock (UnitOfWork.Locker)
+            {
+                TotalSaleOrder = _saleOrderRepository.GetIQueryable(predicateAll).Count();
+
+                //Get data with range
+                IList<base_SaleOrder> saleOrders = _saleOrderRepository.GetRange<DateTime>(SaleOrderCollection.Count() - _numberNewItem, NumberOfDisplayItems, x => x.OrderDate.Value, predicateAll);
+
+                foreach (base_SaleOrder saleOrder in saleOrders)
+                {
+                    //_saleOrderBgWorker.ReportProgress(0, saleOrder);
+                }
+            }
+        }
+
+        private void _saleOrderBgWorker_ProgressChanged(object sender, ProgressChangedEventArgs e)
+        {
+            base_SaleOrderModel saleOrderModel = new base_SaleOrderModel((base_SaleOrder)e.UserState);
+            SetSaleOrderToModel(saleOrderModel);
+            SaleOrderCollection.Add(saleOrderModel);
+        }
+
+        private void _saleOrderBgWorker_RunWorkerCompleted(object sender, RunWorkerCompletedEventArgs e)
+        {
+            if (SaleOrderId > 0)
+            {
+                SetSelectedSaleOrderFromAnother();
+            }
+            else
+            {
+                //Sale Order View is Open & in Edit View
+                if (_viewExisted && !IsSearchMode && SelectedSaleOrder != null && SaleOrderCollection.Any() && !SelectedSaleOrder.IsNew) //Item is selected
+                {
+                    SetSelectedSaleOrderFromDbOrCollection();
+                }
+            }
+
+            IsBusy = false;
+        }
+
+        #endregion
+
         #region Override Methods
 
         public override void LoadData()
@@ -4799,8 +5060,8 @@ namespace CPC.POS.ViewModel
                     _salesOrderAdvanceSearchViewModel.ResetKeyword();
                 }
 
-                // Get permission
-                GetPermission();
+                // Get delete product in sale order permission
+                AllowDeleteProduct = UserPermissions.AllowDeleteProductSalesOrder;
 
                 _viewExisted = true;
             };
@@ -4809,11 +5070,14 @@ namespace CPC.POS.ViewModel
             {
                 IsBusy = false;
                 this._saleOrderCollection.Clear();
-                Expression<Func<base_SaleOrder, bool>> predicate = PredicateBuilder.True<base_SaleOrder>();
+                _predicate = PredicateBuilder.True<base_SaleOrder>();
                 if (!string.IsNullOrWhiteSpace(Keyword))//Load with Search Condition
-                    predicate = CreateSimpleSearchPredicate(Keyword); // CreatePredicateWithConditionSearch(Keyword);
+                    _predicate = CreateSimpleSearchPredicate(Keyword); // CreatePredicateWithConditionSearch(Keyword);
 
-                LoadDataByPredicate(predicate);
+                LoadDataByPredicate(_predicate);
+
+                //_saleOrderBgWorker.RunWorkerAsync();
+
             };
             bg.RunWorkerAsync();
         }
@@ -4852,7 +5116,7 @@ namespace CPC.POS.ViewModel
                 if (param is ComboItem)
                 {
 
-                    //Currently form is be called from another form, bellow methods get param & set Id to tempate variable(SaleOrderId).
+                    //Currently form is be called from another form, bellow methods get param & set Id to temparate variable(SaleOrderId).
                     //if param has not isChecked(form is Actived), form with be load again. after form loaded, set SelectedSaleOrder item base one temp variable(SaleOrderId)
                     //Otherwise,LoadData method won't be loaded, need to set selectedSaleOrder after recived value
 
@@ -4915,9 +5179,10 @@ namespace CPC.POS.ViewModel
                 else //Create saleOrder with ProductCollection
                 {
                     CreateNewSaleOrder();
+                    this.IsSearchMode = false;
                     IEnumerable<base_ProductModel> productCollection = param as IEnumerable<base_ProductModel>;
                     CreateSaleOrderDetailWithProducts(productCollection);
-                    this.IsSearchMode = false;
+
                 }
             }
         }
@@ -4939,73 +5204,59 @@ namespace CPC.POS.ViewModel
 
         #region Properties
 
-        private bool _allowSOShipping = true;
         /// <summary>
-        /// Gets or sets the AllowSOShipping.
+        /// Gets the AllowSOShipping.
         /// </summary>
         public bool AllowSOShipping
         {
             get
             {
                 if (SelectedSaleOrder == null)
-                    return _allowSOShipping;
-                return _allowSOShipping && SelectedSaleOrder.ShipProcess;
-            }
-            set
-            {
-                if (_allowSOShipping != value)
-                {
-                    _allowSOShipping = value;
-                    OnPropertyChanged(() => AllowSOShipping);
-                }
+                    return UserPermissions.AllowSalesOrderShipping;
+                return UserPermissions.AllowSalesOrderShipping && SelectedSaleOrder.ShipProcess;
             }
         }
 
-        private bool _allowSOReturn = true;
         /// <summary>
-        /// Gets or sets the AllowSOReturn.
+        /// Gets the AllowSOReturn.
         /// </summary>
         public bool AllowSOReturn
         {
             get
             {
                 if (SelectedSaleOrder == null)
-                    return _allowSOReturn;
-                return _allowSOReturn && SelectedSaleOrder.ShipProcess;
-            }
-            set
-            {
-                if (_allowSOReturn != value)
-                {
-                    _allowSOReturn = value;
-                    OnPropertyChanged(() => AllowSOReturn);
-                }
+                    return UserPermissions.AllowSalesOrderReturn;
+                return UserPermissions.AllowSalesOrderReturn && SelectedSaleOrder.ShipProcess;
             }
         }
 
         #endregion
 
-        /// <summary>
-        /// Get permissions
-        /// </summary>
-        public override void GetPermission()
+        #endregion
+
+        #region IDropTarget Members
+
+        public void DragOver(DropInfo dropInfo)
         {
-            if (!IsAdminPermission && !IsFullPermission)
+            if (dropInfo.Data is base_ProductModel || dropInfo.Data is IEnumerable<base_ProductModel>)
             {
-                // Get all user rights
-                IEnumerable<string> userRightCodes = Define.USER_AUTHORIZATION.Select(x => x.Code);
+                dropInfo.Effects = DragDropEffects.Move;
+            }
+            else if (dropInfo.Data is ComboItem)
+            {
+                dropInfo.Effects = DragDropEffects.Move;
+            }
+        }
 
-                // Get sale order shipping permission
-                AllowSOShipping = userRightCodes.Contains("SO100-04-11");
-
-                // Get sale order return permission
-                AllowSOReturn = userRightCodes.Contains("SO100-04-05");
-
-                // Get add/copy customer permission
-                AllowAddCustomer = userRightCodes.Contains("SO100-01-01");
-
-                // Get delete product in sale order permission
-                AllowDeleteProduct = userRightCodes.Contains("SO100-04-13");
+        public void Drop(DropInfo dropInfo)
+        {
+            if (dropInfo.Data is base_ProductModel || dropInfo.Data is IEnumerable<base_ProductModel>)
+            {
+                (_ownerViewModel as MainViewModel).OpenViewExecute("Sales Order", dropInfo.Data);
+            }
+            else if (dropInfo.Data is ComboItem)
+            {
+                (_ownerViewModel as MainViewModel).OpenViewExecute("Sales Order", dropInfo.Data);
             }
         }
 

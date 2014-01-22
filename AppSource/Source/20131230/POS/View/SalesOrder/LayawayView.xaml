@@ -18,7 +18,6 @@
              xmlns:i="clr-namespace:System.Windows.Interactivity;assembly=System.Windows.Interactivity"
              xmlns:local="clr-namespace:CPC.POS"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-             xmlns:Microsoft_Windows_Themes="clr-namespace:Microsoft.Windows.Themes;assembly=PresentationFramework.Luna"
              xmlns:sys="clr-namespace:System;assembly=mscorlib"
              xmlns:wpfControl="clr-namespace:Xceed.Wpf.Toolkit;assembly=WPFToolkit.Extended"
              x:Name="ucLayawayView"
@@ -26,8 +25,7 @@
              Height="Auto"
              Background="{DynamicResource UserControlBackground}"
              helper:ValidationHelper.IsEnabled="True"
-             helper:ValidationHelper.IsValid="{Binding IsValid,
-                                                       Mode=OneWayToSource}"
+             helper:ValidationHelper.IsValid="{Binding IsValid, Mode=OneWayToSource}"
              mc:Ignorable="d Anno">
     <UserControl.Resources>
         <!--  Region "Converter"  -->
@@ -41,14 +39,10 @@
 
         <!--  region "ContextMenu"  -->
         <ContextMenu x:Key="SaleOrderDetailContextMenu">
-            <MenuItem Command="{Binding DataContext.EditProductCommand,
-                                        RelativeSource={RelativeSource AncestorType={x:Type UserControl},
-                                                                       Mode=FindAncestor}}"
+            <MenuItem Header="Edit Item"
+                      Command="{Binding DataContext.EditProductCommand, RelativeSource={RelativeSource AncestorType={x:Type UserControl}, Mode=FindAncestor}}"
                       CommandParameter="{Binding .}"
-                      Header="Edit Item"
-                      IsEnabled="{Binding .,
-                                          Converter={StaticResource permissionConverter},
-                                          ConverterParameter=SO100-05-07}">
+                      IsEnabled="{Binding ., Converter={StaticResource permissionConverter}, ConverterParameter=SO100-05-07}">
                 <MenuItem.Icon>
                     <Rectangle Width="16"
                                Height="16"
@@ -56,14 +50,12 @@
                                Stretch="Fill" />
                 </MenuItem.Icon>
             </MenuItem>
-            <MenuItem Command="{Binding DataContext.SerialTrackingDetailCommand,
-                                        RelativeSource={RelativeSource AncestorType={x:Type UserControl},
-                                                                       Mode=FindAncestor}}"
-                      CommandParameter="{Binding .}"
-                      Header="Serial Tracking Detail">
+            <MenuItem Header="Serial Tracking Detail"
+                      Command="{Binding DataContext.SerialTrackingDetailCommand, RelativeSource={RelativeSource AncestorType={x:Type UserControl}, Mode=FindAncestor}}"
+                      CommandParameter="{Binding .}">
                 <MenuItem.Visibility>
-                    <Binding Mode="OneWay"
-                             Path="ProductModel.IsSerialTracking"
+                    <Binding Path="ProductModel.IsSerialTracking"
+                             Mode="OneWay"
                              UpdateSourceTrigger="PropertyChanged">
                         <Binding.Converter>
                             <converter:BoolToVisibilityConverter FalseToVisibility="Collapsed" />
@@ -77,11 +69,9 @@
                                Stretch="Fill" />
                 </MenuItem.Icon>
             </MenuItem>
-            <MenuItem Command="{Binding DataContext.DeleteSaleOrderDetailCommand,
-                                        RelativeSource={RelativeSource AncestorType={x:Type UserControl},
-                                                                       Mode=FindAncestor}}"
-                      CommandParameter="{Binding .}"
-                      Header="Delete">
+            <MenuItem Header="Delete"
+                      Command="{Binding DataContext.DeleteSaleOrderDetailCommand, RelativeSource={RelativeSource AncestorType={x:Type UserControl}, Mode=FindAncestor}}"
+                      CommandParameter="{Binding .}">
                 <MenuItem.Icon>
                     <Rectangle Width="16"
                                Height="16"
@@ -113,7 +103,8 @@
                                 HorizontalAlignment="Left"
                                 Orientation="Horizontal">
                         <StackPanel.Visibility>
-                            <Binding Mode="OneWay" Path="ProductModel.IsCoupon">
+                            <Binding Path="ProductModel.IsCoupon"
+                                     Mode="OneWay">
                                 <Binding.Converter>
                                     <converter:BoolToVisibilityConverter FalseToVisibility="Visible" />
                                 </Binding.Converter>
@@ -133,10 +124,7 @@
                                    VerticalAlignment="Center"
                                    FontStyle="Italic"
                                    Foreground="Red"
-                                   Text="{Binding RegularPrice,
-                                                  Mode=OneWay,
-                                                  ConverterCulture={x:Static local:Define.ConverterCulture},
-                                                  StringFormat={x:Static local:Define.CurrencyFormat}}"
+                                   Text="{Binding RegularPrice, Mode=OneWay, ConverterCulture={x:Static local:Define.ConverterCulture}, StringFormat={x:Static local:Define.CurrencyFormat}}"
                                    TextWrapping="NoWrap" />
                         <TextBlock x:Name="txtblUnitDiscount"
                                    Margin="20,0,0,0"
@@ -152,9 +140,7 @@
                                    VerticalAlignment="Center"
                                    FontStyle="Italic"
                                    Foreground="Red"
-                                   Text="{Binding UnitDiscount,
-                                                  ConverterCulture={x:Static local:Define.ConverterCulture},
-                                                  StringFormat={x:Static local:Define.CurrencyFormat}}"
+                                   Text="{Binding UnitDiscount, ConverterCulture={x:Static local:Define.ConverterCulture}, StringFormat={x:Static local:Define.CurrencyFormat}}"
                                    TextWrapping="NoWrap" />
                         <TextBlock x:Name="txtblTotalDiscount"
                                    Margin="20,0,0,0"
@@ -170,9 +156,7 @@
                                    VerticalAlignment="Center"
                                    FontStyle="Italic"
                                    Foreground="Red"
-                                   Text="{Binding TotalDiscount,
-                                                  ConverterCulture={x:Static local:Define.ConverterCulture},
-                                                  StringFormat={x:Static local:Define.CurrencyFormat}}"
+                                   Text="{Binding TotalDiscount, ConverterCulture={x:Static local:Define.ConverterCulture}, StringFormat={x:Static local:Define.CurrencyFormat}}"
                                    TextWrapping="NoWrap" />
                     </StackPanel>
                     <StackPanel x:Name="stkSerial"
@@ -180,7 +164,8 @@
                                 HorizontalAlignment="Left"
                                 Orientation="Horizontal">
                         <StackPanel.Visibility>
-                            <Binding Mode="OneWay" Path="ProductModel.IsCoupon">
+                            <Binding Path="ProductModel.IsCoupon"
+                                     Mode="OneWay">
                                 <Binding.Converter>
                                     <converter:BoolToVisibilityConverter FalseToVisibility="Visible" />
                                 </Binding.Converter>
@@ -201,8 +186,7 @@
                                    VerticalAlignment="Center"
                                    FontStyle="Italic"
                                    Foreground="#FF0010FF"
-                                   Text="{Binding SerialTrackingDisplay,
-                                                  Mode=OneWay}"
+                                   Text="{Binding SerialTrackingDisplay, Mode=OneWay}"
                                    TextDecorations="Underline"
                                    TextWrapping="NoWrap" />
                     </StackPanel>
@@ -211,7 +195,8 @@
                                 HorizontalAlignment="Left"
                                 Orientation="Horizontal">
                         <StackPanel.Visibility>
-                            <Binding Mode="OneWay" Path="ProductModel.IsCoupon">
+                            <Binding Path="ProductModel.IsCoupon"
+                                     Mode="OneWay">
                                 <Binding.Converter>
                                     <converter:BoolToVisibilityConverter FalseToVisibility="Collapsed" />
                                 </Binding.Converter>
@@ -232,19 +217,24 @@
                                    VerticalAlignment="Center"
                                    FontStyle="Italic"
                                    Foreground="#FF0010FF"
-                                   Text="{Binding SerialTracking,
-                                                  Mode=OneWay}"
+                                   Text="{Binding SerialTracking, Mode=OneWay}"
                                    TextDecorations="Underline"
                                    TextWrapping="NoWrap" />
                     </StackPanel>
                 </StackPanel>
             </Grid>
             <DataTemplate.Triggers>
-                <DataTrigger Binding="{Binding SerialTracking}" Value="{x:Static sys:String.Empty}">
-                    <Setter TargetName="stkSerial" Property="Visibility" Value="Collapsed" />
+                <DataTrigger Binding="{Binding SerialTracking}"
+                             Value="{x:Static sys:String.Empty}">
+                    <Setter TargetName="stkSerial"
+                            Property="Visibility"
+                            Value="Collapsed" />
                 </DataTrigger>
-                <DataTrigger Binding="{Binding DiscountPercent}" Value="0">
-                    <Setter TargetName="stkpDiscount" Property="Visibility" Value="Collapsed" />
+                <DataTrigger Binding="{Binding DiscountPercent}"
+                             Value="0">
+                    <Setter TargetName="stkpDiscount"
+                            Property="Visibility"
+                            Value="Collapsed" />
                 </DataTrigger>
             </DataTemplate.Triggers>
         </DataTemplate>
@@ -254,9 +244,12 @@
         <Style x:Key="DataGridDetailRowStyle"
                BasedOn="{StaticResource {x:Type DataGridRow}}"
                TargetType="{x:Type DataGridRow}">
-            <Setter Property="cpcBehavior:DataGridCellFocusHelper.CellFocus" Value="{Binding IsAllowChange, Mode=OneWay}" />
-            <Setter Property="cpcBehavior:DataGridCellFocusHelper.ItemSource" Value="{Binding ., RelativeSource={RelativeSource Self}}" />
-            <Setter Property="ContextMenu" Value="{StaticResource SaleOrderDetailContextMenu}" />
+            <Setter Property="cpcBehavior:DataGridCellFocusHelper.CellFocus"
+                    Value="{Binding IsAllowChange, Mode=OneWay}" />
+            <Setter Property="cpcBehavior:DataGridCellFocusHelper.ItemSource"
+                    Value="{Binding ., RelativeSource={RelativeSource Self}}" />
+            <Setter Property="ContextMenu"
+                    Value="{StaticResource SaleOrderDetailContextMenu}" />
             <Setter Property="Template">
                 <Setter.Value>
                     <ControlTemplate TargetType="{x:Type DataGridRow}">
@@ -279,12 +272,10 @@
                                 <!--  Visibility="{TemplateBinding DetailsVisibility}">  -->
                                 <DataGridDetailsPresenter Grid.Row="1"
                                                           Grid.Column="1"
-                                                          SelectiveScrollingGrid.SelectiveScrollingOrientation="{Binding AreRowDetailsFrozen,
-                                                                                                                         ConverterParameter={x:Static SelectiveScrollingOrientation.Vertical},
-                                                                                                                         Converter={x:Static DataGrid.RowDetailsScrollingConverter},
-                                                                                                                         RelativeSource={RelativeSource AncestorType={x:Type DataGrid}}}">
+                                                          SelectiveScrollingGrid.SelectiveScrollingOrientation="{Binding AreRowDetailsFrozen, ConverterParameter={x:Static SelectiveScrollingOrientation.Vertical}, Converter={x:Static DataGrid.RowDetailsScrollingConverter}, RelativeSource={RelativeSource AncestorType={x:Type DataGrid}}}">
                                     <DataGridDetailsPresenter.Visibility>
-                                        <Binding Mode="OneWay" Path="IsVisibleRowDetail">
+                                        <Binding Path="IsVisibleRowDetail"
+                                                 Mode="OneWay">
                                             <Binding.Converter>
                                                 <converter:BoolToVisibilityConverter FalseToVisibility="Collapsed" />
                                             </Binding.Converter>
@@ -301,15 +292,21 @@
             </Setter>
             <Style.Triggers>
                 <!--  Set Color for parent item  -->
-                <DataTrigger Binding="{Binding ItemType, Converter={StaticResource integerToBooleanConverter}, ConverterParameter=1}" Value="True">
+                <DataTrigger Binding="{Binding ItemType, Converter={StaticResource integerToBooleanConverter}, ConverterParameter=1}"
+                             Value="True">
 
-                    <Setter Property="Background" Value="{DynamicResource DatagridRow_Group_Background}" />
-                    <Setter Property="FontWeight" Value="Bold" />
-                    <Setter Property="Foreground" Value="#FFFF0000" />
+                    <Setter Property="Background"
+                            Value="{DynamicResource DatagridRow_Group_Background}" />
+                    <Setter Property="FontWeight"
+                            Value="Bold" />
+                    <Setter Property="Foreground"
+                            Value="#FFFF0000" />
                 </DataTrigger>
                 <!--  Set Color for Children item  -->
-                <DataTrigger Binding="{Binding ItemType, Converter={StaticResource integerToBooleanConverter}, ConverterParameter=2}" Value="True">
-                    <Setter Property="Background" Value="{DynamicResource DatagridRow_Child_Background}" />
+                <DataTrigger Binding="{Binding ItemType, Converter={StaticResource integerToBooleanConverter}, ConverterParameter=2}"
+                             Value="True">
+                    <Setter Property="Background"
+                            Value="{DynamicResource DatagridRow_Child_Background}" />
 
                 </DataTrigger>
             </Style.Triggers>
@@ -317,38 +314,60 @@
         <Style x:Key="DataGridPriceCellStyle"
                BasedOn="{StaticResource DataGridCellDisableStyle}"
                TargetType="{x:Type DataGridCell}">
-            <Setter Property="cpcBehavior:DataGridCellFocusHelper.CellFocus" Value="{Binding ProductModel.IsOpenItem, Mode=OneWay}" />
-            <Setter Property="cpcBehavior:DataGridCellFocusHelper.ItemSource" Value="{Binding ., RelativeSource={RelativeSource Self}}" />
+            <Setter Property="cpcBehavior:DataGridCellFocusHelper.CellFocus"
+                    Value="{Binding ProductModel.IsOpenItem, Mode=OneWay}" />
+            <Setter Property="cpcBehavior:DataGridCellFocusHelper.ItemSource"
+                    Value="{Binding ., RelativeSource={RelativeSource Self}}" />
             <Style.Triggers>
-                <Trigger Property="IsSelected" Value="True">
-                    <Setter Property="BorderThickness" Value="0" />
-                    <Setter Property="Foreground" Value="{DynamicResource DatagridCell_IsSelected_Foreground}" />
+                <Trigger Property="IsSelected"
+                         Value="True">
+                    <Setter Property="BorderThickness"
+                            Value="0" />
+                    <Setter Property="Foreground"
+                            Value="{DynamicResource DatagridCell_IsSelected_Foreground}" />
                 </Trigger>
-                <DataTrigger Binding="{Binding ProductModel.IsOpenItem}" Value="True">
-                    <Setter Property="Foreground" Value="{DynamicResource ForegroundGreenBrush}" />
-                    <Setter Property="FontWeight" Value="Bold" />
+                <DataTrigger Binding="{Binding ProductModel.IsOpenItem}"
+                             Value="True">
+                    <Setter Property="Foreground"
+                            Value="{DynamicResource ForegroundGreenBrush}" />
+                    <Setter Property="FontWeight"
+                            Value="Bold" />
                 </DataTrigger>
             </Style.Triggers>
 
         </Style>
-        <Style x:Key="ComboBoxTextStyle" TargetType="{x:Type ComboBox}">
-            <Setter Property="Focusable" Value="False" />
-            <Setter Property="cpcBehavior:MoveFocusHelper.MoveFocus" Value="True" />
+        <Style x:Key="ComboBoxTextStyle"
+               TargetType="{x:Type ComboBox}">
+            <Setter Property="Focusable"
+                    Value="False" />
+            <Setter Property="cpcBehavior:MoveFocusHelper.MoveFocus"
+                    Value="True" />
             <!--
                 <Setter Property="FocusVisualStyle"
                 Value="{StaticResource ComboBoxFocusVisual}" />
             -->
-            <Setter Property="Foreground" Value="{DynamicResource {x:Static SystemColors.WindowTextBrushKey}}" />
-            <Setter Property="Background" Value="{DynamicResource {x:Static SystemColors.WindowBrushKey}}" />
-            <Setter Property="BorderThickness" Value="1" />
-            <Setter Property="Padding" Value="1" />
-            <Setter Property="ScrollViewer.HorizontalScrollBarVisibility" Value="Auto" />
-            <Setter Property="ScrollViewer.VerticalScrollBarVisibility" Value="Auto" />
-            <Setter Property="ScrollViewer.CanContentScroll" Value="true" />
-            <Setter Property="ScrollViewer.PanningMode" Value="Both" />
-            <Setter Property="Stylus.IsFlicksEnabled" Value="False" />
-            <Setter Property="VerticalContentAlignment" Value="Center" />
-            <Setter Property="Validation.ErrorTemplate" Value="{x:Null}" />
+            <Setter Property="Foreground"
+                    Value="{DynamicResource {x:Static SystemColors.WindowTextBrushKey}}" />
+            <Setter Property="Background"
+                    Value="{DynamicResource {x:Static SystemColors.WindowBrushKey}}" />
+            <Setter Property="BorderThickness"
+                    Value="1" />
+            <Setter Property="Padding"
+                    Value="1" />
+            <Setter Property="ScrollViewer.HorizontalScrollBarVisibility"
+                    Value="Auto" />
+            <Setter Property="ScrollViewer.VerticalScrollBarVisibility"
+                    Value="Auto" />
+            <Setter Property="ScrollViewer.CanContentScroll"
+                    Value="true" />
+            <Setter Property="ScrollViewer.PanningMode"
+                    Value="Both" />
+            <Setter Property="Stylus.IsFlicksEnabled"
+                    Value="False" />
+            <Setter Property="VerticalContentAlignment"
+                    Value="Center" />
+            <Setter Property="Validation.ErrorTemplate"
+                    Value="{x:Null}" />
             <Setter Property="Template">
                 <Setter.Value>
                     <ControlTemplate TargetType="{x:Type ComboBox}">
@@ -361,7 +380,8 @@
                                     <Grid.ColumnDefinitions>
                                         <ColumnDefinition Width="1" />
                                         <ColumnDefinition />
-                                        <ColumnDefinition Width="0" SharedSizeGroup="ComboBoxButton" />
+                                        <ColumnDefinition Width="0"
+                                                          SharedSizeGroup="ComboBoxButton" />
                                     </Grid.ColumnDefinitions>
                                     <Border x:Name="SelectedItemBorder"
                                             Grid.ColumnSpan="2"
@@ -376,59 +396,78 @@
                                                       ContentTemplateSelector="{TemplateBinding ItemTemplateSelector}"
                                                       SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}" />
                                     <ToggleButton Grid.ColumnSpan="3"
-                                                  IsChecked="{Binding IsDropDownOpen,
-                                                                      Mode=TwoWay,
-                                                                      RelativeSource={RelativeSource TemplatedParent}}"
+                                                  IsChecked="{Binding IsDropDownOpen, Mode=TwoWay, RelativeSource={RelativeSource TemplatedParent}}"
                                                   Style="{StaticResource ComboBoxTransparentButtonStyle}" />
                                 </Grid>
                             </Border>
                         </Grid>
                         <ControlTemplate.Triggers>
-                            <Trigger Property="HasItems" Value="false" />
-                            <Trigger Property="IsEnabled" Value="false">
-                                <Setter Property="Foreground" Value="{DynamicResource {x:Static SystemColors.GrayTextBrushKey}}" />
-                                <Setter TargetName="Bd" Property="Background" Value="{DynamicResource {x:Static SystemColors.ControlBrushKey}}" />
+                            <Trigger Property="HasItems"
+                                     Value="false" />
+                            <Trigger Property="IsEnabled"
+                                     Value="false">
+                                <Setter Property="Foreground"
+                                        Value="{DynamicResource {x:Static SystemColors.GrayTextBrushKey}}" />
+                                <Setter TargetName="Bd"
+                                        Property="Background"
+                                        Value="{DynamicResource {x:Static SystemColors.ControlBrushKey}}" />
                             </Trigger>
-                            <Trigger Property="IsGrouping" Value="true">
-                                <Setter Property="ScrollViewer.CanContentScroll" Value="false" />
+                            <Trigger Property="IsGrouping"
+                                     Value="true">
+                                <Setter Property="ScrollViewer.CanContentScroll"
+                                        Value="false" />
                             </Trigger>
-                            <Trigger Property="Validation.HasError" Value="True">
-                                <Setter TargetName="Bd" Property="BorderBrush" Value="#FFFF0000" />
+                            <Trigger Property="Validation.HasError"
+                                     Value="True">
+                                <Setter TargetName="Bd"
+                                        Property="BorderBrush"
+                                        Value="#FFFF0000" />
                             </Trigger>
                         </ControlTemplate.Triggers>
                     </ControlTemplate>
                 </Setter.Value>
             </Setter>
-            <Setter Property="FontSize" Value="11" />
-            <Setter Property="BorderBrush" Value="{DynamicResource TextBoxCanlendarComboboxBorderBrush}" />
+            <Setter Property="FontSize"
+                    Value="11" />
+            <Setter Property="BorderBrush"
+                    Value="{DynamicResource TextBoxCanlendarComboboxBorderBrush}" />
             <Style.Triggers>
-                <Trigger Property="IsEditable" Value="true">
-                    <Setter Property="IsTabStop" Value="false" />
-                    <Setter Property="Padding" Value="0,1" />
-                    <Setter Property="Template" Value="{StaticResource ComboBoxEditableTemplate}" />
+                <Trigger Property="IsEditable"
+                         Value="true">
+                    <Setter Property="IsTabStop"
+                            Value="false" />
+                    <Setter Property="Padding"
+                            Value="0,1" />
+                    <Setter Property="Template"
+                            Value="{StaticResource ComboBoxEditableTemplate}" />
                 </Trigger>
             </Style.Triggers>
         </Style>
-        <Style x:Key="ListViewItemColorStyle" TargetType="{x:Type ListViewItem}">
+        <Style x:Key="ListViewItemColorStyle"
+               TargetType="{x:Type ListViewItem}">
             <!--
                 <Setter Property="VerticalContentAlignment"
                 Value="Center" />
             -->
             <Style.Triggers>
-                <DataTrigger Binding="{Binding IsOpenItem}" Value="True">
-                    <Setter Property="Foreground" Value="{DynamicResource ForegroundGreenBrush}" />
-                    <Setter Property="FontWeight" Value="Bold" />
+                <DataTrigger Binding="{Binding IsOpenItem}"
+                             Value="True">
+                    <Setter Property="Foreground"
+                            Value="{DynamicResource ForegroundGreenBrush}" />
+                    <Setter Property="FontWeight"
+                            Value="Bold" />
                 </DataTrigger>
             </Style.Triggers>
         </Style>
         <!--  EndRegion "Style"  -->
     </UserControl.Resources>
-	 <UserControl.InputBindings>
-<KeyBinding Command="{Binding HelpCommand}"
+    <UserControl.InputBindings>
+        <KeyBinding Command="{Binding HelpCommand}"
                     Gesture="F1" />
-</UserControl.InputBindings>
+    </UserControl.InputBindings>
     <Grid x:Name="GridLayout">
-        <Rectangle x:Name="UserControl_Background_Image" Fill="{DynamicResource UserControl_Background_Image}" />
+        <Rectangle x:Name="UserControl_Background_Image"
+                   Fill="{DynamicResource UserControl_Background_Image}" />
         <wpfControl:BusyIndicator IsBusy="{Binding IsBusy, Mode=OneWay}">
 
             <Grid x:Name="grdInvoice">
@@ -437,8 +476,8 @@
                       d:IsHidden="True"
                       d:LayoutOverrides="GridBox">
                     <Grid.Visibility>
-                        <Binding Mode="OneWay"
-                                 Path="IsSearchMode"
+                        <Binding Path="IsSearchMode"
+                                 Mode="OneWay"
                                  UpdateSourceTrigger="PropertyChanged">
                             <Binding.Converter>
                                 <converter:BoolToVisibilityConverter FalseToVisibility="Collapsed" />
@@ -449,14 +488,16 @@
                         <RowDefinition Height="85" />
                         <RowDefinition />
                     </Grid.RowDefinitions>
-                    <GroupBox x:Name="gbSearch" Margin="10,10,10,0">
+                    <GroupBox x:Name="gbSearch"
+                              Margin="10,10,10,0">
                         <GroupBox.Header>
                             <TextBlock x:Name="txtblSearch"
                                        Style="{DynamicResource GroupboxTextBlock}"
                                        Text="{DynamicResource C113}"
                                        TextWrapping="NoWrap" />
                         </GroupBox.Header>
-                        <Grid x:Name="grdgbSearch" Margin="0,4,0,0">
+                        <Grid x:Name="grdgbSearch"
+                              Margin="0,4,0,0">
                             <Grid x:Name="grdgbContentSearch">
                                 <Grid.RowDefinitions>
                                     <RowDefinition Height="25" />
@@ -468,9 +509,7 @@
                                                              VerticalContentAlignment="Center"
                                                              BorderBrush="{DynamicResource TextBoxCanlendarComboboxBorderBrush}"
                                                              Padding="24,0,5,0"
-                                                             Text="{Binding FilterText,
-                                                                            Mode=TwoWay,
-                                                                            UpdateSourceTrigger=PropertyChanged}"
+                                                             Text="{Binding FilterText, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                                                              TextWrapping="NoWrap"
                                                              Watermark="{DynamicResource C135}">
                                     <i:Interaction.Behaviors>
@@ -479,8 +518,7 @@
                                     <wpfControl:WatermarkTextBox.InputBindings>
                                         <KeyBinding Key="Enter"
                                                     Command="{Binding SearchCommand}"
-                                                    CommandParameter="{Binding Text,
-                                                                               ElementName=txtKeyword}" />
+                                                    CommandParameter="{Binding Text, ElementName=txtKeyword}" />
                                     </wpfControl:WatermarkTextBox.InputBindings>
                                 </wpfControl:WatermarkTextBox>
                                 <Rectangle x:Name="imgFind1"
@@ -489,13 +527,13 @@
                                            HorizontalAlignment="Left"
                                            Fill="{DynamicResource Find}" />
                                 <Button x:Name="btnAdvanceSearch"
+                                        Command="{Binding SaleOrderAdvanceSearchCommand}"
                                         Grid.Row="1"
                                         Width="100"
                                         Height="20"
                                         Margin="10,0,0,0"
                                         HorizontalAlignment="Left"
                                         VerticalAlignment="Center"
-                                        Command="{Binding SaleOrderAdvanceSearchCommand}"
                                         Content="{DynamicResource C104}"
                                         Style="{DynamicResource ButtonAdvanceSearch}"
                                         d:LayoutOverrides="HorizontalAlignment, Height, GridBox" />
@@ -503,17 +541,16 @@
                         </Grid>
                     </GroupBox>
                     <cpcDataGrid:DataGridControl x:Name="dtgrdSearch"
+                                                 Command="{Binding LoadStepCommand}"
                                                  Grid.Row="3"
                                                  Margin="10,10.2,10,10"
                                                  VerticalAlignment="Stretch"
                                                  AutoGenerateColumns="False"
                                                  CanUserAddRows="False"
                                                  CanUserDeleteRows="False"
-                                                 Command="{Binding LoadStepCommand}"
                                                  cpcBehavior:DoubleClickCommandBehavior.CanDoubleClickOnChild="False"
                                                  cpcBehavior:DoubleClickCommandBehavior.DoubleClickCommand="{Binding DoubleClickViewCommand}"
-                                                 cpcBehavior:DoubleClickCommandBehavior.DoubleClickCommandParameter="{Binding SelectedItem,
-                                                                                                                              ElementName=dtgrdSearch}"
+                                                 cpcBehavior:DoubleClickCommandBehavior.DoubleClickCommandParameter="{Binding SelectedItem, ElementName=dtgrdSearch}"
                                                  DisplayItems="{Binding NumberOfDisplayItems}"
                                                  IsPaging="True"
                                                  IsReadOnly="True"
@@ -524,9 +561,8 @@
                                                  Style="{DynamicResource DatagridWithRowHeader}">
                         <cpcDataGrid:DataGridControl.ContextMenu>
                             <ContextMenu Tag="{Binding PlacementTarget, RelativeSource={RelativeSource Mode=Self}}">
-                                <MenuItem Command="{Binding NewCommand}"
-                                          Header="New Item"
-                                          IsEnabled="{Binding AllowAddLayaway}">
+                                <MenuItem Header="New Item"
+                                          Command="{Binding NewCommand}">
                                     <MenuItem.Icon>
                                         <Rectangle Width="16"
                                                    Height="16"
@@ -534,11 +570,9 @@
                                                    Stretch="Fill" />
                                     </MenuItem.Icon>
                                 </MenuItem>
-                                <MenuItem Command="{Binding EditItemCommand}"
-                                          CommandParameter="{Binding Tag,
-                                                                     RelativeSource={RelativeSource AncestorType={x:Type ContextMenu},
-                                                                                                    Mode=FindAncestor}}"
-                                          Header="Edit Item">
+                                <MenuItem Header="Edit Item"
+                                          Command="{Binding EditItemCommand}"
+                                          CommandParameter="{Binding Tag, RelativeSource={RelativeSource AncestorType={x:Type ContextMenu}, Mode=FindAncestor}}">
                                     <MenuItem.Icon>
                                         <Rectangle Width="16"
                                                    Height="16"
@@ -546,14 +580,10 @@
                                                    Stretch="Fill" />
                                     </MenuItem.Icon>
                                 </MenuItem>
-                                <MenuItem Command="{Binding DuplicateItemCommand}"
-                                          CommandParameter="{Binding Tag,
-                                                                     RelativeSource={RelativeSource AncestorType={x:Type ContextMenu},
-                                                                                                    Mode=FindAncestor}}"
-                                          Header="Duplicate Item"
-                                          IsEnabled="{Binding .,
-                                                              ConverterParameter=SO100-05-02,
-                                                              Converter={StaticResource permissionConverter}}">
+                                <MenuItem Header="Duplicate Item"
+                                          Command="{Binding DuplicateItemCommand}"
+                                          CommandParameter="{Binding Tag, RelativeSource={RelativeSource AncestorType={x:Type ContextMenu}, Mode=FindAncestor}}"
+                                          IsEnabled="{Binding ., ConverterParameter=SO100-05-02, Converter={StaticResource permissionConverter}}">
                                     <MenuItem.Icon>
                                         <Rectangle Width="16"
                                                    Height="16"
@@ -565,38 +595,32 @@
                         </cpcDataGrid:DataGridControl.ContextMenu>
                         <cpcDataGrid:DataGridControl.Columns>
 
-                            <DataGridTextColumn Width="90"
-                                                MinWidth="80"
-                                                Binding="{Binding SONumber,
-                                                                  Mode=OneWay}">
+                            <DataGridTextColumn Binding="{Binding SONumber, Mode=OneWay}"
+                                                Width="90"
+                                                MinWidth="80">
                                 <DataGridTextColumn.Header>
                                     <TextBlock Text="{DynamicResource SO_TextBlock_LayawayNum}" />
                                 </DataGridTextColumn.Header>
                             </DataGridTextColumn>
-                            <DataGridTextColumn Width="70"
+                            <DataGridTextColumn Binding="{Binding OrderDate, Mode=OneWay, StringFormat={x:Static local:Define.DateFormat}}"
+                                                Width="70"
                                                 MinWidth="70"
-                                                Binding="{Binding OrderDate,
-                                                                  Mode=OneWay,
-                                                                  StringFormat={x:Static local:Define.DateFormat}}"
                                                 IsReadOnly="True">
                                 <DataGridTextColumn.Header>
-                                    <TextBlock Text="{DynamicResource C148}" />
+                                    <TextBlock Text="{DynamicResource SO_TextBlock_LayawayDate}" />
                                 </DataGridTextColumn.Header>
                             </DataGridTextColumn>
-                            <DataGridTextColumn Width="80"
+                            <DataGridTextColumn Binding="{Binding OrderStatus, ConverterParameter=StatusSO, Converter={StaticResource comboxItemToTextConverter}}"
+                                                Width="80"
                                                 MinWidth="80"
-                                                Binding="{Binding OrderStatus,
-                                                                  ConverterParameter=StatusSO,
-                                                                  Converter={StaticResource comboxItemToTextConverter}}"
                                                 IsReadOnly="True">
                                 <DataGridTextColumn.Header>
                                     <TextBlock Text="{DynamicResource C151}" />
                                 </DataGridTextColumn.Header>
                             </DataGridTextColumn>
-                            <DataGridTextColumn Width="180"
-                                                MinWidth="100"
-                                                Binding="{Binding GuestModel.LegalName,
-                                                                  Mode=OneWay}">
+                            <DataGridTextColumn Binding="{Binding GuestModel.LegalName, Mode=OneWay}"
+                                                Width="180"
+                                                MinWidth="100">
                                 <DataGridTextColumn.Header>
                                     <TextBlock Text="{DynamicResource SO_TextBlock_Customer}" />
                                 </DataGridTextColumn.Header>
@@ -607,7 +631,8 @@
                                 </DataGridTemplateColumn.Header>
                                 <DataGridTemplateColumn.CellTemplate>
                                     <DataTemplate>
-                                        <TextBlock HorizontalAlignment="Right" Text="{Binding Total, ConverterCulture={x:Static local:Define.ConverterCulture}, Mode=OneWay, StringFormat={x:Static local:Define.CurrencyFormat}}" />
+                                        <TextBlock HorizontalAlignment="Right"
+                                                   Text="{Binding Total, ConverterCulture={x:Static local:Define.ConverterCulture}, Mode=OneWay, StringFormat={x:Static local:Define.CurrencyFormat}}" />
                                     </DataTemplate>
                                 </DataGridTemplateColumn.CellTemplate>
                             </DataGridTemplateColumn>
@@ -620,54 +645,59 @@
                                 </DataGridTemplateColumn.Header>
                                 <DataGridTemplateColumn.CellTemplate>
                                     <DataTemplate>
-                                        <TextBlock HorizontalAlignment="Right" Text="{Binding Deposit, ConverterCulture={x:Static local:Define.ConverterCulture}, Mode=OneWay, StringFormat={x:Static local:Define.CurrencyFormat}}" />
+                                        <TextBlock HorizontalAlignment="Right"
+                                                   Text="{Binding Deposit, ConverterCulture={x:Static local:Define.ConverterCulture}, Mode=OneWay, StringFormat={x:Static local:Define.CurrencyFormat}}" />
                                     </DataTemplate>
                                 </DataGridTemplateColumn.CellTemplate>
                             </DataGridTemplateColumn>
 
-                            <DataGridTemplateColumn Width="110" IsReadOnly="True">
+                            <DataGridTemplateColumn Width="110"
+                                                    IsReadOnly="True">
                                 <DataGridTemplateColumn.Header>
                                     <TextBlock Text="{DynamicResource C107}" />
                                 </DataGridTemplateColumn.Header>
                                 <DataGridTemplateColumn.CellTemplate>
                                     <DataTemplate>
-                                        <TextBlock HorizontalAlignment="Right" Text="{Binding Paid, ConverterCulture={x:Static local:Define.ConverterCulture}, Mode=OneWay, StringFormat={x:Static local:Define.CurrencyFormat}}" />
+                                        <TextBlock HorizontalAlignment="Right"
+                                                   Text="{Binding Paid, ConverterCulture={x:Static local:Define.ConverterCulture}, Mode=OneWay, StringFormat={x:Static local:Define.CurrencyFormat}}" />
                                     </DataTemplate>
                                 </DataGridTemplateColumn.CellTemplate>
                             </DataGridTemplateColumn>
 
-                            <DataGridTemplateColumn Width="80" IsReadOnly="True">
+                            <DataGridTemplateColumn Width="80"
+                                                    IsReadOnly="True">
                                 <DataGridTemplateColumn.Header>
                                     <TextBlock Text="{DynamicResource SO_TextBlock_RefundFee}" />
                                 </DataGridTemplateColumn.Header>
                                 <DataGridTemplateColumn.CellTemplate>
                                     <DataTemplate>
-                                        <TextBlock HorizontalAlignment="Right" Text="{Binding RefundedAmount, ConverterCulture={x:Static local:Define.ConverterCulture}, Mode=OneWay, StringFormat={x:Static local:Define.CurrencyFormat}}" />
+                                        <TextBlock HorizontalAlignment="Right"
+                                                   Text="{Binding RefundedAmount, ConverterCulture={x:Static local:Define.ConverterCulture}, Mode=OneWay, StringFormat={x:Static local:Define.CurrencyFormat}}" />
                                     </DataTemplate>
                                 </DataGridTemplateColumn.CellTemplate>
                             </DataGridTemplateColumn>
 
-                            <DataGridTemplateColumn Width="110" MinWidth="100">
+                            <DataGridTemplateColumn Width="110"
+                                                    MinWidth="100">
                                 <DataGridTemplateColumn.Header>
                                     <TextBlock Text="{DynamicResource C108}" />
                                 </DataGridTemplateColumn.Header>
                                 <DataGridTemplateColumn.CellTemplate>
                                     <DataTemplate>
-                                        <TextBlock HorizontalAlignment="Right" Text="{Binding Balance, ConverterCulture={x:Static local:Define.ConverterCulture}, Mode=OneWay, StringFormat={x:Static local:Define.CurrencyFormat}}" />
+                                        <TextBlock HorizontalAlignment="Right"
+                                                   Text="{Binding Balance, ConverterCulture={x:Static local:Define.ConverterCulture}, Mode=OneWay, StringFormat={x:Static local:Define.CurrencyFormat}}" />
                                     </DataTemplate>
                                 </DataGridTemplateColumn.CellTemplate>
                             </DataGridTemplateColumn>
-                            <DataGridTextColumn Width="80"
-                                                MinWidth="100"
-                                                Binding="{Binding PriceSchemaId,
-                                                                  ConverterParameter=PriceSchema,
-                                                                  Converter={StaticResource comboxItemToTextConverter},
-                                                                  Mode=OneWay}">
+                            <DataGridTextColumn Binding="{Binding PriceSchemaId, ConverterParameter=PriceSchema, Converter={StaticResource comboxItemToTextConverter}, Mode=OneWay}"
+                                                Width="80"
+                                                MinWidth="100">
                                 <DataGridTextColumn.Header>
                                     <TextBlock Text="{DynamicResource C157}" />
                                 </DataGridTextColumn.Header>
                             </DataGridTextColumn>
-                            <DataGridTemplateColumn Width="100" MinWidth="100">
+                            <DataGridTemplateColumn Width="100"
+                                                    MinWidth="100">
                                 <DataGridTemplateColumn.Header>
                                     <TextBlock Text="{DynamicResource SO_TextBlock_TaxLocation}" />
                                 </DataGridTemplateColumn.Header>
@@ -677,12 +707,18 @@
                                             <TextBlock x:Name="tbTaxLocation"
                                                        Text="{Binding TaxLocationModel.Name}"
                                                        Visibility="Collapsed" />
-                                            <TextBlock x:Name="tbTaxExemption" Text="{DynamicResource SO_TextBlock_TaxExemptionDisplay}" />
+                                            <TextBlock x:Name="tbTaxExemption"
+                                                       Text="{DynamicResource SO_TextBlock_TaxExemptionDisplay}" />
                                         </Grid>
                                         <DataTemplate.Triggers>
-                                            <DataTrigger Binding="{Binding TaxExemption}" Value="{x:Static sys:String.Empty}">
-                                                <Setter TargetName="tbTaxLocation" Property="Visibility" Value="Visible" />
-                                                <Setter TargetName="tbTaxExemption" Property="Visibility" Value="Collapsed" />
+                                            <DataTrigger Binding="{Binding TaxExemption}"
+                                                         Value="{x:Static sys:String.Empty}">
+                                                <Setter TargetName="tbTaxLocation"
+                                                        Property="Visibility"
+                                                        Value="Visible" />
+                                                <Setter TargetName="tbTaxExemption"
+                                                        Property="Visibility"
+                                                        Value="Collapsed" />
                                             </DataTrigger>
                                         </DataTemplate.Triggers>
                                     </DataTemplate>
@@ -698,34 +734,40 @@
                                             <TextBlock x:Name="tbTaxCode"
                                                        Text="{Binding TaxCode}"
                                                        Visibility="Collapsed" />
-                                            <TextBlock x:Name="tbTaxExemption" Text="{Binding TaxExemption}" />
+                                            <TextBlock x:Name="tbTaxExemption"
+                                                       Text="{Binding TaxExemption}" />
                                         </Grid>
                                         <DataTemplate.Triggers>
-                                            <DataTrigger Binding="{Binding TaxExemption}" Value="{x:Static sys:String.Empty}">
-                                                <Setter TargetName="tbTaxCode" Property="Visibility" Value="Visible" />
-                                                <Setter TargetName="tbTaxExemption" Property="Visibility" Value="Collapsed" />
+                                            <DataTrigger Binding="{Binding TaxExemption}"
+                                                         Value="{x:Static sys:String.Empty}">
+                                                <Setter TargetName="tbTaxCode"
+                                                        Property="Visibility"
+                                                        Value="Visible" />
+                                                <Setter TargetName="tbTaxExemption"
+                                                        Property="Visibility"
+                                                        Value="Collapsed" />
                                             </DataTrigger>
                                         </DataTemplate.Triggers>
                                     </DataTemplate>
                                 </DataGridTemplateColumn.CellTemplate>
                             </DataGridTemplateColumn>
-                            <DataGridTextColumn Width="90"
-                                                Binding="{Binding SOCard,
-                                                                  Mode=OneWay}"
+                            <DataGridTextColumn Binding="{Binding SOCard, Mode=OneWay}"
+                                                Width="90"
                                                 IsReadOnly="True">
                                 <DataGridTextColumn.Header>
                                     <TextBlock Text="{DynamicResource SO_TextBlock_ScanCode}" />
                                 </DataGridTextColumn.Header>
                             </DataGridTextColumn>
-                            <DataGridTemplateColumn Width="20" IsReadOnly="True">
+                            <DataGridTemplateColumn Width="20"
+                                                    IsReadOnly="True">
                                 <DataGridTemplateColumn.CellTemplate>
                                     <DataTemplate>
                                         <Rectangle Width="16"
                                                    Height="16"
                                                    Fill="{DynamicResource Delivery}">
                                             <Rectangle.Visibility>
-                                                <Binding Mode="OneWay"
-                                                         Path="IsReceived"
+                                                <Binding Path="IsReceived"
+                                                         Mode="OneWay"
                                                          UpdateSourceTrigger="PropertyChanged">
                                                     <Binding.Converter>
                                                         <converter:BoolToVisibilityConverter />
@@ -739,10 +781,11 @@
                         </cpcDataGrid:DataGridControl.Columns>
                     </cpcDataGrid:DataGridControl>
                 </Grid>
-                <Grid x:Name="grdContentSalesOrder1" Grid.Column="1">
+                <Grid x:Name="grdContentSalesOrder1"
+                      Grid.Column="1">
                     <Grid.Visibility>
-                        <Binding Mode="OneWay"
-                                 Path="IsSearchMode"
+                        <Binding Path="IsSearchMode"
+                                 Mode="OneWay"
                                  UpdateSourceTrigger="PropertyChanged">
                             <Binding.Converter>
                                 <converter:BoolToVisibilityConverter FalseToVisibility="Visible" />
@@ -754,8 +797,8 @@
                         <ColumnDefinition />
                     </Grid.ColumnDefinitions>
                     <Button x:Name="btnBarSearch"
-                            BorderThickness="1"
                             Command="{Binding DoubleClickViewCommand}"
+                            BorderThickness="1"
                             Style="{DynamicResource ButtonBarSearch}"
                             d:LayoutOverrides="GridBox">
                         <TextBlock x:Name="txtblShowSearchSalesOrder"
@@ -779,7 +822,8 @@
                                Width="1"
                                HorizontalAlignment="Left"
                                Fill="{DynamicResource Spilter_Line_Background}" />
-                    <Grid x:Name="grdSubSalesOrder" Grid.Column="2">
+                    <Grid x:Name="grdSubSalesOrder"
+                          Grid.Column="2">
                         <Grid.RowDefinitions>
                             <RowDefinition Height="60" />
                             <RowDefinition Height="90" />
@@ -792,12 +836,12 @@
                                     VerticalAlignment="Bottom"
                                     Orientation="Horizontal">
                             <Button x:Name="btnNew"
+                                    Command="{Binding NewCommand}"
                                     Width="40"
                                     Height="40"
                                     Margin="0"
-                                    Command="{Binding NewCommand}"
-                                    IsEnabled="{Binding AllowAddLayaway}"
                                     Style="{DynamicResource ButtonSystem}"
+                                    ToolTip="New Item"
                                     Visibility="Visible">
                                 <StackPanel x:Name="stkpBtnNew"
                                             HorizontalAlignment="Center"
@@ -815,10 +859,11 @@
                                 </StackPanel>
                             </Button>
                             <Button x:Name="btnSave"
+                                    Command="{Binding SaveCommand}"
                                     Width="40"
                                     Height="40"
-                                    Command="{Binding SaveCommand}"
                                     Style="{DynamicResource ButtonSystem}"
+                                    ToolTip="Save Current Item"
                                     Visibility="Visible">
                                 <StackPanel x:Name="stkpBtnSave"
                                             HorizontalAlignment="Center"
@@ -838,11 +883,12 @@
                                 </StackPanel>
                             </Button>
                             <Button x:Name="btnPayment"
+                                    Command="{Binding PaymentCommand}"
                                     Width="40"
                                     Height="40"
-                                    Command="{Binding PaymentCommand}"
                                     IsEnabled="{Binding ., ConverterParameter=SO100-05-04, Converter={StaticResource permissionConverter}}"
-                                    Style="{DynamicResource ButtonSystem}">
+                                    Style="{DynamicResource ButtonSystem}"
+                                    ToolTip="Payment Current Item">
                                 <StackPanel x:Name="stkpBtnPayment"
                                             HorizontalAlignment="Center"
                                             VerticalAlignment="Center"
@@ -861,11 +907,12 @@
                                 </StackPanel>
                             </Button>
                             <Button x:Name="btnVoid"
+                                    Command="{Binding DeleteCommand}"
                                     Width="40"
                                     Height="40"
-                                    Command="{Binding DeleteCommand}"
                                     IsEnabled="{Binding ., ConverterParameter=SO100-05-03, Converter={StaticResource permissionConverter}}"
-                                    Style="{DynamicResource ButtonSystem}">
+                                    Style="{DynamicResource ButtonSystem}"
+                                    ToolTip="Void Current Item">
                                 <StackPanel x:Name="stkpBtnVoid"
                                             HorizontalAlignment="Center"
                                             VerticalAlignment="Center"
@@ -884,11 +931,12 @@
                                 </StackPanel>
                             </Button>
                             <Button x:Name="btnShip"
+                                    Command="{Binding ShipCommand}"
                                     Width="40"
                                     Height="40"
-                                    Command="{Binding ShipCommand}"
                                     IsEnabled="{Binding ., ConverterParameter=SO100-05-06, Converter={StaticResource permissionConverter}}"
-                                    Style="{DynamicResource ButtonSystem}">
+                                    Style="{DynamicResource ButtonSystem}"
+                                    ToolTip="Ship Current Item">
                                 <StackPanel x:Name="stkpBtnShip"
                                             HorizontalAlignment="Center"
                                             VerticalAlignment="Center"
@@ -907,11 +955,12 @@
                                 </StackPanel>
                             </Button>
                             <Button x:Name="btnPrint"
+                                    Command="{Binding PrintCommand}"
                                     Width="40"
                                     Height="40"
-                                    Command="{Binding PrintCommand}"
                                     IsEnabled="{Binding ., ConverterParameter=SO100-05-05, Converter={StaticResource permissionConverter}}"
-                                    Style="{DynamicResource ButtonSystem}">
+                                    Style="{DynamicResource ButtonSystem}"
+                                    ToolTip="Print Current Item">
                                 <StackPanel x:Name="stkpBtnPrint"
                                             HorizontalAlignment="Center"
                                             VerticalAlignment="Center"
@@ -953,8 +1002,7 @@
                               Margin="0,10,0,0"
                               HorizontalAlignment="Left"
                               VerticalAlignment="Top"
-                              IsEnabled="{Binding IsAllowChangeOrder,
-                                                  Mode=OneWay}">
+                              IsEnabled="{Binding IsAllowChangeOrder, Mode=OneWay}">
                             <Grid.RowDefinitions>
                                 <RowDefinition Height="25" />
                                 <RowDefinition Height="25" />
@@ -982,27 +1030,15 @@
                                                          Margin="0,2"
                                                          AddItemCommand="{Binding AddNewCustomerCommand}"
                                                          AutoHiddenItem="False"
-                                                         cpcBehavior:AutoFocusBehavior.IsFocused="{Binding IsForceFocused,
-                                                                                                           Mode=TwoWay,
-                                                                                                           UpdateSourceTrigger=PropertyChanged}"
+                                                         cpcBehavior:AutoFocusBehavior.IsFocused="{Binding IsForceFocused, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                                                          DisplayMemberPath="LegalName"
-                                                         IsEnabled="{Binding SelectedSaleOrder.PaymentProcess,
-                                                                             Converter={StaticResource reserseBoolConverter},
-                                                                             Mode=OneWay}"
+                                                         IsEnabled="{Binding SelectedSaleOrder.PaymentProcess, Converter={StaticResource reserseBoolConverter}, Mode=OneWay}"
                                                          ItemsSource="{Binding CustomerCollection}"
-                                                         SelectedItem="{Binding SelectedCustomer,
-                                                                                Mode=TwoWay,
-                                                                                UpdateSourceTrigger=PropertyChanged}"
+                                                         SelectedItem="{Binding SelectedCustomer, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                                                          SelectedValuePath="Resource"
                                                          Style="{DynamicResource ComboBoxControl_CheckedItemIsHiddenStyle}"
-                                                         Tag="{Binding SelectedSaleOrder.CustomerResource,
-                                                                       Mode=TwoWay,
-                                                                       NotifyOnValidationError=True,
-                                                                       UpdateSourceTrigger=PropertyChanged,
-                                                                       ValidatesOnDataErrors=True}"
-                                                         VisibilityAddItem="{Binding AllowAddCustomer,
-                                                                                     Converter={StaticResource boolToVisibilityConverter},
-                                                                                     Mode=OneWay}">
+                                                         Tag="{Binding SelectedSaleOrder.CustomerResource, Mode=TwoWay, NotifyOnValidationError=True, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True}"
+                                                         VisibilityAddItem="{Binding UserPermissions.AllowAddCustomer, Converter={StaticResource boolToVisibilityConverter}, Mode=OneWay}">
                                 <i:Interaction.Behaviors>
                                     <cpcBehavior:AutoFocusBehavior />
                                 </i:Interaction.Behaviors>
@@ -1021,9 +1057,7 @@
                                       VerticalAlignment="Stretch"
                                       DisplayMemberPath="Text"
                                       ItemsSource="{x:Static helper:Common.BookingChannel}"
-                                      SelectedValue="{Binding SelectedSaleOrder.BookingChanel,
-                                                              Mode=TwoWay,
-                                                              UpdateSourceTrigger=PropertyChanged}"
+                                      SelectedValue="{Binding SelectedSaleOrder.BookingChanel, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                                       SelectedValuePath="ObjValue" />
                             <TextBlock x:Name="txtblSONo"
                                        Grid.Column="6"
@@ -1031,18 +1065,14 @@
                                        HorizontalAlignment="Left"
                                        VerticalAlignment="Center"
                                        Style="{DynamicResource TextBlockNormal}"
-                                       Text="{DynamicResource SO_TextBlock_SONum}"
+                                       Text="{DynamicResource SO_TextBlock_LayawayNumber}"
                                        TextWrapping="NoWrap" />
                             <TextBlock x:Name="txtblBindingSONo"
                                        Grid.Column="7"
                                        HorizontalAlignment="Left"
                                        VerticalAlignment="Center"
                                        Style="{DynamicResource TextBlockBasic}"
-                                       Text="{Binding SelectedSaleOrder.SONumber,
-                                                      Mode=TwoWay,
-                                                      NotifyOnValidationError=True,
-                                                      UpdateSourceTrigger=PropertyChanged,
-                                                      ValidatesOnDataErrors=True}"
+                                       Text="{Binding SelectedSaleOrder.SONumber, Mode=TwoWay, NotifyOnValidationError=True, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True}"
                                        TextWrapping="NoWrap"
                                        d:LayoutOverrides="HorizontalAlignment" />
                             <TextBlock x:Name="txtblBillAddress"
@@ -1062,11 +1092,7 @@
                                      VerticalContentAlignment="Top"
                                      IsReadOnly="True"
                                      Padding="2"
-                                     Text="{Binding SelectedSaleOrder.BillAddress,
-                                                    Mode=OneWay,
-                                                    NotifyOnValidationError=True,
-                                                    UpdateSourceTrigger=PropertyChanged,
-                                                    ValidatesOnDataErrors=True}"
+                                     Text="{Binding SelectedSaleOrder.BillAddress, Mode=OneWay, NotifyOnValidationError=True, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True}"
                                      TextWrapping="Wrap"
                                      ToolTip="Click to view detail"
                                      VerticalScrollBarVisibility="Disabled">
@@ -1077,7 +1103,8 @@
                                 </TextBox.InputBindings>
                                 <i:Interaction.Triggers>
                                     <i:EventTrigger EventName="PreviewMouseDown">
-                                        <command:EventToCommand Command="{Binding AddressPopupCommand}" CommandParameter="{Binding SelectedSaleOrder.BillAddressModel}" />
+                                        <command:EventToCommand Command="{Binding AddressPopupCommand}"
+                                                                CommandParameter="{Binding SelectedSaleOrder.BillAddressModel}" />
                                     </i:EventTrigger>
                                 </i:Interaction.Triggers>
                             </TextBox>
@@ -1098,11 +1125,7 @@
                                      VerticalContentAlignment="Top"
                                      IsReadOnly="True"
                                      Padding="2"
-                                     Text="{Binding SelectedSaleOrder.ShipAddress,
-                                                    Mode=OneWay,
-                                                    NotifyOnValidationError=True,
-                                                    UpdateSourceTrigger=PropertyChanged,
-                                                    ValidatesOnDataErrors=True}"
+                                     Text="{Binding SelectedSaleOrder.ShipAddress, Mode=OneWay, NotifyOnValidationError=True, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True}"
                                      TextWrapping="Wrap"
                                      ToolTip="Click to view detail"
                                      VerticalScrollBarVisibility="Disabled">
@@ -1113,7 +1136,8 @@
                                 </TextBox.InputBindings>
                                 <i:Interaction.Triggers>
                                     <i:EventTrigger EventName="PreviewMouseDown">
-                                        <command:EventToCommand Command="{Binding AddressPopupCommand}" CommandParameter="{Binding SelectedSaleOrder.ShipAddressModel}" />
+                                        <command:EventToCommand Command="{Binding AddressPopupCommand}"
+                                                                CommandParameter="{Binding SelectedSaleOrder.ShipAddressModel}" />
                                     </i:EventTrigger>
                                 </i:Interaction.Triggers>
                             </TextBox>
@@ -1124,19 +1148,17 @@
                                        HorizontalAlignment="Left"
                                        VerticalAlignment="Center"
                                        Style="{DynamicResource TextBlockNormal}"
-                                       Text="{DynamicResource SO_TextBlock_SODate}"
+                                       Text="{DynamicResource SO_TextBlock_LayawayDate}"
                                        TextWrapping="NoWrap" />
                             <DatePicker x:Name="dtpOrderDate"
                                         Grid.Row="1"
                                         Grid.Column="7"
                                         Width="90"
                                         Margin="0,2"
-                                        IsEnabled="False"
                                         HorizontalAlignment="Left"
                                         Background="White"
-                                        SelectedDate="{Binding SelectedSaleOrder.OrderDate,
-                                                               Mode=TwoWay,
-                                                               UpdateSourceTrigger=PropertyChanged}" />
+                                        IsEnabled="False"
+                                        SelectedDate="{Binding SelectedSaleOrder.OrderDate, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
                             <TextBlock x:Name="txtblStatus"
                                        Grid.Row="2"
                                        Grid.Column="6"
@@ -1157,9 +1179,7 @@
                                       IsEnabled="False"
                                       ItemsSource="{x:Static helper:Common.StatusSalesOrders}"
                                       SelectedIndex="0"
-                                      SelectedValue="{Binding SelectedSaleOrder.OrderStatus,
-                                                              Mode=TwoWay,
-                                                              UpdateSourceTrigger=PropertyChanged}"
+                                      SelectedValue="{Binding SelectedSaleOrder.OrderStatus, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                                       SelectedValuePath="ObjValue"
                                       d:LayoutOverrides="GridBox" />
                         </Grid>
@@ -1169,10 +1189,12 @@
                                 Background="{DynamicResource TabControlBackground}"
                                 BorderBrush="{DynamicResource TabControlBorder}"
                                 BorderThickness="1">
-                            <Grid x:Name="grdContentQuotation" Margin="4">
+                            <Grid x:Name="grdContentQuotation"
+                                  Margin="4">
                                 <Grid.RowDefinitions>
                                     <RowDefinition Height="30" />
-                                    <RowDefinition Height="Auto" MinHeight="5" />
+                                    <RowDefinition Height="Auto"
+                                                   MinHeight="5" />
                                     <RowDefinition />
                                     <RowDefinition Height="188.926" />
                                 </Grid.RowDefinitions>
@@ -1192,9 +1214,9 @@
                                                              VerticalAlignment="Center"
                                                              VerticalContentAlignment="Center"
                                                              BorderBrush="{DynamicResource TextBoxCanlendarComboboxBorderBrush}"
-                                                             Text="{Binding BarcodeProduct,
-                                                                                        Mode=TwoWay,
-                                                                                        UpdateSourceTrigger=PropertyChanged}"
+                                                             cpcBehavior:AutoFocusBehavior.IsFocused="{Binding IsSelected, ElementName=tabitemOrder, Mode=OneWay}"
+                                                             IsEnabled="{Binding IsAllowChangeOrder, Mode=OneWay}"
+                                                             Text="{Binding BarcodeProduct, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                                                              TextWrapping="NoWrap"
                                                              Watermark="Input barcode and press enter">
                                     <i:Interaction.Behaviors>
@@ -1206,14 +1228,13 @@
                                     </wpfControl:WatermarkTextBox.InputBindings>
                                 </wpfControl:WatermarkTextBox>
                                 <Button x:Name="btnAdvanceSearch1"
+                                        Command="{Binding SearchProductAdvanceCommand}"
                                         Width="90"
                                         Height="21"
                                         Margin="429,0,0,0"
                                         HorizontalAlignment="Left"
                                         VerticalAlignment="Center"
-                                        Command="{Binding SearchProductAdvanceCommand}"
-                                        IsEnabled="{Binding IsAllowChangeOrder,
-                                                            Mode=OneWay}"
+                                        IsEnabled="{Binding IsAllowChangeOrder, Mode=OneWay}"
                                         d:LayoutOverrides="Height">
                                     <TextBlock x:Name="txtblAdvanceSearch"
                                                VerticalAlignment="Center"
@@ -1227,56 +1248,49 @@
                                                              AutoGenerateColumns="False"
                                                              CanUserAddRows="False"
                                                              CanUserDeleteRows="False"
-                                                             DeleteCommandParameter="{Binding SelectedItem,
-                                                                                              ElementName=dtgrdQuotationDetail}"
+                                                             DeleteCommandParameter="{Binding SelectedItem, ElementName=dtgrdQuotationDetail}"
                                                              DeleteItemCommand="{Binding DeleteSaleOrderDetailWithKeyCommand}"
                                                              HorizontalScrollBarVisibility="Hidden"
-                                                             IsReadOnly="{Binding IsAllowChangeOrder,
-                                                                                  Converter={StaticResource reserseBoolConverter},
-                                                                                  Mode=OneWay}"
+                                                             IsReadOnly="{Binding IsAllowChangeOrder, Converter={StaticResource reserseBoolConverter}, Mode=OneWay}"
                                                              IsRollBackData="False"
-                                                             ItemsSource="{Binding SelectedSaleOrder.SaleOrderDetailCollection,
-                                                                                   Mode=TwoWay,
-                                                                                   UpdateSourceTrigger=PropertyChanged}"
+                                                             ItemsSource="{Binding SelectedSaleOrder.SaleOrderDetailCollection, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                                                              RowDetailsTemplate="{DynamicResource RowDetailDataTemplateOrderInvoice}"
                                                              RowDetailsVisibilityMode="Visible"
                                                              RowStyle="{StaticResource DataGridDetailRowStyle}"
-                                                             SelectedItem="{Binding SelectedSaleOrderDetail,
-                                                                                    Mode=TwoWay,
-                                                                                    UpdateSourceTrigger=PropertyChanged}"
+                                                             SelectedItem="{Binding SelectedSaleOrderDetail, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                                                              Style="{DynamicResource DatagridWithRowHeader}"
                                                              VisibilityNavigationBar="Collapsed">
                                     <cpcDataGrid:DataGridControl.Columns>
-                                        <DataGridTextColumn Width="*"
-                                                            Binding="{Binding ItemName}"
+                                        <DataGridTextColumn Binding="{Binding ItemName}"
+                                                            Width="*"
                                                             IsReadOnly="True">
                                             <DataGridTextColumn.Header>
                                                 <TextBlock Text="{DynamicResource C115}" />
                                             </DataGridTextColumn.Header>
                                         </DataGridTextColumn>
-                                        <DataGridTextColumn Width="80"
-                                                            Binding="{Binding ItemAtribute,
-                                                                              Mode=OneWay}"
+                                        <DataGridTextColumn Binding="{Binding ItemAtribute, Mode=OneWay}"
+                                                            Width="80"
                                                             IsReadOnly="True">
                                             <DataGridTextColumn.Header>
                                                 <TextBlock Text="{DynamicResource C116}" />
                                             </DataGridTextColumn.Header>
                                         </DataGridTextColumn>
-                                        <DataGridTextColumn Width="80"
-                                                            Binding="{Binding ItemSize,
-                                                                              Mode=OneWay}"
+                                        <DataGridTextColumn Binding="{Binding ItemSize, Mode=OneWay}"
+                                                            Width="80"
                                                             IsReadOnly="True">
                                             <DataGridTextColumn.Header>
                                                 <TextBlock Text="{DynamicResource C117}" />
                                             </DataGridTextColumn.Header>
                                         </DataGridTextColumn>
-                                        <DataGridTemplateColumn Width="75" CellStyle="{DynamicResource DataGridCellDisableStyle}">
+                                        <DataGridTemplateColumn Width="75"
+                                                                CellStyle="{DynamicResource DataGridCellDisableStyle}">
                                             <DataGridTemplateColumn.Header>
                                                 <TextBlock Text="{DynamicResource C120}" />
                                             </DataGridTemplateColumn.Header>
                                             <DataGridTemplateColumn.CellTemplate>
                                                 <DataTemplate>
-                                                    <TextBlock HorizontalAlignment="Right" Text="{Binding Qty, ConverterCulture={x:Static local:Define.ConverterCulture}, Mode=OneWay, StringFormat={x:Static local:Define.NumericFormat}, UpdateSourceTrigger=PropertyChanged}" />
+                                                    <TextBlock HorizontalAlignment="Right"
+                                                               Text="{Binding Qty, ConverterCulture={x:Static local:Define.ConverterCulture}, Mode=OneWay, StringFormat={x:Static local:Define.NumericFormat}, UpdateSourceTrigger=PropertyChanged}" />
                                                 </DataTemplate>
                                             </DataGridTemplateColumn.CellTemplate>
                                             <DataGridTemplateColumn.CellEditingTemplate>
@@ -1286,25 +1300,26 @@
                                                                                ConverterCulture="{x:Static local:Define.ConverterCulture}"
                                                                                NumericStringFormat="{x:Static local:Define.NumericFormat}"
                                                                                Style="{DynamicResource TextBoxNumericInsideDataGridStyle}"
-                                                                               Value="{Binding Qty,
-                                                                                               Mode=TwoWay,
-                                                                                               UpdateSourceTrigger=PropertyChanged}">
+                                                                               Value="{Binding Qty, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}">
                                                         <i:Interaction.Triggers>
                                                             <i:EventTrigger EventName="LostFocus">
-                                                                <command:EventToCommand Command="{Binding DataContext.QtyChangedCommand, RelativeSource={RelativeSource AncestorType={x:Type UserControl}, Mode=FindAncestor}}" CommandParameter="{Binding Qty}" />
+                                                                <command:EventToCommand Command="{Binding DataContext.QtyChangedCommand, RelativeSource={RelativeSource AncestorType={x:Type UserControl}, Mode=FindAncestor}}"
+                                                                                        CommandParameter="{Binding Qty}" />
                                                             </i:EventTrigger>
                                                         </i:Interaction.Triggers>
                                                     </cpcTextBox:TextBoxNumeric>
                                                 </DataTemplate>
                                             </DataGridTemplateColumn.CellEditingTemplate>
                                         </DataGridTemplateColumn>
-                                        <DataGridTemplateColumn Width="80" CellStyle="{StaticResource DataGridPriceCellStyle}">
+                                        <DataGridTemplateColumn Width="80"
+                                                                CellStyle="{StaticResource DataGridPriceCellStyle}">
                                             <DataGridTemplateColumn.Header>
                                                 <TextBlock Text="{DynamicResource C119}" />
                                             </DataGridTemplateColumn.Header>
                                             <DataGridTemplateColumn.CellTemplate>
                                                 <DataTemplate>
-                                                    <TextBlock HorizontalAlignment="Right" Text="{Binding SalePrice, ConverterCulture={x:Static local:Define.ConverterCulture}, Mode=OneWay, StringFormat={x:Static local:Define.CurrencyFormat}}" />
+                                                    <TextBlock HorizontalAlignment="Right"
+                                                               Text="{Binding SalePrice, ConverterCulture={x:Static local:Define.ConverterCulture}, Mode=OneWay, StringFormat={x:Static local:Define.CurrencyFormat}}" />
                                                 </DataTemplate>
                                             </DataGridTemplateColumn.CellTemplate>
                                             <DataGridTemplateColumn.CellEditingTemplate>
@@ -1313,9 +1328,7 @@
                                                                              ConverterCulture="{x:Static local:Define.ConverterCulture}"
                                                                              CurrencyStringFormat="{x:Static local:Define.CurrencyFormat}"
                                                                              Style="{DynamicResource TextBoxMoneyInsideDataGridStyle}"
-                                                                             Value="{Binding SalePrice,
-                                                                                             Mode=TwoWay,
-                                                                                             UpdateSourceTrigger=PropertyChanged}" />
+                                                                             Value="{Binding SalePrice, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
                                                 </DataTemplate>
                                             </DataGridTemplateColumn.CellEditingTemplate>
                                         </DataGridTemplateColumn>
@@ -1332,17 +1345,15 @@
                                                 <DataTemplate>
                                                     <ComboBox x:Name="cmbUnit"
                                                               DisplayMemberPath="Name"
-                                                              ItemsSource="{Binding ProductUOMCollection,
-                                                                                    Mode=OneWay}"
-                                                              SelectedValue="{Binding UOMId,
-                                                                                      Mode=TwoWay,
-                                                                                      UpdateSourceTrigger=PropertyChanged}"
+                                                              ItemsSource="{Binding ProductUOMCollection, Mode=OneWay}"
+                                                              SelectedValue="{Binding UOMId, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                                                               SelectedValuePath="UOMId"
                                                               Style="{DynamicResource ComboBoxInsideDataGridStyle}" />
                                                 </DataTemplate>
                                             </DataGridTemplateColumn.CellEditingTemplate>
                                         </DataGridTemplateColumn>
-                                        <DataGridTemplateColumn Width="75" IsReadOnly="True">
+                                        <DataGridTemplateColumn Width="75"
+                                                                IsReadOnly="True">
                                             <DataGridTemplateColumn.Header>
                                                 <TextBlock Text="{DynamicResource C122}" />
                                             </DataGridTemplateColumn.Header>
@@ -1350,10 +1361,7 @@
                                                 <DataTemplate>
                                                     <TextBlock x:Name="tblSubTotal"
                                                                HorizontalAlignment="Right"
-                                                               Text="{Binding SubTotal,
-                                                                              ConverterCulture={x:Static local:Define.ConverterCulture},
-                                                                              Mode=OneWay,
-                                                                              StringFormat={x:Static local:Define.CurrencyFormat}}" />
+                                                               Text="{Binding SubTotal, ConverterCulture={x:Static local:Define.ConverterCulture}, Mode=OneWay, StringFormat={x:Static local:Define.CurrencyFormat}}" />
                                                 </DataTemplate>
                                             </DataGridTemplateColumn.CellTemplate>
                                         </DataGridTemplateColumn>
@@ -1363,10 +1371,13 @@
                                             </DataGridTextColumn.Header>
                                             <DataGridTextColumn.ElementStyle>
                                                 <Style TargetType="{x:Type TextBlock}">
-                                                    <Setter Property="Text" Value="{Binding OnHandQty, ConverterCulture={x:Static local:Define.ConverterCulture}, Mode=OneWay, StringFormat={x:Static local:Define.DecimalFormat}}" />
+                                                    <Setter Property="Text"
+                                                            Value="{Binding OnHandQty, ConverterCulture={x:Static local:Define.ConverterCulture}, Mode=OneWay, StringFormat={x:Static local:Define.DecimalFormat}}" />
                                                     <Style.Triggers>
-                                                        <DataTrigger Binding="{Binding OnHandQty, Mode=OneWay}" Value="0">
-                                                            <Setter Property="Text" Value="{Binding OnHandQty, ConverterCulture={x:Static local:Define.ConverterCulture}, Mode=OneWay, StringFormat={x:Static local:Define.IntegerFormat}}" />
+                                                        <DataTrigger Binding="{Binding OnHandQty, Mode=OneWay}"
+                                                                     Value="0">
+                                                            <Setter Property="Text"
+                                                                    Value="{Binding OnHandQty, ConverterCulture={x:Static local:Define.ConverterCulture}, Mode=OneWay, StringFormat={x:Static local:Define.IntegerFormat}}" />
                                                         </DataTrigger>
                                                     </Style.Triggers>
                                                 </Style>
@@ -1378,8 +1389,7 @@
                                       Grid.Row="3"
                                       Margin="10,0"
                                       VerticalAlignment="Top"
-                                      IsEnabled="{Binding IsAllowChangeOrder,
-                                                          Mode=OneWay}">
+                                      IsEnabled="{Binding IsAllowChangeOrder, Mode=OneWay}">
                                     <Grid.ColumnDefinitions>
                                         <ColumnDefinition Width="58" />
                                         <ColumnDefinition Width="119" />
@@ -1408,10 +1418,10 @@
                                                d:LayoutOverrides="HorizontalAlignment">
                                         <!--  when user choise booking channel is website, Sales rep will be collapsed  -->
                                         <TextBlock.Visibility>
-                                            <Binding ElementName="cmbTransType"
+                                            <Binding Path="SelectedItem.Flag"
                                                      Mode="OneWay"
-                                                     Path="SelectedItem.Flag"
-                                                     UpdateSourceTrigger="PropertyChanged">
+                                                     UpdateSourceTrigger="PropertyChanged"
+                                                     ElementName="cmbTransType">
                                                 <Binding.Converter>
                                                     <converter:BoolToVisibilityConverter FalseToVisibility="Visible" />
                                                 </Binding.Converter>
@@ -1425,11 +1435,9 @@
                                              Height="21"
                                              Margin="0"
                                              IsReadOnly="True"
-                                             Text="{Binding SelectedSaleOrder.SaleRep,
-                                                            Mode=OneWay}"
+                                             Text="{Binding SelectedSaleOrder.SaleRep, Mode=OneWay}"
                                              TextWrapping="NoWrap"
-                                             Visibility="{Binding Visibility,
-                                                                  ElementName=txtblQuotationSaleRep}" />
+                                             Visibility="{Binding Visibility, ElementName=txtblQuotationSaleRep}" />
                                     <TextBlock x:Name="txtblRemark1"
                                                Grid.Column="2"
                                                Margin="20,0,0,0"
@@ -1447,9 +1455,7 @@
                                              AcceptsReturn="True"
                                              HorizontalScrollBarVisibility="Auto"
                                              Padding="2"
-                                             Text="{Binding SelectedSaleOrder.Remark,
-                                                            Mode=TwoWay,
-                                                            UpdateSourceTrigger=PropertyChanged}"
+                                             Text="{Binding SelectedSaleOrder.Remark, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                                              TextWrapping="Wrap"
                                              VerticalScrollBarVisibility="Auto" />
                                     <StackPanel x:Name="stkpTaxLocationCode"
@@ -1460,8 +1466,8 @@
                                                 Orientation="Horizontal"
                                                 d:LayoutOverrides="GridBox">
                                         <StackPanel.Visibility>
-                                            <Binding Mode="OneWay"
-                                                     Path="SelectedSaleOrder.IsTaxExemption"
+                                            <Binding Path="SelectedSaleOrder.IsTaxExemption"
+                                                     Mode="OneWay"
                                                      UpdateSourceTrigger="PropertyChanged">
                                                 <Binding.Converter>
                                                     <converter:BoolToVisibilityConverter FalseToVisibility="Visible" />
@@ -1481,8 +1487,7 @@
                                                    FontWeight="Bold"
                                                    Foreground="#FFFEFF00"
                                                    Style="{DynamicResource TextBlockNormal}"
-                                                   Text="{Binding SelectedSaleOrder.TaxLocationModel.Name,
-                                                                  Mode=OneWay}"
+                                                   Text="{Binding SelectedSaleOrder.TaxLocationModel.Name, Mode=OneWay}"
                                                    TextWrapping="NoWrap" />
                                         <TextBlock x:Name="txtblTaxCode"
                                                    Margin="10,0,0,0"
@@ -1498,8 +1503,7 @@
                                                    FontWeight="Bold"
                                                    Foreground="#FFFEFF00"
                                                    Style="{DynamicResource TextBlockNormal}"
-                                                   Text="{Binding SelectedSaleOrder.TaxCode,
-                                                                  Mode=OneWay}"
+                                                   Text="{Binding SelectedSaleOrder.TaxCode, Mode=OneWay}"
                                                    TextWrapping="NoWrap" />
                                     </StackPanel>
                                     <StackPanel x:Name="stkpTaxExcemption"
@@ -1510,7 +1514,8 @@
                                                 Orientation="Horizontal"
                                                 d:LayoutOverrides="GridBox">
                                         <StackPanel.Visibility>
-                                            <Binding Mode="OneWay" Path="SelectedSaleOrder.IsTaxExemption">
+                                            <Binding Path="SelectedSaleOrder.IsTaxExemption"
+                                                     Mode="OneWay">
                                                 <Binding.Converter>
                                                     <converter:BoolToVisibilityConverter FalseToVisibility="Collapsed" />
                                                 </Binding.Converter>
@@ -1537,8 +1542,7 @@
                                                    FontWeight="Bold"
                                                    Foreground="#FFFEFF00"
                                                    Style="{DynamicResource TextBlockNormal}"
-                                                   Text="{Binding SelectedSaleOrder.TaxExemption,
-                                                                  Mode=OneWay}"
+                                                   Text="{Binding SelectedSaleOrder.TaxExemption, Mode=OneWay}"
                                                    TextWrapping="NoWrap" />
                                     </StackPanel>
                                     <TextBlock x:Name="txtblPriceLevel2"
@@ -1554,9 +1558,7 @@
                                               VerticalAlignment="Stretch"
                                               DisplayMemberPath="Text"
                                               ItemsSource="{x:Static helper:Common.MarkdownPriceLevels}"
-                                              SelectedValue="{Binding SelectedSaleOrder.PriceSchemaId,
-                                                                      Mode=TwoWay,
-                                                                      UpdateSourceTrigger=PropertyChanged}"
+                                              SelectedValue="{Binding SelectedSaleOrder.PriceSchemaId, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                                               SelectedValuePath="ObjValue" />
                                     <TextBlock x:Name="txtblOrderTabSubTotal"
                                                Grid.Column="5"
@@ -1577,8 +1579,7 @@
                                                              IsReadOnly="True"
                                                              Padding="2,0,2,0"
                                                              TextWrapping="NoWrap"
-                                                             Value="{Binding SelectedSaleOrder.SubTotal,
-                                                                             Mode=OneWay}" />
+                                                             Value="{Binding SelectedSaleOrder.SubTotal, Mode=OneWay}" />
                                     <TextBlock x:Name="txtblOrderTabTaxleft"
                                                Grid.Row="1"
                                                Grid.Column="3"
@@ -1599,9 +1600,7 @@
                                                                NumericStringFormat="{}{0:N0}"
                                                                Padding="2,0,2,0"
                                                                TextWrapping="NoWrap"
-                                                               Value="{Binding SelectedSaleOrder.TaxPercent,
-                                                                               Mode=TwoWay,
-                                                                               UpdateSourceTrigger=PropertyChanged}" />
+                                                               Value="{Binding SelectedSaleOrder.TaxPercent, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
                                     <TextBlock x:Name="txtblOrderTabTaxPercent"
                                                Grid.Row="1"
                                                Grid.Column="4"
@@ -1631,11 +1630,10 @@
                                                              IsReadOnly="True"
                                                              Padding="2,0,2,0"
                                                              TextWrapping="NoWrap"
-                                                             Value="{Binding SelectedSaleOrder.TaxAmount,
-                                                                             Mode=TwoWay,
-                                                                             UpdateSourceTrigger=PropertyChanged}" />
+                                                             Value="{Binding SelectedSaleOrder.TaxAmount, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
 
                                     <Button x:Name="btnPaid"
+                                            Command="{Binding OpenServiceFeeDetailCommand}"
                                             Grid.Row="2"
                                             Grid.Column="5"
                                             Width="75"
@@ -1643,7 +1641,6 @@
                                             Margin="6,0,0,0"
                                             HorizontalAlignment="Left"
                                             VerticalAlignment="Center"
-                                            Command="{Binding OpenServiceFeeDetailCommand}"
                                             Style="{DynamicResource ButtonSystem}"
                                             Visibility="Visible">
                                         <StackPanel x:Name="stkpBtnPaid"
@@ -1689,9 +1686,7 @@
                                                              CurrencyStringFormat="{x:Static local:Define.CurrencyFormat}"
                                                              Padding="2,0,2,0"
                                                              TextWrapping="NoWrap"
-                                                             Value="{Binding SelectedSaleOrder.LTotalFee,
-                                                                             Mode=TwoWay,
-                                                                             UpdateSourceTrigger=PropertyChanged}" />
+                                                             Value="{Binding SelectedSaleOrder.LTotalFee, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
                                     <!--  Style="{DynamicResource TextBlockNormal}"  -->
                                     <TextBlock x:Name="txtblOrderTabShippingHandling"
                                                Grid.Row="3"
@@ -1712,9 +1707,7 @@
                                                              CurrencyStringFormat="{x:Static local:Define.CurrencyFormat}"
                                                              Padding="2,0,2,0"
                                                              TextWrapping="NoWrap"
-                                                             Value="{Binding SelectedSaleOrder.Shipping,
-                                                                             Mode=TwoWay,
-                                                                             UpdateSourceTrigger=PropertyChanged}" />
+                                                             Value="{Binding SelectedSaleOrder.Shipping, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
                                     <Rectangle x:Name="LineOrderTotal"
                                                Grid.Row="4"
                                                Grid.Column="3"
@@ -1741,10 +1734,7 @@
                                              IsReadOnly="True"
                                              Padding="2,0,2,0"
                                              Style="{DynamicResource TextBoxTotalStyle}"
-                                             Text="{Binding SelectedSaleOrder.Total,
-                                                            ConverterCulture={x:Static local:Define.ConverterCulture},
-                                                            Mode=OneWay,
-                                                            StringFormat={x:Static local:Define.CurrencyFormat}}"
+                                             Text="{Binding SelectedSaleOrder.Total, ConverterCulture={x:Static local:Define.ConverterCulture}, Mode=OneWay, StringFormat={x:Static local:Define.CurrencyFormat}}"
                                              TextWrapping="NoWrap" />
 
                                     <TextBlock x:Name="txtblBalance"
@@ -1766,10 +1756,7 @@
                                              IsReadOnly="True"
                                              Padding="2,0,2,0"
                                              Style="{DynamicResource TextBoxTotalStyle}"
-                                             Text="{Binding SelectedSaleOrder.Balance,
-                                                            ConverterCulture={x:Static local:Define.ConverterCulture},
-                                                            Mode=OneWay,
-                                                            StringFormat={x:Static local:Define.CurrencyFormat}}"
+                                             Text="{Binding SelectedSaleOrder.Balance, ConverterCulture={x:Static local:Define.ConverterCulture}, Mode=OneWay, StringFormat={x:Static local:Define.CurrencyFormat}}"
                                              TextWrapping="NoWrap"
                                              d:LayoutOverrides="GridBox" />
                                 </Grid>

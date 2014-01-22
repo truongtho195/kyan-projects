@@ -8,6 +8,7 @@ using System.Linq;
 using System.Linq.Expressions;
 using System.Windows;
 using System.Windows.Input;
+using System.Windows.Threading;
 using CPC.Control;
 using CPC.Helper;
 using CPC.POS.Database;
@@ -45,6 +46,16 @@ namespace CPC.POS.ViewModel
         public bool IsAdvanced { get; set; }
 
         private Expression<Func<base_Guest, bool>> AdvanceSearchPredicate;
+
+        /// <summary>
+        /// Timer for searching
+        /// </summary>
+        protected DispatcherTimer _waitingTimer;
+
+        /// <summary>
+        /// Flag for count timer user input value
+        /// </summary>
+        protected int _timerCounter = 0;
         #endregion
 
         #region Constructors
@@ -55,6 +66,13 @@ namespace CPC.POS.ViewModel
             StickyManagementViewModel = new PopupStickyViewModel();
             this.InitialCommand();
             Parameter = new Common();
+
+            if (Define.CONFIGURATION.IsAutoSearch)
+            {
+                _waitingTimer = new DispatcherTimer();
+                _waitingTimer.Interval = new TimeSpan(0, 0, 0, 1);
+                _waitingTimer.Tick += new EventHandler(_waitingTimer_Tick);
+            }
         }
 
         public EmployeeViewModel(bool isList, object param = null)
@@ -320,6 +338,7 @@ namespace CPC.POS.ViewModel
                 if (_filterText != value)
                 {
                     _filterText = value;
+                    ResetTimer();
                     OnPropertyChanged(() => FilterText);
                     this.Keyword = this.FilterText;
                 }
@@ -621,6 +640,8 @@ namespace CPC.POS.ViewModel
         {
             try
             {
+                if (_waitingTimer != null)
+                    _waitingTimer.Stop();
                 this.IsAdvanced = false;
                 Expression<Func<base_Guest, bool>> predicate = this.CreatePredicateWithConditionSearch(this.FilterText);
                 this.LoadDataByPredicate(predicate, false, 0);
@@ -826,6 +847,7 @@ namespace CPC.POS.ViewModel
             }
             catch (Exception ex)
             {
+                _log4net.Error(ex);
                 Debug.WriteLine("OnDuplicateCommandExecute" + ex.ToString());
             }
 
@@ -963,6 +985,7 @@ namespace CPC.POS.ViewModel
             }
             catch (Exception ex)
             {
+                _log4net.Error(ex);
                 Debug.WriteLine("OnDuplicateCommandExecute" + ex.ToString());
             }
 
@@ -1115,6 +1138,9 @@ namespace CPC.POS.ViewModel
         {
             try
             {
+                if (_waitingTimer != null)
+                    _waitingTimer.Stop();
+
                 EmployeeAdvanceSearchViewModel viewModel = new EmployeeAdvanceSearchViewModel();
                 bool? dialogResult = _dialogService.ShowDialog<EmployeeAdvanceSearchView>(_ownerViewModel, viewModel, Language.GetMsg("C104"));
                 if (dialogResult ?? false)
@@ -1126,6 +1152,7 @@ namespace CPC.POS.ViewModel
             }
             catch (Exception ex)
             {
+                _log4net.Error(ex);
                 MessageBox.Show(ex.ToString());
             }
         }
@@ -1458,7 +1485,7 @@ namespace CPC.POS.ViewModel
                 if (SelectedItemEmployee != null && SelectedItemEmployee.IsNew)
                     // Remove all popup sticky
                     StickyManagementViewModel.DeleteAllResourceNote();
-                
+
                 else
                     // Close all popup sticky
                     StickyManagementViewModel.CloseAllPopupSticky();
@@ -1548,6 +1575,7 @@ namespace CPC.POS.ViewModel
             }
             catch (Exception ex)
             {
+                _log4net.Error(ex);
                 Debug.WriteLine("Save Image" + ex.ToString());
             }
         }
@@ -1575,6 +1603,7 @@ namespace CPC.POS.ViewModel
             }
             catch (Exception ex)
             {
+                _log4net.Error(ex);
                 MessageBox.Show(ex.ToString());
             }
         }
@@ -1803,8 +1832,9 @@ namespace CPC.POS.ViewModel
                 if (registryKey == null)
                     return true;
             }
-            catch
+            catch (Exception ex)
             {
+                _log4net.Error(ex);
                 return true;
             }
             return false;
@@ -1869,6 +1899,34 @@ namespace CPC.POS.ViewModel
             }
         }
         #endregion
+
+        /// <summary>
+        /// Event Tick for search ching
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        protected virtual void _waitingTimer_Tick(object sender, EventArgs e)
+        {
+            _timerCounter++;
+            if (_timerCounter == Define.DelaySearching)
+            {
+                OnSearchCommandExecute(null);
+                _waitingTimer.Stop();
+            }
+        }
+
+        /// <summary>
+        /// Reset timer for Auto complete search
+        /// </summary>
+        protected virtual void ResetTimer()
+        {
+            if (Define.CONFIGURATION.IsAutoSearch)
+            {
+                this._waitingTimer.Stop();
+                this._waitingTimer.Start();
+                _timerCounter = 0;
+            }
+        }
 
         #endregion
 
@@ -1938,6 +1996,5 @@ namespace CPC.POS.ViewModel
         }
 
         #endregion
-
     }
 }

@@ -424,13 +424,7 @@
     <Compile Include="Model\base_ProductUOMModel.cs">
       <DependentUpon>ModelTemplate.tt</DependentUpon>
     </Compile>
-    <Compile Include="Model\base_PromotionAffectModel.cs">
-      <DependentUpon>ModelTemplate.tt</DependentUpon>
-    </Compile>
     <Compile Include="Model\base_PromotionModel.cs">
-      <DependentUpon>ModelTemplate.tt</DependentUpon>
-    </Compile>
-    <Compile Include="Model\base_PromotionScheduleModel.cs">
       <DependentUpon>ModelTemplate.tt</DependentUpon>
     </Compile>
     <Compile Include="Model\base_PurchaseOrderDetailModel.cs">
@@ -854,13 +848,7 @@
     <Compile Include="Repository\base_ProductUOMRepository.cs">
       <DependentUpon>RepositoryTemplate.tt</DependentUpon>
     </Compile>
-    <Compile Include="Repository\base_PromotionAffectRepository.cs">
-      <DependentUpon>RepositoryTemplate.tt</DependentUpon>
-    </Compile>
     <Compile Include="Repository\base_PromotionRepository.cs">
-      <DependentUpon>RepositoryTemplate.tt</DependentUpon>
-    </Compile>
-    <Compile Include="Repository\base_PromotionScheduleRepository.cs">
       <DependentUpon>RepositoryTemplate.tt</DependentUpon>
     </Compile>
     <Compile Include="Repository\base_PurchaseOrderDetailRepository.cs">
@@ -1074,6 +1062,7 @@
     <Compile Include="ViewModel\Common\TaskInformationViewModel.cs" />
     <Compile Include="ViewModel\Common\TaskListReminderViewModel.cs" />
     <Compile Include="ViewModel\Common\TemplateCategoryViewModel.cs" />
+    <Compile Include="ViewModel\Common\UserPermissions.cs" />
     <Compile Include="ViewModel\Common\VendorSearchViewModel.cs" />
     <Compile Include="ViewModel\Common\ViewProfileViewModel.cs" />
     <Compile Include="ViewModel\CompanySetting\BackupRestoreViewModel.cs" />
@@ -1094,6 +1083,7 @@
     <Compile Include="ViewModel\Employee\EmployeeAdvanceSearchViewModel.cs" />
     <Compile Include="ViewModel\Employee\EmployeeViewModel.cs" />
     <Compile Include="ViewModel\Employee\RecordFingerprintViewModel.cs" />
+    <Compile Include="ViewModel\Front\SalesOrderFrontHandViewModel.cs" />
     <Compile Include="ViewModel\GiftCard\GiftCardViewModel.cs" />
     <Compile Include="ViewModel\Inventory\AdjustmentInformationViewModel.cs" />
     <Compile Include="ViewModel\Inventory\ProductManual\PopupProductManualAdvanceSearchViewModel.cs" />
@@ -1109,12 +1099,12 @@
     <Compile Include="ViewModel\Inventory\Pricing\PricingViewModel.cs" />
     <Compile Include="ViewModel\Inventory\ProductMovementHistoryViewModel.cs" />
     <Compile Include="ViewModel\Inventory\CostAdjustmentHistoryViewModel.cs" />
-    <Compile Include="ViewModel\Inventory\Promotion\PromotionCustomViewModel.cs" />
-    <Compile Include="ViewModel\Inventory\Promotion\PromotionAdvanceSearchViewModel.cs" />
-    <Compile Include="ViewModel\Inventory\Promotion\PromotionReasonViewModel.cs" />
+    <Compile Include="ViewModel\Inventory\Promotion\PopupPromotionAdvanceSearchViewModel.cs" />
+    <Compile Include="ViewModel\Inventory\Promotion\PopupPromotionReasonViewModel.cs" />
     <Compile Include="ViewModel\Inventory\Promotion\PromotionViewModel.cs" />
     <Compile Include="ViewModel\Inventory\ReorderStockViewModel.cs" />
     <Compile Include="ViewModel\Inventory\TransferStockViewModel.cs" />
+    <Compile Include="ViewModel\LockScreenViewModel.cs" />
     <Compile Include="ViewModel\MainViewModel.cs" />
     <Compile Include="ViewModel\Common\PopupEditProductViewModel.cs" />
     <Compile Include="ViewModel\Inventory\ProductManual\ProductManualViewModel.cs" />
@@ -1184,17 +1174,18 @@
     <Compile Include="ViewModel\Security\User\ChangePasswordViewModel.cs" />
     <Compile Include="ViewModel\Security\User\UserListViewModel.cs" />
     <Compile Include="ViewModel\SplashScreenViewModel.cs" />
-    <Compile Include="ViewModel\TimeClock\AssignWorkScheduleViewModel.cs" />
-    <Compile Include="ViewModel\TimeClock\ChangeWorkScheduleViewModel.cs" />
+    <Compile Include="ViewModel\TimeClock\WorkSchedule\AssignWorkScheduleViewModel.cs" />
+    <Compile Include="ViewModel\TimeClock\WorkSchedule\ChangeWorkScheduleViewModel.cs" />
+    <Compile Include="ViewModel\TimeClock\WorkPermission\PopupWorkPermissionAdvanceSearchViewModel.cs" />
     <Compile Include="ViewModel\TimeClock\TimeClockManual\PopupTimeClockManualAdvanceSearchViewModel.cs" />
     <Compile Include="ViewModel\TimeClock\TimeClockManual\PopupEmployeeSearchViewModel.cs" />
-    <Compile Include="ViewModel\TimeClock\EmployeeInformationDetailViewModel.cs" />
-    <Compile Include="ViewModel\TimeClock\EmployeesListViewModel.cs" />
+    <Compile Include="ViewModel\TimeClock\WorkSchedule\EmployeeInformationDetailViewModel.cs" />
+    <Compile Include="ViewModel\TimeClock\WorkPermission\EmployeesListViewModel.cs" />
     <Compile Include="ViewModel\TimeClock\HolidayViewModel.cs" />
     <Compile Include="ViewModel\TimeClock\TimeClockManual\PopupAssignHoursViewModel.cs" />
     <Compile Include="ViewModel\TimeClock\TimeClockManual\TimeClockManualEventEditingViewModel.cs" />
-    <Compile Include="ViewModel\TimeClock\WorkPermissionViewModel.cs" />
-    <Compile Include="ViewModel\TimeClock\WorkScheduleViewModel.cs" />
+    <Compile Include="ViewModel\TimeClock\WorkPermission\WorkPermissionViewModel.cs" />
+    <Compile Include="ViewModel\TimeClock\WorkSchedule\WorkScheduleViewModel.cs" />
     <Compile Include="ViewModel\UserManagement\GroupPermissionViewModel.cs" />
     <Compile Include="ViewModel\Common\PopupAddNewGroupViewModel.cs" />
     <Compile Include="ViewModel\Vendor\PopupVendorAdvanceSearchViewModel.cs" />
@@ -1344,6 +1335,9 @@
     <Compile Include="View\Employee\WorkScheduleHistory.xaml.cs">
       <DependentUpon>WorkScheduleHistory.xaml</DependentUpon>
     </Compile>
+    <Compile Include="View\Front\SalesOrderFrontHandView.xaml.cs">
+      <DependentUpon>SalesOrderFrontHandView.xaml</DependentUpon>
+    </Compile>
     <Compile Include="View\GiftCard\GiftCardView.xaml.cs">
       <DependentUpon>GiftCardView.xaml</DependentUpon>
     </Compile>
@@ -1368,6 +1362,9 @@
     <Compile Include="View\Inventory\PriceManagement\PriceManagementView.xaml.cs">
       <DependentUpon>PriceManagementView.xaml</DependentUpon>
     </Compile>
+    <Compile Include="View\Inventory\Pricing\Popup\CustomView.xaml.cs">
+      <DependentUpon>CustomView.xaml</DependentUpon>
+    </Compile>
     <Compile Include="View\Inventory\Pricing\Popup\PricingCategory\PricingCategoryView.xaml.cs">
       <DependentUpon>PricingCategoryView.xaml</DependentUpon>
     </Compile>
@@ -1386,18 +1383,15 @@
     <Compile Include="View\Inventory\ProductMovementHistoryView.xaml.cs">
       <DependentUpon>ProductMovementHistoryView.xaml</DependentUpon>
     </Compile>
-    <Compile Include="View\Inventory\Promotion\CustomView.xaml.cs">
-      <DependentUpon>CustomView.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="View\Inventory\Promotion\PromotionAdvanceSearchView.xaml.cs">
-      <DependentUpon>PromotionAdvanceSearchView.xaml</DependentUpon>
+    <Compile Include="View\Inventory\Promotion\PopupPromotionAdvanceSearchView.xaml.cs">
+      <DependentUpon>PopupPromotionAdvanceSearchView.xaml</DependentUpon>
     </Compile>
     <Compile Include="View\Inventory\Promotion\PromotionView.xaml.cs">
       <DependentUpon>PromotionView.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="View\Inventory\Promotion\PromotionReasonView.xaml.cs">
-      <DependentUpon>PromotionReasonView.xaml</DependentUpon>
+    <Compile Include="View\Inventory\Promotion\PopupPromotionReasonView.xaml.cs">
+      <DependentUpon>PopupPromotionReasonView.xaml</DependentUpon>
     </Compile>
     <Compile Include="View\Inventory\QuantityAdjustmentHistoryView.xaml.cs">
       <DependentUpon>QuantityAdjustmentHistoryView.xaml</DependentUpon>
@@ -1612,6 +1606,9 @@
     <Compile Include="View\SplashScreenView.xaml.cs">
       <DependentUpon>SplashScreenView.xaml</DependentUpon>
     </Compile>
+    <Compile Include="View\TimeClock\WorkPermission\PopupWorkPermissionAdvanceSearchView.xaml.cs">
+      <DependentUpon>PopupWorkPermissionAdvanceSearchView.xaml</DependentUpon>
+    </Compile>
     <Compile Include="View\TimeClock\TimeClockManual\PopupTimeClockManualAdvanceSearchView.xaml.cs">
       <DependentUpon>PopupTimeClockManualAdvanceSearchView.xaml</DependentUpon>
     </Compile>
@@ -1621,19 +1618,19 @@
     <Compile Include="View\TimeClock\TimeClockManual\PopupAssignHoursView.xaml.cs">
       <DependentUpon>PopupAssignHoursView.xaml</DependentUpon>
     </Compile>
-    <Compile Include="View\TimeClock\AssignWorkScheduleView.xaml.cs">
+    <Compile Include="View\TimeClock\WorkSchedule\AssignWorkScheduleView.xaml.cs">
       <DependentUpon>AssignWorkScheduleView.xaml</DependentUpon>
     </Compile>
     <Compile Include="View\TimeClock\CalculatorView.xaml.cs">
       <DependentUpon>CalculatorView.xaml</DependentUpon>
     </Compile>
-    <Compile Include="View\TimeClock\ChangeWorkScheduleView.xaml.cs">
+    <Compile Include="View\TimeClock\WorkSchedule\ChangeWorkScheduleView.xaml.cs">
       <DependentUpon>ChangeWorkScheduleView.xaml</DependentUpon>
     </Compile>
-    <Compile Include="View\TimeClock\EmployeeInformationDetailView.xaml.cs">
+    <Compile Include="View\TimeClock\WorkSchedule\EmployeeInformationDetailView.xaml.cs">
       <DependentUpon>EmployeeInformationDetailView.xaml</DependentUpon>
     </Compile>
-    <Compile Include="View\TimeClock\EmployeesListView.xaml.cs">
+    <Compile Include="View\TimeClock\WorkPermission\EmployeesListView.xaml.cs">
       <DependentUpon>EmployeesListView.xaml</DependentUpon>
     </Compile>
     <Compile Include="View\TimeClock\HolidayView.xaml.cs">
@@ -1642,10 +1639,10 @@
     <Compile Include="View\TimeClock\TimeClockManual\TimeClockManualEventEditingView.xaml.cs">
       <DependentUpon>TimeClockManualEventEditingView.xaml</DependentUpon>
     </Compile>
-    <Compile Include="View\TimeClock\WorkPermissionView.xaml.cs">
+    <Compile Include="View\TimeClock\WorkPermission\WorkPermissionView.xaml.cs">
       <DependentUpon>WorkPermissionView.xaml</DependentUpon>
     </Compile>
-    <Compile Include="View\TimeClock\WorkScheduleView.xaml.cs">
+    <Compile Include="View\TimeClock\WorkSchedule\WorkScheduleView.xaml.cs">
       <DependentUpon>WorkScheduleView.xaml</DependentUpon>
     </Compile>
     <Compile Include="View\UserManagement\GroupPermissionView.xaml.cs">
@@ -1896,6 +1893,10 @@
     <Page Include="Dictionary\BaseControlStyle\PasswordBoxStyle.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Dictionary\BaseControlStyle\ToolTipStyle.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
     </Page>
     <Page Include="Dictionary\Brushes\Blue\BlueImageResources.xaml">
       <Generator>MSBuild:Compile</Generator>
@@ -2217,6 +2218,10 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
+    <Page Include="View\Front\SalesOrderFrontHandView.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
     <Page Include="View\GiftCard\GiftCardView.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
@@ -2249,6 +2254,10 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
+    <Page Include="View\Inventory\Pricing\Popup\CustomView.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
     <Page Include="View\Inventory\Pricing\Popup\PricingCategory\PricingCategoryView.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
@@ -2273,11 +2282,7 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
-    <Page Include="View\Inventory\Promotion\CustomView.xaml">
-      <Generator>MSBuild:Compile</Generator>
-      <SubType>Designer</SubType>
-    </Page>
-    <Page Include="View\Inventory\Promotion\PromotionAdvanceSearchView.xaml">
+    <Page Include="View\Inventory\Promotion\PopupPromotionAdvanceSearchView.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
@@ -2285,7 +2290,7 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="View\Inventory\Promotion\PromotionReasonView.xaml">
+    <Page Include="View\Inventory\Promotion\PopupPromotionReasonView.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
@@ -2573,6 +2578,10 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
+    <Page Include="View\TimeClock\WorkPermission\PopupWorkPermissionAdvanceSearchView.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
     <Page Include="View\TimeClock\TimeClockManual\PopupTimeClockManualAdvanceSearchView.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
@@ -2585,7 +2594,7 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
-    <Page Include="View\TimeClock\AssignWorkScheduleView.xaml">
+    <Page Include="View\TimeClock\WorkSchedule\AssignWorkScheduleView.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
@@ -2593,15 +2602,15 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
-    <Page Include="View\TimeClock\ChangeWorkScheduleView.xaml">
+    <Page Include="View\TimeClock\WorkSchedule\ChangeWorkScheduleView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="View\TimeClock\EmployeeInformationDetailView.xaml">
+    <Page Include="View\TimeClock\WorkSchedule\EmployeeInformationDetailView.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
-    <Page Include="View\TimeClock\EmployeesListView.xaml">
+    <Page Include="View\TimeClock\WorkPermission\EmployeesListView.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
@@ -2613,11 +2622,11 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
-    <Page Include="View\TimeClock\WorkPermissionView.xaml">
+    <Page Include="View\TimeClock\WorkPermission\WorkPermissionView.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
-    <Page Include="View\TimeClock\WorkScheduleView.xaml">
+    <Page Include="View\TimeClock\WorkSchedule\WorkScheduleView.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
@@ -2914,9 +2923,6 @@
     <Resource Include="Image\RibbonImages\RibbonLanguageZH.png" />
   </ItemGroup>
   <ItemGroup>
-    <Resource Include="Image\RibbonImages\RibbonLanguage.png" />
-  </ItemGroup>
-  <ItemGroup>
     <Resource Include="Image\RibbonImages\Blue\RibbonCertificate.png" />
     <Resource Include="Image\RibbonImages\Grey\RibbonCertificate.png" />
     <Resource Include="Image\RibbonImages\Red\RibbonCertificate.png" />
@@ -3098,6 +3104,26 @@
     <Resource Include="Language\MailTemplate\RewardContentTemplate.txt">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Resource>
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Image\RibbonImages\Blue\RibbonHelp.png" />
+    <Resource Include="Image\RibbonImages\Grey\RibbonHelp.png" />
+    <Resource Include="Image\RibbonImages\Red\RibbonHelp.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Image\RibbonImages\Blue\RibbonUpdate.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Image\RibbonImages\Grey\RibbonUpdate.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Image\RibbonImages\Red\RibbonUpdate.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\CPCDragDrop\CPCDragDrop.csproj">
+      <Project>{592CAF41-11E2-4290-9155-546B0A2BD24E}</Project>
+      <Name>CPCDragDrop</Name>
+    </ProjectReference>
   </ItemGroup>
   <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

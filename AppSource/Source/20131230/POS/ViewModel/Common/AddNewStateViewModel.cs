@@ -1,14 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using CPC.Toolkit.Command;
-using CPC.Toolkit.Base;
-using System.IO;
-using CPC.Helper;
-using System.Xml.Linq;
-using CPC.POS.Model;
 using System.ComponentModel;
+using System.IO;
+using System.Linq;
+using System.Xml.Linq;
+using CPC.Helper;
+using CPC.POS.Model;
+using CPC.Toolkit.Base;
+using CPC.Toolkit.Command;
 
 namespace CPC.POS.ViewModel
 {
@@ -258,7 +257,7 @@ namespace CPC.POS.ViewModel
                     case "Symbol":
                         if (string.IsNullOrWhiteSpace(Symbol))
                             message = "Code is required!";
-                        else if (Common.States!=null && Common.States.Any(x => x.Symbol.ToLower().Equals(Symbol.ToLower())))
+                        else if (Common.States != null && Common.States.Any(x => x.Symbol.ToLower().Equals(Symbol.ToLower())))
                             message = "Code is existed";
                         break;
                 }
@@ -272,6 +271,4 @@ namespace CPC.POS.ViewModel
         }
         #endregion
     }
-
-
 }

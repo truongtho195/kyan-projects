@@ -185,7 +185,7 @@ namespace CPC.Control
         {
             if (e.LeftButton == MouseButtonState.Pressed)
             {
-                DragDrop.DoDragDrop(this, this, DragDropEffects.Move);
+                System.Windows.DragDrop.DoDragDrop(this, this, DragDropEffects.Move);
             }
         }
 

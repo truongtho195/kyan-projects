@@ -310,11 +310,11 @@ namespace CPC.POS.Model
         #region Custom Code
 
         #region CountStockDetailCollection
-        private ObservableCollection<base_CountStockDetailModel> _countStockDetailCollection;
+        private CollectionBase<base_CountStockDetailModel> _countStockDetailCollection;
         /// <summary>
         /// Gets or sets the CountStockDetailCollection.
         /// </summary>
-        public ObservableCollection<base_CountStockDetailModel> CountStockDetailCollection
+        public CollectionBase<base_CountStockDetailModel> CountStockDetailCollection
         {
             get { return _countStockDetailCollection; }
             set
@@ -410,6 +410,24 @@ namespace CPC.POS.Model
             }
         }
         #endregion
+
+        protected bool _isChangeQty;
+        /// <summary>
+        /// Property Model
+        /// <para>Gets or sets the IsChangeQty</para>
+        /// </summary>
+        public bool IsChangeQty
+        {
+            get { return this._isChangeQty; }
+            set
+            {
+                if (this._isChangeQty != value)
+                {
+                    this._isChangeQty = value;
+                    OnPropertyChanged(() => IsChangeQty);
+                }
+            }
+        }
 
         #endregion
 

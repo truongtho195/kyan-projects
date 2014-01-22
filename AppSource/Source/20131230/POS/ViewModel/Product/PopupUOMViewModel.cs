@@ -105,7 +105,7 @@ namespace CPC.POS.ViewModel
             }
             catch (Exception ex)
             {
-                _log4net.Error(string.Format("Message: {0}. Source: {1}", ex.Message, ex.Source));
+                _log4net.Error(ex);
                 Xceed.Wpf.Toolkit.MessageBox.Show(ex.Message, "POS", MessageBoxButton.OK, MessageBoxImage.Error);
             }
         }
@@ -159,7 +159,15 @@ namespace CPC.POS.ViewModel
         /// <returns></returns>
         private bool IsDuplicateName(base_UOMModel uomModel)
         {
-            return _uomRepository.GetIQueryable(x => x.Name.ToLower().Equals(uomModel.Name.ToLower())).Count() > 0;
+            try
+            {
+                return _uomRepository.GetIQueryable(x => x.Name.ToLower().Equals(uomModel.Name.ToLower())).Count() > 0;
+            }
+            catch (Exception ex)
+            {
+                _log4net.Error(ex);
+                return true;
+            }
         }
 
         #endregion

@@ -3,9 +3,12 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Diagnostics;
+using System.Globalization;
 using System.Linq;
 using System.Linq.Expressions;
 using System.Windows;
+using System.Windows.Input;
+using System.Windows.Threading;
 using CPC.Control;
 using CPC.Helper;
 using CPC.POS.Database;
@@ -14,7 +17,7 @@ using CPC.POS.Repository;
 using CPC.POS.View;
 using CPC.Toolkit.Base;
 using CPC.Toolkit.Command;
-using System.Globalization;
+using CPCToolkitExt.DataGridControl;
 
 namespace CPC.POS.ViewModel
 {
@@ -29,17 +32,27 @@ namespace CPC.POS.ViewModel
         private base_DepartmentRepository _departmentRepository = new base_DepartmentRepository();
         //To define commands to use them in class.
         public RelayCommand<object> NewCommand { get; private set; }
-        public RelayCommand<object> EditCommand { get; private set; }
         public RelayCommand SaveCommand { get; private set; }
         public RelayCommand DeleteCommand { get; private set; }
         public RelayCommand<object> SearchCommand { get; private set; }
         public RelayCommand<object> DoubleClickViewCommand { get; private set; }
-        public RelayCommand ApplyCommand { get; private set; }
         public RelayCommand RestoreCommand { get; private set; }
         public RelayCommand<object> FilterProductCommand { get; private set; }
         //To get type of Affectpricing.
-        private string _typeAffectPricing = string.Empty;
+        private AffectPricing _affectPricingType;
         private base_PricingManagerModel SelectedItemPricingClone { get; set; }
+
+        private Expression<Func<base_Product, bool>> _productPredicate;
+
+        /// <summary>
+        /// Timer for searching
+        /// </summary>
+        protected DispatcherTimer _waitingTimer;
+
+        /// <summary>
+        /// Flag for count timer user input value
+        /// </summary>
+        protected int _timerCounter = 0;
         #endregion
 
         #region Constructors
@@ -47,18 +60,24 @@ namespace CPC.POS.ViewModel
         public PricingViewModel()
         {
             _ownerViewModel = App.Current.MainWindow.DataContext;
-            StickyManagementViewModel = new PopupStickyViewModel();
+
             this.InitialCommand();
             this.InitialData();
+
+            //Initial Auto Complete Search
+            if (Define.CONFIGURATION.IsAutoSearch)
+            {
+                _waitingTimer = new DispatcherTimer();
+                _waitingTimer.Interval = new TimeSpan(0, 0, 0, 1);
+                _waitingTimer.Tick += new EventHandler(_waitingTimer_Tick);
+            }
+
         }
 
         public PricingViewModel(bool isList, object param = null)
             : this()
         {
             this.ChangeSearchMode(isList, param);
-
-            // Get permission
-            GetPermission();
         }
 
         #endregion
@@ -87,10 +106,11 @@ namespace CPC.POS.ViewModel
         #endregion
 
         #region SelectedItemPricing
+
+        private base_PricingManagerModel _selectedItemPricing;
         /// <summary>
         /// Gets or sets the SelectedItemPricing.
         /// </summary>
-        private base_PricingManagerModel _selectedItemPricing;
         public base_PricingManagerModel SelectedItemPricing
         {
             get
@@ -137,6 +157,7 @@ namespace CPC.POS.ViewModel
                         break;
                 }
         }
+
         #endregion
 
         #region PricingCollection
@@ -367,6 +388,7 @@ namespace CPC.POS.ViewModel
                 if (_filterText != value)
                 {
                     _filterText = value;
+                    ResetTimer();
                     OnPropertyChanged(() => FilterText);
                     this.Keyword = this.FilterText;
                 }
@@ -523,6 +545,7 @@ namespace CPC.POS.ViewModel
 
         }
         #endregion
+
         #endregion
 
         #region Commands Methods
@@ -535,7 +558,7 @@ namespace CPC.POS.ViewModel
         /// <returns><c>true</c> if the command can be executed; otherwise <c>false</c></returns>
         private bool OnNewCommandCanExecute(object param)
         {
-            return AllowAddPricing;
+            return UserPermissions.AllowAddPricing;
         }
 
         /// <summary>
@@ -547,13 +570,14 @@ namespace CPC.POS.ViewModel
             if (this.ChangeViewExecute(null))
             {
                 // TODO: Handle command logic here
-                this.TotalProducts = this.ProductCollection.Count;
+                this.TotalProducts = 0;
                 this.SelectedItemPricing = new base_PricingManagerModel();
                 this.SelectedItemPricing.IsLoad = true;
                 this.SelectedItemPricing.Status = EmployeeStatuses.Pending.ToString();
                 this.SelectedItemPricing.BasePrice = 1;
                 this.SelectedItemPricing.CalculateMethod = 1;
                 this.SelectedItemPricing.PriceLevel = CPC.Helper.Common.PriceSchemas.FirstOrDefault().Text;
+                this.SelectedItemPricing.AffectPricing = 1;
                 this.SelectedItemPricing.AmountChange = 0;
                 this.SelectedItemPricing.AmountUnit = 1;
                 this.SelectedItemPricing.IsLoad = false;
@@ -561,11 +585,7 @@ namespace CPC.POS.ViewModel
                 this.SelectedItemPricing.ResourceNoteCollection = new CollectionBase<base_ResourceNoteModel>();
                 StickyManagementViewModel.SetParentResource(SelectedItemPricing.Resource.ToString(), SelectedItemPricing.ResourceNoteCollection);
                 this.SelectedItemPricing.IsDirty = false;
-                this.LoadProduct();
-                this.SelectedItemPricing.ProductCollection = this.ProductCollection;
-                this.SelectedItemPricing.IsErrorProductCollection = false;
-                this.ChangeCurrentPrice();
-                this.TotalProducts = this.SelectedItemPricing.ProductCollection.Count;
+                this.SelectedItemPricing.IsErrorProductCollection = true;
                 //To set enable of detail grid.
                 this.IsSearchMode = false;
             }
@@ -574,17 +594,44 @@ namespace CPC.POS.ViewModel
         #endregion
 
         #region EditCommand
+
+        /// <summary>
+        /// Gets the EditCommand command.
+        /// </summary>
+        public ICommand EditCommand { get; private set; }
+
         /// <summary>
         /// Method to check whether the EditCommand command can be executed.
         /// </summary>
         /// <returns><c>true</c> if the command can be executed; otherwise <c>false</c></returns>
         private bool OnEditCommandCanExecute(object param)
         {
-            return this.SelectedItemPricing != null && !this.SelectedItemPricing.DateRestored.HasValue;
+            // Convert param to DataGridControl
+            DataGridControl dataGridControl = param as DataGridControl;
+
+            if (dataGridControl == null || dataGridControl.SelectedItems.Count > 1)
+                return false;
+
+            base_PricingManagerModel pricingManagerModel = dataGridControl.SelectedItem as base_PricingManagerModel;
+
+            return pricingManagerModel != null && !pricingManagerModel.DateRestored.HasValue;
         }
+
+        /// <summary>
+        /// Method to invoke when the EditCommand command is executed.
+        /// </summary>
+        private void OnEditCommandExecute(object param)
+        {
+            // Convert param to DataGridControl
+            DataGridControl dataGridControl = param as DataGridControl;
+
+            OnDoubleClickViewCommandExecute(dataGridControl.SelectedItem);
+        }
+
         #endregion
 
-        #region Save Command
+        #region SaveCommand
+
         /// <summary>
         /// Method to check whether the SaveCommand command can be executed.
         /// </summary>
@@ -593,27 +640,22 @@ namespace CPC.POS.ViewModel
         {
             return this.IsValid && (this.SelectedItemPricing != null && this.SelectedItemPricing.ProductCollection.Count > 0 && (this.SelectedItemPricing.IsDirty || this.SelectedItemPricing.IsChangeProductCollection));
         }
+
         /// <summary>
         /// Method to invoke when the SaveCommand command is executed.
         /// </summary>
         private void OnSaveCommandExecute()
         {
-            this.SelectedItemPricing.Shift = Define.ShiftCode;
-            // TODO: Handle command logic here
-            if (this.SelectedItemPricing.IsNew)
+            if (SelectedItemPricing.IsNew)
             {
-                this.Insert();
-                this.PricingCollection.Insert(0, this.SelectedItemPricing);
-                this.TotalPricings = this.PricingCollection.Count;
-                this.SelectedItemPricing.VisibilityApplied = Visibility.Visible;
+                SaveNew(SelectedItemPricing);
             }
             else
-                this.Update();
-            this.SelectedItemPricing.ToModelAndRaise();
-            this.SelectedItemPricing.EndUpdate();
-            this.SelectedItemPricing.IsChangeProductCollection = false;
-            this.SelectedItemPricing.IsErrorProductCollection = false;
+            {
+                SaveUpdate(SelectedItemPricing);
+            }
         }
+
         #endregion
 
         #region DeleteCommand
@@ -652,19 +694,21 @@ namespace CPC.POS.ViewModel
         {
             try
             {
-                // TODO: Handle command logic here
+                if (_waitingTimer != null)
+                    _waitingTimer.Stop();
+
                 this.SearchAlert = string.Empty;
-                if ((param == null || string.IsNullOrWhiteSpace(param.ToString())))//Search All
+                if (string.IsNullOrWhiteSpace(Keyword))
                 {
                     Expression<Func<base_PricingManager, bool>> predicate = PredicateBuilder.True<base_PricingManager>();
                     this.LoadPricing(predicate, false, 0);
                 }
-                else if (param != null)
+                else
                 {
-                    this.Keyword = param.ToString();
                     Expression<Func<base_PricingManager, bool>> predicate = this.CreateSearchPredicate(this.Keyword);
                     this.LoadPricing(predicate, false, 0);
                 }
+
             }
             catch (Exception ex)
             {
@@ -690,25 +734,107 @@ namespace CPC.POS.ViewModel
         /// </summary>
         private void OnDoubleClickViewCommandExecute(object param)
         {
-            if (param != null && this.IsSearchMode)
+            if (param != null && IsSearchMode)
             {
-                //To set pricing detail
-                this.SetPricingDetail();
-                //To show detail form.
-                this.IsSearchMode = false;
+                try
+                {
+                    // Create background worker
+                    BackgroundWorker bgWorker = new BackgroundWorker { WorkerReportsProgress = true };
+
+                    SelectedItemPricing = param as base_PricingManagerModel;
+
+                    // Clear product collection
+                    SelectedItemPricing.ProductCollection.Clear();
+
+                    bgWorker.DoWork += (sender, e) =>
+                    {
+                        // Turn on BusyIndicator
+                        if (Define.DisplayLoading)
+                            IsBusy = true;
+
+                        // Set affect pricing
+                        _affectPricingType = (AffectPricing)SelectedItemPricing.AffectPricing;
+
+                        // Get all pricing changes
+                        IEnumerable<base_PricingChange> pricingChanges = SelectedItemPricing.base_PricingManager.base_PricingChange.Skip(0).Take(NumberOfDisplayItems);
+
+                        foreach (base_PricingChange pricingChange in pricingChanges)
+                        {
+                            // Create new product model
+                            base_ProductModel productModel = new base_ProductModel(pricingChange.base_Product);
+
+                            productModel.CurrentPrice = pricingChange.CurrentPrice.Value;
+                            productModel.NewPrice = pricingChange.NewPrice.Value;
+                            productModel.PriceChange = pricingChange.PriceChanged.Value;
+
+                            // Turn off IsDirty & IsNew
+                            productModel.EndUpdate();
+
+                            bgWorker.ReportProgress(0, productModel);
+                        }
+                    };
+
+                    bgWorker.ProgressChanged += (sender, e) =>
+                    {
+                        // Add to collection
+                        SelectedItemPricing.ProductCollection.Add(e.UserState as base_ProductModel);
+                    };
+
+                    bgWorker.RunWorkerCompleted += (sender, e) =>
+                    {
+                        // Update total products
+                        TotalProducts = SelectedItemPricing.base_PricingManager.base_PricingChange.Count;
+
+                        // Set visibility of buttons
+                        if (SelectedItemPricing.DateApplied.HasValue)
+                        {
+                            // Hide apply button
+                            SelectedItemPricing.VisibilityApplied = Visibility.Collapsed;
+
+                            // Show restore button
+                            SelectedItemPricing.VisibilityRestore = Visibility.Visible;
+                        }
+
+                        if (SelectedItemPricing.DateApplied.HasValue || SelectedItemPricing.DateRestored.HasValue)
+                            SelectedItemPricing.IsEnable = false;
+
+                        SelectedItemPricing.IsErrorProductCollection = false;
+
+                        // Turn off IsDirty & IsNew
+                        SelectedItemPricing.EndUpdate();
+
+                        // Load resource note collection
+                        LoadResourceNoteCollection(SelectedItemPricing);
+                        StickyManagementViewModel.SetParentResource(SelectedItemPricing.Resource.ToString(), SelectedItemPricing.ResourceNoteCollection);
+
+                        // Show detail form
+                        IsSearchMode = false;
+
+                        // Turn off BusyIndicator
+                        IsBusy = false;
+                    };
+
+                    // Run async background worker
+                    bgWorker.RunWorkerAsync();
+                }
+                catch (Exception ex)
+                {
+                    _log4net.Error(ex);
+                    _log4net.Error("LOAD PRICING DETAIL\n" + ex.ToString());
+                }
             }
-            else if (this.IsSearchMode)
+            else if (IsSearchMode)
             {
                 //To show detail form.
-                this.IsSearchMode = false;
+                IsSearchMode = false;
             }
-            else if (this.ShowNotification(null))
+            else if (ShowNotification(null))
             {
                 // Show list form
-                this.IsSearchMode = true;
+                IsSearchMode = true;
             }
-
         }
+
         #endregion
 
         #region LoadDataByStepCommand
@@ -751,122 +877,145 @@ namespace CPC.POS.ViewModel
         private void OnFilterProductCommandExecute(object param)
         {
             bool isLoad = false;
-            if (!this.SelectedItemPricing.IsLoad)
+
+            if (!SelectedItemPricing.IsLoad)
             {
-                //To load data with Category
-                if (param.Equals("Category"))
+                // Clear product collection if affect pricing type changed
+                if (!_affectPricingType.Equals((AffectPricing)SelectedItemPricing.AffectPricing))
                 {
-                    if (!this._typeAffectPricing.Equals("Category"))
-                        this.SelectedItemPricing.ProductCollection.Clear();
+                    SelectedItemPricing.ProductCollection.Clear();
+                    _affectPricingType = (AffectPricing)SelectedItemPricing.AffectPricing;
+                }
+
+                // Open popup form by selected affect pricing
+                if (AffectPricing.Category.Equals((AffectPricing)SelectedItemPricing.AffectPricing))
+                {
                     PricingCategoryViewModel viewModel = new PricingCategoryViewModel();
-                    bool? result = _dialogService.ShowDialog<PricingCategoryView>(_ownerViewModel, viewModel, "Select products to apply to this pricing.");
-                    if (result.HasValue && result.Value)
+                    bool? msgResult = _dialogService.ShowDialog<PricingCategoryView>(_ownerViewModel, viewModel, Language.GetMsg("PR_Message_SelectProductByCategory"));
+                    if (msgResult.HasValue && msgResult.Value)
                     {
                         isLoad = true;
-                        this.LoadProduct(viewModel.CategoryList, "Category");
+                        LoadProductCollection(viewModel.CategoryList, AffectPricing.Category);
                     }
                     else
                     {
-                        this.SelectedItemPricing.IsChangeProductCollection = true;
-                        //this.SelectedItemPricing.ProductCollection.Clear();
+                        SelectedItemPricing.IsChangeProductCollection = true;
                     }
-                    _typeAffectPricing = "Category";
                 }
-                //To load data with Vendor
-                else if (param.Equals("Vendor"))
+                else if (AffectPricing.Vendor.Equals((AffectPricing)SelectedItemPricing.AffectPricing))
                 {
-                    if (!this._typeAffectPricing.Equals("Vendor"))
-                        this.SelectedItemPricing.ProductCollection.Clear();
                     PricingVendorViewModel viewModel = new PricingVendorViewModel();
-                    bool? result = _dialogService.ShowDialog<PricingVendorView>(_ownerViewModel, viewModel, "Select products to apply to this pricing.");
-                    if (result.HasValue && result.Value)
+                    bool? msgResult = _dialogService.ShowDialog<PricingVendorView>(_ownerViewModel, viewModel, Language.GetMsg("PR_Message_SelectProductByVendor"));
+                    if (msgResult.HasValue && msgResult.Value)
                     {
                         isLoad = true;
-                        this.LoadProduct(viewModel.CategoryList, "Vendor");
+                        LoadProductCollection(viewModel.CategoryList, AffectPricing.Vendor);
                     }
                     else
                     {
-                        this.SelectedItemPricing.IsChangeProductCollection = true;
-                        //this.SelectedItemPricing.ProductCollection.Clear();
+                        SelectedItemPricing.IsChangeProductCollection = true;
                     }
-                    _typeAffectPricing = "Vendor";
                 }
-                //To load data with Custom
-                else if (param.Equals("Custom"))
-                {
-                    if (!this._typeAffectPricing.Equals("Custom"))
-                        this.SelectedItemPricing.ProductCollection.Clear();
-                    // Get all category that contain in department list
-                    List<ComboItem> CategoryList = new List<ComboItem>(_departmentRepository.
-                GetAll(x => (x.IsActived.HasValue && x.IsActived.Value)).
-                OrderBy(x => x.Name).Where(x => x.LevelId == 1).
-                        Select(x => new ComboItem { IntValue = x.Id, Text = x.Name }));
-                    PricingCustomViewModel viewModel = new PricingCustomViewModel(CategoryList);
-                    bool? result = _dialogService.ShowDialog<CustomView>(_ownerViewModel, viewModel, "Select products to apply to this pricing.");
-                    if (result.HasValue && result.Value)
-                    {
-                        isLoad = true;
-                        this.LoadProduct(viewModel.ProductIDList, "Custom");
-                    }
-                    else
-                    {
-                        this.SelectedItemPricing.IsChangeProductCollection = true;
-                    }
-                    _typeAffectPricing = "Custom";
-                }
-                //To load all of data.
                 else
                 {
-                    if (!this._typeAffectPricing.Equals("Default"))
-                        this.SelectedItemPricing.ProductCollection.Clear();
-                    this.SelectedItemPricing.ProductCollection.Clear();
-                    isLoad = true;
-                    this.LoadProduct();
-                    this.SelectedItemPricing.ProductCollection = this.ProductCollection;
-                    _typeAffectPricing = "Default";
+                    // Get all categories that contain in department list
+                    List<ComboItem> categoryList = new List<ComboItem>(_departmentRepository.
+                        GetAll(x => (x.IsActived.HasValue && x.IsActived.Value)).
+                        OrderBy(x => x.Name).Where(x => x.LevelId == 1).
+                        Select(x => new ComboItem { IntValue = x.Id, Text = x.Name }));
+
+                    PricingCustomViewModel viewModel = new PricingCustomViewModel(categoryList);
+                    bool? msgResult = _dialogService.ShowDialog<CustomView>(_ownerViewModel, viewModel, Language.GetMsg("PR_Message_SelectProductByCustom"));
+                    if (msgResult.HasValue && msgResult.Value)
+                    {
+                        isLoad = true;
+                        LoadProductCollection(viewModel.ProductIDList, AffectPricing.Custom);
+                    }
+                    else
+                    {
+                        SelectedItemPricing.IsChangeProductCollection = true;
+                    }
                 }
+
                 if (isLoad)
                 {
-                    this.ChangeCurrentPrice();
+                    ChangeCurrentPrice();
                 }
+
                 //To change price of product when user changes affrectpricing.
-                if (isLoad && !this.SelectedItemPricing.IsLoad && this.IsActiveChangData())
-                    this.ChangeDataOfProduct(this.SelectedItemPricing.BasePrice);
-                this.TotalProducts = this.SelectedItemPricing.ProductCollection.Count;
-                this.SelectedItemPricing.IsErrorProductCollection = true;
+                if (isLoad && !SelectedItemPricing.IsLoad && IsActiveChangData())
+                    ChangeDataOfProduct(SelectedItemPricing.BasePrice);
+
+                TotalProducts = SelectedItemPricing.ProductCollection.Count;
+                SelectedItemPricing.IsErrorProductCollection = true;
             }
         }
         #endregion
 
         #region ApplyCommand
+
+        /// <summary>
+        /// Gets the ApplyCommand command.
+        /// </summary>
+        public ICommand ApplyCommand { get; private set; }
+
         /// <summary>
         /// Method to check whether the ApplyCommand command can be executed.
         /// </summary>
         /// <returns><c>true</c> if the command can be executed; otherwise <c>false</c></returns>
-        private bool OnApplyCommandCanExecute()
+        private bool OnApplyCommandCanExecute(object param)
         {
-            return this.IsValid && (this.SelectedItemPricing != null && !this.SelectedItemPricing.IsDirty && !this.SelectedItemPricing.IsNew && !this.SelectedItemPricing.DateApplied.HasValue);
+            if (param == null)
+            {
+                return IsValid && (SelectedItemPricing != null && !SelectedItemPricing.IsDirty &&
+                    !SelectedItemPricing.IsNew && !SelectedItemPricing.DateApplied.HasValue);
+            }
+            else
+            {
+                // Convert param to DataGridControl
+                DataGridControl dataGridControl = param as DataGridControl;
+
+                if (dataGridControl == null || dataGridControl.SelectedItems.Count > 1)
+                    return false;
+
+                base_PricingManagerModel pricingManagerModel = dataGridControl.SelectedItem as base_PricingManagerModel;
+
+                return IsValid && (pricingManagerModel != null && !pricingManagerModel.IsDirty &&
+                    !pricingManagerModel.IsNew && !pricingManagerModel.DateApplied.HasValue);
+            }
         }
 
         /// <summary>
         /// Method to invoke when the ApplyCommand command is executed.
         /// </summary>
-        private void OnApplyCommandExecute()
+        private void OnApplyCommandExecute(object param)
         {
-            //To close product view
+            // if product view is opened, show notification to close it
             if ((this._ownerViewModel as MainViewModel).IsOpenedView("Product"))
             {
                 Xceed.Wpf.Toolkit.MessageBox.Show(Language.Text14, Language.Warning, MessageBoxButton.OK, MessageBoxImage.Warning);
                 return;
             }
-            //To apply that change pricing.
-            this.SelectedItemPricing.IsEnable = false;
-            this.Apply();
 
+            if (param != null)
+            {
+                // Convert param to DataGridControl
+                DataGridControl dataGridControl = param as DataGridControl;
+
+                // Update selected pricing manager
+                SelectedItemPricing = dataGridControl.SelectedItem as base_PricingManagerModel;
+            }
+
+            SelectedItemPricing.IsEnable = false;
+
+            // Apply pricing changes
+            ApplyPricing(SelectedItemPricing);
         }
+
         #endregion
 
         #region RestoreCommand
+
         /// <summary>
         /// Method to check whether the RestoreCommand command can be executed.
         /// </summary>
@@ -875,6 +1024,7 @@ namespace CPC.POS.ViewModel
         {
             return this.IsValid && (this.SelectedItemPricing != null && !this.SelectedItemPricing.IsDirty && !this.SelectedItemPricing.IsNew && !this.SelectedItemPricing.DateRestored.HasValue);
         }
+
         /// <summary>
         /// Method to invoke when the RestoreCommand command is executed.
         /// </summary>
@@ -896,12 +1046,39 @@ namespace CPC.POS.ViewModel
                     //To close product view
                     (this._ownerViewModel as MainViewModel).CloseItem("Product");
                     this.SelectedItemPricing.Reason = viewModel.ReasonReactive;
-                    this.Restore();
+                    this.RestorePricing(SelectedItemPricing);
                     this.IsSearchMode = false;
                 }
             }
 
         }
+        #endregion
+
+        #region LoadStepProductCommand
+
+        /// <summary>
+        /// Gets the LoadStepProductCommand command.
+        /// </summary>
+        public ICommand LoadStepProductCommand { get; private set; }
+
+        /// <summary>
+        /// Method to check whether the LoadStepProductCommand command can be executed.
+        /// </summary>
+        /// <returns><c>true</c> if the command can be executed; otherwise <c>false</c></returns>
+        private bool OnLoadStepProductCommandCanExecute()
+        {
+            return true;
+        }
+
+        /// <summary>
+        /// Method to invoke when the LoadStepProductCommand command is executed.
+        /// </summary>
+        private void OnLoadStepProductCommandExecute()
+        {
+            // Load data by predicate
+            LoadProductDataByPredicate(_productPredicate, false, SelectedItemPricing.ProductCollection.Count);
+        }
+
         #endregion
 
         #endregion
@@ -910,8 +1087,17 @@ namespace CPC.POS.ViewModel
 
         private void InitialData()
         {
+            StickyManagementViewModel = new PopupStickyViewModel();
+
             this.NotePopupCollection = new ObservableCollection<PopupContainer>();
             this.NotePopupCollection.CollectionChanged += (sender, e) => { OnPropertyChanged(() => ShowOrHiddenNote); };
+
+            this.POSConfig = Define.CONFIGURATION;
+            this.CommissionTypes = new ObservableCollection<ComboItem>();
+            this.CommissionTypes.Add(new ComboItem { Value = 0, Text = "%" });
+            this.CommissionTypes.Add(new ComboItem { Value = 1, Text = POSConfig.CurrencySymbol });
+
+            _productPredicate = CreateSearchProductPredicate();
         }
 
         #region SearchPricing
@@ -938,7 +1124,7 @@ namespace CPC.POS.ViewModel
                 if (this.ColumnCollection.Contains(SearchOptions.ItemCount.ToString()))
                 {
                     int IntValue = 0;
-                    if (int.TryParse(keyword, out IntValue))
+                    if (int.TryParse(keyword, out IntValue) && IntValue != 0)
                         predicate = predicate.Or(x => x.ItemCount.HasValue && x.ItemCount.Value.Equals(IntValue));
                 }
                 //To search with Price Level.
@@ -960,7 +1146,7 @@ namespace CPC.POS.ViewModel
                 if (this.ColumnCollection.Contains(SearchOptions.AmountChange.ToString()))
                 {
                     decimal amountValue = 0;
-                    if (decimal.TryParse(keyword, out amountValue))
+                    if (decimal.TryParse(keyword, out amountValue) && amountValue != 0)
                         predicate = predicate.Or(x => x.AmountChange.HasValue && x.AmountChange.Value.Equals(amountValue));
                     //To search with Amount Unit.
                     IEnumerable<int> query = CommissionTypes.Where(x => x.Text.ToLower().Contains(keyword.ToLower())).Select(x => Int32.Parse((x.Value).ToString()));
@@ -1005,19 +1191,21 @@ namespace CPC.POS.ViewModel
         {
             // Route the commands
             this.NewCommand = new RelayCommand<object>(this.OnNewCommandExecute, this.OnNewCommandCanExecute);
-            this.EditCommand = new RelayCommand<object>(this.OnDoubleClickViewCommandExecute, this.OnEditCommandCanExecute);
+            EditCommand = new RelayCommand<object>(OnEditCommandExecute, OnEditCommandCanExecute);
             this.SaveCommand = new RelayCommand(this.OnSaveCommandExecute, this.OnSaveCommandCanExecute);
             this.DeleteCommand = new RelayCommand(this.OnDeleteCommandExecute, this.OnDeleteCommandCanExecute);
             this.SearchCommand = new RelayCommand<object>(this.OnSearchCommandExecute, this.OnSearchCommandCanExecute);
             this.DoubleClickViewCommand = new RelayCommand<object>(this.OnDoubleClickViewCommandExecute, this.OnDoubleClickViewCommandCanExecute);
             this.LoadStepCommand = new RelayCommand<object>(this.OnLoadStepCommandExecute, this.OnLoadStepCommandCanExecute);
             this.FilterProductCommand = new RelayCommand<object>(this.OnFilterProductCommandExecute, this.OnFilterProductCommandCanExecute);
-            this.ApplyCommand = new RelayCommand(this.OnApplyCommandExecute, this.OnApplyCommandCanExecute);
+            ApplyCommand = new RelayCommand<object>(OnApplyCommandExecute, OnApplyCommandCanExecute);
             this.RestoreCommand = new RelayCommand(this.OnRestoreCommandExecute, this.OnRestoreCommandCanExecute);
+            LoadStepProductCommand = new RelayCommand(OnLoadStepProductCommandExecute, OnLoadStepProductCommandCanExecute);
         }
         #endregion
 
         #region LoadData
+
         /// <summary>
         /// To load data of base_ResourceAccount table.
         /// </summary>
@@ -1025,72 +1213,18 @@ namespace CPC.POS.ViewModel
         {
 
         }
-        /// <summary>
-        /// To load product when user change AffectPricing.
-        /// </summary>
-        /// <param name="Conditions"></param>
-        /// <param name="type"></param>
-        private void LoadProduct(List<ComboItem> Conditions, string type)
-        {
-            try
-            {
-                IEnumerable<int> CategoryIds = null;
-                IEnumerable<long> VendorIds = null;
-                Expression<Func<base_Product, bool>> predicate = PredicateBuilder.True<base_Product>();
-                if (type.Equals("Vendor"))
-                {
-                    VendorIds = Conditions.Select(x => x.LongValue);
-                    predicate = predicate.And(x => VendorIds.Contains(x.VendorId));
-                }
-                else if (type.Equals("Category"))
-                {
-                    CategoryIds = Conditions.Select(x => x.IntValue);
-                    predicate = predicate.And(x => CategoryIds.Contains(x.ProductCategoryId));
-                }
-                else
-                {
-                    IEnumerable<long> productIDs = Conditions.Select(x => x.LongValue);
-                    predicate = predicate.And(x => productIDs.Contains(x.Id));
-                }
-                IEnumerable<base_Product> _products = _productRepository.GetIEnumerable(predicate);
-
-                if (this.SelectedItemPricing.ProductCollection == null || this.SelectedItemPricing.ProductCollection.Count == 0)
-                {
-                    foreach (var item in _products)
-                    {
-                        base_ProductModel _productModel = new base_ProductModel(item);
-                        this.SelectedItemPricing.ProductCollection.Add(_productModel);
-                    }
-                }
-                else
-                {
-                    foreach (var item in _products)
-                    {
-                        if (!this.SelectedItemPricing.ProductCollection.Select(x => x.Id).Contains(item.Id))
-                        {
-                            base_ProductModel _productModel = new base_ProductModel(item);
-                            this.SelectedItemPricing.ProductCollection.Add(_productModel);
-                        }
-                    }
-                }
-            }
-            catch (Exception ex)
-            {
-                Debug.WriteLine("LoadProduct" + ex.ToString());
-            }
-        }
 
         /// <summary>
         /// To load product when user select item on datagrid.
         /// </summary>
-        /// <param name="Conditions"></param>
+        /// <param name="conditions"></param>
         /// <param name="type"></param>
-        private void LoadPricingChange(IEnumerable<long> Conditions, string type)
+        private void LoadPricingChange(IEnumerable<long> conditions)
         {
             try
             {
                 Expression<Func<base_Product, bool>> predicate = PredicateBuilder.True<base_Product>();
-                predicate = predicate.And(x => Conditions.Contains(x.Id));
+                predicate = predicate.And(x => conditions.Contains(x.Id));
                 IEnumerable<base_Product> _products = _productRepository.GetIEnumerable(predicate);
                 foreach (var item in _products)
                 {
@@ -1106,18 +1240,20 @@ namespace CPC.POS.ViewModel
             }
             catch (Exception ex)
             {
+                _log4net.Error(ex);
                 Debug.WriteLine("LoadPricingChange" + ex.ToString());
             }
         }
+
         private void LoadPricingChangeWithProduct()
         {
             try
             {
                 this.SelectedItemPricing.ProductCollection.Clear();
-                IEnumerable<long> ProductIDs = this.SelectedItemPricing.base_PricingManager.base_PricingChange.Select(x => x.ProductId);
+                IEnumerable<long> productIDs = this.SelectedItemPricing.base_PricingManager.base_PricingChange.Select(x => x.ProductId);
                 //To get product within pricing.
                 Expression<Func<base_Product, bool>> predicateWithInPricing = PredicateBuilder.True<base_Product>();
-                predicateWithInPricing = predicateWithInPricing.And(x => !ProductIDs.Contains(x.ProductCategoryId));
+                predicateWithInPricing = predicateWithInPricing.And(x => !productIDs.Contains(x.ProductCategoryId));
                 IEnumerable<base_Product> _productWithInPricing = _productRepository.GetIEnumerable(predicateWithInPricing);
 
                 foreach (var item in _productWithInPricing)
@@ -1132,7 +1268,7 @@ namespace CPC.POS.ViewModel
 
                 //To get product without pricing.
                 Expression<Func<base_Product, bool>> predicateWithoutPricing = PredicateBuilder.True<base_Product>();
-                predicateWithoutPricing = predicateWithoutPricing.And(x => !ProductIDs.Contains(x.ProductCategoryId));
+                predicateWithoutPricing = predicateWithoutPricing.And(x => !productIDs.Contains(x.ProductCategoryId));
                 IEnumerable<base_Product> _productWithoutPricing = _productRepository.GetIEnumerable(predicateWithoutPricing);
                 foreach (var item in _productWithoutPricing)
                 {
@@ -1142,26 +1278,24 @@ namespace CPC.POS.ViewModel
             }
             catch (Exception ex)
             {
+                _log4net.Error(ex);
                 Debug.WriteLine("LoadProduct" + ex.ToString());
             }
         }
+
         private void LoadProduct()
         {
             try
             {
-                this.ProductCollection.Clear();
-                IEnumerable<base_Product> _products = _productRepository.GetIEnumerable();
-                foreach (var item in _products)
-                {
-                    base_ProductModel _productModel = new base_ProductModel(item);
-                    this.ProductCollection.Add(_productModel);
-                }
+                LoadProductDataByPredicate();
             }
             catch (Exception ex)
             {
+                _log4net.Error(ex);
                 Debug.WriteLine("LoadProduct" + ex.ToString());
             }
         }
+
         private void LoadPricing(Expression<Func<base_PricingManager, bool>> predicate, bool refreshData = false, int currentIndex = 0)
         {
             BackgroundWorker bgWorker = new BackgroundWorker { WorkerReportsProgress = true };
@@ -1198,6 +1332,7 @@ namespace CPC.POS.ViewModel
             };
             bgWorker.RunWorkerAsync();
         }
+
         #endregion
 
         #region ChangeViewExecute
@@ -1277,102 +1412,6 @@ namespace CPC.POS.ViewModel
         }
         #endregion
 
-        #region Insert
-        /// <summary>
-        /// To insert data into base_PricingManager and base_PricingChange table.
-        /// </summary>
-        private void Insert()
-        {
-            try
-            {
-                this.SelectedItemPricing.DateCreated = DateTimeExt.Today;
-                if (Define.USER != null)
-                    this.SelectedItemPricing.UserCreated = Define.USER.LoginName;
-                else
-                    this.SelectedItemPricing.UserCreated = "admin";
-                this.SelectedItemPricing.ItemCount = this.SelectedItemPricing.ProductCollection.Count;
-                this.SelectedItemPricing.ToEntity();
-                this._pricingManagerRepository.Commit();
-                this._pricingManagerRepository.Add(this.SelectedItemPricing.base_PricingManager);
-                foreach (var item in this.SelectedItemPricing.ProductCollection)
-                {
-                    base_PricingChangeModel model = new base_PricingChangeModel();
-                    model.base_PricingChange.PricingManagerId = this.SelectedItemPricing.base_PricingManager.Id;
-                    model.base_PricingChange.PricingManagerResource = this.SelectedItemPricing.Resource.ToString();
-                    model.base_PricingChange.ProductId = item.Id;
-                    model.base_PricingChange.ProductResource = item.Resource.ToString();
-                    model.base_PricingChange.Cost = item.AverageUnitCost;
-                    model.base_PricingChange.CurrentPrice = item.CurrentPrice;
-                    model.base_PricingChange.NewPrice = item.NewPrice;
-                    model.base_PricingChange.PriceChanged = item.PriceChange;
-                    model.base_PricingChange.DateCreated = DateTimeExt.Today;
-                    this.SelectedItemPricing.base_PricingManager.base_PricingChange.Add(model.base_PricingChange);
-                    model.EndUpdate();
-                }
-                this._pricingManagerRepository.Commit();
-                this.SelectedItemPricing.Id = this.SelectedItemPricing.base_PricingManager.Id;
-                this.SelectedItemPricing.EndUpdate();
-                App.WriteUserLog("Pricing", "User insterd a new pricing." + this.SelectedItemPricing.base_PricingManager.Id);
-            }
-            catch (Exception ex)
-            {
-                Debug.WriteLine("Insert" + ex.ToString());
-            }
-        }
-        #endregion
-
-        #region Apply
-        /// <summary>
-        /// //To update price on Product table.
-        /// </summary>
-        private void Apply()
-        {
-            try
-            {
-                //To load data of product.
-                if (this.SelectedItemPricing.ProductCollection == null)
-                {
-                    if (this.SelectedItemPricing.AffectPricing == 0)
-                        this.LoadPricingChangeWithProduct();
-                    else
-                        this.LoadPricingChange(this.SelectedItemPricing.base_PricingManager.base_PricingChange.Select(x => x.ProductId), string.Empty);
-                }
-                this.SelectedItemPricing.Shift = Define.ShiftCode;
-                //To update data on base_PriceManager table.
-                this.SelectedItemPricing.Status = Common.PricingStatus.SingleOrDefault(x => x.Value == 2).Text;
-                this.SelectedItemPricing.DateApplied = DateTimeExt.Today;
-                if (Define.USER != null)
-                    this.SelectedItemPricing.UserApplied = Define.USER.LoginName;
-                else
-                    this.SelectedItemPricing.UserApplied = Define.USER.LoginName;
-                this.SelectedItemPricing.ToEntity();
-                this._productRepository.Commit();
-                //To update price of product.
-                foreach (base_ProductModel item in this.SelectedItemPricing.ProductCollection)
-                {
-                    base_Product product = this._productRepository.GetIQueryable(x => x.Id == item.Id).SingleOrDefault();
-                    if (product != null)
-                    {
-                        //To update price of product.
-                        if (this.SelectedItemPricing.BasePrice == 1)
-                            item.AverageUnitCost = item.NewPrice;
-                        else
-                            this.SetProductPrice(product, item.NewPrice);
-                        this._productRepository.Commit();
-                    }
-                }
-                this.SelectedItemPricing.VisibilityRestore = Visibility.Visible;
-                this.SelectedItemPricing.VisibilityApplied = Visibility.Collapsed;
-                this.SelectedItemPricing.EndUpdate();
-                App.WriteUserLog("Pricing", "User insterd a new pricing." + this.SelectedItemPricing.Id);
-            }
-            catch (Exception ex)
-            {
-                Debug.WriteLine("Update" + ex.ToString());
-            }
-        }
-        #endregion
-
         #region Delete
         /// <summary>
         /// To update IsLock on base_ResoureceAccount table.
@@ -1390,103 +1429,6 @@ namespace CPC.POS.ViewModel
         }
         #endregion
 
-        #region Update
-        /// <summary>
-        /// To update data when user change value of control on view.
-        /// </summary>
-        private void Update()
-        {
-            try
-            {
-                this.SelectedItemPricing.ItemCount = this.SelectedItemPricing.ProductCollection.Count();
-                this.SelectedItemPricing.ToEntity();
-                if (this.SelectedItemPricing.IsChangeProductCollection)
-                {
-                    _pricingChangeRepository.Delete(this.SelectedItemPricing.base_PricingManager.base_PricingChange);//.Where(x => x.PricingManagerId == this.SelectedItemPricing.Id);
-                    this.SelectedItemPricing.base_PricingManager.base_PricingChange.Clear();
-                    _pricingChangeRepository.Commit();
-                    foreach (var item in this.SelectedItemPricing.ProductCollection)
-                    {
-                        base_PricingChange base_PricingChange = new base_PricingChange();
-                        base_PricingChange.PricingManagerId = this.SelectedItemPricing.base_PricingManager.Id;
-                        base_PricingChange.PricingManagerResource = this.SelectedItemPricing.Resource.ToString();
-                        base_PricingChange.ProductId = item.Id;
-                        base_PricingChange.ProductResource = item.Resource.ToString();
-                        base_PricingChange.Cost = item.AverageUnitCost;
-                        base_PricingChange.CurrentPrice = item.CurrentPrice;
-                        base_PricingChange.NewPrice = item.NewPrice;
-                        base_PricingChange.PriceChanged = item.PriceChange;
-                        base_PricingChange.DateCreated = DateTimeExt.Today;
-                        this.SelectedItemPricing.base_PricingManager.base_PricingChange.Add(base_PricingChange);
-                        item.EndUpdate();
-                    }
-                }
-                this._pricingManagerRepository.Commit();
-                this.SelectedItemPricing.EndUpdate();
-                App.WriteUserLog("Pricing", "User insterd a new pricing." + this.SelectedItemPricing.Id);
-            }
-            catch (Exception ex)
-            {
-                Debug.WriteLine("Update" + ex.ToString());
-            }
-        }
-        #endregion
-
-        #region Restore
-        /// <summary>
-        /// To restore old price for product on base_Product table.
-        /// </summary>
-        private void Restore()
-        {
-            try
-            {
-                if (!string.IsNullOrEmpty(this.SelectedItemPricing.UserApplied) && this.SelectedItemPricing.DateApplied.HasValue)
-                {
-                    //To load data of product.
-                    if (this.SelectedItemPricing.ProductCollection == null)
-                    {
-                        if (this.SelectedItemPricing.AffectPricing == 0)
-                            this.LoadPricingChangeWithProduct();
-                        else
-                            this.LoadPricingChange(this.SelectedItemPricing.base_PricingManager.base_PricingChange.Select(x => x.ProductId), string.Empty);
-                    }
-                    this.SelectedItemPricing.Shift = Define.ShiftCode;
-                    this.SelectedItemPricing.Status = Common.PricingStatus.SingleOrDefault(x => x.Value == 3).Text;
-                    //To update data on base_PriceManager table.
-                    this.SelectedItemPricing.DateRestored = DateTimeExt.Today;
-                    if (Define.USER != null)
-                        this.SelectedItemPricing.UserRestored = Define.USER.LoginName;
-                    else
-                        this.SelectedItemPricing.UserRestored = "admin";
-                    this.SelectedItemPricing.ToEntity();
-                    //To update price of product.
-                    foreach (base_ProductModel item in this.SelectedItemPricing.ProductCollection)
-                    {
-                        string productResource = item.Resource.ToString();
-                        base_Product product = this._productRepository.GetIQueryable(x => x.Id == item.Id).SingleOrDefault();
-                        base_PricingChange pricingChange = this.SelectedItemPricing.base_PricingManager.base_PricingChange.SingleOrDefault(x => x.ProductId == item.Id && x.ProductResource.Equals(productResource));
-                        if (pricingChange != null)
-                        {
-                            //To update price of product.
-                            if (this.SelectedItemPricing.BasePrice == 1)
-                                product.AverageUnitCost = pricingChange.Cost.Value;
-                            else
-                                this.RestoreProductPrice(product, pricingChange);
-                            this._productRepository.Commit();
-                        }
-                    }
-                    this.SelectedItemPricing.IsEnable = false;
-                    this.SelectedItemPricing.EndUpdate();
-                    App.WriteUserLog("Pricing", "User insterd a new pricing." + this.SelectedItemPricing.Id);
-                }
-            }
-            catch (Exception ex)
-            {
-                Debug.WriteLine("Update" + ex.ToString());
-            }
-        }
-        #endregion
-
         #region IsEditData
         private bool IsEditData()
         {
@@ -1494,26 +1436,6 @@ namespace CPC.POS.ViewModel
                 return false;
 
             return ((this.SelectedItemPricing.IsDirty || this.SelectedItemPricing.IsChangeProductCollection));
-        }
-        #endregion
-
-        #region SetIsCheckedUserRight
-        /// <summary>
-        /// To set IsChecked on UserRight DataGrid.
-        /// </summary>
-        private void SetIsCheckedUserRight()
-        {
-
-        }
-        #endregion
-
-        #region SetDefaultValue
-        /// <summary>
-        /// To set default value for fields.
-        /// </summary>
-        private void SetDefaultValue()
-        {
-
         }
         #endregion
 
@@ -1651,50 +1573,6 @@ namespace CPC.POS.ViewModel
         }
         #endregion
 
-        #region SetProductPrice
-        /// <summary>
-        /// To set type of price 
-        /// </summary>
-        /// <param name="priceLevel">it is string of priceLevel.</param>
-        /// <param name="product">It is a item of product.</param>
-        /// <returns></returns>
-        private void SetProductPrice(base_Product product, decimal NewPrice)
-        {
-            if (Common.PriceSchemas.SingleOrDefault(x => x.Text.Equals(this.SelectedItemPricing.PriceLevel)).Value == 1)
-                product.RegularPrice = NewPrice;
-            else if (Common.PriceSchemas.SingleOrDefault(x => x.Text.Equals(this.SelectedItemPricing.PriceLevel)).Value == 2)
-                product.Price1 = NewPrice;
-            else if (Common.PriceSchemas.SingleOrDefault(x => x.Text.Equals(this.SelectedItemPricing.PriceLevel)).Value == 4)
-                product.Price2 = NewPrice;
-            else if (Common.PriceSchemas.SingleOrDefault(x => x.Text.Equals(this.SelectedItemPricing.PriceLevel)).Value == 8)
-                product.Price3 = NewPrice;
-            else
-                product.Price4 = NewPrice;
-        }
-        #endregion
-
-        #region RestoreProductPrice
-        /// <summary>
-        /// To restore type of price 
-        /// </summary>
-        /// <param name="priceLevel">it is string of priceLevel.</param>
-        /// <param name="product">It is a item of product.</param>
-        /// <returns></returns>
-        private void RestoreProductPrice(base_Product product, base_PricingChange pricingChange)
-        {
-            if (Common.PriceSchemas.SingleOrDefault(x => x.Text.Equals(this.SelectedItemPricing.PriceLevel)).Value == 1)
-                product.RegularPrice = pricingChange.CurrentPrice.Value;
-            else if (Common.PriceSchemas.SingleOrDefault(x => x.Text.Equals(this.SelectedItemPricing.PriceLevel)).Value == 2)
-                product.Price1 = pricingChange.CurrentPrice.Value;
-            else if (Common.PriceSchemas.SingleOrDefault(x => x.Text.Equals(this.SelectedItemPricing.PriceLevel)).Value == 4)
-                product.Price2 = pricingChange.CurrentPrice.Value;
-            else if (Common.PriceSchemas.SingleOrDefault(x => x.Text.Equals(this.SelectedItemPricing.PriceLevel)).Value == 8)
-                product.Price3 = pricingChange.CurrentPrice.Value;
-            else
-                product.Price4 = pricingChange.CurrentPrice.Value;
-        }
-        #endregion
-
         #region IsActiveChangData
         /// <summary>
         /// To check condition to execute method..
@@ -1786,43 +1664,778 @@ namespace CPC.POS.ViewModel
         #endregion
 
         #region SetPricingDetail
+
+        /// <summary>
+        /// Set pricing detail
+        /// </summary>
         private void SetPricingDetail()
         {
-            if (this.SelectedItemPricing != null)
+            if (SelectedItemPricing != null)
             {
-                this.SelectedItemPricing.ProductCollection.Clear();
-                //To set Affect pricing.
-                if (this.SelectedItemPricing.AffectPricing == 0)
-                    this._typeAffectPricing = "Default";
-                else if (this.SelectedItemPricing.AffectPricing == 1)
-                    this._typeAffectPricing = "Category";
-                else if (this.SelectedItemPricing.AffectPricing == 2)
-                    this._typeAffectPricing = "Vendor";
-                else
-                    this._typeAffectPricing = "Custom";
-                if (this.SelectedItemPricing.AffectPricing == 0)
-                    this.LoadPricingChangeWithProduct();
-                else
-                    this.LoadPricingChange(this.SelectedItemPricing.base_PricingManager.base_PricingChange.Select(x => x.ProductId), string.Empty);
-                this.TotalProducts = this.SelectedItemPricing.ProductCollection.Count();
-                //To set visibility of Button.
-                if (this.SelectedItemPricing.DateApplied.HasValue)
+                // Clear product collection
+                SelectedItemPricing.ProductCollection.Clear();
+
+                // Set affect pricing
+                _affectPricingType = (AffectPricing)SelectedItemPricing.AffectPricing;
+
+                LoadPricingChange(SelectedItemPricing.base_PricingManager.base_PricingChange.Select(x => x.ProductId));
+
+                // Update total products
+                TotalProducts = SelectedItemPricing.ProductCollection.Count();
+
+                // Set visibility of buttons
+                if (SelectedItemPricing.DateApplied.HasValue)
                 {
-                    this.SelectedItemPricing.VisibilityApplied = Visibility.Collapsed;
-                    this.SelectedItemPricing.VisibilityRestore = Visibility.Visible;
+                    // Hide apply button
+                    SelectedItemPricing.VisibilityApplied = Visibility.Collapsed;
+
+                    // Show restore button
+                    SelectedItemPricing.VisibilityRestore = Visibility.Visible;
                 }
-                if (this.SelectedItemPricing.DateApplied.HasValue || this.SelectedItemPricing.DateRestored.HasValue)
-                    this.SelectedItemPricing.IsEnable = false;
+
+                if (SelectedItemPricing.DateApplied.HasValue || SelectedItemPricing.DateRestored.HasValue)
+                    SelectedItemPricing.IsEnable = false;
+
+                SelectedItemPricing.IsErrorProductCollection = false;
 
                 // Load resource note collection
-                this.LoadResourceNoteCollection(this.SelectedItemPricing);
+                LoadResourceNoteCollection(SelectedItemPricing);
                 StickyManagementViewModel.SetParentResource(SelectedItemPricing.Resource.ToString(), SelectedItemPricing.ResourceNoteCollection);
+            }
+        }
 
-                this.SelectedItemPricing.IsErrorProductCollection = false;
+        #endregion
+
+        /// <summary>
+        /// Create predicate with condition for search
+        /// </summary>
+        /// <param name="keyword">Keyword</param>
+        /// <returns>Expression</returns>
+        private Expression<Func<base_Product, bool>> CreateSearchProductPredicate()
+        {
+            // Initial predicate
+            Expression<Func<base_Product, bool>> predicate = PredicateBuilder.True<base_Product>();
+
+            // Default condition
+            predicate = predicate.And(x => x.IsPurge == false);
+
+            return predicate;
+        }
+
+        /// <summary>
+        /// Get all datas from database by predicate
+        /// </summary>
+        /// <param name="refreshData">Refresh data. Default is False</param>
+        /// <param name="currentIndex">Load data from index. If index = 0, clear collection. Default is 0</param>
+        private void LoadProductDataByPredicate(bool refreshData = false, int currentIndex = 0)
+        {
+            // Create predicate
+            Expression<Func<base_Product, bool>> predicate = CreateSearchProductPredicate();
+
+            // Load data by predicate
+            LoadProductDataByPredicate(predicate, refreshData, currentIndex);
+        }
+
+        /// <summary>
+        /// Get all datas from database by predicate
+        /// </summary>
+        /// <param name="predicate">Condition for load data</param>
+        /// <param name="refreshData">Refresh data. Default is False</param>
+        /// <param name="currentIndex">Load data from index. If index = 0, clear collection. Default is 0</param>
+        private void LoadProductDataByPredicate(Expression<Func<base_Product, bool>> predicate, bool refreshData = false, int currentIndex = 0)
+        {
+            if (IsBusy) return;
+
+            // Create background worker
+            BackgroundWorker bgWorker = new BackgroundWorker { WorkerReportsProgress = true };
+
+            if (currentIndex == 0)
+                SelectedItemPricing.ProductCollection.Clear();
+
+            bgWorker.DoWork += (sender, e) =>
+            {
+                // Turn on BusyIndicator
+                if (Define.DisplayLoading)
+                    IsBusy = true;
+
+                if (SelectedItemPricing != null && !SelectedItemPricing.IsNew)
+                {
+                    // Get total products with condition in predicate
+                    TotalProducts = SelectedItemPricing.base_PricingManager.base_PricingChange.Count;
+
+                    IEnumerable<base_PricingChange> pricingChanges = SelectedItemPricing.base_PricingManager.base_PricingChange.Skip(SelectedItemPricing.ProductCollection.Count).Take(NumberOfDisplayItems);
+                    foreach (base_PricingChange pricingChange in pricingChanges)
+                    {
+                        if (!SelectedItemPricing.IsDirty)
+                        {
+                            // Create new product model
+                            base_ProductModel productModel = new base_ProductModel(pricingChange.base_Product);
+
+                            productModel.CurrentPrice = pricingChange.CurrentPrice.Value;
+                            productModel.NewPrice = pricingChange.NewPrice.Value;
+                            productModel.PriceChange = pricingChange.PriceChanged.Value;
+
+                            // Turn off IsDirty & IsNew
+                            productModel.EndUpdate();
+
+                            bgWorker.ReportProgress(0, productModel);
+                        }
+                        else
+                        {
+                            bgWorker.ReportProgress(0, pricingChange.base_Product);
+                        }
+                    }
+                }
+                else
+                {
+                    // Get total products with condition in predicate
+                    TotalProducts = _productRepository.GetIQueryable(predicate).Count();
+
+                    // Get data with range
+                    IList<base_Product> products = _productRepository.GetRangeDescending(currentIndex, NumberOfDisplayItems, x => x.DateCreated, predicate);
+                    foreach (base_Product product in products)
+                    {
+                        bgWorker.ReportProgress(0, product);
+                    }
+                }
+            };
+
+            bgWorker.ProgressChanged += (sender, e) =>
+            {
+                // Create product model
+                base_ProductModel productModel = new base_ProductModel();
+
+                if (SelectedItemPricing == null || SelectedItemPricing.IsNew || SelectedItemPricing.IsDirty)
+                {
+                    productModel = new base_ProductModel((base_Product)e.UserState);
+
+                    // Load relation data
+                    LoadProductRelationData(productModel);
+                }
+                else
+                {
+                    productModel = e.UserState as base_ProductModel;
+                }
+
+                // Add to collection
+                SelectedItemPricing.ProductCollection.Add(productModel);
+            };
+
+            bgWorker.RunWorkerCompleted += (sender, e) =>
+            {
+                if (SelectedItemPricing.ProductCollection.Count > 0)
+                    SelectedItemPricing.IsErrorProductCollection = false;
+
+                // Turn off BusyIndicator
+                IsBusy = false;
+            };
+
+            // Run async background worker
+            bgWorker.RunWorkerAsync();
+        }
+
+        /// <summary>
+        /// Load relation data for product
+        /// </summary>
+        /// <param name="productModel"></param>
+        private void LoadProductRelationData(base_ProductModel productModel)
+        {
+            // Caculate new price
+            productModel.NewPrice = CalculationData(SelectedItemPricing.CalculateMethod.Value, productModel.AverageUnitCost,
+                SelectedItemPricing.AmountChange.Value, SelectedItemPricing.AmountUnit.Value);
+
+            // Caculate PriceChange
+            if (SelectedItemPricing.BasePrice == 1)
+                productModel.PriceChange = productModel.NewPrice - productModel.AverageUnitCost;
+            else
+                productModel.PriceChange = productModel.NewPrice - productModel.CurrentPrice;
+
+            // Turn off IsDirty & IsNew
+            productModel.EndUpdate();
+        }
+
+        /// <summary>
+        /// Load product collection when affect pricing changed
+        /// </summary>
+        /// <param name="conditions"></param>
+        /// <param name="affectPricing"></param>
+        private void LoadProductCollection(List<ComboItem> conditions, AffectPricing affectPricing)
+        {
+            try
+            {
+                // Initial predicate
+                _productPredicate = PredicateBuilder.True<base_Product>();
+
+                // Default condition
+                _productPredicate = _productPredicate.And(x => x.IsPurge == false);
+
+                if (affectPricing.Equals(AffectPricing.Category))
+                {
+                    IEnumerable<int> categoryIds = conditions.Select(x => x.IntValue);
+                    _productPredicate = _productPredicate.And(x => categoryIds.Contains(x.ProductCategoryId));
+                }
+                else if (affectPricing.Equals(AffectPricing.Vendor))
+                {
+                    IEnumerable<long> vendorIds = conditions.Select(x => x.LongValue);
+                    _productPredicate = _productPredicate.And(x => vendorIds.Contains(x.VendorId));
+                }
+                else
+                {
+                    IEnumerable<long> productIDs = conditions.Select(x => x.LongValue);
+                    _productPredicate = _productPredicate.And(x => productIDs.Contains(x.Id));
+                }
+
+                // Load product data by predicate
+                LoadProductDataByPredicate(_productPredicate);
+            }
+            catch (Exception ex)
+            {
+                Debug.WriteLine("LoadProduct" + ex.ToString());
+            }
+        }
+
+        /// <summary>
+        /// Create new pricing change model
+        /// </summary>
+        /// <param name="productModel"></param>
+        private base_PricingChangeModel CreateNewPricingChangeModel(base_ProductModel productModel)
+        {
+            // Initial new pricing change model
+            base_PricingChangeModel pricingChangeModel = new base_PricingChangeModel();
+
+            // Set pricing change values
+            pricingChangeModel.base_PricingChange.PricingManagerId = SelectedItemPricing.base_PricingManager.Id;
+            pricingChangeModel.base_PricingChange.PricingManagerResource = SelectedItemPricing.Resource.ToString();
+            pricingChangeModel.base_PricingChange.ProductId = productModel.Id;
+            pricingChangeModel.base_PricingChange.ProductResource = productModel.Resource.ToString();
+            pricingChangeModel.base_PricingChange.Cost = productModel.AverageUnitCost;
+            pricingChangeModel.base_PricingChange.CurrentPrice = productModel.CurrentPrice;
+            pricingChangeModel.base_PricingChange.NewPrice = productModel.NewPrice;
+            pricingChangeModel.base_PricingChange.PriceChanged = productModel.PriceChange;
+            pricingChangeModel.base_PricingChange.DateCreated = DateTimeExt.Today;
+
+            // Turn off IsDirty & IsNew
+            pricingChangeModel.EndUpdate();
+
+            return pricingChangeModel;
+        }
+
+        /// <summary>
+        /// Update product price
+        /// </summary>
+        /// <param name="product"></param>
+        /// <param name="price"></param>
+        private void UpdateProductPrice(base_Product product, decimal price)
+        {
+            // Get price schema
+            ComboItem priceSchema = Common.PriceSchemas.SingleOrDefault(x => x.Text.Equals(this.SelectedItemPricing.PriceLevel));
+
+            // Set new price by price schema
+            switch (priceSchema.Value)
+            {
+                case 1:
+                    product.RegularPrice = price;
+                    break;
+                case 2:
+                    product.Price1 = price;
+                    break;
+                case 4:
+                    product.Price2 = price;
+                    break;
+                case 8:
+                    product.Price3 = price;
+                    break;
+                default:
+                    product.Price4 = price;
+                    break;
+            }
+        }
+
+        /// <summary>
+        /// Save new pricing manager and pricing changes
+        /// </summary>
+        /// <param name="pricingManagerModel"></param>
+        private void SaveNew(base_PricingManagerModel pricingManagerModel)
+        {
+            try
+            {
+                // Create background worker
+                BackgroundWorker bgWorker = new BackgroundWorker { WorkerReportsProgress = true };
+
+                bgWorker.DoWork += (sender, e) =>
+                {
+                    // Turn on BusyIndicator
+                    if (Define.DisplayLoading)
+                        IsBusy = true;
+
+                    pricingManagerModel.DateCreated = DateTimeExt.Today;
+                    pricingManagerModel.UserCreated = Define.USER.LoginName;
+                    pricingManagerModel.ItemCount = TotalProducts;
+                    pricingManagerModel.Shift = Define.ShiftCode;
+
+                    // Map data from model to entity 
+                    pricingManagerModel.ToEntity();
+
+                    // Add new pricing manager to database
+                    _pricingManagerRepository.Add(pricingManagerModel.base_PricingManager);
+
+                    // Accept changes
+                    _pricingManagerRepository.Commit();
+
+                    // Save changes of loaded products to pricing change table
+                    foreach (base_ProductModel productModel in pricingManagerModel.ProductCollection)
+                    {
+                        // Create new pricing change model
+                        base_PricingChangeModel pricingChangeModel = CreateNewPricingChangeModel(productModel);
+
+                        // Add new pricing change to database
+                        pricingManagerModel.base_PricingManager.base_PricingChange.Add(pricingChangeModel.base_PricingChange);
+                    }
+
+                    // Get all products that have not loaded by predicate
+                    IList<base_Product> products = _productRepository.GetRangeDescending(pricingManagerModel.ProductCollection.Count, TotalProducts - pricingManagerModel.ProductCollection.Count, x => x.DateCreated, _productPredicate);
+
+                    foreach (base_Product product in products)
+                    {
+                        // Create product model
+                        base_ProductModel productModel = new base_ProductModel(product);
+
+                        // Calculate new price
+                        productModel.NewPrice = CalculationData(pricingManagerModel.CalculateMethod.Value, productModel.AverageUnitCost,
+                            pricingManagerModel.AmountChange.Value, pricingManagerModel.AmountUnit.Value);
+
+                        // Calculate price change for product
+                        if (pricingManagerModel.BasePrice == 1)
+                            productModel.PriceChange = productModel.NewPrice - productModel.AverageUnitCost;
+                        else
+                            productModel.PriceChange = productModel.NewPrice - productModel.CurrentPrice;
+
+                        bgWorker.ReportProgress(0, productModel);
+
+                        // Create new pricing change model
+                        base_PricingChangeModel pricingChangeModel = CreateNewPricingChangeModel(productModel);
+
+                        // Add new pricing change to database
+                        pricingManagerModel.base_PricingManager.base_PricingChange.Add(pricingChangeModel.base_PricingChange);
+                    }
+
+                    // Accept changes
+                    _pricingManagerRepository.Commit();
+
+                    // Update pricing manager id
+                    pricingManagerModel.Id = pricingManagerModel.base_PricingManager.Id;
+
+                    // Turn off IsDirty & IsNew
+                    pricingManagerModel.EndUpdate();
+
+                    // Write log
+                    App.WriteUserLog("Pricing", "User insterd a new pricing." + pricingManagerModel.base_PricingManager.Id);
+                };
+
+                bgWorker.ProgressChanged += (sender, e) =>
+                {
+                    // Add to collection
+                    pricingManagerModel.ProductCollection.Add(e.UserState as base_ProductModel);
+                };
+
+                bgWorker.RunWorkerCompleted += (sender, e) =>
+                {
+                    // Insert new pricing manager to collection
+                    PricingCollection.Insert(0, pricingManagerModel);
+
+                    // Update total pricing managers
+                    TotalPricings = PricingCollection.Count;
+
+                    // Show Apply button
+                    pricingManagerModel.VisibilityApplied = Visibility.Visible;
+
+                    // Turn off IsDirty & IsNew
+                    pricingManagerModel.EndUpdate();
+
+                    pricingManagerModel.IsChangeProductCollection = false;
+                    pricingManagerModel.IsErrorProductCollection = false;
+
+                    // Map data from entity to model
+                    pricingManagerModel.ToModelAndRaise();
+
+                    // Turn off BusyIndicator
+                    IsBusy = false;
+                };
+
+                // Run async background worker
+                bgWorker.RunWorkerAsync();
+            }
+            catch (Exception ex)
+            {
+                _log4net.Error("SAVE NEW PRICING\n" + ex.ToString());
+            }
+        }
+
+        /// <summary>
+        /// Save update pricing manager and pricing changes
+        /// </summary>
+        /// <param name="pricingManagerModel"></param>
+        private void SaveUpdate(base_PricingManagerModel pricingManagerModel)
+        {
+            try
+            {
+                // Create background worker
+                BackgroundWorker bgWorker = new BackgroundWorker { WorkerReportsProgress = true };
+
+                bgWorker.DoWork += (sender, e) =>
+                {
+                    // Turn on BusyIndicator
+                    if (Define.DisplayLoading)
+                        IsBusy = true;
+
+                    pricingManagerModel.ItemCount = TotalProducts;
+
+                    // Map data from model to entity
+                    pricingManagerModel.ToEntity();
+
+                    if (pricingManagerModel.IsChangeProductCollection)
+                    {
+                        // Delete all pricing change items
+                        _pricingChangeRepository.Delete(pricingManagerModel.base_PricingManager.base_PricingChange);
+                        pricingManagerModel.base_PricingManager.base_PricingChange.Clear();
+
+                        // Accept changes
+                        _pricingChangeRepository.Commit();
+
+                        // Save changes of loaded products to pricing change table
+                        foreach (base_ProductModel productModel in pricingManagerModel.ProductCollection)
+                        {
+                            // Create new pricing change model
+                            base_PricingChangeModel pricingChangeModel = CreateNewPricingChangeModel(productModel);
+
+                            // Add new pricing change to database
+                            pricingManagerModel.base_PricingManager.base_PricingChange.Add(pricingChangeModel.base_PricingChange);
+                        }
+
+                        // Get all products that have not loaded by predicate
+                        IList<base_Product> products = _productRepository.GetRangeDescending(pricingManagerModel.ProductCollection.Count, TotalProducts - pricingManagerModel.ProductCollection.Count, x => x.DateCreated, _productPredicate);
+
+                        foreach (base_Product product in products)
+                        {
+                            // Create product model
+                            base_ProductModel productModel = new base_ProductModel(product);
+
+                            // Calculate new price
+                            productModel.NewPrice = CalculationData(pricingManagerModel.CalculateMethod.Value, productModel.AverageUnitCost,
+                                pricingManagerModel.AmountChange.Value, pricingManagerModel.AmountUnit.Value);
+
+                            // Calculate price change for product
+                            if (pricingManagerModel.BasePrice == 1)
+                                productModel.PriceChange = productModel.NewPrice - productModel.AverageUnitCost;
+                            else
+                                productModel.PriceChange = productModel.NewPrice - productModel.CurrentPrice;
+
+                            bgWorker.ReportProgress(0, productModel);
+
+                            // Create new pricing change model
+                            base_PricingChangeModel pricingChangeModel = CreateNewPricingChangeModel(productModel);
+
+                            // Add new pricing change to database
+                            pricingManagerModel.base_PricingManager.base_PricingChange.Add(pricingChangeModel.base_PricingChange);
+                        }
+                    }
+
+                    // Accept changes
+                    _pricingManagerRepository.Commit();
+
+                    // Turn off IsDirty & IsNew
+                    pricingManagerModel.EndUpdate();
+
+                    // Write log
+                    App.WriteUserLog("Pricing", "User insterd a new pricing." + pricingManagerModel.Id);
+                };
+
+                bgWorker.ProgressChanged += (sender, e) =>
+                {
+                    // Add to collection
+                    pricingManagerModel.ProductCollection.Add(e.UserState as base_ProductModel);
+                };
+
+                bgWorker.RunWorkerCompleted += (sender, e) =>
+                {
+                    // Turn off IsDirty & IsNew
+                    pricingManagerModel.EndUpdate();
+
+                    pricingManagerModel.IsChangeProductCollection = false;
+                    pricingManagerModel.IsErrorProductCollection = false;
+
+                    // Map data from entity to model
+                    pricingManagerModel.ToModelAndRaise();
+
+                    // Turn off BusyIndicator
+                    IsBusy = false;
+                };
+
+                // Run async background worker
+                bgWorker.RunWorkerAsync();
+            }
+            catch (Exception ex)
+            {
+                _log4net.Error("SAVE UPDATE PRICING\n" + ex.ToString());
+            }
+        }
+
+        /// <summary>
+        /// Apply pricing, update new price to product
+        /// </summary>
+        /// <param name="pricingManagerModel"></param>
+        private void ApplyPricing(base_PricingManagerModel pricingManagerModel)
+        {
+            try
+            {
+                // Create background worker
+                BackgroundWorker bgWorker = new BackgroundWorker { WorkerReportsProgress = true };
+
+                bgWorker.DoWork += (sender, e) =>
+                {
+                    // Turn on BusyIndicator
+                    if (Define.DisplayLoading)
+                        IsBusy = true;
+
+                    pricingManagerModel.Status = Common.PricingStatus.SingleOrDefault(x => x.Value == 2).Text;
+                    pricingManagerModel.DateApplied = DateTimeExt.Today;
+                    pricingManagerModel.UserApplied = Define.USER.LoginName;
+
+                    // Map data from model to entity
+                    pricingManagerModel.ToEntity();
+
+                    if (IsSearchMode)
+                    {
+                        foreach (base_PricingChange pricingChange in pricingManagerModel.base_PricingManager.base_PricingChange)
+                        {
+                            if (pricingChange.base_Product != null && pricingChange.NewPrice.HasValue)
+                            {
+                                if (pricingManagerModel.BasePrice == 1)
+                                    pricingChange.base_Product.AverageUnitCost = pricingChange.NewPrice.Value;
+                                else
+                                    UpdateProductPrice(pricingChange.base_Product, pricingChange.NewPrice.Value);
+                            }
+                        }
+                    }
+                    else
+                    {
+                        foreach (base_ProductModel productItem in pricingManagerModel.ProductCollection)
+                        {
+                            // Update price of product
+                            if (pricingManagerModel.BasePrice == 1)
+                            {
+                                productItem.AverageUnitCost = productItem.NewPrice;
+                                productItem.base_Product.AverageUnitCost = productItem.NewPrice;
+                            }
+                            else
+                                UpdateProductPrice(productItem.base_Product, productItem.NewPrice);
+                        }
+
+                        IEnumerable<base_PricingChange> pricingChanges = SelectedItemPricing.base_PricingManager.base_PricingChange.Skip(SelectedItemPricing.ProductCollection.Count).Take(TotalProducts - pricingManagerModel.ProductCollection.Count);
+                        foreach (base_PricingChange pricingChange in pricingChanges)
+                        {
+                            // Create new product model
+                            base_ProductModel productModel = new base_ProductModel(pricingChange.base_Product);
+
+                            productModel.CurrentPrice = pricingChange.CurrentPrice.Value;
+                            productModel.NewPrice = pricingChange.NewPrice.Value;
+                            productModel.PriceChange = pricingChange.PriceChanged.Value;
+
+                            // Update price of product
+                            if (pricingManagerModel.BasePrice == 1)
+                            {
+                                productModel.AverageUnitCost = productModel.NewPrice;
+                                productModel.base_Product.AverageUnitCost = productModel.NewPrice;
+                            }
+                            else
+                                UpdateProductPrice(productModel.base_Product, productModel.NewPrice);
+
+                            // Turn off IsDirty & IsNew
+                            productModel.EndUpdate();
+
+                            bgWorker.ReportProgress(0, productModel);
+                        }
+                    }
+
+                    // Accept changes
+                    _productRepository.Commit();
+
+                    // Show restore button
+                    pricingManagerModel.VisibilityRestore = Visibility.Visible;
+
+                    // Hide apply button
+                    pricingManagerModel.VisibilityApplied = Visibility.Collapsed;
+
+                    // Turn off IsDirty & IsNew
+                    pricingManagerModel.EndUpdate();
+
+                    // Write log
+                    App.WriteUserLog("Pricing", "User insterd a new pricing." + pricingManagerModel.Id);
+                };
+
+                bgWorker.ProgressChanged += (sender, e) =>
+                {
+                    // Add new product to collection
+                    pricingManagerModel.ProductCollection.Add(e.UserState as base_ProductModel);
+                };
+
+                bgWorker.RunWorkerCompleted += (sender, e) =>
+                {
+                    // Turn off BusyIndicator
+                    IsBusy = false;
+                };
+
+                // Run async background worker
+                bgWorker.RunWorkerAsync();
+            }
+            catch (Exception ex)
+            {
+                _log4net.Error("APPLY PRICING\n" + ex.ToString());
+            }
+        }
+
+        /// <summary>
+        /// Restore pricing
+        /// </summary>
+        /// <param name="pricingManagerModel"></param>
+        private void RestorePricing(base_PricingManagerModel pricingManagerModel)
+        {
+            try
+            {
+                // Create background worker
+                BackgroundWorker bgWorker = new BackgroundWorker { WorkerReportsProgress = true };
+
+                bgWorker.DoWork += (sender, e) =>
+                {
+                    // Turn on BusyIndicator
+                    if (Define.DisplayLoading)
+                        IsBusy = true;
+
+                    if (!string.IsNullOrWhiteSpace(pricingManagerModel.UserApplied) && pricingManagerModel.DateApplied.HasValue)
+                    {
+                        pricingManagerModel.Status = Common.PricingStatus.SingleOrDefault(x => x.Value == 3).Text;
+                        pricingManagerModel.DateRestored = DateTimeExt.Today;
+                        pricingManagerModel.UserRestored = Define.USER.LoginName;
+
+                        // Map data from model to entity
+                        pricingManagerModel.ToEntity();
+
+                        // Update price of product
+                        foreach (base_ProductModel productItem in pricingManagerModel.ProductCollection)
+                        {
+                            // Get pricing manager resource
+                            string pricingManagerResource = pricingManagerModel.Resource.ToString();
+
+                            base_PricingChange pricingChange = productItem.base_Product.base_PricingChange.SingleOrDefault(x => x.PricingManagerResource.Equals(pricingManagerResource));
+
+                            if (pricingChange != null)
+                            {
+                                // Update price of product
+                                if (pricingManagerModel.BasePrice == 1)
+                                {
+                                    productItem.AverageUnitCost = pricingChange.Cost.Value;
+                                    productItem.base_Product.AverageUnitCost = pricingChange.Cost.Value;
+                                }
+                                else
+                                    UpdateProductPrice(productItem.base_Product, pricingChange.CurrentPrice.Value);
+                            }
+                        }
+
+                        IEnumerable<base_PricingChange> pricingChanges = SelectedItemPricing.base_PricingManager.base_PricingChange.Skip(SelectedItemPricing.ProductCollection.Count).Take(TotalProducts - pricingManagerModel.ProductCollection.Count);
+                        foreach (base_PricingChange pricingChange in pricingChanges)
+                        {
+                            // Create new product model
+                            base_ProductModel productModel = new base_ProductModel(pricingChange.base_Product);
+
+                            productModel.CurrentPrice = pricingChange.CurrentPrice.Value;
+                            productModel.NewPrice = pricingChange.NewPrice.Value;
+                            productModel.PriceChange = pricingChange.PriceChanged.Value;
+
+                            // Get pricing manager resource
+                            string pricingManagerResource = pricingManagerModel.Resource.ToString();
+
+                            if (pricingChange != null)
+                            {
+                                // Update price of product
+                                if (pricingManagerModel.BasePrice == 1)
+                                {
+                                    productModel.AverageUnitCost = pricingChange.Cost.Value;
+                                    productModel.base_Product.AverageUnitCost = pricingChange.Cost.Value;
+                                }
+                                else
+                                    UpdateProductPrice(productModel.base_Product, pricingChange.CurrentPrice.Value);
+                            }
+
+                            // Turn off IsDirty & IsNew
+                            productModel.EndUpdate();
+
+                            bgWorker.ReportProgress(0, productModel);
+                        }
+
+                        // Accept changes
+                        _productRepository.Commit();
+
+                        pricingManagerModel.IsEnable = false;
+
+                        // Turn off IsDirty & IsNew
+                        pricingManagerModel.EndUpdate();
+
+                        // Write log
+                        App.WriteUserLog("Pricing", "User insterd a new pricing." + pricingManagerModel.Id);
+                    }
+                };
+
+                bgWorker.ProgressChanged += (sender, e) =>
+                {
+                    // Add new product to collection
+                    pricingManagerModel.ProductCollection.Add(e.UserState as base_ProductModel);
+                };
+
+                bgWorker.RunWorkerCompleted += (sender, e) =>
+                {
+                    // Turn off BusyIndicator
+                    IsBusy = false;
+                };
+
+                // Run async background worker
+                bgWorker.RunWorkerAsync();
+            }
+            catch (Exception ex)
+            {
+                _log4net.Error("RESTORE PRICING\n" + ex.ToString());
+            }
+        }
+
+
+        #region Auto Searching
+        /// <summary>
+        /// Event Tick for search ching
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        protected virtual void _waitingTimer_Tick(object sender, EventArgs e)
+        {
+            _timerCounter++;
+            if (_timerCounter == Define.DelaySearching)
+            {
+                OnSearchCommandExecute(null);
+                _waitingTimer.Stop();
+            }
+        }
+
+        /// <summary>
+        /// Reset timer for Auto complete search
+        /// </summary>
+        protected virtual void ResetTimer()
+        {
+            if (Define.CONFIGURATION.IsAutoSearch && this._waitingTimer != null)
+            {
+                this._waitingTimer.Stop();
+                this._waitingTimer.Start();
+                _timerCounter = 0;
             }
         }
         #endregion
-
         #endregion
 
         #region Public Methods
@@ -1844,10 +2457,6 @@ namespace CPC.POS.ViewModel
         /// </summary>
         public override void LoadData()
         {
-            this.POSConfig = Define.CONFIGURATION;
-            this.CommissionTypes = new ObservableCollection<ComboItem>();
-            this.CommissionTypes.Add(new ComboItem { Value = 0, Text = "%" });
-            this.CommissionTypes.Add(new ComboItem { Value = 1, Text = POSConfig.CurrencySymbol });
             this.PricingCollection.Clear();
             Expression<Func<base_PricingManager, bool>> predicate = PredicateBuilder.True<base_PricingManager>();
             if (!string.IsNullOrWhiteSpace(this.Keyword))
@@ -1938,54 +2547,6 @@ namespace CPC.POS.ViewModel
                 pricingManagerModel.ResourceNoteCollection = new CollectionBase<base_ResourceNoteModel>(
                     _resourceNoteRepository.GetAll(x => x.Resource.Equals(resource)).
                     Select(x => new base_ResourceNoteModel(x)));
-            }
-        }
-
-        #endregion
-
-        #region Permission
-
-        #region Properties
-
-        private bool _allowAddPricing = true;
-        /// <summary>
-        /// Gets or sets the AllowAddPricing.
-        /// </summary>
-        public bool AllowAddPricing
-        {
-            get { return _allowAddPricing; }
-            set
-            {
-                if (_allowAddPricing != value)
-                {
-                    _allowAddPricing = value;
-                    OnPropertyChanged(() => AllowAddPricing);
-                }
-            }
-        }
-
-        #endregion
-
-        /// <summary>
-        /// Get permissions
-        /// </summary>
-        public override void GetPermission()
-        {
-            if (!IsAdminPermission)
-            {
-                if (IsFullPermission)
-                {
-                    // Set default permission
-                    AllowAddPricing = IsMainStore;
-                }
-                else
-                {
-                    // Get all user rights
-                    IEnumerable<string> userRightCodes = Define.USER_AUTHORIZATION.Select(x => x.Code);
-
-                    // Get edit quantity permission
-                    AllowAddPricing = userRightCodes.Contains("IV100-02-01") && IsMainStore;
-                }
             }
         }
 

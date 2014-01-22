@@ -7,14 +7,11 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:dataGridControl="clr-namespace:CPCToolkitExt.DataGridControl;assembly=CPCToolkitExt"
              xmlns:helper="clr-namespace:CPC.Helper"
+             xmlns:i="clr-namespace:System.Windows.Interactivity;assembly=System.Windows.Interactivity"
              xmlns:local="clr-namespace:CPC.POS"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-             xmlns:Microsoft_Windows_Controls_Ribbon="clr-namespace:Microsoft.Windows.Controls.Ribbon;assembly=RibbonControlsLibrary"
-             xmlns:Microsoft_Windows_Themes="clr-namespace:Microsoft.Windows.Themes;assembly=PresentationFramework.Luna"
              xmlns:textBoxControl="clr-namespace:CPCToolkitExt.TextBoxControl;assembly=CPCToolkitExt"
-             xmlns:xctk="http://schemas.xceed.com/wpf/xaml/toolkit"
              x:Name="pricingView"
-             xmlns:i="clr-namespace:System.Windows.Interactivity;assembly=System.Windows.Interactivity"
              Background="{DynamicResource UserControlBackground}"
              helper:ValidationHelper.IsEnabled="True"
              helper:ValidationHelper.IsValid="{Binding IsValid, Mode=OneWayToSource}"
@@ -104,10 +101,10 @@
             <TextBlock Text="{DynamicResource PR110}" />
         </DataTemplate>
     </UserControl.Resources>
-	<UserControl.InputBindings>
-		<KeyBinding Command="{Binding HelpCommand}"
+    <UserControl.InputBindings>
+        <KeyBinding Command="{Binding HelpCommand}"
                     Gesture="F1" />
-	</UserControl.InputBindings>
+    </UserControl.InputBindings>
     <Grid x:Name="GridLayout">
         <Rectangle x:Name="UserControl_Background_Image"
                    Fill="{DynamicResource UserControl_Background_Image}" />
@@ -148,11 +145,11 @@
                                 <control:WatermarkTextBox x:Name="txtKeyword"
                                                           Margin="10,2"
                                                           VerticalContentAlignment="Center"
+                                                          BorderBrush="{DynamicResource TextBoxCanlendarComboboxBorderBrush}"
                                                           Padding="24,0,2,0"
                                                           Text="{Binding FilterText, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                                                           TextWrapping="NoWrap"
-                                                          Watermark="Keyword"
-                                                          BorderBrush="{DynamicResource TextBoxCanlendarComboboxBorderBrush}">
+                                                          Watermark="Keyword">
                                     <i:Interaction.Behaviors>
                                         <behavior:AutoFocusBehavior />
                                     </i:Interaction.Behaviors>
@@ -190,15 +187,14 @@
                                                      behavior:DoubleClickCommandBehavior.DoubleClickCommandParameter="{Binding SelectedItem, ElementName=dtgrdDiscountCoupon}"
                                                      CanUserAddRows="False"
                                                      CanUserDeleteRows="False"
+                                                     CurrentColumnCollection="{Binding ColumnCollection, Mode=OneWayToSource, UpdateSourceTrigger=PropertyChanged}"
                                                      CurrentPageIndex="{Binding CurrentPagePricingIndex}"
                                                      DisplayItems="{Binding NumberOfDisplayItems}"
-                                                     IsRollBackData="False"
                                                      IsColunmHidden="True"
-                                                     CurrentColumnCollection="{Binding ColumnCollection,Mode=OneWayToSource,UpdateSourceTrigger=PropertyChanged}"
-                                                     SelectedIndex="{Binding SelectedIndex,Mode=OneWay,UpdateSourceTrigger=PropertyChanged}"
+                                                     IsRollBackData="False"
                                                      ItemsSource="{Binding PricingCollection}"
                                                      NumberOfItems="{Binding TotalPricings}"
-                                                     SelectedItem="{Binding SelectedItemPricing}"
+                                                     SelectedIndex="{Binding SelectedIndex, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}"
                                                      Style="{DynamicResource DatagridWithRowHeader}">
                         <dataGridControl:DataGridControl.ContextMenu>
                             <ContextMenu Tag="{Binding PlacementTarget, RelativeSource={RelativeSource Mode=Self}}">
@@ -212,7 +208,7 @@
                                     </MenuItem.Icon>
                                 </MenuItem>
                                 <MenuItem Command="{Binding EditCommand}"
-                                          CommandParameter="ContextMenu"
+                                          CommandParameter="{Binding Tag, RelativeSource={RelativeSource AncestorType={x:Type ContextMenu}, Mode=FindAncestor}}"
                                           HeaderTemplate="{StaticResource EditItemHeaderTemplate}">
                                     <MenuItem.Icon>
                                         <Rectangle Width="16"
@@ -222,6 +218,7 @@
                                     </MenuItem.Icon>
                                 </MenuItem>
                                 <MenuItem Command="{Binding ApplyCommand}"
+                                          CommandParameter="{Binding Tag, RelativeSource={RelativeSource AncestorType={x:Type ContextMenu}, Mode=FindAncestor}}"
                                           HeaderTemplate="{StaticResource ApplyItemHeaderTemplate}"
                                           IsEnabled="{Binding ., Converter={StaticResource permissionConverter}, ConverterParameter=IV100-02-02}">
                                     <MenuItem.Icon>
@@ -384,7 +381,8 @@
                     </dataGridControl:DataGridControl>
                 </Grid>
                 <Grid x:Name="grdContentCreateDiscountCoupon"
-                      Grid.Column="1" d:IsHidden="True">
+                      Grid.Column="1"
+                      d:IsHidden="True">
                     <Grid.Visibility>
                         <Binding Path="IsSearchMode"
                                  Mode="OneWay"
@@ -512,6 +510,7 @@
                                     Height="40"
                                     Margin="0"
                                     Style="{DynamicResource ButtonSystem}"
+                                    ToolTip="New Item"
                                     Visibility="Visible">
                                 <StackPanel x:Name="stkpBtnNew"
                                             HorizontalAlignment="Center"
@@ -533,6 +532,7 @@
                                     Width="40"
                                     Height="40"
                                     Style="{DynamicResource ButtonSystem}"
+                                    ToolTip="Save Current Item"
                                     Visibility="Visible">
                                 <StackPanel x:Name="stkpBtnSave"
                                             HorizontalAlignment="Center"
@@ -671,7 +671,8 @@
                                 <ComboBox x:Name="cmbStick"
                                           Grid.ColumnSpan="2"
                                           SelectedIndex="0"
-                                          Style="{DynamicResource RemarkComboboxStyle}">
+                                          Style="{DynamicResource RemarkComboboxStyle}"
+                                          ToolTip="Stickies">
                                     <ComboBoxItem>
                                         <Button Command="{Binding StickyManagementViewModel.NewCommand}"
                                                 Width="75"
@@ -687,24 +688,24 @@
                                                 Style="{DynamicResource ButtonComboboxItemRemark}" />
                                     </ComboBoxItem>
                                 </ComboBox>
-                                <Button Style="{DynamicResource ButtonSystem}"
-                                        x:Name="btnRemark1"
-                                        Visibility="Visible"
+                                <Button x:Name="btnRemark1"
                                         Width="40"
                                         Height="40"
-                                        IsHitTestVisible="False">
-                                    <StackPanel HorizontalAlignment="Center"
-                                                x:Name="stkpBtnRemark"
+                                        IsHitTestVisible="False"
+                                        Style="{DynamicResource ButtonSystem}"
+                                        Visibility="Visible">
+                                    <StackPanel x:Name="stkpBtnRemark"
+                                                HorizontalAlignment="Center"
                                                 VerticalAlignment="Center">
                                         <Rectangle x:Name="imgRemark1"
-                                                   Fill="{DynamicResource Remark}"
+                                                   Width="30"
                                                    Height="30"
-                                                   Width="30" />
+                                                   Fill="{DynamicResource Remark}" />
                                         <TextBlock VerticalAlignment="Center"
+                                                   Style="{DynamicResource ButtonSystemTextBlock}"
                                                    Text="Remark"
                                                    TextWrapping="NoWrap"
-                                                   Visibility="Collapsed"
-                                                   Style="{DynamicResource ButtonSystemTextBlock}" />
+                                                   Visibility="Collapsed" />
                                     </StackPanel>
                                 </Button>
                                 <TextBox x:Name="txtbBindingRemark"
@@ -744,6 +745,7 @@
                                     Height="40"
                                     IsEnabled="{Binding ., Converter={StaticResource permissionConverter}, ConverterParameter=IV100-02-03}"
                                     Style="{DynamicResource ButtonSystem}"
+                                    ToolTip="Restore Current Item"
                                     Visibility="{Binding SelectedItemPricing.VisibilityRestore, Mode=OneWay}">
                                 <StackPanel x:Name="stkpRestore"
                                             HorizontalAlignment="Center"
@@ -767,6 +769,7 @@
                                     Height="40"
                                     IsEnabled="{Binding ., Converter={StaticResource permissionConverter}, ConverterParameter=IV100-02-02}"
                                     Style="{DynamicResource ButtonSystem}"
+                                    ToolTip="Apply Current Item"
                                     Visibility="{Binding SelectedItemPricing.VisibilityApplied, Mode=OneWay}">
                                 <StackPanel x:Name="stkpApply"
                                             HorizontalAlignment="Center"
@@ -825,7 +828,11 @@
                                                     MaxLength="36"
                                                     Padding="2,0,2,0"
                                                     Text="{Binding SelectedItemPricing.Name, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay, NotifyOnValidationError=True, ValidatesOnDataErrors=True}"
-                                                    TextWrapping="NoWrap" />
+                                                    TextWrapping="NoWrap">
+                                <i:Interaction.Behaviors>
+                                    <behavior:AutoFocusBehavior />
+                                </i:Interaction.Behaviors>
+                            </textBoxControl:TextBox>
                             <TextBlock x:Name="txtblStatus"
                                        Margin="530,0,0,0"
                                        HorizontalAlignment="Left"
@@ -966,7 +973,7 @@
                                             <ComboBoxItem x:Name="cmbItemApplyPercent"
                                                           Content="%" />
                                             <ComboBoxItem x:Name="cmbItemApplyDollar"
-                                                          Content="{Binding DataContext.POSConfig.CurrencySymbol,RelativeSource={RelativeSource AncestorType=UserControl}}" />
+                                                          Content="{Binding DataContext.POSConfig.CurrencySymbol, RelativeSource={RelativeSource AncestorType=UserControl}}" />
                                         </ComboBox>
                                     </Grid>
                                 </Grid>
@@ -1005,14 +1012,16 @@
                                                     IsEnabled="{Binding SelectedItemPricing.IsEnable}"
                                                     Orientation="Horizontal"
                                                     d:LayoutOverrides="Width">
-                                            <RadioButton x:Name="rbAllItem"
-                                                         Command="{Binding FilterProductCommand}"
-                                                         CommandParameter="All"
-                                                         HorizontalAlignment="Left"
-                                                         VerticalAlignment="Center"
-                                                         Content="{DynamicResource C166}"
-                                                         Cursor="Hand"
-                                                         IsChecked="{Binding SelectedItemPricing.AffectPricing, Converter={StaticResource integerToBooleanConverter}, ConverterParameter=0}" />
+                                            <!--
+                                                <RadioButton x:Name="rbAllItem"
+                                                Command="{Binding FilterProductCommand}"
+                                                CommandParameter="All"
+                                                HorizontalAlignment="Left"
+                                                VerticalAlignment="Center"
+                                                Content="{DynamicResource C166}"
+                                                Cursor="Hand"
+                                                IsChecked="{Binding SelectedItemPricing.AffectPricing, Converter={StaticResource integerToBooleanConverter}, ConverterParameter=0}" />
+                                            -->
                                             <RadioButton x:Name="rbAllItemsinCategory"
                                                          Command="{Binding FilterProductCommand}"
                                                          CommandParameter="Category"
@@ -1040,6 +1049,7 @@
                                                          IsChecked="{Binding SelectedItemPricing.AffectPricing, Converter={StaticResource integerToBooleanConverter}, ConverterParameter=3}" />
                                         </StackPanel>
                                         <dataGridControl:DataGridControl x:Name="dtgrdProductDirectory"
+                                                                         Command="{Binding LoadStepProductCommand}"
                                                                          Grid.Row="1"
                                                                          Margin="10,5.2,10,10"
                                                                          HorizontalAlignment="Stretch"
@@ -1047,6 +1057,9 @@
                                                                          AutoGenerateColumns="False"
                                                                          CanUserAddRows="False"
                                                                          CanUserDeleteRows="False"
+                                                                         DisplayItems="{Binding NumberOfDisplayItems}"
+                                                                         IsPaging="True"
+                                                                         IsReadOnly="True"
                                                                          IsRollBackData="False"
                                                                          ItemsSource="{Binding SelectedItemPricing.ProductCollection, Mode=OneWay}"
                                                                          NumberOfItems="{Binding TotalProducts, Mode=OneWay}"

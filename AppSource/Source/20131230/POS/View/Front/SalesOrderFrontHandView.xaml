@@ -1,0 +1,826 @@
+﻿<Window x:Class="CPC.POS.View.SalesOrderFrontHandView"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:Anno="http://schemas.microsoft.com/expression/blend/extensions/annotations/2008"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:ed="http://schemas.microsoft.com/expression/2010/drawing"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        x:Name="UserControl"
+        xmlns:cpcDataGrid="clr-namespace:CPCToolkitExt.DataGridControl;assembly=CPCToolkitExt"
+        xmlns:cpcTextBox="clr-namespace:CPCToolkitExt.TextBoxControl;assembly=CPCToolkitExt"
+        xmlns:wpfToolkit="clr-namespace:Xceed.Wpf.Toolkit;assembly=WPFToolkit.Extended"
+        xmlns:i="clr-namespace:System.Windows.Interactivity;assembly=System.Windows.Interactivity"
+        xmlns:cpcBehavior="clr-namespace:CPC.Toolkit.Behavior"
+        xmlns:local="clr-namespace:CPC.POS"
+        xmlns:Service="clr-namespace:CPC.Service"
+        Service:DialogService.IsRegisteredView="True"
+        WindowStartupLocation="CenterScreen"
+        WindowState="Maximized"
+        Width="820"
+        WindowStyle="None"
+        Height="528"
+        ShowInTaskbar="True"
+        Background="{DynamicResource UserControlBackground}"
+        mc:Ignorable="d Anno">
+
+    <Window.Resources />
+
+    <Grid x:Name="GridLayout">
+        <Rectangle x:Name="UserControl_Background_Image"
+                   Fill="{DynamicResource UserControl_Background_Image}" />
+        <Border x:Name="brdFontHand"
+                Margin="10"
+                Background="#19FFFFFF"
+                BorderBrush="{DynamicResource TabControlBorder}"
+                BorderThickness="1">
+            <Grid x:Name="grdFontHand">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition />
+                    <ColumnDefinition Width="250" />
+                </Grid.ColumnDefinitions>
+                <Grid x:Name="grdSubSalesOrder">
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="72" />
+                        <RowDefinition />
+                    </Grid.RowDefinitions>
+
+                    <Border x:Name="brdCustomerBarCode"
+                            Background="#33FFFFFF"
+                            BorderBrush="{DynamicResource TabControlBorder}"
+                            BorderThickness="0,0,0,1">
+                        <Grid x:Name="grdCustomerBarCode"
+                              Margin="10">
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="25" />
+                                <RowDefinition Height="25" />
+                            </Grid.RowDefinitions>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="84" />
+                                <ColumnDefinition Width="150" />
+                                <ColumnDefinition />
+                                <ColumnDefinition Width="300" />
+                            </Grid.ColumnDefinitions>
+                            <TextBlock x:Name="txtblCustomer"
+                                       Margin="10,0,0,0"
+                                       HorizontalAlignment="Left"
+                                       VerticalAlignment="Center"
+                                       FontSize="13.333"
+                                       FontWeight="Bold"
+                                       Style="{DynamicResource TextBlockNormal}"
+                                       Text="Customer"
+                                       TextWrapping="NoWrap"
+                                       d:LayoutOverrides="GridBox" />
+                            <ComboBox x:Name="cmbCustomer"
+                                      Grid.Column="1"
+                                      Margin="0,2"
+                                      ItemsSource="{Binding CustomerCollection}"
+                                      DisplayMemberPath="LegalName"
+                                      SelectedValuePath="Resource"
+                                      SelectedItem="{Binding SelectedCustomer,Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}"
+                                      VerticalAlignment="Stretch" />
+                            <TextBlock x:Name="txtblBarcode"
+                                       Grid.Row="1"
+                                       Margin="10,0,0,0"
+                                       HorizontalAlignment="Left"
+                                       VerticalAlignment="Center"
+                                       FontSize="13.333"
+                                       FontWeight="Bold"
+                                       Style="{DynamicResource TextBlockNormal}"
+                                       Text="Barcode"
+                                       TextWrapping="NoWrap"
+                                       d:LayoutOverrides="GridBox" />
+                            <wpfToolkit:WatermarkTextBox x:Name="txtBarcode"
+                                                         Grid.Row="1"
+                                                         Grid.Column="1"
+                                                         Height="21"
+                                                         Margin="0"
+                                                         VerticalAlignment="Center"
+                                                         FontSize="12"
+                                                         FontWeight="Bold"
+                                                         Padding="2,0,2,0"
+                                                         Style="{DynamicResource TextBoxBasic}"
+                                                         Text="{Binding BarcodeProduct, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                                         TextWrapping="NoWrap"
+                                                         Watermark="Input barcode and press enter">
+                                <i:Interaction.Behaviors>
+                                    <cpcBehavior:AutoFocusBehavior />
+                                </i:Interaction.Behaviors>
+                                <wpfToolkit:WatermarkTextBox.InputBindings>
+                                    <KeyBinding Key="Enter"
+                                                Command="{Binding SearchProductCommand}" />
+                                </wpfToolkit:WatermarkTextBox.InputBindings>
+                            </wpfToolkit:WatermarkTextBox>
+                            <TextBlock x:Name="txtblBindingUsername"
+                                       Grid.Column="3"
+                                       Margin="0"
+                                       HorizontalAlignment="Left"
+                                       VerticalAlignment="Center"
+                                       FontSize="14.667"
+                                       Style="{DynamicResource TextBlockScheduleTitle}"
+                                       Text="{Binding SelectedCustomer.LegalName,Mode=OneWay,UpdateSourceTrigger=PropertyChanged}"
+                                       TextTrimming="CharacterEllipsis"
+                                       TextWrapping="NoWrap" />
+                            <TextBlock x:Name="txtblBindingDate"
+                                       Grid.Row="1"
+                                       Grid.Column="3"
+                                       Margin="0"
+                                       HorizontalAlignment="Left"
+                                       VerticalAlignment="Center"
+                                       FontSize="14"
+                                       Style="{DynamicResource TextBlockScheduleTitle}"
+                                       Text="{Binding CurrentDateTime,StringFormat={}{0:dddd, MMMM yyyy h:mm:ss tt}}"
+                                       TextWrapping="Wrap" />
+                        </Grid>
+
+                    </Border>
+                    <Grid x:Name="grdList"
+                          Grid.Row="1"
+                          Margin="10">
+                        <Grid.RowDefinitions>
+                            <RowDefinition />
+                            <RowDefinition Height="99" />
+                        </Grid.RowDefinitions>
+                        <Grid x:Name="grdContentList"
+                              Margin="0,0,0,5">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition />
+                                <ColumnDefinition Width="60" />
+                            </Grid.ColumnDefinitions>
+                                <cpcDataGrid:DataGridControl x:Name="dtgrdOrder"
+                                                         ColumnHeaderHeight="40"
+                                                         HorizontalScrollBarVisibility="Hidden"
+                                                         IsSynchronizedWithCurrentItem="True"
+                                                         ItemsSource="{Binding SelectedSaleOrder.SaleOrderDetailCollection}"
+                                                         VerticalScrollBarVisibility="Disabled"
+                                                         AutoGenerateColumns="False"
+                                                         CanUserAddRows="False"
+                                                         SelectedItem="{Binding SelectedSaleOrderDetail,Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}"
+                                                         CanUserDeleteRows="False"
+                                                         Style="{DynamicResource DatagridWithRowHeader}">
+                                <cpcDataGrid:DataGridControl.Columns>
+                                    <DataGridTextColumn Width="100"
+                                                        Header="Item Code"
+                                                        Binding="{Binding ItemCode}" />
+                                    <DataGridTextColumn Width="*"
+                                                        Header="Item Name"
+                                                        Binding="{Binding ItemName}" />
+                                    <DataGridTextColumn Width="75"
+                                                        Header="Quantity"
+                                                        Binding="{Binding Quantity, ConverterCulture={x:Static local:Define.ConverterCulture}, Mode=OneWay, StringFormat={x:Static local:Define.NumericFormat}}" />
+                                    <DataGridTextColumn Width="80"
+                                                        Header="Price"
+                                                        Binding="{Binding SalePrice, ConverterCulture={x:Static local:Define.ConverterCulture}, Mode=OneWay, StringFormat={x:Static local:Define.CurrencyFormat}}" />
+                                    <DataGridTextColumn Width="80"
+                                                        Header="Amount"
+                                                        Binding="{Binding SubTotal, ConverterCulture={x:Static local:Define.ConverterCulture}, Mode=OneWay, StringFormat={x:Static local:Define.CurrencyFormat}}" />
+                                </cpcDataGrid:DataGridControl.Columns>
+
+                            </cpcDataGrid:DataGridControl>
+                            <Border x:Name="bdrUpDown"
+                                    Grid.Column="3"
+                                    Background="#33FFFFFF"
+                                    BorderBrush="{DynamicResource DatagridBorderBrush}"
+                                    BorderThickness="0,1,1,1">
+                                <Grid x:Name="grdUpDown">
+                                    <StackPanel x:Name="stkpBtnUpDown"
+                                                Height="Auto">
+                                        <Button x:Name="btnTop"
+                                                Width="45"
+                                                Height="45"
+                                                Margin="0,5,0,0"
+                                                VerticalAlignment="Top"
+                                                Command="{Binding MoveItemCommand}"
+                                                CommandParameter="MoveUp"
+                                                HorizontalContentAlignment="Center">
+                                            <StackPanel x:Name="stkpBtnTop"
+                                                        Orientation="Horizontal">
+                                                <Rectangle x:Name="imgTop"
+                                                           Width="25"
+                                                           Height="25"
+                                                           Fill="{DynamicResource GoToPrevious}"
+                                                           RenderTransformOrigin="0.5,0.5">
+                                                    <Rectangle.RenderTransform>
+                                                        <TransformGroup>
+                                                            <ScaleTransform />
+                                                            <SkewTransform />
+                                                            <RotateTransform Angle="90" />
+                                                            <TranslateTransform />
+                                                        </TransformGroup>
+                                                    </Rectangle.RenderTransform>
+                                                </Rectangle>
+                                            </StackPanel>
+                                        </Button>
+                                        <Button x:Name="btnEditItem"
+                                                Width="45"
+                                                Height="45"
+                                                Margin="4.5,18,4.5,0"
+                                                VerticalAlignment="Top"
+                                                HorizontalContentAlignment="Center">
+                                            <TextBlock x:Name="txtblEditItem"
+                                                       VerticalAlignment="Center"
+                                                       FontWeight="Bold"
+                                                       Style="{DynamicResource ButtonTextBlock}"
+                                                       Text="Edit Item"
+                                                       TextAlignment="Center"
+                                                       TextWrapping="Wrap" />
+                                        </Button>
+                                        <Button x:Name="btnReturnItem"
+                                                Width="45"
+                                                Height="45"
+                                                Margin="4.5,18,4.5,0"
+                                                VerticalAlignment="Top"
+                                                HorizontalContentAlignment="Center">
+                                            <TextBlock x:Name="txtblReturnItem"
+                                                       VerticalAlignment="Center"
+                                                       FontWeight="Bold"
+                                                       Style="{DynamicResource ButtonTextBlock}"
+                                                       Text="Return Item"
+                                                       TextAlignment="Center"
+                                                       TextWrapping="Wrap" />
+                                        </Button>
+                                        <Button x:Name="btnDeleteItem"
+                                                Width="45"
+                                                Height="45"
+                                                Margin="4.5,18,4.5,0"
+                                                VerticalAlignment="Top"
+                                                HorizontalContentAlignment="Center">
+                                            <TextBlock x:Name="txtblDeleteItem"
+                                                       VerticalAlignment="Center"
+                                                       FontWeight="Bold"
+                                                       Style="{DynamicResource ButtonTextBlock}"
+                                                       Text="Delete Item"
+                                                       TextAlignment="Center"
+                                                       TextWrapping="Wrap" />
+                                        </Button>
+                                        <Button x:Name="btnBottom"
+                                                Width="45"
+                                                Height="45"
+                                                Margin="4.5,18,4.5,0"
+                                                Command="{Binding MoveItemCommand}"
+                                                CommandParameter="MoveDown"
+                                                VerticalAlignment="Top"
+                                                HorizontalContentAlignment="Center">
+                                            <StackPanel x:Name="stkpBtnBottom"
+                                                        Orientation="Horizontal">
+                                                <Rectangle x:Name="imgBottom"
+                                                           Width="25"
+                                                           Height="25"
+                                                           Fill="{DynamicResource GoToNext}"
+                                                           RenderTransformOrigin="0.5,0.5">
+                                                    <Rectangle.RenderTransform>
+                                                        <TransformGroup>
+                                                            <ScaleTransform />
+                                                            <SkewTransform />
+                                                            <RotateTransform Angle="90" />
+                                                            <TranslateTransform />
+                                                        </TransformGroup>
+                                                    </Rectangle.RenderTransform>
+                                                </Rectangle>
+                                            </StackPanel>
+                                        </Button>
+                                    </StackPanel>
+                                </Grid>
+                            </Border>
+                        </Grid>
+                        <Grid x:Name="grdOrderSubTotal"
+                              Grid.Row="1"
+                              Margin="0"
+                              VerticalAlignment="Bottom">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="66" />
+                                <ColumnDefinition Width="90" />
+                                <ColumnDefinition Width="*" />
+                                <ColumnDefinition Width="52" />
+                                <ColumnDefinition Width="90" />
+                                <ColumnDefinition Width="*" />
+                                <ColumnDefinition Width="52" />
+                                <ColumnDefinition Width="90" />
+                            </Grid.ColumnDefinitions>
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="25" />
+                                <RowDefinition Height="25" />
+                                <RowDefinition Height="9" />
+                                <RowDefinition Height="40" />
+                            </Grid.RowDefinitions>
+                            <TextBlock x:Name="txtblOrderTabSubTotal"
+                                       Margin="10,0,0,0"
+                                       HorizontalAlignment="Left"
+                                       VerticalAlignment="Center"
+                                       Style="{DynamicResource TextBlockNormal}"
+                                       Text="Sub-Total"
+                                       TextWrapping="NoWrap" />
+                            <cpcTextBox:TextBoxMoney x:Name="txtOrderTabSubTotal"
+                                                     Grid.Column="1"
+                                                     Height="21"
+                                                     Margin="0,2"
+                                                     HorizontalContentAlignment="Right"
+                                                     FontWeight="Bold"
+                                                     IsReadOnly="True"
+                                                     Padding="2,0,2,0"
+                                                     ConverterCulture="{x:Static local:Define.ConverterCulture}"
+                                                     CurrencyStringFormat="{x:Static local:Define.CurrencyFormat}"
+                                                     Value="{Binding SelectedSaleOrder.SubTotal, Mode=OneWay}"
+                                                     TextWrapping="NoWrap"
+                                                     d:LayoutOverrides="GridBox" Style="{DynamicResource TextBoxTotal}" FontSize="14" Foreground="#FFFDFF00" />
+                            <TextBlock x:Name="txtblOrderTabDiscountAmount"
+                                       Grid.Column="3"
+                                       HorizontalAlignment="Left"
+                                       VerticalAlignment="Center"
+                                       Style="{DynamicResource TextBlockNormal}"
+                                       Text="Discount"
+                                       TextWrapping="NoWrap"
+                                       d:LayoutOverrides="Height" />
+                            <cpcTextBox:TextBoxMoney x:Name="txtShowDiscount"
+                                                     Grid.RowSpan="1"
+                                                     Grid.Column="4"
+                                                     Margin="0,2"
+                                                     HorizontalContentAlignment="Right"
+                                                     Padding="2,0,2,0"
+                                                     ConverterCulture="{x:Static local:Define.ConverterCulture}"
+                                                     CurrencyStringFormat="{x:Static local:Define.CurrencyFormat}"
+                                                     Value="{Binding SelectedSaleOrder.DiscountAmount, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                                     TextWrapping="NoWrap" Style="{DynamicResource TextBoxTotal}" FontSize="14" Foreground="#FFFDFF00" />
+                            <TextBlock x:Name="txtblOrderTabTaxAmount"
+                                       Grid.Column="6"
+                                       HorizontalAlignment="Left"
+                                       VerticalAlignment="Center"
+                                       Style="{DynamicResource TextBlockNormal}"
+                                       Text="Tax"
+                                       TextWrapping="NoWrap"
+                                       d:LayoutOverrides="Height" />
+                            <cpcTextBox:TextBoxMoney x:Name="txtOrderTabTax"
+                                                     Grid.RowSpan="1"
+                                                     Grid.Column="7"
+                                                     ConverterCulture="{x:Static local:Define.ConverterCulture}"
+                                                     CurrencyStringFormat="{x:Static local:Define.CurrencyFormat}"
+                                                     IsReadOnly="True"
+                                                     Value="{Binding SelectedSaleOrder.TaxAmount, Mode=OneWay}"
+                                                     Margin="0,2"
+                                                     HorizontalContentAlignment="Right"
+                                                     Padding="2,0,2,0"
+                                                     TextWrapping="NoWrap" Style="{DynamicResource TextBoxTotal}" FontSize="14" Foreground="#FFFDFF00" />
+                            <TextBlock x:Name="txtblOrderTabShippingHandling"
+                                       Grid.Row="1"
+                                       Grid.Column="6"
+                                       Margin="0"
+                                       HorizontalAlignment="Left"
+                                       VerticalAlignment="Center"
+                                       Style="{DynamicResource TextBlockNormal}"
+                                       Text="Shipping"
+                                       TextWrapping="NoWrap" />
+                            <cpcTextBox:TextBoxMoney x:Name="txtOrderTabShippingHandling"
+                                                     Grid.Row="1"
+                                                     Grid.RowSpan="1"
+                                                     Grid.Column="8"
+                                                     Margin="0,2"
+                                                     ConverterCulture="{x:Static local:Define.ConverterCulture}"
+                                                     CurrencyStringFormat="{x:Static local:Define.CurrencyFormat}"
+                                                     HorizontalContentAlignment="Right"
+                                                     Value="{Binding SelectedSaleOrder.Shipping, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                                     Padding="2,0,2,0"
+                                                     TextWrapping="NoWrap" Style="{DynamicResource TextBoxTotal}" FontSize="14" Foreground="#FFFDFF00" />
+                            <Rectangle x:Name="LineOrderTotal"
+                                       Grid.Row="2"
+                                       Grid.Column="6"
+                                       Grid.ColumnSpan="2"
+                                       Height="1"
+                                       Margin="0"
+                                       HorizontalAlignment="Stretch"
+                                       VerticalAlignment="Center"
+                                       Fill="White" />
+                            <TextBlock x:Name="txtblOrderTotal"
+                                       Grid.Row="3"
+                                       Grid.Column="5"
+                                       Margin="0,0,10,0"
+                                       HorizontalAlignment="Right"
+                                       VerticalAlignment="Center"
+                                       Style="{DynamicResource TextBlockNormal}"
+                                       Text="Total"
+                                       TextWrapping="NoWrap"
+                                       d:LayoutOverrides="Width" />
+                            <cpcTextBox:TextBoxMoney x:Name="txtOrderTotal"
+                                                     Grid.Row="3"
+                                                     Grid.Column="6"
+                                                     Grid.ColumnSpan="2"
+                                                     Margin="0,2"
+                                                     IsReadOnly="True"
+                                                     HorizontalContentAlignment="Right"
+                                                     ConverterCulture="{x:Static local:Define.ConverterCulture}"
+                                                     CurrencyStringFormat="{x:Static local:Define.CurrencyFormat}"
+                                                     VerticalContentAlignment="Center"
+                                                     Padding="2,0,2,0"
+                                                     Style="{DynamicResource TextBoxTotal}"
+                                                     Value="{Binding SelectedSaleOrder.Total, Mode=OneWay}"
+                                                     TextWrapping="NoWrap" />
+                        </Grid>
+                    </Grid>
+                </Grid>
+                <Border x:Name="brdButton"
+                        Grid.Column="1"
+                        Background="#19FFFFFF"
+                        BorderBrush="{DynamicResource TabControlBorder}"
+                        BorderThickness="1,0,0,0">
+                    <Grid x:Name="grdContentButton"
+                          Margin="10">
+                        <WrapPanel x:Name="wpBtn"
+                                   Height="Auto"
+                                   Margin="0"
+                                   Orientation="Horizontal">
+                            <Button x:Name="btnNew"
+                                    Width="108"
+                                    Height="40"
+                                    Margin="0"
+                                    Command="{Binding NewCommand}"
+                                    HorizontalContentAlignment="Left">
+                                <StackPanel x:Name="stkpBtnNew"
+                                            Margin="13,0,0,0"
+                                            Orientation="Horizontal">
+                                    <Rectangle x:Name="imgNew"
+                                               Width="25"
+                                               Height="25"
+                                               Fill="{DynamicResource New}" />
+                                    <TextBlock x:Name="txtblSave"
+                                               Margin="5,0,0,0"
+                                               VerticalAlignment="Center"
+                                               FontSize="12"
+                                               FontWeight="Bold"
+                                               Style="{DynamicResource ButtonTextBlock}"
+                                               Text="New"
+                                               TextWrapping="NoWrap" />
+                                </StackPanel>
+                            </Button>
+                            <Button x:Name="btnSavePrint"
+                                    Width="108"
+                                    Height="40"
+                                    Margin="10,0,0,0"
+                                    Command="{Binding SavePrintCommand}"
+                                    HorizontalContentAlignment="Left">
+                                <Grid x:Name="stkpBtnSavePrint"
+                                      Width="95"
+                                      Height="25"
+                                      Margin="13,0,0,0">
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="25" />
+                                        <ColumnDefinition />
+                                    </Grid.ColumnDefinitions>
+                                    <Rectangle x:Name="imgSavePrint"
+                                               Margin="0,0,0,0"
+                                               Fill="{DynamicResource SavePrint}" />
+                                    <TextBlock x:Name="txtblSavePrint"
+                                               Grid.Column="1"
+                                               Margin="5,0,0,0"
+                                               HorizontalAlignment="Left"
+                                               VerticalAlignment="Center"
+                                               FontSize="12"
+                                               FontWeight="Bold"
+                                               Style="{DynamicResource ButtonTextBlock}"
+                                               Text="Save &amp; Print"
+                                               TextWrapping="Wrap"
+                                               d:LayoutOverrides="Width" />
+                                </Grid>
+                            </Button>
+                            <Button x:Name="btnVoid"
+                                    Width="108"
+                                    Height="40"
+                                    Margin="0,10,0,0"
+                                    Command="{Binding VoidBillCommand}"
+                                    VerticalAlignment="Top"
+                                    HorizontalContentAlignment="Left">
+                                <StackPanel x:Name="stkpBtnVoid"
+                                            Margin="13,0,0,0"
+                                            Orientation="Horizontal">
+                                    <Rectangle x:Name="imgVoid"
+                                               Width="25"
+                                               Height="25"
+                                               Fill="{DynamicResource Void}" />
+                                    <TextBlock x:Name="txtblVoid"
+                                               Margin="5,0,0,0"
+                                               VerticalAlignment="Center"
+                                               FontSize="12"
+                                               FontWeight="Bold"
+                                               Style="{DynamicResource ButtonTextBlock}"
+                                               Text="Void"
+                                               TextWrapping="NoWrap" />
+                                </StackPanel>
+                            </Button>
+                            <Button x:Name="btnQuantity"
+                                    Width="108"
+                                    Height="40"
+                                    Margin="10,10,0,0"
+                                    VerticalAlignment="Top"
+                                    Command="{Binding QuantityCommand}"
+                                    HorizontalContentAlignment="Left">
+                                <StackPanel x:Name="stkpBtnQuantity"
+                                            Margin="13,0,0,0"
+                                            Orientation="Horizontal">
+                                    <Rectangle x:Name="imgQuantity"
+                                               Width="23"
+                                               Height="23"
+                                               Fill="{DynamicResource Quantity}" />
+                                    <TextBlock x:Name="txtblQuantity"
+                                               Margin="5,0,0,0"
+                                               VerticalAlignment="Center"
+                                               FontSize="12"
+                                               FontWeight="Bold"
+                                               Style="{DynamicResource ButtonTextBlock}"
+                                               Text="Quantity"
+                                               TextWrapping="NoWrap" />
+                                </StackPanel>
+                            </Button>
+                            <Button x:Name="btnPrice"
+                                    Width="108"
+                                    Height="40"
+                                    Margin="0,10,0,0"
+                                    VerticalAlignment="Top"
+                                    Command="{Binding PriceCommand}"
+                                    HorizontalContentAlignment="Left">
+                                <StackPanel x:Name="stkpBtnPrice"
+                                            Margin="13,0,0,0"
+                                            Orientation="Horizontal">
+                                    <Rectangle x:Name="imgPrice"
+                                               Width="18"
+                                               Height="20"
+                                               Fill="{DynamicResource Price}" />
+                                    <TextBlock x:Name="txtblPrice"
+                                               Margin="5,0,0,0"
+                                               VerticalAlignment="Center"
+                                               FontSize="12"
+                                               FontWeight="Bold"
+                                               Style="{DynamicResource ButtonTextBlock}"
+                                               Text="Price"
+                                               TextWrapping="NoWrap" />
+                                </StackPanel>
+                            </Button>
+                            <Button x:Name="btnSellGiftCard"
+                                    Width="108"
+                                    Height="40"
+                                    Margin="10,10,0,0"
+                                    VerticalAlignment="Top"
+                                    Command="{Binding SellGiftCardCommand}"
+                                    HorizontalContentAlignment="Left">
+                                <Grid x:Name="stkpBtnSellGiftCard"
+                                      Margin="13,0,0,0">
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="25" />
+                                        <ColumnDefinition />
+                                    </Grid.ColumnDefinitions>
+                                    <Rectangle x:Name="imgSellGiftCard"
+                                               Margin="0,0,0.113,0"
+                                               Fill="{DynamicResource GiftCard}" />
+                                    <TextBlock x:Name="txtblPrint"
+                                               Grid.Column="1"
+                                               Margin="5,0,0,0"
+                                               HorizontalAlignment="Left"
+                                               VerticalAlignment="Center"
+                                               FontSize="12"
+                                               FontWeight="Bold"
+                                               Style="{DynamicResource ButtonTextBlock}"
+                                               Text="Sell Gift Card"
+                                               TextWrapping="Wrap"
+                                               d:LayoutOverrides="Width" />
+                                </Grid>
+                            </Button>
+                            <Button x:Name="btnLockBill"
+                                    Width="108"
+                                    Height="40"
+                                    Margin="0,10,0,0"
+                                    VerticalAlignment="Top"
+                                    Command="{Binding LockBillCommand}"
+                                    HorizontalContentAlignment="Left">
+                                <StackPanel x:Name="stkpBtnLockBill"
+                                            Margin="13,0,0,0"
+                                            Orientation="Horizontal">
+                                    <Rectangle x:Name="imgLockBill"
+                                               Width="25"
+                                               Height="25"
+                                               Fill="{DynamicResource SOLock}" />
+                                    <TextBlock x:Name="txtblLockBill"
+                                               Margin="5,0,0,0"
+                                               VerticalAlignment="Center"
+                                               FontSize="12"
+                                               FontWeight="Bold"
+                                               Style="{DynamicResource ButtonTextBlock}"
+                                               Text="Lock Bill"
+                                               TextWrapping="NoWrap" />
+                                </StackPanel>
+                            </Button>
+                            <Button x:Name="btnSearchBill"
+                                    Width="108"
+                                    Height="40"
+                                    Margin="10,10,0,0"
+                                    VerticalAlignment="Top"
+                                    Command="{Binding SearchBillCommand}"
+                                    HorizontalContentAlignment="Left">
+                                <Grid x:Name="stkpBtnSearchBill"
+                                      Margin="13,0,0,0">
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="25" />
+                                        <ColumnDefinition />
+                                    </Grid.ColumnDefinitions>
+                                    <Rectangle x:Name="imgSearchBill"
+                                               Width="25"
+                                               Height="25"
+                                               Fill="{DynamicResource Find}" />
+                                    <TextBlock x:Name="txtblSearchBill"
+                                               Grid.Column="1"
+                                               Margin="5,0,2,0"
+                                               HorizontalAlignment="Left"
+                                               VerticalAlignment="Center"
+                                               FontSize="12"
+                                               FontWeight="Bold"
+                                               Style="{DynamicResource ButtonTextBlock}"
+                                               Text="Search Bill"
+                                               TextWrapping="Wrap"
+                                               d:LayoutOverrides="Width" />
+                                </Grid>
+                            </Button>
+                            <Button x:Name="btnDiscount"
+                                    Width="108"
+                                    Height="40"
+                                    Margin="0,10,0,0"
+                                    VerticalAlignment="Top"
+                                    Command="{Binding DiscountCommand}"
+                                    HorizontalContentAlignment="Left">
+                                <StackPanel x:Name="stkpBtnDiscount"
+                                            Margin="13,0,0,0"
+                                            Orientation="Horizontal">
+                                    <Rectangle x:Name="imgDiscount"
+                                               Width="22"
+                                               Height="22"
+                                               Fill="{DynamicResource Discount}" />
+                                    <TextBlock x:Name="txtblDiscount"
+                                               Margin="5,0,0,0"
+                                               VerticalAlignment="Center"
+                                               FontSize="12"
+                                               FontWeight="Bold"
+                                               Style="{DynamicResource ButtonTextBlock}"
+                                               Text="Discount"
+                                               TextWrapping="NoWrap" />
+                                </StackPanel>
+                            </Button>
+                            <Button x:Name="btnAddCustomer"
+                                    Width="108"
+                                    Height="40"
+                                    Margin="10,10,0,0"
+                                    VerticalAlignment="Top"
+                                    Command="{Binding AddCustomerCommand}"
+                                    HorizontalContentAlignment="Left">
+                                <Grid x:Name="stkpBtnAddCustomer"
+                                      Margin="13,0,0,0">
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="25" />
+                                        <ColumnDefinition />
+                                    </Grid.ColumnDefinitions>
+                                    <Rectangle x:Name="imgAddCustomer"
+                                               Height="25"
+                                               Margin="0"
+                                               Fill="{DynamicResource Customer}" />
+                                    <TextBlock x:Name="txtblAddCustomer"
+                                               Grid.Column="1"
+                                               Margin="5,0,0,0"
+                                               HorizontalAlignment="Left"
+                                               VerticalAlignment="Center"
+                                               FontSize="12"
+                                               FontWeight="Bold"
+                                               Style="{DynamicResource ButtonTextBlock}"
+                                               Text="Add Customer"
+                                               TextWrapping="Wrap"
+                                               d:LayoutOverrides="Width" />
+                                </Grid>
+                            </Button>
+                            <Button x:Name="btnCashIn"
+                                    Width="108"
+                                    Height="40"
+                                    Margin="0,10,0,0"
+                                    VerticalAlignment="Top"
+                                    Command="{Binding CashInCommand}"
+                                    HorizontalContentAlignment="Left">
+                                <StackPanel x:Name="stkpBtnCashIn"
+                                            Margin="13,0,0,0"
+                                            Orientation="Horizontal">
+                                    <Rectangle x:Name="imgCashIn"
+                                               Width="25"
+                                               Height="25"
+                                               Fill="{DynamicResource CashIn}" />
+                                    <TextBlock x:Name="txtblCashIn"
+                                               Margin="5,0,0,0"
+                                               VerticalAlignment="Center"
+                                               FontSize="12"
+                                               FontWeight="Bold"
+                                               Style="{DynamicResource ButtonTextBlock}"
+                                               Text="Cash In"
+                                               TextWrapping="NoWrap" />
+                                </StackPanel>
+                            </Button>
+                            <Button x:Name="btnCashOut"
+                                    Width="108"
+                                    Height="40"
+                                    Margin="10,10,0,0"
+                                    VerticalAlignment="Top"
+                                    Command="{Binding CashOutCommand}"
+                                    HorizontalContentAlignment="Left">
+                                <StackPanel x:Name="stkpBtnCashOut"
+                                            Margin="13,0,0,0"
+                                            Orientation="Horizontal">
+                                    <Rectangle x:Name="imgCashOut"
+                                               Width="25"
+                                               Height="25"
+                                               Fill="{DynamicResource CashOut}" />
+                                    <TextBlock x:Name="txtblCashOut"
+                                               Margin="5,0,0,0"
+                                               VerticalAlignment="Center"
+                                               FontSize="12"
+                                               FontWeight="Bold"
+                                               Style="{DynamicResource ButtonTextBlock}"
+                                               Text="Cash Out"
+                                               TextWrapping="NoWrap" />
+                                </StackPanel>
+                            </Button>
+                            <Button x:Name="btnPayment"
+                                    Width="108"
+                                    Height="40"
+                                    Margin="0,10,0,0"
+                                    VerticalAlignment="Top"
+                                    Command="{Binding PaymentCommand}"
+                                    HorizontalContentAlignment="Left">
+                                <StackPanel x:Name="stkpBtnPayment"
+                                            Margin="13,0,0,0"
+                                            Orientation="Horizontal">
+                                    <Rectangle x:Name="imgPayment"
+                                               Width="25"
+                                               Height="25"
+                                               Fill="{DynamicResource Payment}" />
+                                    <TextBlock x:Name="txtblPayment"
+                                               Margin="5,0,0,0"
+                                               VerticalAlignment="Center"
+                                               FontSize="12"
+                                               FontWeight="Bold"
+                                               Style="{DynamicResource ButtonTextBlock}"
+                                               Text="Payment"
+                                               TextWrapping="NoWrap" />
+                                </StackPanel>
+                            </Button>
+                            <Button x:Name="btnClose"
+                                    Width="108"
+                                    Height="40"
+                                    Margin="10,10,0,0"
+                                    Command="{Binding CloseCommand}"
+                                    VerticalAlignment="Top"
+                                    HorizontalContentAlignment="Left">
+                                <StackPanel x:Name="stkpBtnClose"
+                                            Margin="13,0,0,0"
+                                            Orientation="Horizontal">
+                                    <Rectangle x:Name="imgClose"
+                                               Width="25"
+                                               Height="25"
+                                               Fill="{DynamicResource Close}" />
+                                    <TextBlock x:Name="txtblClose"
+                                               Margin="5,0,0,0"
+                                               VerticalAlignment="Center"
+                                               FontSize="12"
+                                               FontWeight="Bold"
+                                               Style="{DynamicResource ButtonTextBlock}"
+                                               Text="Close"
+                                               TextWrapping="NoWrap" />
+                                </StackPanel>
+                            </Button>
+                            <Button x:Name="btnLockScreen"
+                                    Width="108"
+                                    Height="40"
+                                    Margin="0,10,0,0"
+                                    VerticalAlignment="Top"
+                                    Command="{Binding LockScreenCommand}"
+                                    HorizontalContentAlignment="Left">
+                                <Grid x:Name="stkpBtnLockScreen"
+                                      Width="95"
+                                      Margin="13,0,0,0">
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="25" />
+                                        <ColumnDefinition />
+                                    </Grid.ColumnDefinitions>
+                                    <Rectangle x:Name="imgLockScreen"
+                                               Width="25"
+                                               Height="25"
+                                               Margin="0"
+                                               Fill="{DynamicResource LockScreen}" />
+                                    <TextBlock x:Name="txtblLockScreen"
+                                               Grid.Column="1"
+                                               Margin="5,0,0,0"
+                                               VerticalAlignment="Center"
+                                               FontSize="12"
+                                               FontWeight="Bold"
+                                               Style="{DynamicResource ButtonTextBlock}"
+                                               Text="Lock Screen"
+                                               TextWrapping="Wrap"
+                                               d:LayoutOverrides="Width" />
+                                </Grid>
+                            </Button>
+                            
+                            
+                        </WrapPanel>
+                    </Grid>
+                </Border>
+            </Grid>
+        </Border>
+    </Grid>
+</Window>

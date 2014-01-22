@@ -3,10 +3,12 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
+using System.Globalization;
 using System.Linq;
 using System.Linq.Expressions;
 using System.Windows;
 using System.Windows.Input;
+using System.Windows.Threading;
 using CPC.Helper;
 using CPC.POS.Database;
 using CPC.POS.Model;
@@ -14,7 +16,6 @@ using CPC.POS.Repository;
 using CPC.POS.View;
 using CPC.Toolkit.Base;
 using CPC.Toolkit.Command;
-using System.Globalization;
 
 namespace CPC.POS.ViewModel
 {
@@ -54,6 +55,17 @@ namespace CPC.POS.ViewModel
         /// </summary>
         private bool _hasUsedAdvanceSearch = false;
 
+
+        /// <summary>
+        /// Timer for searching
+        /// </summary>
+        private DispatcherTimer _waitingTimer;
+
+        /// <summary>
+        /// Flag for count timer user input value
+        /// </summary>
+        private int _timerCounter = 0;
+
         #endregion
 
         #region Contructors
@@ -67,6 +79,14 @@ namespace CPC.POS.ViewModel
             _backgroundWorker.DoWork += new DoWorkEventHandler(WorkerDoWork);
             _backgroundWorker.ProgressChanged += new ProgressChangedEventHandler(WorkerProgressChanged);
             _backgroundWorker.RunWorkerCompleted += new RunWorkerCompletedEventHandler(WorkerRunWorkerCompleted);
+
+            //Initial Auto Complete Search
+            if (Define.CONFIGURATION.IsAutoSearch)
+            {
+                _waitingTimer = new DispatcherTimer();
+                _waitingTimer.Interval = new TimeSpan(0, 0, 0, 1);
+                _waitingTimer.Tick += new EventHandler(_waitingTimer_Tick);
+            }
         }
 
         #endregion
@@ -114,6 +134,7 @@ namespace CPC.POS.ViewModel
                 if (_keyword != value)
                 {
                     _keyword = value;
+                    ResetTimer();
                     OnPropertyChanged(() => Keyword);
                 }
             }
@@ -645,7 +666,7 @@ namespace CPC.POS.ViewModel
                                 predicateChild = predicateChild.Or(x => statusIDList.Contains(x.Status));
 
                                 decimal decimalKey;
-                                if (decimal.TryParse(_keyword, NumberStyles.Number, Define.ConverterCulture.NumberFormat, out decimalKey))
+                                if (decimal.TryParse(_keyword, NumberStyles.Number, Define.ConverterCulture.NumberFormat, out decimalKey) && decimalKey!=0)
                                 {
                                     // Total.
                                     predicateChild = predicateChild.Or(x => x.Total == decimalKey);
@@ -892,6 +913,9 @@ namespace CPC.POS.ViewModel
         /// </summary>
         private void SearchPO()
         {
+            if (_waitingTimer != null)
+                _waitingTimer.Stop();
+
             _hasUsedAdvanceSearch = false;
             _backgroundWorker.RunWorkerAsync("Load");
         }
@@ -905,12 +929,15 @@ namespace CPC.POS.ViewModel
         /// </summary>
         private void SearchPOAdvance()
         {
+            if (_waitingTimer != null)
+                _waitingTimer.Stop();
+
             POAdvanceSearchViewModel POAdvanceSearchViewModel = new POAdvanceSearchViewModel(_vendorCollection);
             bool? dialogResult = _dialogService.ShowDialog<POAdvanceSearchView>(_ownerViewModel, POAdvanceSearchViewModel, "Advance Search");
             if (dialogResult == true)
             {
                 // Reset search.
-                Keyword = null;
+                Keyword = string.Empty;
 
                 _hasUsedAdvanceSearch = true;
                 _predicate = POAdvanceSearchViewModel.Predicate.And(x => x.IsLocked);
@@ -941,7 +968,7 @@ namespace CPC.POS.ViewModel
                     _selectedPurchaseOrder.IsDirty = false;
 
                     IsSearchMode = true;
-                    (_ownerViewModel as MainViewModel).OpenViewExecute("PurchaseOrder", _selectedPurchaseOrder);
+                    (_ownerViewModel as MainViewModel).OpenViewExecute("Purchase Order", _selectedPurchaseOrder);
                 }
             }
             catch (Exception exception)
@@ -1216,7 +1243,7 @@ namespace CPC.POS.ViewModel
 
         #endregion
 
-        #region BackgroundWorker Events
+        #region Events
 
         private void WorkerDoWork(object sender, DoWorkEventArgs e)
         {
@@ -1246,6 +1273,35 @@ namespace CPC.POS.ViewModel
             }
         }
 
+        #region Auto Searching
+        /// <summary>
+        /// Event Tick for search ching
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        protected virtual void _waitingTimer_Tick(object sender, EventArgs e)
+        {
+            _timerCounter++;
+            if (_timerCounter == Define.DelaySearching)
+            {
+                SearchPO();
+                _waitingTimer.Stop();
+            }
+        }
+
+        /// <summary>
+        /// Reset timer for Auto complete search
+        /// </summary>
+        protected virtual void ResetTimer()
+        {
+            if (Define.CONFIGURATION.IsAutoSearch && this._waitingTimer != null)
+            {
+                this._waitingTimer.Stop();
+                this._waitingTimer.Start();
+                _timerCounter = 0;
+            }
+        }
+        #endregion
         #endregion
 
         #region WriteLog

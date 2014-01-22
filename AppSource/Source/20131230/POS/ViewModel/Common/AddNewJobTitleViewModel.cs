@@ -1,17 +1,14 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using CPC.Toolkit.Command;
-using CPC.Toolkit.Base;
-using System.IO;
-using CPC.Helper;
-using System.Xml.Linq;
-using CPC.POS.Model;
 using System.ComponentModel;
-using CPC.POS.Repository;
-using CPC.POS.Database;
+using System.Linq;
 using System.Windows;
+using CPC.Helper;
+using CPC.POS.Database;
+using CPC.POS.Model;
+using CPC.POS.Repository;
+using CPC.Toolkit.Base;
+using CPC.Toolkit.Command;
 
 namespace CPC.POS.ViewModel
 {
@@ -253,6 +250,4 @@ namespace CPC.POS.ViewModel
         }
         #endregion
     }
-
-
 }

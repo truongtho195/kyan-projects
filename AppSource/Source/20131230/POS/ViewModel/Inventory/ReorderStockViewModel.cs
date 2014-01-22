@@ -222,12 +222,13 @@ namespace CPC.POS.ViewModel
                         ProductSelectedCollection.Add(item as base_ProductModel);
                     }
                     if (ProductSelectedCollection.Count > 0)
-                        (_ownerViewModel as MainViewModel).OpenViewExecute("PurchaseOrder", ProductSelectedCollection);
+                        (_ownerViewModel as MainViewModel).OpenViewExecute("Purchase Order", ProductSelectedCollection);
                     App.WriteUserLog("ReOrderStock", "Re-Order stock.");
                 }
             }
             catch (Exception ex)
             {
+                _log4net.Error(ex);
                 Debug.WriteLine(ex);
             }
 
@@ -385,12 +386,12 @@ namespace CPC.POS.ViewModel
                     short itemTypeGroup = (short)ItemTypes.Group;
                     short itemTypeServices = (short)ItemTypes.Services;
                     short itemInsurance = (short)ItemTypes.Insurance;
-                    predicate = predicate.And(x => x.base_Product.ItemTypeId != itemTypeGroup 
-                                                && x.base_Product.ItemTypeId != itemTypeServices 
-                                                && x.base_Product.ItemTypeId != itemInsurance 
-                                                && x.ReorderPoint>0 
-                                                && x.base_Product.IsPurge==false 
-                                                &&  x.base_Product.QuantityAvailable + x.base_Product.QuantityOnOrder < x.base_Product.CompanyReOrderPoint);
+                    predicate = predicate.And(x => x.base_Product.ItemTypeId != itemTypeGroup
+                                                && x.base_Product.ItemTypeId != itemTypeServices
+                                                && x.base_Product.ItemTypeId != itemInsurance
+                                                && x.ReorderPoint > 0
+                                                && x.base_Product.IsPurge == false
+                                                && x.base_Product.QuantityAvailable + x.base_Product.QuantityOnOrder < x.base_Product.CompanyReOrderPoint);
 
                     //To count all Products in Data base show on grid
                     this.TotalProducts = _productStoreRepository.GetIQueryable(predicate).Count();
@@ -462,11 +463,11 @@ namespace CPC.POS.ViewModel
                     short itemInsurance = (short)ItemTypes.Insurance;
 
                     Expression<Func<base_Product, bool>> predicateProduct = PredicateBuilder.True<base_Product>();
-                    predicateProduct = predicateProduct.And(x => x.IsPurge == false 
-                                                        && x.ItemTypeId != itemTypeGroup 
-                                                        && x.ItemTypeId != itemTypeServices 
-                                                        && x.ItemTypeId != itemInsurance 
-                                                        && x.CompanyReOrderPoint > 0 
+                    predicateProduct = predicateProduct.And(x => x.IsPurge == false
+                                                        && x.ItemTypeId != itemTypeGroup
+                                                        && x.ItemTypeId != itemTypeServices
+                                                        && x.ItemTypeId != itemInsurance
+                                                        && x.CompanyReOrderPoint > 0
                                                         && (x.QuantityAvailable + x.QuantityOnOrder < x.CompanyReOrderPoint));
 
                     //Count Total Product

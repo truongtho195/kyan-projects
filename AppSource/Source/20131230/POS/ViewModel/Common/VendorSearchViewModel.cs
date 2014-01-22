@@ -1,16 +1,15 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using CPC.Toolkit.Base;
-using CPC.POS.Model;
-using System.Windows.Input;
-using CPC.Toolkit.Command;
-using CPC.POS.View;
-using System.Windows.Data;
-using CPC.Helper;
 using System.Collections.ObjectModel;
+using System.Linq;
+using System.Windows.Data;
+using System.Windows.Input;
+using CPC.Helper;
+using CPC.POS.Model;
 using CPC.POS.Repository;
+using CPC.POS.View;
+using CPC.Toolkit.Base;
+using CPC.Toolkit.Command;
 
 namespace CPC.POS.ViewModel
 {

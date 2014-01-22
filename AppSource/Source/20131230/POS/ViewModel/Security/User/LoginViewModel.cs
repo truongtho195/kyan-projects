@@ -375,6 +375,7 @@ namespace CPC.POS.ViewModel
                     if (result.Value)
                     {
                         Define.StoreCode = Define.CONFIGURATION.StoreCode.HasValue ? (int)Define.CONFIGURATION.StoreCode.Value : 0;
+                        Define.UserPermissions = new UserPermissions();
                         //SynchronizationViewModel viewModel = new SynchronizationViewModel(Define.StoreCode);
                         //To insert data into base_userLog table.
                         this.InsertUserLog();
@@ -398,6 +399,7 @@ namespace CPC.POS.ViewModel
                             }
                             catch (Exception ex)
                             {
+                                _log4net.Error(ex);
                                 Xceed.Wpf.Toolkit.MessageBox.Show("That application save password is error! /n" + ex.ToString(), Language.Information, MessageBoxButton.OK, MessageBoxImage.Warning);
                             }
                         }
@@ -412,6 +414,7 @@ namespace CPC.POS.ViewModel
                             }
                             catch (Exception ex)
                             {
+                                _log4net.Error(ex);
                                 Xceed.Wpf.Toolkit.MessageBox.Show("That application clear password is error! /n" + ex.ToString(), Language.Information, MessageBoxButton.OK, MessageBoxImage.Warning);
                             }
                         }
@@ -447,6 +450,7 @@ namespace CPC.POS.ViewModel
             }
             catch (Exception ex)
             {
+                _log4net.Error(ex);
                 Debug.WriteLine("OnLoginExecuted" + ex.ToString());
             }
         }
@@ -486,6 +490,7 @@ namespace CPC.POS.ViewModel
             }
             catch (Exception ex)
             {
+                _log4net.Error(ex);
                 Debug.WriteLine("OnOpenManagermentUserCommandExecute" + ex.ToString());
             }
         }
@@ -516,13 +521,14 @@ namespace CPC.POS.ViewModel
                     this.UserPassword = SecurityLib.AESSecurity.Decrypt(Define.Password);
                 }
             }
-            catch
+            catch(Exception ex)
             {
                 //To Clear remember
                 this.Remember = false;
                 CPC.POS.Properties.Settings.Default.Username = string.Empty;
                 CPC.POS.Properties.Settings.Default.Password = string.Empty;
                 CPC.POS.Properties.Settings.Default.Save();
+                _log4net.Error(ex);
             }
         }
         #endregion
@@ -624,6 +630,7 @@ namespace CPC.POS.ViewModel
             }
             catch (Exception ex)
             {
+                _log4net.Error(ex);
                 Debug.WriteLine("IsLoginSuccess" + ex.ToString());
             }
             if (string.IsNullOrEmpty(this._message))
@@ -727,8 +734,9 @@ namespace CPC.POS.ViewModel
                 else
                     Define.ShiftCode = null;
             }
-            catch (Exception ex)
+            catch (Exception ex) 
             {
+                _log4net.Error(ex);
                 Debug.WriteLine(ex.ToString());
             }
         }

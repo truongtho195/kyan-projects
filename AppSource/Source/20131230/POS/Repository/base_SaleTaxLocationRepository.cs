@@ -284,10 +284,8 @@ namespace CPC.POS.Repository
         {
             try
             {
-
                 if (Get(x => true) == null)
                 {
-
                     //Insert SaleTax
                     base_SaleTaxLocation saleTaxDefault = new base_SaleTaxLocation();
                     saleTaxDefault.IsPrimary = true;

@@ -79,7 +79,7 @@
                         CommandParameter="{Binding SelectedItems,ElementName=dtgrdReorderStock}"
                         HorizontalAlignment="Center"
                         VerticalAlignment="Center"
-                        Height="40">
+                        Height="40" ToolTip="Reorder Current Item">
                     <StackPanel HorizontalAlignment="Center"
                                 x:Name="stkpBtnReorder"
                                 VerticalAlignment="Center"
@@ -101,7 +101,7 @@
                         Visibility="Collapsed"
                         Height="40"
                         Width="40"
-                        Margin="0">
+                        Margin="0" ToolTip="Exit Item">
                     <StackPanel HorizontalAlignment="Center"
                                 x:Name="stkpBtnExit"
                                 VerticalAlignment="Center"
@@ -120,6 +120,9 @@
                     </StackPanel>
                 </Button>
             </StackPanel>
+			<TextBlock x:Name="txtblBindingReorderStock"
+						Text="Reorder Stock"
+						TextWrapping="NoWrap" Margin="0,0,20,7" HorizontalAlignment="Right" VerticalAlignment="Bottom" Style="{DynamicResource TextBlockTitleFormView}" />
             <Rectangle Fill="{DynamicResource Spilter_Line_Background}"
                        HorizontalAlignment="Stretch"
                        x:Name="Line"

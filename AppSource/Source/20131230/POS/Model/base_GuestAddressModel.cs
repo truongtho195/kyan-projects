@@ -357,6 +357,26 @@ namespace CPC.POS.Model
             }
         }
 
+        protected System.Guid _resource;
+        /// <summary>
+        /// Property Model
+        /// <param>Gets or sets the Resource</param>
+        /// </summary>
+        public System.Guid Resource
+        {
+            get { return this._resource; }
+            set
+            {
+                if (this._resource != value)
+                {
+                    this.IsDirty = true;
+                    this._resource = value;
+                    OnPropertyChanged(() => Resource);
+                    PropertyChangedCompleted(() => Resource);
+                }
+            }
+        }
+
         #endregion
 
         #region Public Methods
@@ -400,6 +420,7 @@ namespace CPC.POS.Model
             this.base_GuestAddress.IsDefault = this.IsDefault;
             if (this.GuestResource != null)
                 this.base_GuestAddress.GuestResource = this.GuestResource.Trim();
+            this.base_GuestAddress.Resource = this.Resource;
         }
 
         /// <summary>
@@ -423,6 +444,7 @@ namespace CPC.POS.Model
             this._userUpdated = this.base_GuestAddress.UserUpdated;
             this._isDefault = this.base_GuestAddress.IsDefault;
             this._guestResource = this.base_GuestAddress.GuestResource;
+            this._resource = this.base_GuestAddress.Resource;
         }
 
         /// <summary>
@@ -446,6 +468,7 @@ namespace CPC.POS.Model
             this.UserUpdated = this.base_GuestAddress.UserUpdated;
             this.IsDefault = this.base_GuestAddress.IsDefault;
             this.GuestResource = this.base_GuestAddress.GuestResource;
+            this.Resource = this.base_GuestAddress.Resource;
         }
 
         #endregion

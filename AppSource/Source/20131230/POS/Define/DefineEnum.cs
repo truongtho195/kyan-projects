@@ -911,6 +911,7 @@ namespace CPC.POS
         Day = 1,
         WeeksOfMonth = 2
     }
+
     public enum YearOption
     {
         Month = 1,
@@ -947,4 +948,18 @@ namespace CPC.POS
         CashOrPoint = 3
     }
 
+    #region AffectPricing
+
+    /// <summary>
+    /// Affect pricing
+    /// </summary>
+    public enum AffectPricing
+    {
+        Default = 0,
+        Category = 1,
+        Vendor = 2,
+        Custom = 3
+    }
+
+    #endregion
 }

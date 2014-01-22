@@ -1541,12 +1541,31 @@ namespace CPC.Helper
             }
             private set
             {
-                _title = value;
+                _cutOffTypes = value;
             }
         }
         #endregion
 
 
+        #region ScanMethods
+        private static IList<ComboItem> _scanMethods;
+        /// <summary>
+        /// Gets or sets the ScanMethods
+        /// </summary>
+        public static IList<ComboItem> ScanMethods
+        {
+            get
+            {
+                if (null == _scanMethods)
+                    _scanMethods = GetElements("ScanMethods", true);
+                return _scanMethods;
+            }
+            private set
+            {
+                _scanMethods = value;
+            }
+        }
+        #endregion
 
         #endregion
 

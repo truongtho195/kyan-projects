@@ -1,0 +1,276 @@
+﻿<UserControl x:Class="CPC.POS.View.PopupWorkPermissionAdvanceSearchView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:behavior="clr-namespace:CPC.Toolkit.Behavior"
+             xmlns:converter="clr-namespace:CPC.Converter"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:helper="clr-namespace:CPC.Helper"
+             xmlns:i="clr-namespace:System.Windows.Interactivity;assembly=System.Windows.Interactivity"
+             xmlns:local="clr-namespace:CPC.POS"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:textBoxControl="clr-namespace:CPCToolkitExt.TextBoxControl;assembly=CPCToolkitExt"
+             x:Name="UserControl"
+             Width="443"
+             Height="366"
+             mc:Ignorable="d">
+    <UserControl.Resources>
+        <converter:EnumToBoolConverter x:Key="enumToBoolConverter" />
+        <converter:EnumToBoolConverter x:Key="enumOTToBoolConverter" />
+    </UserControl.Resources>
+    <Grid x:Name="grdPermissionAdvanceSearch"
+          d:LayoutOverrides="Height">
+        <Grid.RowDefinitions>
+            <RowDefinition />
+            <RowDefinition Height="50" />
+        </Grid.RowDefinitions>
+        <Border x:Name="brdContentPermissionAdvanceSearch"
+                Margin="15,20,15,15"
+                Background="{DynamicResource TabControlBackground}"
+                BorderBrush="{DynamicResource TabControlBorder}"
+                BorderThickness="1">
+            <Grid x:Name="grdContentPermissionAdvanceSearch"
+                  Margin="10">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="55" />
+                    <RowDefinition Height="87" />
+                    <RowDefinition Height="87" />
+                    <RowDefinition Height="5" />
+                    <RowDefinition Height="25" />
+                </Grid.RowDefinitions>
+                <GroupBox x:Name="gbDate"
+                          Margin="0">
+                    <GroupBox.Header>
+                        <TextBlock x:Name="txtblDate"
+                                   Style="{DynamicResource GroupboxTextBlock}"
+                                   Text="Date"
+                                   TextWrapping="NoWrap" />
+                    </GroupBox.Header>
+                    <Grid x:Name="grdDate"
+                          Height="25"
+                          Margin="0,4,0,0"
+                          VerticalAlignment="Top">
+                        <TextBlock x:Name="txtblFrom"
+                                   Margin="10,0,0,0"
+                                   HorizontalAlignment="Left"
+                                   VerticalAlignment="Center"
+                                   Style="{DynamicResource TextBlockNormal}"
+                                   Text="From"
+                                   TextWrapping="NoWrap" />
+                        <DatePicker x:Name="dtpFrom"
+                                    Width="90"
+                                    Margin="45,2,0,2"
+                                    HorizontalAlignment="Left"
+                                    SelectedDate="{Binding FromDate}" />
+                        <TextBlock x:Name="txtblTo"
+                                   Margin="188,0,0,0"
+                                   HorizontalAlignment="Left"
+                                   VerticalAlignment="Center"
+                                   Style="{DynamicResource TextBlockNormal}"
+                                   Text="To"
+                                   TextWrapping="NoWrap" />
+                        <DatePicker x:Name="dtpTo"
+                                    Width="90"
+                                    Margin="210,2,0,2"
+                                    HorizontalAlignment="Left"
+                                    SelectedDate="{Binding ToDate}" />
+                    </Grid>
+                </GroupBox>
+                <GroupBox x:Name="gbCriteria"
+                          Grid.Row="1"
+                          Margin="0,10,0,0">
+                    <GroupBox.Header>
+                        <TextBlock x:Name="txtblCriteria"
+                                   Style="{DynamicResource GroupboxTextBlock}"
+                                   Text="Criteria"
+                                   TextWrapping="NoWrap" />
+                    </GroupBox.Header>
+                    <Grid x:Name="grdCriteria"
+                          Margin="0,4,0,0">
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="25" />
+                            <RowDefinition Height="25" />
+                        </Grid.RowDefinitions>
+                        <CheckBox x:Name="cbArriving"
+                                  Margin="10,0,0,0"
+                                  HorizontalAlignment="Left"
+                                  VerticalAlignment="Center"
+                                  Content="Permission for arriving late"
+                                  Foreground="White"
+                                  IsChecked="{Binding PermissionType, ConverterParameter={x:Static local:WorkPermissionTypes.ArrivingLate}, Converter={StaticResource enumToBoolConverter}, UpdateSourceTrigger=PropertyChanged}" />
+                        <CheckBox x:Name="cbLeaving"
+                                  Grid.Row="1"
+                                  Margin="10,0,0,0"
+                                  HorizontalAlignment="Left"
+                                  VerticalAlignment="Center"
+                                  Content="Permission for leaving early"
+                                  Foreground="White"
+                                  IsChecked="{Binding PermissionType, ConverterParameter={x:Static local:WorkPermissionTypes.LeavingEarly}, Converter={StaticResource enumToBoolConverter}, UpdateSourceTrigger=PropertyChanged}" />
+                        <CheckBox x:Name="cbAbsence"
+                                  Margin="180,0,0,0"
+                                  HorizontalAlignment="Left"
+                                  VerticalAlignment="Center"
+                                  Content="Absence"
+                                  Foreground="White"
+                                  IsChecked="{Binding PermissionType, ConverterParameter={x:Static local:WorkPermissionTypes.Absence}, Converter={StaticResource enumToBoolConverter}, UpdateSourceTrigger=PropertyChanged}" />
+                        <CheckBox x:Name="cbSick"
+                                  Grid.Row="1"
+                                  Margin="180,0,0,0"
+                                  HorizontalAlignment="Left"
+                                  VerticalAlignment="Center"
+                                  Content="Sick Leave"
+                                  Foreground="White"
+                                  IsChecked="{Binding PermissionType, ConverterParameter={x:Static local:WorkPermissionTypes.SickLeave}, Converter={StaticResource enumToBoolConverter}, UpdateSourceTrigger=PropertyChanged}" />
+                        <CheckBox x:Name="cbVacations"
+                                  Grid.Row="1"
+                                  Margin="263.326,0,0,0"
+                                  HorizontalAlignment="Left"
+                                  VerticalAlignment="Center"
+                                  Content="Vacations"
+                                  Foreground="White"
+                                  IsChecked="{Binding PermissionType, ConverterParameter={x:Static local:WorkPermissionTypes.Vacations}, Converter={StaticResource enumToBoolConverter}, UpdateSourceTrigger=PropertyChanged}" />
+                        <CheckBox x:Name="cbDisciplinaryLeave"
+                                  Margin="0,0,10,0"
+                                  HorizontalAlignment="Right"
+                                  VerticalAlignment="Center"
+                                  Content="Disciplinary Leave"
+                                  Foreground="White"
+                                  IsChecked="{Binding PermissionType, ConverterParameter={x:Static local:WorkPermissionTypes.DisciplinaryLeave}, Converter={StaticResource enumToBoolConverter}, UpdateSourceTrigger=PropertyChanged}" />
+                    </Grid>
+                </GroupBox>
+                <GroupBox x:Name="gbOvertime"
+                          Grid.Row="2"
+                          Margin="0,10,0,0"
+                          d:LayoutOverrides="Height">
+                    <GroupBox.Header>
+                        <TextBlock x:Name="txtblOvertime"
+                                   Style="{DynamicResource GroupboxTextBlock}"
+                                   Text="Overtime"
+                                   TextWrapping="NoWrap" />
+                    </GroupBox.Header>
+                    <Grid x:Name="grdOvertime"
+                          Margin="0,4,0,0">
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="25" />
+                            <RowDefinition Height="25" />
+                        </Grid.RowDefinitions>
+                        <CheckBox x:Name="cbBefore"
+                                  Margin="10,0,0,0"
+                                  HorizontalAlignment="Left"
+                                  VerticalAlignment="Center"
+                                  Content="Before Clock-In hour"
+                                  IsChecked="{Binding OvertimeOptions, ConverterParameter={x:Static local:Overtime.Before}, Converter={StaticResource enumOTToBoolConverter}, UpdateSourceTrigger=PropertyChanged}" />
+                        <CheckBox x:Name="cbDuring"
+                                  Grid.Row="1"
+                                  Margin="10,0,0,0"
+                                  HorizontalAlignment="Left"
+                                  VerticalAlignment="Center"
+                                  Content="Break/ lunch time"
+                                  IsChecked="{Binding OvertimeOptions, ConverterParameter={x:Static local:Overtime.Break}, Converter={StaticResource enumOTToBoolConverter}, UpdateSourceTrigger=PropertyChanged}" />
+                        <CheckBox x:Name="cbAfter"
+                                  Grid.Row="1"
+                                  Margin="160,0,0,0"
+                                  HorizontalAlignment="Left"
+                                  VerticalAlignment="Center"
+                                  Content="After Clock-Out hour"
+                                  IsChecked="{Binding OvertimeOptions, ConverterParameter={x:Static local:Overtime.After}, Converter={StaticResource enumOTToBoolConverter}, UpdateSourceTrigger=PropertyChanged}" />
+                        <CheckBox x:Name="cbHoliday1"
+                                  Margin="160,0,0,0"
+                                  HorizontalAlignment="Left"
+                                  VerticalAlignment="Center"
+                                  Content="Holiday or days - off"
+                                  IsChecked="{Binding OvertimeOptions, ConverterParameter={x:Static local:Overtime.Holiday}, Converter={StaticResource enumOTToBoolConverter}, UpdateSourceTrigger=PropertyChanged}" />
+                    </Grid>
+                </GroupBox>
+                <TextBlock x:Name="txtblTotalWorkPermission"
+                           Grid.Row="4"
+                           Margin="10,0,0,0"
+                           HorizontalAlignment="Left"
+                           VerticalAlignment="Center"
+                           Style="{DynamicResource TextBlockNormal}"
+                           Text="Total Work Permission"
+                           TextWrapping="NoWrap"
+                           d:LayoutOverrides="HorizontalAlignment" />
+                <ComboBox x:Name="cmbTotal"
+                          Grid.Row="4"
+                          Width="40"
+                          Height="21"
+                          Margin="128,0,0,0"
+                          HorizontalAlignment="Left"
+                          Text="{Binding CompareType}">
+                    <ComboBoxItem />
+                    <ComboBoxItem Content="&gt;" />
+                    <ComboBoxItem Content="&lt;" />
+                    <ComboBoxItem Content="=" />
+                </ComboBox>
+                <textBoxControl:TextBoxNumeric x:Name="txtTotal"
+                                               Grid.Row="4"
+                                               Height="21"
+                                               Margin="173,0,0,0"
+                                               ConverterCulture="{x:Static local:Define.ConverterCulture}"
+                                               NumericStringFormat="{x:Static local:Define.NumericFormat}"
+                                               Padding="2,0,2,0"
+                                               TextWrapping="NoWrap"
+                                               Value="{Binding TotalWorkPermission, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+            </Grid>
+        </Border>
+        <Rectangle x:Name="Line"
+                   Height="1"
+                   Margin="2,0"
+                   HorizontalAlignment="Stretch"
+                   VerticalAlignment="Bottom"
+                   Fill="{DynamicResource Spilter_Line_Background}" />
+        <StackPanel x:Name="stkpBtn"
+                    Grid.Row="1"
+                    Height="Auto"
+                    HorizontalAlignment="Center"
+                    VerticalAlignment="Center"
+                    Orientation="Horizontal">
+            <Button x:Name="btnOK"
+                    Command="{Binding OkCommand}"
+                    Width="80"
+                    Height="28">
+                <StackPanel x:Name="stkpBtnOK"
+                            HorizontalAlignment="Center"
+                            VerticalAlignment="Center"
+                            Orientation="Horizontal">
+                    <Rectangle Width="20"
+                               Height="20"
+                               Fill="{DynamicResource CheckMark}" />
+                    <Rectangle x:Name="imgOK"
+                               Width="20"
+                               Height="20"
+                               Fill="{DynamicResource OK}"
+                               Visibility="Collapsed" />
+                    <TextBlock x:Name="txtblOK"
+                               Margin="5,0,0,0"
+                               VerticalAlignment="Center"
+                               Style="{DynamicResource ButtonTextBlock}"
+                               Text="{DynamicResource Button_Ok}"
+                               TextWrapping="NoWrap" />
+                </StackPanel>
+            </Button>
+            <Button x:Name="btnCancel"
+                    Command="{Binding CancelCommand}"
+                    Width="80"
+                    Height="28"
+                    Margin="10,0,0,0"
+                    IsCancel="True">
+                <StackPanel x:Name="stkpBtnCancel"
+                            HorizontalAlignment="Center"
+                            VerticalAlignment="Center"
+                            Orientation="Horizontal">
+                    <Rectangle x:Name="imgCancel"
+                               Width="20"
+                               Height="20"
+                               Fill="{DynamicResource Cancel}" />
+                    <TextBlock x:Name="txtblExit"
+                               Margin="5,0,0,0"
+                               VerticalAlignment="Center"
+                               Style="{DynamicResource ButtonTextBlock}"
+                               Text="{DynamicResource Button_Cancel}"
+                               TextWrapping="NoWrap" />
+                </StackPanel>
+            </Button>
+        </StackPanel>
+    </Grid>
+</UserControl>

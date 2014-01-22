@@ -5,6 +5,7 @@ using System.Windows;
 using CPC.POS.Model;
 using CPC.Toolkit.Base;
 using CPC.Toolkit.Command;
+using CPC.Helper;
 
 namespace CPC.POS.ViewModel
 {
@@ -202,34 +203,42 @@ namespace CPC.POS.ViewModel
         {
             ViewActionType = PopupType.Refund;
 
-            string msg = string.Format("Customer is desposit {0} \nDo you want to refund all?", string.Format(Define.ConverterCulture, Define.CurrencyFormat, this.SaleOrderModel.Deposit));
-            MessageBoxResult result = Xceed.Wpf.Toolkit.MessageBox.Show(msg, "Refund", MessageBoxButton.YesNo, MessageBoxImage.Information,MessageBoxResult.Yes);
-            if (result.Equals(MessageBoxResult.Yes))
+            try
             {
-                if (this.SaleOrderModel.PaymentCollection == null)
-                    this.SaleOrderModel.PaymentCollection = new ObservableCollection<base_ResourcePaymentModel>();
-                base_ResourcePaymentModel refundPaymentModel = new base_ResourcePaymentModel()
+                string msg = string.Format("Customer is desposit {0} \nDo you want to refund all?", string.Format(Define.ConverterCulture, Define.CurrencyFormat, this.SaleOrderModel.Deposit));
+                MessageBoxResult result = Xceed.Wpf.Toolkit.MessageBox.Show(msg, "Refund", MessageBoxButton.YesNo, MessageBoxImage.Information, MessageBoxResult.Yes);
+                if (result.Equals(MessageBoxResult.Yes))
                 {
-                    IsDeposit = true,
-                    DocumentResource = this.SaleOrderModel.Resource.ToString(),
-                    DocumentNo = this.SaleOrderModel.SONumber,
-                    DateCreated = DateTime.Now,
-                    UserCreated = Define.USER != null ? Define.USER.LoginName : string.Empty,
-                    Resource = Guid.NewGuid(),
-                    TotalAmount = this.SaleOrderModel.SubTotal,
-                    TotalPaid = -this.SaleOrderModel.Deposit.Value,
-                    Shift = Define.ShiftCode
+                    if (this.SaleOrderModel.PaymentCollection == null)
+                        this.SaleOrderModel.PaymentCollection = new ObservableCollection<base_ResourcePaymentModel>();
+                    base_ResourcePaymentModel refundPaymentModel = new base_ResourcePaymentModel()
+                    {
+                        IsDeposit = true,
+                        DocumentResource = this.SaleOrderModel.Resource.ToString(),
+                        DocumentNo = this.SaleOrderModel.SONumber,
+                        DateCreated = DateTime.Now,
+                        UserCreated = Define.USER != null ? Define.USER.LoginName : string.Empty,
+                        Resource = Guid.NewGuid(),
+                        TotalAmount = this.SaleOrderModel.SubTotal,
+                        TotalPaid = -this.SaleOrderModel.Deposit.Value,
+                        Shift = Define.ShiftCode
 
-                };
-                if (Define.CONFIGURATION.DefaultCashiedUserName.HasValue && Define.CONFIGURATION.DefaultCashiedUserName.Value)
-                    refundPaymentModel.Cashier = Define.USER.LoginName;
-                this.SaleOrderModel.PaymentCollection.Add(refundPaymentModel);
-                //Collection in QuotationPaymentHistory
-                PaymentCollection.Add(refundPaymentModel);
-                this.SaleOrderModel.Deposit = this.SaleOrderModel.PaymentCollection.Where(x => x.IsDeposit.Value).Sum(x => x.TotalPaid);
-                //Update Value in Popup
-                RemainTotal = this.SaleOrderModel.RewardAmount - this.SaleOrderModel.Deposit.Value;
-                DepositTaken = this.SaleOrderModel.Deposit.Value;
+                    };
+                    if (Define.CONFIGURATION.DefaultCashiedUserName.HasValue && Define.CONFIGURATION.DefaultCashiedUserName.Value)
+                        refundPaymentModel.Cashier = Define.USER.LoginName;
+                    this.SaleOrderModel.PaymentCollection.Add(refundPaymentModel);
+                    //Collection in QuotationPaymentHistory
+                    PaymentCollection.Add(refundPaymentModel);
+                    this.SaleOrderModel.Deposit = this.SaleOrderModel.PaymentCollection.Where(x => x.IsDeposit.Value).Sum(x => x.TotalPaid);
+                    //Update Value in Popup
+                    RemainTotal = this.SaleOrderModel.RewardAmount - this.SaleOrderModel.Deposit.Value;
+                    DepositTaken = this.SaleOrderModel.Deposit.Value;
+                }
+            }
+            catch (Exception ex)
+            {
+                _log4net.Error(ex);
+                Xceed.Wpf.Toolkit.MessageBox.Show(ex.Message, Language.GetMsg("ErrorCaption"), MessageBoxButton.OK, MessageBoxImage.Error);
             }
 
             //FindOwnerWindow(_ownerViewModel).DialogResult = true;

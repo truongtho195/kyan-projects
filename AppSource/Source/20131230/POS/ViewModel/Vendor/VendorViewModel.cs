@@ -7,6 +7,8 @@ using System.Linq;
 using System.Linq.Expressions;
 using System.Windows;
 using System.Windows.Input;
+using System.Windows.Threading;
+using CPC.DragDrop;
 using CPC.Helper;
 using CPC.POS.Database;
 using CPC.POS.Model;
@@ -19,7 +21,7 @@ using CPCToolkitExtLibraries;
 
 namespace CPC.POS.ViewModel
 {
-    class VendorViewModel : ViewModelBase
+    class VendorViewModel : ViewModelBase, IDragSource, IDropTarget
     {
         #region Defines
 
@@ -32,12 +34,21 @@ namespace CPC.POS.ViewModel
         private base_UOMRepository _uomRepository = new base_UOMRepository();
         private base_PurchaseOrderRepository _purchaseOrderRepository = new base_PurchaseOrderRepository();
         private base_VendorProductRepository _vendorProductRepository = new base_VendorProductRepository();
-        private base_PromotionRepository _promotionRepository = new base_PromotionRepository();
         private base_GuestRewardRepository _guestRewardRepository = new base_GuestRewardRepository();
         private base_GuestGroupRepository _guestGroupRepository = new base_GuestGroupRepository();
         private base_CustomFieldRepository _customFieldRepository = new base_CustomFieldRepository();
 
         private string _vendorMark = MarkType.Vendor.ToDescription();
+
+        /// <summary>
+        /// Timer for searching
+        /// </summary>
+        protected DispatcherTimer _waitingTimer;
+
+        /// <summary>
+        /// Flag for count timer user input value
+        /// </summary>
+        protected int _timerCounter = 0;
 
         #endregion
 
@@ -64,7 +75,27 @@ namespace CPC.POS.ViewModel
             }
         }
 
+
+        #region Keyword
         private string _keyword;
+        /// <summary>
+        /// Gets or sets the Keyword.
+        /// </summary>
+        public string Keyword
+        {
+            get { return _keyword; }
+            set
+            {
+                if (_keyword != value)
+                {
+                    _keyword = value;
+                    ResetTimer();
+                    OnPropertyChanged(() => Keyword);
+                }
+            }
+        }
+        #endregion
+
 
         private ObservableCollection<string> _columnCollection;
         /// <summary>
@@ -277,15 +308,19 @@ namespace CPC.POS.ViewModel
             LoadStaticData();
 
             InitialCommand();
+
+            if (Define.CONFIGURATION.IsAutoSearch)
+            {
+                _waitingTimer = new DispatcherTimer();
+                _waitingTimer.Interval = new TimeSpan(0, 0, 0, 1);
+                _waitingTimer.Tick += new EventHandler(_waitingTimer_Tick);
+            }
         }
 
         public VendorViewModel(bool isList, object param = null)
             : this()
         {
             ChangeSearchMode(isList, param);
-
-            // Get permission
-            GetPermission();
         }
 
         #endregion
@@ -315,7 +350,10 @@ namespace CPC.POS.ViewModel
         {
             try
             {
-                _keyword = param.ToString();
+                //_keyword = param.ToString();
+
+                if (_waitingTimer != null)
+                    _waitingTimer.Stop();
 
                 // Load data by predicate
                 LoadDataByPredicate();
@@ -350,6 +388,9 @@ namespace CPC.POS.ViewModel
         /// </summary>
         private void OnPopupAdvanceSearchCommandExecute(object param)
         {
+            if (_waitingTimer != null)
+                _waitingTimer.Stop();
+
             PopupVendorAdvanceSearchViewModel viewModel = new PopupVendorAdvanceSearchViewModel();
             bool? msgResult = _dialogService.ShowDialog<PopupVendorAdvanceSearchView>(_ownerViewModel, viewModel, "Advance Search");
             if (msgResult.HasValue && msgResult.Value)
@@ -374,7 +415,7 @@ namespace CPC.POS.ViewModel
         /// <returns><c>true</c> if the command can be executed; otherwise <c>false</c></returns>
         private bool OnNewCommandCanExecute()
         {
-            return AllowAddVendor;
+            return UserPermissions.AllowAddVendor;
         }
 
         /// <summary>
@@ -481,41 +522,45 @@ namespace CPC.POS.ViewModel
             MessageBoxResult msgResult = Xceed.Wpf.Toolkit.MessageBox.Show("Do you want to delete this vendor?", "POS", MessageBoxButton.YesNo, MessageBoxImage.Warning);
             if (msgResult.Is(MessageBoxResult.Yes))
             {
-
-                if (SelectedVendor.IsNew)
+                try
                 {
-                    // Remove all popup sticky
-                    StickyManagementViewModel.DeleteAllResourceNote();
-
-                    SelectedVendor = null;
-                    IsSearchMode = true;
-                }
-                else if (IsValid)
-                {
-                    List<ItemModel> ItemModel = new List<ItemModel>();
-                    string resource = SelectedVendor.Resource.Value.ToString();
-                    if (!_purchaseOrderRepository.GetAll().Select(x => x.VendorResource).Contains(resource))
+                    if (SelectedVendor.IsNew)
                     {
                         // Remove all popup sticky
                         StickyManagementViewModel.DeleteAllResourceNote();
 
-                        SelectedVendor.IsPurged = true;
-                        SelectedVendor.ToEntity();
-                        _guestRepository.Commit();
-                        SelectedVendor.EndUpdate();
-                        VendorCollection.Remove(SelectedVendor);
+                        SelectedVendor = null;
                         IsSearchMode = true;
                     }
-                    else
+                    else if (IsValid)
                     {
-                        ItemModel.Add(new ItemModel { Id = SelectedVendor.Id, Text = SelectedVendor.GuestNo, Resource = SelectedVendor.Resource.ToString() });
-                        _dialogService.ShowDialog<ProblemDetectionView>(_ownerViewModel, new ProblemDetectionViewModel(ItemModel, "PurchaseOrder"), "Problem Detection");
+                        List<ItemModel> ItemModel = new List<ItemModel>();
+                        string resource = SelectedVendor.Resource.Value.ToString();
+                        if (!_purchaseOrderRepository.GetAll().Select(x => x.VendorResource).Contains(resource))
+                        {
+                            // Remove all popup sticky
+                            StickyManagementViewModel.DeleteAllResourceNote();
+
+                            SelectedVendor.IsPurged = true;
+                            SelectedVendor.ToEntity();
+                            _guestRepository.Commit();
+                            SelectedVendor.EndUpdate();
+                            VendorCollection.Remove(SelectedVendor);
+                            IsSearchMode = true;
+                        }
+                        else
+                        {
+                            ItemModel.Add(new ItemModel { Id = SelectedVendor.Id, Text = SelectedVendor.GuestNo, Resource = SelectedVendor.Resource.ToString() });
+                            _dialogService.ShowDialog<ProblemDetectionView>(_ownerViewModel, new ProblemDetectionViewModel(ItemModel, "PurchaseOrder"), "Problem Detection");
+                        }
                     }
+                    else
+                        return;
                 }
-                else
-                    return;
-
-
+                catch (Exception ex)
+                {
+                    _log4net.Error(ex);
+                }
             }
         }
 
@@ -553,33 +598,40 @@ namespace CPC.POS.ViewModel
             MessageBoxResult msgResult = Xceed.Wpf.Toolkit.MessageBox.Show("Do you want to delete this vendor?", "POS", MessageBoxButton.YesNo, MessageBoxImage.Warning);
             if (msgResult.Is(MessageBoxResult.Yes))
             {
-                bool flag = false;
-                List<ItemModel> ItemModel = new List<ItemModel>();
-                for (int i = 0; i < (dataGridControl.SelectedItems as ObservableCollection<object>).Count; i++)
+                try
                 {
-                    base_GuestModel model = (dataGridControl.SelectedItems as ObservableCollection<object>)[i] as base_GuestModel;
-                    string resource = model.Resource.Value.ToString();
-                    if (!_purchaseOrderRepository.GetAll().Select(x => x.VendorResource).Contains(resource))
+                    bool flag = false;
+                    List<ItemModel> ItemModel = new List<ItemModel>();
+                    for (int i = 0; i < (dataGridControl.SelectedItems as ObservableCollection<object>).Count; i++)
                     {
-                        model.IsPurged = true;
-                        model.ToEntity();
-                        _guestRepository.Commit();
-                        model.EndUpdate();
-                        VendorCollection.Remove(model);
+                        base_GuestModel model = (dataGridControl.SelectedItems as ObservableCollection<object>)[i] as base_GuestModel;
+                        string resource = model.Resource.Value.ToString();
+                        if (!_purchaseOrderRepository.GetAll().Select(x => x.VendorResource).Contains(resource))
+                        {
+                            model.IsPurged = true;
+                            model.ToEntity();
+                            _guestRepository.Commit();
+                            model.EndUpdate();
+                            VendorCollection.Remove(model);
 
-                        // Remove all popup sticky
-                        StickyManagementViewModel.DeleteAllResourceNote(model.ResourceNoteCollection);
+                            // Remove all popup sticky
+                            StickyManagementViewModel.DeleteAllResourceNote(model.ResourceNoteCollection);
 
-                        i--;
+                            i--;
+                        }
+                        else
+                        {
+                            ItemModel.Add(new ItemModel { Id = model.Id, Text = model.GuestNo, Resource = resource });
+                            flag = true;
+                        }
                     }
-                    else
-                    {
-                        ItemModel.Add(new ItemModel { Id = model.Id, Text = model.GuestNo, Resource = resource });
-                        flag = true;
-                    }
+                    if (flag)
+                        _dialogService.ShowDialog<ProblemDetectionView>(_ownerViewModel, new ProblemDetectionViewModel(ItemModel, "PurchaseOrder"), "Problem Detection");
                 }
-                if (flag)
-                    _dialogService.ShowDialog<ProblemDetectionView>(_ownerViewModel, new ProblemDetectionViewModel(ItemModel, "PurchaseOrder"), "Problem Detection");
+                catch (Exception ex)
+                {
+                    _log4net.Error(ex);
+                }
             }
         }
 
@@ -604,7 +656,7 @@ namespace CPC.POS.ViewModel
             if (dataGridControl == null)
                 return false;
 
-            return dataGridControl.SelectedItems.Count == 1 && AllowAddVendor;
+            return dataGridControl.SelectedItems.Count == 1 && UserPermissions.AllowAddVendor;
         }
 
         /// <summary>
@@ -722,89 +774,87 @@ namespace CPC.POS.ViewModel
             bool? result = _dialogService.ShowDialog<PopupMergeVendorView>(_ownerViewModel, viewModel, "Merge Vendor");
             if (result.HasValue && result.Value)
             {
-                // Get source vendor model
-                base_GuestModel sourceVendorModel = VendorCollection.SingleOrDefault(x => x.Id.Equals(viewModel.SourceVendor.Id));
-
-                // Get target vendor model
-                base_GuestModel targetVendorModel = VendorCollection.SingleOrDefault(x => x.Id.Equals(viewModel.TargetVendor.Id));
-
-                string sourceVendorResource = sourceVendorModel.Resource.ToString();
-                string targetVendorResource = targetVendorModel.Resource.ToString();
-
-                // Remove all popup sticky
-                StickyManagementViewModel.DeleteAllResourceNote(sourceVendorModel.ResourceNoteCollection);
-
-                // Get all guest reward that contain vendor id
-                IList<base_GuestReward> guestRewards = _guestRewardRepository.GetAll(x => x.GuestId.Equals(sourceVendorModel.Id));
-                foreach (base_GuestReward guestReward in guestRewards)
+                try
                 {
-                    // Update vendor id in GuestReward
-                    guestReward.GuestId = targetVendorModel.Id;
-                }
+                    // Get source vendor model
+                    base_GuestModel sourceVendorModel = VendorCollection.SingleOrDefault(x => x.Id.Equals(viewModel.SourceVendor.Id));
 
-                // Get all product that contain vendor id
-                IList<base_Product> products = _productRepository.GetAll(x => x.VendorId.Equals(sourceVendorModel.Id));
-                foreach (base_Product product in products)
-                {
-                    // Update vendor id in Product
-                    product.VendorId = targetVendorModel.Id;
+                    // Get target vendor model
+                    base_GuestModel targetVendorModel = VendorCollection.SingleOrDefault(x => x.Id.Equals(viewModel.TargetVendor.Id));
 
-                    // Get vendor product
-                    base_VendorProduct vendorProduct = product.base_VendorProduct.SingleOrDefault(x => x.VendorId.Equals(targetVendorModel.Id));
+                    string sourceVendorResource = sourceVendorModel.Resource.ToString();
+                    string targetVendorResource = targetVendorModel.Resource.ToString();
 
-                    if (vendorProduct != null)
+                    // Remove all popup sticky
+                    StickyManagementViewModel.DeleteAllResourceNote(sourceVendorModel.ResourceNoteCollection);
+
+                    // Get all guest reward that contain vendor id
+                    IList<base_GuestReward> guestRewards = _guestRewardRepository.GetAll(x => x.GuestId.Equals(sourceVendorModel.Id));
+                    foreach (base_GuestReward guestReward in guestRewards)
                     {
-                        // Delete vendor product from database
-                        _vendorProductRepository.Delete(vendorProduct);
+                        // Update vendor id in GuestReward
+                        guestReward.GuestId = targetVendorModel.Id;
                     }
-                }
 
-                // Get all promotion that contain vendor id
-                IList<base_Promotion> promotions = _promotionRepository.
-                    GetAll(x => x.VendorId.HasValue && x.VendorId.Value.Equals(sourceVendorModel.Id));
-                foreach (base_Promotion promotion in promotions)
-                {
-                    // Update vendor id in Promotion
-                    promotion.VendorId = targetVendorModel.Id;
-                }
-
-                // Get all purchase order that contain vendor id
-                IList<base_PurchaseOrder> purchaseOrders = _purchaseOrderRepository.GetAll(x => x.VendorResource.Equals(sourceVendorResource));
-                foreach (base_PurchaseOrder purchaseOrder in purchaseOrders)
-                {
-                    // Update vendor code and vendor resource in PurchaseOrder
-                    purchaseOrder.VendorCode = targetVendorModel.GuestNo;
-                    purchaseOrder.VendorResource = targetVendorResource;
-                }
-
-                // Get all vendor product that contain vendor id
-                //IList<base_VendorProduct> vendorProducts = _vendorProductRepository.GetAll(x => x.VendorId.Equals(sourceVendorModel.Id));
-                if (targetVendorModel.base_Guest.base_VendorProduct.Count == 0)
-                {
-                    foreach (base_VendorProduct vendorProduct in sourceVendorModel.base_Guest.base_VendorProduct.ToList())
+                    // Get all product that contain vendor id
+                    IList<base_Product> products = _productRepository.GetAll(x => x.VendorId.Equals(sourceVendorModel.Id));
+                    foreach (base_Product product in products)
                     {
-                        if (vendorProduct.base_Product.VendorId.Equals(targetVendorModel.Id))
+                        // Update vendor id in Product
+                        product.VendorId = targetVendorModel.Id;
+
+                        // Get vendor product
+                        base_VendorProduct vendorProduct = product.base_VendorProduct.SingleOrDefault(x => x.VendorId.Equals(targetVendorModel.Id));
+
+                        if (vendorProduct != null)
                         {
                             // Delete vendor product from database
                             _vendorProductRepository.Delete(vendorProduct);
                         }
-                        else
+                    }
+
+                    // Get all purchase order that contain vendor id
+                    IList<base_PurchaseOrder> purchaseOrders = _purchaseOrderRepository.GetAll(x => x.VendorResource.Equals(sourceVendorResource));
+                    foreach (base_PurchaseOrder purchaseOrder in purchaseOrders)
+                    {
+                        // Update vendor code and vendor resource in PurchaseOrder
+                        purchaseOrder.VendorCode = targetVendorModel.GuestNo;
+                        purchaseOrder.VendorResource = targetVendorResource;
+                    }
+
+                    // Get all vendor product that contain vendor id
+                    //IList<base_VendorProduct> vendorProducts = _vendorProductRepository.GetAll(x => x.VendorId.Equals(sourceVendorModel.Id));
+                    if (targetVendorModel.base_Guest.base_VendorProduct.Count == 0)
+                    {
+                        foreach (base_VendorProduct vendorProduct in sourceVendorModel.base_Guest.base_VendorProduct.ToList())
                         {
-                            // Update vendor id in VendorProduct
-                            vendorProduct.VendorId = targetVendorModel.Id;
+                            if (vendorProduct.base_Product.VendorId.Equals(targetVendorModel.Id))
+                            {
+                                // Delete vendor product from database
+                                _vendorProductRepository.Delete(vendorProduct);
+                            }
+                            else
+                            {
+                                // Update vendor id in VendorProduct
+                                vendorProduct.VendorId = targetVendorModel.Id;
+                            }
                         }
                     }
+
+                    // Remove source vendor from database
+                    _guestRepository.Delete(sourceVendorModel.base_Guest);
+
+                    // Remove source vendor from collection
+                    if (sourceVendorModel != null)
+                        VendorCollection.Remove(sourceVendorModel);
+
+                    // Accept changes
+                    _guestRepository.Commit();
                 }
-
-                // Remove source vendor from database
-                _guestRepository.Delete(sourceVendorModel.base_Guest);
-
-                // Remove source vendor from collection
-                if (sourceVendorModel != null)
-                    VendorCollection.Remove(sourceVendorModel);
-
-                // Accept changes
-                _guestRepository.Commit();
+                catch (Exception ex)
+                {
+                    _log4net.Error(ex);
+                }
             }
         }
 
@@ -835,7 +885,7 @@ namespace CPC.POS.ViewModel
             base_GuestModel vendorModel = param as base_GuestModel;
 
             // Open purchase order detail
-            (_ownerViewModel as MainViewModel).OpenViewExecute("PurchaseOrder", vendorModel.Resource.Value);
+            (_ownerViewModel as MainViewModel).OpenViewExecute("Purchase Order", vendorModel.Resource.Value);
         }
 
         #endregion
@@ -1024,37 +1074,44 @@ namespace CPC.POS.ViewModel
         /// </summary>
         private void LoadStaticData()
         {
-            // Created by Thaipn
-            Parameter = new Common();
-
-            // Get address type collection
-            // Created by Thaipn
-            AddressTypeCollection = new AddressTypeCollection();
-            AddressTypeCollection.Add(new AddressTypeModel { ID = 0, Name = "Home" });
-            AddressTypeCollection.Add(new AddressTypeModel { ID = 1, Name = "Business" });
-            AddressTypeCollection.Add(new AddressTypeModel { ID = 2, Name = "Billing" });
-            AddressTypeCollection.Add(new AddressTypeModel { ID = 3, Name = "Shipping" });
-
-            // Load category list
-            if (CategoryList == null)
+            try
             {
-                CategoryList = new List<base_DepartmentModel>(_departmentRepository.
-                        GetAll(x => x.IsActived == true && x.LevelId == 1).
-                        Select(x => new base_DepartmentModel(x)));
+                // Created by Thaipn
+                Parameter = new Common();
+
+                // Get address type collection
+                // Created by Thaipn
+                AddressTypeCollection = new AddressTypeCollection();
+                AddressTypeCollection.Add(new AddressTypeModel { ID = 0, Name = "Home" });
+                AddressTypeCollection.Add(new AddressTypeModel { ID = 1, Name = "Business" });
+                AddressTypeCollection.Add(new AddressTypeModel { ID = 2, Name = "Billing" });
+                AddressTypeCollection.Add(new AddressTypeModel { ID = 3, Name = "Shipping" });
+
+                // Load category list
+                if (CategoryList == null)
+                {
+                    CategoryList = new List<base_DepartmentModel>(_departmentRepository.
+                            GetAll(x => x.IsActived == true && x.LevelId == 1).
+                            Select(x => new base_DepartmentModel(x)));
+                }
+
+                // Load UOM list
+                if (UOMList == null)
+                {
+                    UOMList = new ObservableCollection<CheckBoxItemModel>(_uomRepository.GetIQueryable(x => x.IsActived).
+                            OrderBy(x => x.Name).Select(x => new CheckBoxItemModel { Value = x.Id, Text = x.Name }));
+                }
+
+                // Load guest group collection
+                if (GuestGroupCollection == null)
+                {
+                    GuestGroupCollection = new ObservableCollection<base_GuestGroupModel>(_guestGroupRepository.GetAll().
+                            Select(x => new base_GuestGroupModel(x) { GuestGroupResource = x.Resource.ToString() }));
+                }
             }
-
-            // Load UOM list
-            if (UOMList == null)
+            catch (Exception ex)
             {
-                UOMList = new ObservableCollection<CheckBoxItemModel>(_uomRepository.GetIQueryable(x => x.IsActived).
-                        OrderBy(x => x.Name).Select(x => new CheckBoxItemModel { Value = x.Id, Text = x.Name }));
-            }
-
-            // Load guest group collection
-            if (GuestGroupCollection == null)
-            {
-                GuestGroupCollection = new ObservableCollection<base_GuestGroupModel>(_guestGroupRepository.GetAll().
-                        Select(x => new base_GuestGroupModel(x) { GuestGroupResource = x.Resource.ToString() }));
+                _log4net.Error(ex);
             }
         }
 
@@ -1274,81 +1331,88 @@ namespace CPC.POS.ViewModel
         /// </summary>
         private void SaveNew()
         {
-            // Map data from model to entity
-            SelectedVendor.ToEntity();
-
-            // Insert address
-            // Created by Thaipn
-            foreach (AddressControlModel addressControlModel in this.SelectedVendor.AddressControlCollection)
+            try
             {
-                base_GuestAddressModel addressModel = new base_GuestAddressModel();
-                addressModel.DateCreated = DateTimeExt.Now;
-                addressModel.UserCreated = Define.USER.LoginName;
-                // Map date from AddressControlModel to AddressModel
-                addressModel.ToModel(addressControlModel);
-                addressModel.GuestResource = SelectedVendor.Resource.ToString();
-
-                // Update default address
-                if (addressModel.IsDefault)
-                    SelectedVendor.AddressModel = addressModel;
-
                 // Map data from model to entity
-                addressModel.ToEntity();
-                SelectedVendor.base_Guest.base_GuestAddress.Add(addressModel.base_GuestAddress);
+                SelectedVendor.ToEntity();
 
-                // Turn off IsDirty & IsNew
-                addressModel.EndUpdate();
+                // Insert address
+                // Created by Thaipn
+                foreach (AddressControlModel addressControlModel in this.SelectedVendor.AddressControlCollection)
+                {
+                    base_GuestAddressModel addressModel = new base_GuestAddressModel();
+                    addressModel.DateCreated = DateTimeExt.Now;
+                    addressModel.UserCreated = Define.USER.LoginName;
+                    // Map date from AddressControlModel to AddressModel
+                    addressModel.ToModel(addressControlModel);
+                    addressModel.GuestResource = SelectedVendor.Resource.ToString();
 
-                addressControlModel.IsNew = false;
-                addressControlModel.IsDirty = false;
+                    // Update default address
+                    if (addressModel.IsDefault)
+                        SelectedVendor.AddressModel = addressModel;
+
+                    // Map data from model to entity
+                    addressModel.ToEntity();
+                    SelectedVendor.base_Guest.base_GuestAddress.Add(addressModel.base_GuestAddress);
+
+                    // Turn off IsDirty & IsNew
+                    addressModel.EndUpdate();
+
+                    addressControlModel.IsNew = false;
+                    addressControlModel.IsDirty = false;
+                }
+
+                //// Save image
+                //if (SelectedVendor.PhotoCollection != null && SelectedVendor.PhotoCollection.Count > 0)
+                //{
+                //    foreach (base_ResourcePhotoModel photoModel in SelectedVendor.PhotoCollection.Where(x => x.IsNew))
+                //    {
+                //        //photoModel.LargePhotoFilename = new System.IO.FileInfo(photoModel.ImagePath).Name;
+                //        photoModel.LargePhotoFilename = DateTimeExt.Now.ToString(Define.GuestNoFormat) + Guid.NewGuid().ToString().Substring(0, 8) + new System.IO.FileInfo(photoModel.ImagePath).Extension;
+
+                //        // Update resource photo
+                //        photoModel.Resource = SelectedVendor.Resource.ToString();
+
+                //        // Map data from model to entity
+                //        photoModel.ToEntity();
+                //        _photoRepository.Add(photoModel.base_ResourcePhoto);
+
+                //        // Copy image from client to server
+                //        SaveImage(photoModel);
+
+                //        // Turn off IsDirty & IsNew
+                //        photoModel.EndUpdate();
+                //    }
+                //}
+
+                // Update default photo if it is deleted
+                SelectedVendor.PhotoDefault = SelectedVendor.PhotoCollection.FirstOrDefault();
+
+                SelectedVendor.AdditionalModel.ToEntity();
+                SelectedVendor.base_Guest.base_GuestAdditional.Add(SelectedVendor.AdditionalModel.base_GuestAdditional);
+
+                _guestRepository.Add(SelectedVendor.base_Guest);
+                _guestRepository.Commit();
+
+                // Update ID from entity to model
+                SelectedVendor.Id = SelectedVendor.base_Guest.Id;
+                SelectedVendor.AdditionalModel.GuestId = SelectedVendor.base_Guest.Id;
+                SelectedVendor.AdditionalModel.Id = SelectedVendor.AdditionalModel.base_GuestAdditional.Id;
+                foreach (base_ResourcePhotoModel photoModel in SelectedVendor.PhotoCollection)
+                {
+                    photoModel.Id = photoModel.base_ResourcePhoto.Id;
+
+                    // Turn off IsDirty & IsNew
+                    photoModel.EndUpdate();
+                }
+
+                // Push new vendor to collection
+                VendorCollection.Insert(0, SelectedVendor);
             }
-
-            //// Save image
-            //if (SelectedVendor.PhotoCollection != null && SelectedVendor.PhotoCollection.Count > 0)
-            //{
-            //    foreach (base_ResourcePhotoModel photoModel in SelectedVendor.PhotoCollection.Where(x => x.IsNew))
-            //    {
-            //        //photoModel.LargePhotoFilename = new System.IO.FileInfo(photoModel.ImagePath).Name;
-            //        photoModel.LargePhotoFilename = DateTimeExt.Now.ToString(Define.GuestNoFormat) + Guid.NewGuid().ToString().Substring(0, 8) + new System.IO.FileInfo(photoModel.ImagePath).Extension;
-
-            //        // Update resource photo
-            //        photoModel.Resource = SelectedVendor.Resource.ToString();
-
-            //        // Map data from model to entity
-            //        photoModel.ToEntity();
-            //        _photoRepository.Add(photoModel.base_ResourcePhoto);
-
-            //        // Copy image from client to server
-            //        SaveImage(photoModel);
-
-            //        // Turn off IsDirty & IsNew
-            //        photoModel.EndUpdate();
-            //    }
-            //}
-
-            // Update default photo if it is deleted
-            SelectedVendor.PhotoDefault = SelectedVendor.PhotoCollection.FirstOrDefault();
-
-            SelectedVendor.AdditionalModel.ToEntity();
-            SelectedVendor.base_Guest.base_GuestAdditional.Add(SelectedVendor.AdditionalModel.base_GuestAdditional);
-
-            _guestRepository.Add(SelectedVendor.base_Guest);
-            _guestRepository.Commit();
-
-            // Update ID from entity to model
-            SelectedVendor.Id = SelectedVendor.base_Guest.Id;
-            SelectedVendor.AdditionalModel.GuestId = SelectedVendor.base_Guest.Id;
-            SelectedVendor.AdditionalModel.Id = SelectedVendor.AdditionalModel.base_GuestAdditional.Id;
-            foreach (base_ResourcePhotoModel photoModel in SelectedVendor.PhotoCollection)
+            catch (Exception ex)
             {
-                photoModel.Id = photoModel.base_ResourcePhoto.Id;
-
-                // Turn off IsDirty & IsNew
-                photoModel.EndUpdate();
+                _log4net.Error(ex);
             }
-
-            // Push new vendor to collection
-            VendorCollection.Insert(0, SelectedVendor);
         }
 
         /// <summary>
@@ -1356,119 +1420,126 @@ namespace CPC.POS.ViewModel
         /// </summary>
         private void SaveUpdate()
         {
-            SelectedVendor.DateUpdated = DateTimeExt.Now;
-            if (Define.USER != null)
-                SelectedVendor.UserUpdated = Define.USER.LoginName;
-
-            // Map data from model to entity
-            SelectedVendor.ToEntity();
-
-            #region Save address
-
-            // Insert or update address
-            // Created by Thaipn
-            foreach (AddressControlModel addressControlModel in this.SelectedVendor.AddressControlCollection.Where(x => x.IsDirty))
+            try
             {
-                base_GuestAddressModel addressModel = new base_GuestAddressModel();
+                SelectedVendor.DateUpdated = DateTimeExt.Now;
+                if (Define.USER != null)
+                    SelectedVendor.UserUpdated = Define.USER.LoginName;
 
-                // Insert new address
-                if (addressControlModel.IsNew)
+                // Map data from model to entity
+                SelectedVendor.ToEntity();
+
+                #region Save address
+
+                // Insert or update address
+                // Created by Thaipn
+                foreach (AddressControlModel addressControlModel in this.SelectedVendor.AddressControlCollection.Where(x => x.IsDirty))
                 {
-                    addressModel.DateCreated = DateTimeExt.Now;
-                    addressModel.UserCreated = Define.USER.LoginName;
-                    // Map date from AddressControlModel to AddressModel
-                    addressModel.ToModel(addressControlModel);
-                    addressModel.GuestResource = SelectedVendor.Resource.ToString();
+                    base_GuestAddressModel addressModel = new base_GuestAddressModel();
 
-                    // Map data from model to entity
-                    addressModel.ToEntity();
-                    SelectedVendor.base_Guest.base_GuestAddress.Add(addressModel.base_GuestAddress);
+                    // Insert new address
+                    if (addressControlModel.IsNew)
+                    {
+                        addressModel.DateCreated = DateTimeExt.Now;
+                        addressModel.UserCreated = Define.USER.LoginName;
+                        // Map date from AddressControlModel to AddressModel
+                        addressModel.ToModel(addressControlModel);
+                        addressModel.GuestResource = SelectedVendor.Resource.ToString();
+
+                        // Map data from model to entity
+                        addressModel.ToEntity();
+                        SelectedVendor.base_Guest.base_GuestAddress.Add(addressModel.base_GuestAddress);
+                    }
+                    // Update address
+                    else
+                    {
+                        base_GuestAddress address = SelectedVendor.base_Guest.base_GuestAddress.SingleOrDefault(x => x.AddressTypeId == addressControlModel.AddressTypeID);
+                        addressModel = new base_GuestAddressModel(address);
+
+                        addressModel.DateUpdated = DateTimeExt.Now;
+                        addressModel.UserUpdated = Define.USER.LoginName;
+                        // Map date from AddressControlModel to AddressModel
+                        addressModel.ToModel(addressControlModel);
+                        addressModel.ToEntity();
+                    }
+
+                    // Update default address
+                    if (addressModel.IsDefault)
+                        SelectedVendor.AddressModel = addressModel;
+
+                    // Turn off IsDirty & IsNew
+                    addressModel.EndUpdate();
+
+                    addressControlModel.IsNew = false;
+                    addressControlModel.IsDirty = false;
                 }
-                // Update address
-                else
-                {
-                    base_GuestAddress address = SelectedVendor.base_Guest.base_GuestAddress.SingleOrDefault(x => x.AddressTypeId == addressControlModel.AddressTypeID);
-                    addressModel = new base_GuestAddressModel(address);
 
-                    addressModel.DateUpdated = DateTimeExt.Now;
-                    addressModel.UserUpdated = Define.USER.LoginName;
-                    // Map date from AddressControlModel to AddressModel
-                    addressModel.ToModel(addressControlModel);
-                    addressModel.ToEntity();
-                }
+                #endregion
 
-                // Update default address
-                if (addressModel.IsDefault)
-                    SelectedVendor.AddressModel = addressModel;
+                #region Save photo
+                //// Remove photo were deleted
+                //if (SelectedVendor.PhotoCollection != null &&
+                //    SelectedVendor.PhotoCollection.DeletedItems != null && SelectedVendor.PhotoCollection.DeletedItems.Count > 0)
+                //{
+                //    foreach (base_ResourcePhotoModel photoModel in SelectedVendor.PhotoCollection.DeletedItems)
+                //    {
+                //        //System.IO.FileInfo fileInfo = new System.IO.FileInfo(photoModel.ImagePath);
+                //        //fileInfo.MoveTo(photoModel.ImagePath + "temp");
+                //        //System.IO.FileInfo fileInfoTemp = new System.IO.FileInfo(photoModel.ImagePath + "temp");
+                //        //fileInfoTemp.Delete();
 
-                // Turn off IsDirty & IsNew
-                addressModel.EndUpdate();
+                //        _photoRepository.Delete(photoModel.base_ResourcePhoto);
+                //    }
+                //    SelectedVendor.PhotoCollection.DeletedItems.Clear();
+                //}
+                ////// Update photo
+                ////if (SelectedVendor.PhotoCollection != null && SelectedVendor.PhotoCollection.Count > 0)
+                ////{
+                ////    foreach (base_ResourcePhotoModel photoModel in SelectedVendor.PhotoCollection.Where(x => x.IsDirty))
+                ////    {
+                ////        //photoModel.LargePhotoFilename = new System.IO.FileInfo(photoModel.ImagePath).Name;
+                ////        photoModel.LargePhotoFilename = DateTimeExt.Now.ToString(Define.GuestNoFormat) + Guid.NewGuid().ToString().Substring(0, 8) + new System.IO.FileInfo(photoModel.ImagePath).Extension;
 
-                addressControlModel.IsNew = false;
-                addressControlModel.IsDirty = false;
+                ////        // Update resource photo
+                ////        if (string.IsNullOrWhiteSpace(photoModel.Resource))
+                ////            photoModel.Resource = SelectedVendor.Resource.ToString();
+
+                ////        // Map data from model to entity
+                ////        photoModel.ToEntity();
+
+                ////        if (photoModel.IsNew)
+                ////            _photoRepository.Add(photoModel.base_ResourcePhoto);
+
+                ////        // Copy image from client to server
+                ////        SaveImage(photoModel);
+
+                ////        // Turn off IsDirty & IsNew
+                ////        photoModel.EndUpdate();
+                ////    }
+                ////}
+
+                //// Update default photo if it is deleted
+                //SelectedVendor.PhotoDefault = SelectedVendor.PhotoCollection.FirstOrDefault();
+
+                #endregion
+
+                SelectedVendor.AdditionalModel.GuestId = SelectedVendor.Id;
+
+                // Map data from model to entity
+                SelectedVendor.AdditionalModel.ToEntity();
+
+                if (SelectedVendor.base_Guest.base_GuestAdditional.Count == 0)
+                    SelectedVendor.base_Guest.base_GuestAdditional.Add(SelectedVendor.AdditionalModel.base_GuestAdditional);
+
+                _guestRepository.Commit();
+
+                if (SelectedVendor.AdditionalModel.IsNew)
+                    SelectedVendor.AdditionalModel.Id = SelectedVendor.AdditionalModel.base_GuestAdditional.Id;
             }
-
-            #endregion
-
-            #region Save photo
-            //// Remove photo were deleted
-            //if (SelectedVendor.PhotoCollection != null &&
-            //    SelectedVendor.PhotoCollection.DeletedItems != null && SelectedVendor.PhotoCollection.DeletedItems.Count > 0)
-            //{
-            //    foreach (base_ResourcePhotoModel photoModel in SelectedVendor.PhotoCollection.DeletedItems)
-            //    {
-            //        //System.IO.FileInfo fileInfo = new System.IO.FileInfo(photoModel.ImagePath);
-            //        //fileInfo.MoveTo(photoModel.ImagePath + "temp");
-            //        //System.IO.FileInfo fileInfoTemp = new System.IO.FileInfo(photoModel.ImagePath + "temp");
-            //        //fileInfoTemp.Delete();
-
-            //        _photoRepository.Delete(photoModel.base_ResourcePhoto);
-            //    }
-            //    SelectedVendor.PhotoCollection.DeletedItems.Clear();
-            //}
-            ////// Update photo
-            ////if (SelectedVendor.PhotoCollection != null && SelectedVendor.PhotoCollection.Count > 0)
-            ////{
-            ////    foreach (base_ResourcePhotoModel photoModel in SelectedVendor.PhotoCollection.Where(x => x.IsDirty))
-            ////    {
-            ////        //photoModel.LargePhotoFilename = new System.IO.FileInfo(photoModel.ImagePath).Name;
-            ////        photoModel.LargePhotoFilename = DateTimeExt.Now.ToString(Define.GuestNoFormat) + Guid.NewGuid().ToString().Substring(0, 8) + new System.IO.FileInfo(photoModel.ImagePath).Extension;
-
-            ////        // Update resource photo
-            ////        if (string.IsNullOrWhiteSpace(photoModel.Resource))
-            ////            photoModel.Resource = SelectedVendor.Resource.ToString();
-
-            ////        // Map data from model to entity
-            ////        photoModel.ToEntity();
-
-            ////        if (photoModel.IsNew)
-            ////            _photoRepository.Add(photoModel.base_ResourcePhoto);
-
-            ////        // Copy image from client to server
-            ////        SaveImage(photoModel);
-
-            ////        // Turn off IsDirty & IsNew
-            ////        photoModel.EndUpdate();
-            ////    }
-            ////}
-
-            //// Update default photo if it is deleted
-            //SelectedVendor.PhotoDefault = SelectedVendor.PhotoCollection.FirstOrDefault();
-
-            #endregion
-
-            SelectedVendor.AdditionalModel.GuestId = SelectedVendor.Id;
-
-            // Map data from model to entity
-            SelectedVendor.AdditionalModel.ToEntity();
-
-            if (SelectedVendor.base_Guest.base_GuestAdditional.Count == 0)
-                SelectedVendor.base_Guest.base_GuestAdditional.Add(SelectedVendor.AdditionalModel.base_GuestAdditional);
-
-            _guestRepository.Commit();
-
-            if (SelectedVendor.AdditionalModel.IsNew)
-                SelectedVendor.AdditionalModel.Id = SelectedVendor.AdditionalModel.base_GuestAdditional.Id;
+            catch (Exception ex)
+            {
+                _log4net.Error(ex);
+            }
         }
 
         /// <summary>
@@ -1644,23 +1715,30 @@ namespace CPC.POS.ViewModel
                 VendorCollection.Clear();
             bgWorker.DoWork += (sender, e) =>
             {
-                // Turn on BusyIndicator
-                if (Define.DisplayLoading)
-                    IsBusy = true;
-
-                if (refreshData)
+                try
                 {
-                    //_guestRepository.Refresh();
-                    //_addressRepository.Refresh();
-                    //_photoRepository.Refresh();
-                    //_additionalRepository.Refresh();
+                    // Turn on BusyIndicator
+                    if (Define.DisplayLoading)
+                        IsBusy = true;
+
+                    if (refreshData)
+                    {
+                        //_guestRepository.Refresh();
+                        //_addressRepository.Refresh();
+                        //_photoRepository.Refresh();
+                        //_additionalRepository.Refresh();
+                    }
+
+                    // Get data with range
+                    IList<base_Guest> vendors = _guestRepository.GetRangeDescending(currentIndex, NumberOfDisplayItems, x => x.DateCreated, predicate);
+                    foreach (base_Guest vendor in vendors)
+                    {
+                        bgWorker.ReportProgress(0, vendor);
+                    }
                 }
-
-                // Get data with range
-                IList<base_Guest> vendors = _guestRepository.GetRangeDescending(currentIndex, NumberOfDisplayItems, x => x.DateCreated, predicate);
-                foreach (base_Guest vendor in vendors)
+                catch (Exception ex)
                 {
-                    bgWorker.ReportProgress(0, vendor);
+                    _log4net.Error(ex);
                 }
             };
 
@@ -1788,25 +1866,32 @@ namespace CPC.POS.ViewModel
         /// <param name="vendorModel"></param>
         private void LoadPurchaseOrderCollection(base_GuestModel vendorModel)
         {
-            if (vendorModel.PurchaseOrderCollection == null)
+            try
             {
-                // Get vendor resource
-                string vendorResource = vendorModel.Resource.ToString();
-
-                // Initial purchase order collection
-                vendorModel.PurchaseOrderCollection = new ObservableCollection<base_PurchaseOrderModel>(_purchaseOrderRepository.
-                    GetAll(x => x.VendorResource.Equals(vendorResource)).Select(x => new base_PurchaseOrderModel(x)
-                    {
-                        // Update status item
-                        StatusItem = Common.PurchaseStatus.FirstOrDefault(y => y.Value.Equals(x.Status))
-                    }));
-
-                TotalPurchaseOrder = new base_PurchaseOrderModel
+                if (vendorModel.PurchaseOrderCollection == null)
                 {
-                    Total = vendorModel.PurchaseOrderCollection.Sum(x => x.Total),
-                    Paid = vendorModel.PurchaseOrderCollection.Sum(x => x.Paid),
-                    Balance = vendorModel.PurchaseOrderCollection.Sum(x => x.Balance)
-                };
+                    // Get vendor resource
+                    string vendorResource = vendorModel.Resource.ToString();
+
+                    // Initial purchase order collection
+                    vendorModel.PurchaseOrderCollection = new ObservableCollection<base_PurchaseOrderModel>(_purchaseOrderRepository.
+                        GetAll(x => x.VendorResource.Equals(vendorResource)).Select(x => new base_PurchaseOrderModel(x)
+                        {
+                            // Update status item
+                            StatusItem = Common.PurchaseStatus.FirstOrDefault(y => y.Value.Equals(x.Status))
+                        }));
+
+                    TotalPurchaseOrder = new base_PurchaseOrderModel
+                    {
+                        Total = vendorModel.PurchaseOrderCollection.Sum(x => x.Total),
+                        Paid = vendorModel.PurchaseOrderCollection.Sum(x => x.Paid),
+                        Balance = vendorModel.PurchaseOrderCollection.Sum(x => x.Balance)
+                    };
+                }
+            }
+            catch (Exception ex)
+            {
+                _log4net.Error(ex);
             }
         }
 
@@ -1816,27 +1901,34 @@ namespace CPC.POS.ViewModel
         /// <param name="vendorModel"></param>
         private void LoadProductVendorCollection(base_GuestModel vendorModel)
         {
-            if (vendorModel.ProductCollection == null)
+            try
             {
-                // Initial purchase order collection
-                vendorModel.ProductCollection = new ObservableCollection<base_ProductModel>();
-
-                // Get all vendor product of selected vendor
-                IEnumerable<base_VendorProduct> vendorProducts = _vendorProductRepository.GetIEnumerable(x => x.VendorId.Equals(vendorModel.Id));
-                IEnumerable<long> productIDList = vendorProducts.Select(x => x.ProductId);
-
-                // Get all product of selected vendor
-                IList<base_Product> products = _productRepository.GetAll(x => x.IsPurge == false && (x.VendorId.Equals(vendorModel.Id) || productIDList.Count(y => y.Equals(x.Id)) > 0));
-
-                foreach (base_Product product in products)
+                if (vendorModel.ProductCollection == null)
                 {
-                    base_ProductModel productModel = new base_ProductModel(product);
-                    LoadRelationProductData(productModel);
-                    vendorModel.ProductCollection.Add(productModel);
+                    // Initial purchase order collection
+                    vendorModel.ProductCollection = new ObservableCollection<base_ProductModel>();
 
-                    // Turn off IsDirty & IsNew
-                    productModel.EndUpdate();
+                    // Get all vendor product of selected vendor
+                    IEnumerable<base_VendorProduct> vendorProducts = _vendorProductRepository.GetIEnumerable(x => x.VendorId.Equals(vendorModel.Id));
+                    IEnumerable<long> productIDList = vendorProducts.Select(x => x.ProductId);
+
+                    // Get all product of selected vendor
+                    IList<base_Product> products = _productRepository.GetAll(x => x.IsPurge == false && (x.VendorId.Equals(vendorModel.Id) || productIDList.Count(y => y.Equals(x.Id)) > 0));
+
+                    foreach (base_Product product in products)
+                    {
+                        base_ProductModel productModel = new base_ProductModel(product);
+                        LoadRelationProductData(productModel);
+                        vendorModel.ProductCollection.Add(productModel);
+
+                        // Turn off IsDirty & IsNew
+                        productModel.EndUpdate();
+                    }
                 }
+            }
+            catch (Exception ex)
+            {
+                _log4net.Error(ex);
             }
         }
 
@@ -1846,39 +1938,46 @@ namespace CPC.POS.ViewModel
         /// <param name="productModel"></param>
         private void LoadRelationProductData(base_ProductModel productModel)
         {
-            // Update ItemType
-            productModel.ItemTypeItem = Common.ItemTypes.SingleOrDefault(x => x.Value.Equals(productModel.ItemTypeId));
-
-            // Load Photo
-            if (productModel.PhotoCollection == null)
+            try
             {
-                string resource = productModel.Resource.ToString();
-                productModel.PhotoCollection = new CollectionBase<base_ResourcePhotoModel>(
-                    _photoRepository.GetAll(x => x.Resource.Equals(resource)).
-                    Select(x => new base_ResourcePhotoModel(x)
-                    {
-                        ImagePath = Path.Combine(IMG_PRODUCT_DIRECTORY, productModel.Code, x.LargePhotoFilename),
-                        IsDirty = false
-                    }));
+                // Update ItemType
+                productModel.ItemTypeItem = Common.ItemTypes.SingleOrDefault(x => x.Value.Equals(productModel.ItemTypeId));
 
-                // Set default photo
-                productModel.PhotoDefault = productModel.PhotoCollection.FirstOrDefault();
+                // Load Photo
+                if (productModel.PhotoCollection == null)
+                {
+                    string resource = productModel.Resource.ToString();
+                    productModel.PhotoCollection = new CollectionBase<base_ResourcePhotoModel>(
+                        _photoRepository.GetAll(x => x.Resource.Equals(resource)).
+                        Select(x => new base_ResourcePhotoModel(x)
+                        {
+                            ImagePath = Path.Combine(IMG_PRODUCT_DIRECTORY, productModel.Code, x.LargePhotoFilename),
+                            IsDirty = false
+                        }));
+
+                    // Set default photo
+                    productModel.PhotoDefault = productModel.PhotoCollection.FirstOrDefault();
+                }
+
+                // Get category name for product
+                if (string.IsNullOrWhiteSpace(productModel.CategoryName))
+                {
+                    base_DepartmentModel categoryItem = CategoryList.FirstOrDefault(x => x.Id.Equals(productModel.ProductCategoryId));
+                    if (categoryItem != null)
+                        productModel.CategoryName = categoryItem.Name;
+                }
+
+                // Get uom name for product
+                if (string.IsNullOrWhiteSpace(productModel.UOMName))
+                {
+                    CheckBoxItemModel uomItem = UOMList.FirstOrDefault(x => x.Value.Equals(productModel.BaseUOMId));
+                    if (uomItem != null)
+                        productModel.UOMName = uomItem.Text;
+                }
             }
-
-            // Get category name for product
-            if (string.IsNullOrWhiteSpace(productModel.CategoryName))
+            catch (Exception ex)
             {
-                base_DepartmentModel categoryItem = CategoryList.FirstOrDefault(x => x.Id.Equals(productModel.ProductCategoryId));
-                if (categoryItem != null)
-                    productModel.CategoryName = categoryItem.Name;
-            }
-
-            // Get uom name for product
-            if (string.IsNullOrWhiteSpace(productModel.UOMName))
-            {
-                CheckBoxItemModel uomItem = UOMList.FirstOrDefault(x => x.Value.Equals(productModel.BaseUOMId));
-                if (uomItem != null)
-                    productModel.UOMName = uomItem.Text;
+                _log4net.Error(ex);
             }
         }
 
@@ -1888,30 +1987,37 @@ namespace CPC.POS.ViewModel
         /// <param name="customerModel"></param>
         private void LoadCustomFieldCollection()
         {
-            IEnumerable<base_CustomField> customerFields = _customFieldRepository.GetAll().Where(x => x.Mark.Equals(_vendorMark));
-            _customFieldRepository.Refresh(customerFields);
-            if (customerFields != null && customerFields.Any())
+            try
             {
-                CustomFieldCollection = new ObservableCollection<base_CustomFieldModel>(customerFields.OrderBy(x => x.Id).Select(x => new base_CustomFieldModel(x)));
-            }
-            else
-            {
-                CustomFieldCollection = new ObservableCollection<base_CustomFieldModel>();
-                for (int i = 1; i < 9; i++)
+                IEnumerable<base_CustomField> customerFields = _customFieldRepository.GetAll().Where(x => x.Mark.Equals(_vendorMark));
+                _customFieldRepository.Refresh(customerFields);
+                if (customerFields != null && customerFields.Any())
                 {
-                    base_CustomFieldModel customFieldModel = new base_CustomFieldModel();
-                    customFieldModel.Mark = _vendorMark;
-                    customFieldModel.FieldName = "Custom " + i;
-                    customFieldModel.IsShow = true;
-                    customFieldModel.Label = customFieldModel.FieldName;
-                    customFieldModel.ToEntity();
-                    //insert to db
-                    _customFieldRepository.Add(customFieldModel.base_CustomField);
-                    customFieldModel.EndUpdate();
-                    //Add To Collection
-                    CustomFieldCollection.Add(customFieldModel);
+                    CustomFieldCollection = new ObservableCollection<base_CustomFieldModel>(customerFields.OrderBy(x => x.Id).Select(x => new base_CustomFieldModel(x)));
                 }
-                _customFieldRepository.Commit();
+                else
+                {
+                    CustomFieldCollection = new ObservableCollection<base_CustomFieldModel>();
+                    for (int i = 1; i < 9; i++)
+                    {
+                        base_CustomFieldModel customFieldModel = new base_CustomFieldModel();
+                        customFieldModel.Mark = _vendorMark;
+                        customFieldModel.FieldName = "Custom " + i;
+                        customFieldModel.IsShow = true;
+                        customFieldModel.Label = customFieldModel.FieldName;
+                        customFieldModel.ToEntity();
+                        //insert to db
+                        _customFieldRepository.Add(customFieldModel.base_CustomField);
+                        customFieldModel.EndUpdate();
+                        //Add To Collection
+                        CustomFieldCollection.Add(customFieldModel);
+                    }
+                    _customFieldRepository.Commit();
+                }
+            }
+            catch (Exception ex)
+            {
+                _log4net.Error(ex);
             }
         }
 
@@ -1926,26 +2032,33 @@ namespace CPC.POS.ViewModel
         private bool CheckDuplicateVendor(base_GuestModel vendorModel)
         {
             bool result = false;
-            IQueryable<base_Guest> query = _guestRepository.
-                GetIQueryable(x => !x.GuestNo.Equals(vendorModel.GuestNo) && x.Mark.Equals(_vendorMark) && !x.IsPurged &&
-                    (x.Phone1.Equals(vendorModel.Phone1) ||
-                    x.Email.ToLower().Equals(vendorModel.Email.ToLower()) ||
-                    x.AccountNumber.ToLower().Equals(vendorModel.AccountNumber.ToLower())));
-            if (query.Count() > 0)
+            try
             {
-                result = true;
-                MessageBoxResult resultMsg = Xceed.Wpf.Toolkit.MessageBox.Show("This vendor has existed. Please recheck Account Number, Email or Phone. Do you want to view profiles?", "POS", MessageBoxButton.YesNo, MessageBoxImage.Warning);
-                if (MessageBoxResult.Yes.Is(resultMsg))
+                IQueryable<base_Guest> query = _guestRepository.
+                        GetIQueryable(x => !x.GuestNo.Equals(vendorModel.GuestNo) && x.Mark.Equals(_vendorMark) && !x.IsPurged &&
+                            (x.Phone1.Equals(vendorModel.Phone1) ||
+                            x.Email.ToLower().Equals(vendorModel.Email.ToLower()) ||
+                            x.AccountNumber.ToLower().Equals(vendorModel.AccountNumber.ToLower())));
+                if (query.Count() > 0)
                 {
-                    base_GuestModel guestModel = new base_GuestModel(query.FirstOrDefault());
-                    if (guestModel.base_Guest.base_GuestProfile.Count > 0)
-                        guestModel.PersonalInfoModel = new base_GuestProfileModel(guestModel.base_Guest.base_GuestProfile.FirstOrDefault());
-                    else
-                        guestModel.PersonalInfoModel = new base_GuestProfileModel();
-                    ViewProfileViewModel viewProfileViewModel = new ViewProfileViewModel();
-                    viewProfileViewModel.GuestModel = guestModel;
-                    _dialogService.ShowDialog<ViewProfile>(_ownerViewModel, viewProfileViewModel, "View Profile");
+                    result = true;
+                    MessageBoxResult resultMsg = Xceed.Wpf.Toolkit.MessageBox.Show("This vendor has existed. Please recheck Account Number, Email or Phone. Do you want to view profiles?", "POS", MessageBoxButton.YesNo, MessageBoxImage.Warning);
+                    if (MessageBoxResult.Yes.Is(resultMsg))
+                    {
+                        base_GuestModel guestModel = new base_GuestModel(query.FirstOrDefault());
+                        if (guestModel.base_Guest.base_GuestProfile.Count > 0)
+                            guestModel.PersonalInfoModel = new base_GuestProfileModel(guestModel.base_Guest.base_GuestProfile.FirstOrDefault());
+                        else
+                            guestModel.PersonalInfoModel = new base_GuestProfileModel();
+                        ViewProfileViewModel viewProfileViewModel = new ViewProfileViewModel();
+                        viewProfileViewModel.GuestModel = guestModel;
+                        _dialogService.ShowDialog<ViewProfile>(_ownerViewModel, viewProfileViewModel, "View Profile");
+                    }
                 }
+            }
+            catch (Exception ex)
+            {
+                _log4net.Error(ex);
             }
             return result;
         }
@@ -1964,6 +2077,34 @@ namespace CPC.POS.ViewModel
                     // Load purchase order collection
                     LoadPurchaseOrderCollection(SelectedVendor);
                     break;
+            }
+        }
+
+        /// <summary>
+        /// Event Tick for search ching
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        protected virtual void _waitingTimer_Tick(object sender, EventArgs e)
+        {
+            _timerCounter++;
+            if (_timerCounter == Define.DelaySearching)
+            {
+                OnSearchCommandExecute(null);
+                _waitingTimer.Stop();
+            }
+        }
+
+        /// <summary>
+        /// Reset timer for Auto complete search
+        /// </summary>
+        protected virtual void ResetTimer()
+        {
+            if (Define.CONFIGURATION.IsAutoSearch)
+            {
+                this._waitingTimer.Stop();
+                this._waitingTimer.Start();
+                _timerCounter = 0;
             }
         }
 
@@ -2033,26 +2174,33 @@ namespace CPC.POS.ViewModel
             }
             else
             {
-                Guid vendorGuid = new Guid();
-                if (Guid.TryParse(param.ToString(), out vendorGuid))
+                try
                 {
-                    // Get vendor from product collection if product view is opened
-                    base_GuestModel vendorModel = VendorCollection.SingleOrDefault(x => x.Resource.Equals(vendorGuid));
-
-                    if (vendorModel == null)
+                    Guid vendorGuid = new Guid();
+                    if (Guid.TryParse(param.ToString(), out vendorGuid))
                     {
-                        // Get product from database if product is not loaded
-                        vendorModel = new base_GuestModel(_guestRepository.Get(x => x.Resource.HasValue && x.Resource.Value.Equals(vendorGuid)));
-                    }
+                        // Get vendor from product collection if product view is opened
+                        base_GuestModel vendorModel = VendorCollection.SingleOrDefault(x => x.Resource.Equals(vendorGuid));
 
-                    if (vendorModel != null)
-                    {
-                        // Display detail grid
-                        IsSearchMode = true;
+                        if (vendorModel == null)
+                        {
+                            // Get product from database if product is not loaded
+                            vendorModel = new base_GuestModel(_guestRepository.Get(x => x.Resource.HasValue && x.Resource.Value.Equals(vendorGuid)));
+                        }
 
-                        // Load relation collection
-                        OnDoubleClickViewCommandExecute(vendorModel);
+                        if (vendorModel != null)
+                        {
+                            // Display detail grid
+                            IsSearchMode = true;
+
+                            // Load relation collection
+                            OnDoubleClickViewCommandExecute(vendorModel);
+                        }
                     }
+                }
+                catch (Exception ex)
+                {
+                    _log4net.Error(ex);
                 }
             }
         }
@@ -2112,7 +2260,7 @@ namespace CPC.POS.ViewModel
             }
             catch (Exception ex)
             {
-                Console.WriteLine("Save Image" + ex.ToString());
+                _log4net.Error(ex);
             }
         }
 
@@ -2148,50 +2296,32 @@ namespace CPC.POS.ViewModel
 
         #endregion
 
-        #region Permission
+        #region IDragSource Members
 
-        #region Properties
-
-        private bool _allowAddVendor = true;
-        /// <summary>
-        /// Gets or sets the AllowAddVendor.
-        /// </summary>
-        public bool AllowAddVendor
+        public void StartDrag(DragInfo dragInfo)
         {
-            get { return _allowAddVendor; }
-            set
+            IEnumerable<base_GuestModel> sourceItems = dragInfo.SourceItems.Cast<base_GuestModel>();
+
+            if (sourceItems.Count() == 1)
             {
-                if (_allowAddVendor != value)
-                {
-                    _allowAddVendor = value;
-                    OnPropertyChanged(() => AllowAddVendor);
-                }
+                dragInfo.Data = sourceItems.SingleOrDefault().Resource.Value;
+
+                dragInfo.Effects = (dragInfo.Data != null) ? DragDropEffects.Move : DragDropEffects.None;
             }
         }
 
         #endregion
 
-        /// <summary>
-        /// Get permissions
-        /// </summary>
-        public override void GetPermission()
-        {
-            if (!IsAdminPermission)
-            {
-                if (IsFullPermission)
-                {
-                    // Set default permission
-                    AllowAddVendor = IsMainStore;
-                }
-                else
-                {
-                    // Get all user rights
-                    IEnumerable<string> userRightCodes = Define.USER_AUTHORIZATION.Select(x => x.Code);
+        #region IDropTarget Members
 
-                    // Get add/copy vendor permission
-                    AllowAddVendor = userRightCodes.Contains("PO100-01-01") && IsMainStore;
-                }
-            }
+        public void DragOver(DropInfo dropInfo)
+        {
+            dropInfo.Effects = DragDropEffects.Move;
+        }
+
+        public void Drop(DropInfo dropInfo)
+        {
+
         }
 
         #endregion

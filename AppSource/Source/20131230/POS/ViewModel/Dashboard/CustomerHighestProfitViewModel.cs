@@ -1,18 +1,18 @@
 ﻿using System;
-using System.Linq;
-using CPC.Toolkit.Base;
-using CPC.POS.Interfaces;
-using System.Xml.Linq;
-using System.Windows;
-using CPC.Helper;
-using CPC.POS.Model;
-using System.Windows.Data;
-using De.TorstenMandelkow.MetroChart;
-using System.Windows.Input;
-using CPC.Toolkit.Command;
-using System.Windows.Controls;
-using CPC.POS.Report;
 using System.Data;
+using System.Linq;
+using System.Windows;
+using System.Windows.Controls;
+using System.Windows.Data;
+using System.Windows.Input;
+using System.Xml.Linq;
+using CPC.Helper;
+using CPC.POS.Interfaces;
+using CPC.POS.Model;
+using CPC.POS.Report;
+using CPC.Toolkit.Base;
+using CPC.Toolkit.Command;
+using De.TorstenMandelkow.MetroChart;
 
 namespace CPC.POS.ViewModel
 {

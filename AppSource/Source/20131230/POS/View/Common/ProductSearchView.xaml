@@ -68,7 +68,7 @@
                                                 Padding="2,0,2,0"
                                                 Grid.Column="1"
                                                 Margin="0,2,10,2"
-                                                Text="{Binding Code, Mode=TwoWay, UpdateSourceTrigger=LostFocus}">
+                                                Text="{Binding Code, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}">
                             <i:Interaction.Behaviors>
                                 <behavior:AutoFocusBehavior />
                             </i:Interaction.Behaviors>
@@ -89,7 +89,7 @@
                                                 Padding="2,0,2,0"
                                                 Grid.Column="3"
                                                 Margin="0,2,10,2"
-                                                Text="{Binding ProductName, Mode=TwoWay, UpdateSourceTrigger=LostFocus}" />
+                                                Text="{Binding ProductName, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
 
                         <TextBlock x:Name="txtblCategory"
                                    Text="Category"
@@ -106,7 +106,7 @@
                                                 Grid.Column="1"
                                                 Margin="0,2,10,2"
                                                 Grid.Row="1"
-                                                Text="{Binding Category, Mode=TwoWay, UpdateSourceTrigger=LostFocus}" />
+                                                Text="{Binding Category, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
 
                         <TextBlock x:Name="txtblAttributeSize"
                                    Text="Attribute Size"
@@ -125,7 +125,7 @@
                                                 Grid.Column="3"
                                                 Margin="0,2,10,2"
                                                 Grid.Row="1"
-                                                Text="{Binding AttributeSize, Mode=TwoWay, UpdateSourceTrigger=LostFocus}" />
+                                                Text="{Binding AttributeSize, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
 
                         <TextBlock x:Name="txtblPartNo"
                                    Text="Part #"
@@ -142,7 +142,7 @@
                                                 Grid.Column="1"
                                                 Margin="0,2,10,2"
                                                 Grid.Row="2"
-                                                Text="{Binding PartNumber, Mode=TwoWay, UpdateSourceTrigger=LostFocus}" />
+                                                Text="{Binding PartNumber, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
 
                         <TextBlock x:Name="txtblBarcode"
                                    Text="Barcode"
@@ -161,7 +161,7 @@
                                                 Grid.Column="3"
                                                 Margin="0,2,10,2"
                                                 Grid.Row="2"
-                                                Text="{Binding Barcode, Mode=TwoWay, UpdateSourceTrigger=LostFocus}" />
+                                                Text="{Binding Barcode, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
 
                         <Button x:Name="btnSearch"
                                 Grid.Column="4"

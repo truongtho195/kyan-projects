@@ -207,7 +207,7 @@
     <sys:String x:Key="C188">Password</sys:String>
     <sys:String x:Key="C189">Merge Item</sys:String>
     <sys:String x:Key="C190">Cost</sys:String>
-    
+    <sys:String x:Key="C191">Address</sys:String>
     <!--Region "Title" Extention Common  -->
     <sys:String x:Key="Title_PaymentHistoryDetail">Payment history detail</sys:String>
     <!--EndRegion Title -->
@@ -249,7 +249,7 @@
     <sys:String x:Key="PO123">Qty Receive</sys:String>
     <sys:String x:Key="PO124">Unfilled %</sys:String>
     <sys:String x:Key="PO125">PO No</sys:String>
-    <sys:String x:Key="PO126">Barcode</sys:String>
+    <sys:String x:Key="PO126">Scan Code</sys:String>
     <sys:String x:Key="PO127">Store</sys:String>
     <sys:String x:Key="PO128">Has Return</sys:String>
     <!--  End PurchaseOrderView  -->
@@ -293,7 +293,7 @@
     <sys:String x:Key="CS110">I receive nails in 30 poun boxes and I sell nails in 1 and 5 pound boxes.</sys:String>
     <sys:String x:Key="CS111">Default Price</sys:String>
     <sys:String x:Key="CS112">Select the price level that should be used by default on new sales receipts and customer orders.</sys:String>
-    <sys:String x:Key="CS113">Reward Option</sys:String>
+    <sys:String x:Key="CS113">Price Level</sys:String>
     <sys:String x:Key="CS114">Enter a name and markdown % ( from your regulare price ) for each optional price level you would like to use. The markdowns entered are used to calculate each level's price for new items only.</sys:String>
     <sys:String x:Key="CS115">Tip: To mark a price level up from your regular price, enter a negative markdown ( Example: -10 )</sys:String>
     <sys:String x:Key="CS116">Price Level Name</sys:String>
@@ -361,7 +361,7 @@
     <sys:String x:Key="CS178">Save Directory</sys:String>
     <!--  End CompanySettingView  -->
 
-    <!--  PricingView  -->
+    <!--  region PricingView  -->
     <sys:String x:Key="PR100">Name</sys:String>
     <sys:String x:Key="PR101">Adjustment Method</sys:String>
     <sys:String x:Key="PR102">Amount Change</sys:String>
@@ -379,6 +379,10 @@
     <sys:String x:Key="PR114">Pricing</sys:String>
     <sys:String x:Key="PR_Popup_108">Margin %</sys:String>
     <sys:String x:Key="PR_Popup_109">Markup %</sys:String>
+    <sys:String x:Key="PR_Message_SelectProductByCategory">Select products to apply to this pricing</sys:String>
+    <sys:String x:Key="PR_Message_SelectProductByVendor">Select products to apply to this pricing</sys:String>
+    <sys:String x:Key="PR_Message_SelectProductByCustom">Select products to apply to this pricing</sys:String>
+    <!--  endregion PricingView  -->
     <!--  ReOrderStockView  -->
     <sys:String x:Key="RO100">ReOrder</sys:String>
     <sys:String x:Key="RO101">ReOrderStock</sys:String>
@@ -465,7 +469,7 @@
     <sys:String x:Key="UL_TextBlock_UserRight">User Rights</sys:String>
     <sys:String x:Key="UL_Header_Code">Code</sys:String>
     <sys:String x:Key="UL_Header_Name">Name</sys:String>
-    <sys:String x:Key="UL_TextBlock_Permission">Permission</sys:String>
+    <sys:String x:Key="UL_TextBlock_Permission">User Permission</sys:String>
     <sys:String x:Key="LP_TextBlock_Transaction1">This transaction is in use and has been locked. Only &quot;</sys:String>
     <sys:String x:Key="LP_TextBlock_Transaction2">&quot; or an administrator can unlock.</sys:String>
     <!--  End User List View  -->
@@ -517,9 +521,8 @@
     <sys:String x:Key="EM_TextBlock_DOB">DOB</sys:String>
     <sys:String x:Key="EM_TextBlock_State">State</sys:String>
     <sys:String x:Key="EM_TextBlock_EmergencyContact">Emergency Contact</sys:String>
-    <sys:String x:Key="EM_MenuItem_NewItem">New Item</sys:String>
-    <sys:String x:Key="EM_MenuItem_EditItem">Edit Item</sys:String>
-    <sys:String x:Key="EM_MenuItem_DeleteItem">Delete Item(s)</sys:String>
+    
+    
     <sys:String x:Key="EM_TextBlock_Account">Account #</sys:String>
     <sys:String x:Key="EM_Header_EmployeeNo">Employee #</sys:String>
     <sys:String x:Key="EM_Header_EmployeeType">Employee Type</sys:String>
@@ -715,7 +718,7 @@
     <sys:String x:Key="SO_TextBlock_ProductName">Product Name</sys:String>
     <sys:String x:Key="SO_TextBlock_Category">Category</sys:String>
     <sys:String x:Key="SO_TextBlock_AttributeSize">Attribute Size</sys:String>
-    <sys:String x:Key="SO_TextBlock_Barcode">Barcode</sys:String>
+    <sys:String x:Key="SO_TextBlock_Barcode">Scan Code</sys:String>
     <sys:String x:Key="SO_TextBlock_ALU">ALU</sys:String>
     <sys:String x:Key="SO_TextBlock_SelectedItem">Selected Item</sys:String>
     <sys:String x:Key="SO_TextBlock_GoToSOList">Go To SO List</sys:String>
@@ -727,6 +730,12 @@
     <sys:String x:Key="SO_TextBlock_RewardRedeemed">Reward Redeemed</sys:String>
     <sys:String x:Key="SO_TextBlock_NotAnyLayaway">Not any layaway</sys:String>
     <sys:String x:Key="SO_TextBlock_LayawayConflict">Layaway is conflict</sys:String>
+    <sys:String x:Key="SO_TextBlock_QuotationDate">QO Date</sys:String>
+    <sys:String x:Key="SO_TextBlock_QuotationNumber">QO #</sys:String>
+    <sys:String x:Key="SO_TextBlock_LayawayDate">LW Date</sys:String>
+    <sys:String x:Key="SO_TextBlock_LayawayNumber">LW #</sys:String>
+    <sys:String x:Key="SO_TextBlock_WorkOrderDate">WO Date</sys:String>
+    <sys:String x:Key="SO_TextBlock_WorkOrderNum">WO #</sys:String>
     
     
 
@@ -816,7 +825,7 @@
     <!--  #EndRegion SaleOrderView  -->
     
     <!--#Region SaleOrderSearchAdvance-->
-    <sys:String x:Key="SO_Text_Scancode">Scancode</sys:String>
+    <sys:String x:Key="SO_Text_Scancode">Scan Code</sys:String>
     <sys:String x:Key="SO_Text_DocumentNo">Document #</sys:String>
     <sys:String x:Key="SO_Text_OrderFrom">Order From</sys:String>
     <sys:String x:Key="SO_Text_OrderTo">Order To</sys:String>
@@ -927,7 +936,7 @@
     <sys:String x:Key="Tax_Text_DefaultTax">Default Tax</sys:String>
     <sys:String x:Key="Tax_Text_DefaultTaxLocationForItem">Default tax location for this item</sys:String>
     <sys:String x:Key="Tax_Text_DefaultTaxCodeWithNew">Default tax code when creating a new category</sys:String>
-    <sys:String x:Key="Tax_Text_SaleTaxTitle">Sales Tax Code</sys:String>
+    <sys:String x:Key="Tax_Text_SaleTaxTitle">Sales Tax</sys:String>
     <sys:String x:Key="Tax_Text_AdditionSaleTax">Additional Sales Tax</sys:String>
     <sys:String x:Key="Tax_Text_SalesTaxRate">Sales Tax Rate</sys:String>
     <sys:String x:Key="Tax_Text_TaxAgency">Tax Agency</sys:String>
@@ -970,12 +979,12 @@
     <sys:String x:Key="CUS_Text_SaleHistory">Sale History</sys:String>
     <sys:String x:Key="CUS_Text_CustomerInformation">Customer Information</sys:String>
     <sys:String x:Key="CUS_Text_MergeCustomer">Merge Customer</sys:String>
-    <sys:String x:Key="CUS_Text_SOCustomer">Sale Order this customer</sys:String>
+    <sys:String x:Key="CUS_Text_SOCustomer">Make A Sale Order</sys:String>
     <sys:String x:Key="CUS_Text_TotalPurchase">Total Purchase</sys:String>
     <sys:String x:Key="CUS_Text_TotalRewardsAvaliable">Total Rewards Avaliable</sys:String>
     <sys:String x:Key="CUS_Text_TotalRewardRedeemed">Total Rewards Redeemed</sys:String>
     <sys:String x:Key="CUS_Text_RewardValue">Value</sys:String>
-    <sys:String x:Key="CUS_Text_AddNewGroup">Add new group</sys:String>
+    <sys:String x:Key="CUS_Text_AddNewGroup">Add New Group</sys:String>
     <sys:String x:Key="CUS_Text_DateStamp">Date Stamp</sys:String>
     <sys:String x:Key="CUS_Text_Remark">Remark</sys:String>
     <sys:String x:Key="CUS_Text_SaleRep">Sales Rep</sys:String>
@@ -1061,7 +1070,9 @@
     <sys:String x:Key="CUS_Title_CreateCreditCard">Create credit card</sys:String>
     <sys:String x:Key="CUS_Title_UpdateCreditCard">Update credit card</sys:String>
     <sys:String x:Key="CUS_Title_CustomerTitle">Customer</sys:String>
-
+	<sys:String x:Key="CUS_Save_Current_Item">Save Current Item</sys:String>
+	<sys:String x:Key="CUS_Delete_Current_Item">Delete Current Item</sys:String>
+	<sys:String x:Key="CUS_Print_Current_Item">Print Current Item</sys:String>
     <!--  #Endregion Customer  -->
 
     <!--  Backup Data  -->

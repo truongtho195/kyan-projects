@@ -1,18 +1,18 @@
 ﻿using System;
-using System.Linq;
-using CPC.Toolkit.Base;
 using System.ComponentModel;
-using CPC.POS.Model;
-using System.Windows.Input;
-using CPC.Toolkit.Command;
-using CPC.POS.View;
-using System.Windows;
-using System.Net.Mail;
+using System.Linq;
 using System.Net;
-using SecurityLib;
-using CPC.Helper;
-using CPC.POS.Repository;
+using System.Net.Mail;
 using System.Threading;
+using System.Windows;
+using System.Windows.Input;
+using CPC.Helper;
+using CPC.POS.Model;
+using CPC.POS.Repository;
+using CPC.POS.View;
+using CPC.Toolkit.Base;
+using CPC.Toolkit.Command;
+using SecurityLib;
 
 namespace CPC.POS.ViewModel
 {

@@ -1,18 +1,17 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using CPC.Toolkit.Command;
-using CPC.Toolkit.Base;
-using CPC.POS.Model;
-using System.Windows;
-using System.ComponentModel;
-using System.Linq.Expressions;
-using CPC.POS.Database;
-using CPC.POS.Repository;
-using CPC.Helper;
 using System.Collections.ObjectModel;
+using System.ComponentModel;
 using System.Globalization;
+using System.Linq;
+using System.Linq.Expressions;
+using System.Windows;
+using CPC.Helper;
+using CPC.POS.Database;
+using CPC.POS.Model;
+using CPC.POS.Repository;
+using CPC.Toolkit.Base;
+using CPC.Toolkit.Command;
 
 namespace CPC.POS.ViewModel
 {
@@ -401,7 +400,7 @@ namespace CPC.POS.ViewModel
             ComboItem cmbValue = new ComboItem();
             cmbValue.Text = "SaleOrderReturn.New";
             cmbValue.Detail = 0;
-            (_ownerViewModel as MainViewModel).OpenViewExecute("SalesOrder", cmbValue);
+            (_ownerViewModel as MainViewModel).OpenViewExecute("Sales Order", cmbValue);
             CancelSaleOrderRetrunView();
         }
         #endregion
@@ -433,7 +432,7 @@ namespace CPC.POS.ViewModel
             ComboItem cmbValue = new ComboItem();
             cmbValue.Text = "SaleOrderReturn.SaleOrderList";
             cmbValue.Detail = 0;
-            (_ownerViewModel as MainViewModel).OpenViewExecute("SalesOrder", cmbValue);
+            (_ownerViewModel as MainViewModel).OpenViewExecute("Sales Order", cmbValue);
             CancelSaleOrderRetrunView();
         }
         #endregion
@@ -465,7 +464,7 @@ namespace CPC.POS.ViewModel
             cmbValue.Text = "SaleOrderReturn.SelectedItem";
             cmbValue.Detail = SelectedSaleOrder.Id;
             cmbValue.IsChecked = (_ownerViewModel as MainViewModel).IsActiveView("SalesOrder");
-            (_ownerViewModel as MainViewModel).OpenViewExecute("SalesOrder", cmbValue);
+            (_ownerViewModel as MainViewModel).OpenViewExecute("Sales Order", cmbValue);
             CancelSaleOrderRetrunView();
         }
         #endregion
@@ -870,6 +869,8 @@ namespace CPC.POS.ViewModel
             catch (Exception ex)
             {
                 _log4net.Error(ex);
+                Xceed.Wpf.Toolkit.MessageBox.Show(ex.Message, Language.GetMsg("ErrorCaption"), MessageBoxButton.OK, MessageBoxImage.Error);
+
             }
         }
 
@@ -884,13 +885,16 @@ namespace CPC.POS.ViewModel
             if (saleTaxLocationModel != null)
             {
                 saleOrderModel.TaxLocationModel = saleTaxLocationModel;
+
+                //Get Tax Code
+                base_SaleTaxLocationModel taxCodeModel = SaleTaxLocationCollection.SingleOrDefault(x => x.ParentId == saleOrderModel.TaxLocationModel.Id && x.TaxCode.Equals(saleOrderModel.TaxCode));
+                if (taxCodeModel != null)
+                {
+                    saleOrderModel.TaxLocationModel.TaxCodeModel = taxCodeModel;
+                }
             }
-            //Get Tax Code
-            base_SaleTaxLocationModel taxCodeModel = SaleTaxLocationCollection.SingleOrDefault(x => x.ParentId == saleOrderModel.TaxLocationModel.Id && x.TaxCode.Equals(saleOrderModel.TaxCode));
-            if (taxCodeModel != null)
-            {
-                saleOrderModel.TaxLocationModel.TaxCodeModel = taxCodeModel;
-            }
+
+
         }
         /// <summary>
         /// Load Store from db

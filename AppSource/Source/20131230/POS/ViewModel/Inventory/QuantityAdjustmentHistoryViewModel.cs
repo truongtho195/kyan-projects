@@ -7,6 +7,7 @@ using System.Linq;
 using System.Linq.Expressions;
 using System.Windows;
 using System.Windows.Input;
+using System.Windows.Threading;
 using CPC.Helper;
 using CPC.POS.Database;
 using CPC.POS.Model;
@@ -27,14 +28,37 @@ namespace CPC.POS.ViewModel
         private base_GuestRepository _guestRepository = new base_GuestRepository();
         private base_StoreRepository _storeRepository = new base_StoreRepository();
 
+        /// <summary>
+        /// Timer for searching
+        /// </summary>
+        private DispatcherTimer _waitingTimer;
+
+        /// <summary>
+        /// Flag for count timer user input value
+        /// </summary>
+        private int _timerCounter = 0;
         #endregion
 
         #region Properties
 
-        #region Search
-
+        #region Keyword
         private string _keyword;
-
+        /// <summary>
+        /// Gets or sets the Keyword.
+        /// </summary>
+        public string Keyword
+        {
+            get { return _keyword; }
+            set
+            {
+                if (_keyword != value)
+                {
+                    _keyword = value;
+                    ResetTimer();
+                    OnPropertyChanged(() => Keyword);
+                }
+            }
+        }
         #endregion
 
         private ObservableCollection<base_QuantityAdjustmentModel> _quantityAdjustmentCollection = new ObservableCollection<base_QuantityAdjustmentModel>();
@@ -104,6 +128,14 @@ namespace CPC.POS.ViewModel
 
             LoadStaticData();
             InitialCommand();
+
+            //Initial Auto Complete Search
+            if (Define.CONFIGURATION.IsAutoSearch)
+            {
+                _waitingTimer = new DispatcherTimer();
+                _waitingTimer.Interval = new TimeSpan(0, 0, 0, 1);
+                _waitingTimer.Tick += new EventHandler(_waitingTimer_Tick);
+            }
         }
 
         #endregion
@@ -133,7 +165,8 @@ namespace CPC.POS.ViewModel
         {
             try
             {
-                _keyword = param.ToString();
+                if (_waitingTimer != null)
+                    _waitingTimer.Stop();
 
                 // Load data by predicate
                 LoadDataByPredicate();
@@ -201,31 +234,38 @@ namespace CPC.POS.ViewModel
         /// </summary>
         private void OnRestoreCommandExecute(object param)
         {
-            // Get quantity adjustment model
-            base_QuantityAdjustmentModel quantityAdjustmentModel = param as base_QuantityAdjustmentModel;
+            try
+            {
+                // Get quantity adjustment model
+                base_QuantityAdjustmentModel quantityAdjustmentModel = param as base_QuantityAdjustmentModel;
 
-            // Update status
-            quantityAdjustmentModel.IsReversed = true;
-            quantityAdjustmentModel.Reason = (short)AdjustmentReason.Reverse;
-            quantityAdjustmentModel.Status = (short)AdjustmentStatus.Reversing;
+                // Update status
+                quantityAdjustmentModel.IsReversed = true;
+                quantityAdjustmentModel.Reason = (short)AdjustmentReason.Reverse;
+                quantityAdjustmentModel.Status = (short)AdjustmentStatus.Reversing;
 
-            // Map data from model to entity
-            quantityAdjustmentModel.ToEntity();
+                // Map data from model to entity
+                quantityAdjustmentModel.ToEntity();
 
-            // Save adjustment
-            SaveAdjustment(quantityAdjustmentModel);
+                // Save adjustment
+                SaveAdjustment(quantityAdjustmentModel);
 
-            // Restore quantity for product
-            quantityAdjustmentModel.ProductModel.SetOnHandToStore(quantityAdjustmentModel.OldQty, quantityAdjustmentModel.StoreCode.Value);
+                // Restore quantity for product
+                quantityAdjustmentModel.ProductModel.SetOnHandToStore(quantityAdjustmentModel.OldQty, quantityAdjustmentModel.StoreCode.Value);
 
-            // Update total quantity in product
-            quantityAdjustmentModel.ProductModel.QuantityOnHand -= quantityAdjustmentModel.AdjustmentQtyDiff;
+                // Update total quantity in product
+                quantityAdjustmentModel.ProductModel.QuantityOnHand -= quantityAdjustmentModel.AdjustmentQtyDiff;
 
-            // Map data from model to entity
-            quantityAdjustmentModel.ProductModel.ToEntity();
+                // Map data from model to entity
+                quantityAdjustmentModel.ProductModel.ToEntity();
 
-            // Accept changes
-            _quantityAdjustmentRepository.Commit();
+                // Accept changes
+                _quantityAdjustmentRepository.Commit();
+            }
+            catch (Exception ex)
+            {
+                _log4net.Error(ex);
+            }
         }
 
         #endregion
@@ -251,6 +291,9 @@ namespace CPC.POS.ViewModel
         /// </summary>
         private void OnPopupAdvanceSearchCommandExecute(object param)
         {
+            if (_waitingTimer != null)
+                _waitingTimer.Stop();
+
             PopupAdjustmentAdvanceSearchViewModel viewModel = new PopupAdjustmentAdvanceSearchViewModel();
             viewModel.IsQuantityAdjustment = true;
             bool? msgResult = _dialogService.ShowDialog<PopupAdjustmentAdvanceSearchView>(_ownerViewModel, viewModel, "Advance Search");
@@ -275,24 +318,31 @@ namespace CPC.POS.ViewModel
         /// </summary>
         private void LoadStaticData()
         {
-            // Get all department to load category and brand list
-            IEnumerable<base_DepartmentModel> departments = _departmentRepository.
-                GetAll(x => (x.IsActived.HasValue && x.IsActived.Value)).
-                Select(x => new base_DepartmentModel(x));
+            try
+            {
+                // Get all department to load category and brand list
+                IEnumerable<base_DepartmentModel> departments = _departmentRepository.
+                    GetAll(x => (x.IsActived.HasValue && x.IsActived.Value)).
+                    Select(x => new base_DepartmentModel(x));
 
-            // Load category list
-            CategoryList = new List<base_DepartmentModel>(departments.Where(x => x.LevelId == 1));
+                // Load category list
+                CategoryList = new List<base_DepartmentModel>(departments.Where(x => x.LevelId == 1));
 
-            // Load brand list
-            BrandList = new List<base_DepartmentModel>(departments.Where(x => x.LevelId == 2));
+                // Load brand list
+                BrandList = new List<base_DepartmentModel>(departments.Where(x => x.LevelId == 2));
 
-            // Load vendor list
-            string vendorType = MarkType.Vendor.ToDescription();
-            VendorList = new List<base_GuestModel>(_guestRepository.
-                GetAll(x => x.Mark.Equals(vendorType) && x.IsActived && !x.IsPurged).Select(x => new base_GuestModel(x)));
+                // Load vendor list
+                string vendorType = MarkType.Vendor.ToDescription();
+                VendorList = new List<base_GuestModel>(_guestRepository.
+                    GetAll(x => x.Mark.Equals(vendorType) && x.IsActived && !x.IsPurged).Select(x => new base_GuestModel(x)));
 
-            // Load store list
-            StoreList = new List<base_StoreModel>(_storeRepository.GetAll().OrderBy(x => x.Id).Select(x => new base_StoreModel(x)));
+                // Load store list
+                StoreList = new List<base_StoreModel>(_storeRepository.GetAll().OrderBy(x => x.Id).Select(x => new base_StoreModel(x)));
+            }
+            catch (Exception ex)
+            {
+                _log4net.Error(ex);
+            }
         }
 
         /// <summary>
@@ -380,7 +430,7 @@ namespace CPC.POS.ViewModel
 
                 // Parse keyword to Decimal
                 decimal decimalKeyword = 0;
-                if (decimal.TryParse(keyword, NumberStyles.Number, Define.ConverterCulture.NumberFormat, out decimalKeyword))
+                if (decimal.TryParse(keyword, NumberStyles.Number, Define.ConverterCulture.NumberFormat, out decimalKeyword) && decimalKeyword != 0)
                 {
                     // Get all adjustments that OldQty contain keyword
                     predicate = predicate.Or(x => x.OldQty.Equals(decimalKeyword));
@@ -458,8 +508,8 @@ namespace CPC.POS.ViewModel
                 }
                 catch (Exception ex)
                 {
+                    _log4net.Error(ex);
                     Xceed.Wpf.Toolkit.MessageBox.Show(ex.ToString(), "POS", MessageBoxButton.OK, MessageBoxImage.Error);
-                    Console.WriteLine(ex.ToString());
                 }
             };
 
@@ -498,85 +548,123 @@ namespace CPC.POS.ViewModel
         /// <param name="quantityAdjustmentItem"></param>
         private void SaveAdjustment(base_QuantityAdjustmentModel quantityAdjustmentItem)
         {
-            // Get logged time
-            DateTime loggedTime = DateTimeExt.Now;
-
-            // Get product store model
-            base_ProductStore productStore = quantityAdjustmentItem.base_QuantityAdjustment.base_Product.base_ProductStore.
-                SingleOrDefault(x => x.StoreCode.Equals(quantityAdjustmentItem.StoreCode));
-
-            // Get new and old quantity
-            decimal newQuantity = quantityAdjustmentItem.OldQty;
-            decimal oldQuantity = productStore.QuantityOnHand;
-
-            // Get new and old cost
-            decimal newCost = quantityAdjustmentItem.ProductModel.AverageUnitCost;
-            decimal oldCost = newCost;
-
-            // Save quantity adjustment
-            // Create new quantity adjustment
-            base_QuantityAdjustmentModel quantityAdjustmentModel = new base_QuantityAdjustmentModel();
-            quantityAdjustmentModel.ProductId = quantityAdjustmentItem.ProductModel.Id;
-            quantityAdjustmentModel.ProductResource = quantityAdjustmentItem.ProductModel.Resource.ToString();
-            quantityAdjustmentModel.NewQty = newQuantity;
-            quantityAdjustmentModel.OldQty = oldQuantity;
-            quantityAdjustmentModel.AdjustmentQtyDiff = newQuantity - oldQuantity;
-            quantityAdjustmentModel.CostDifference = newCost * quantityAdjustmentModel.AdjustmentQtyDiff;
-            quantityAdjustmentModel.LoggedTime = loggedTime;
-            quantityAdjustmentModel.Reason = (short)AdjustmentReason.Reverse;
-            quantityAdjustmentModel.Status = (short)AdjustmentStatus.Reversed;
-            quantityAdjustmentModel.UserCreated = Define.USER.LoginName;
-            quantityAdjustmentModel.IsReversed = true;
-            quantityAdjustmentModel.StoreCode = quantityAdjustmentItem.StoreCode;
-            quantityAdjustmentModel.StoreName = quantityAdjustmentItem.StoreName;
-            quantityAdjustmentModel.ProductModel = quantityAdjustmentItem.ProductModel;
-
-            // Add new quantity adjustment item to database
-            _quantityAdjustmentRepository.Add(quantityAdjustmentModel.base_QuantityAdjustment);
-
-            // Save cost adjustment
-            if (newQuantity > 0)
+            try
             {
-                // Create new cost adjustment
-                base_CostAdjustment costAdjustment = new base_CostAdjustment();
-                costAdjustment.ProductId = quantityAdjustmentItem.ProductModel.Id;
-                costAdjustment.ProductResource = quantityAdjustmentItem.ProductModel.Resource.ToString();
-                costAdjustment.AdjustmentNewCost = newCost;
-                costAdjustment.AdjustmentOldCost = oldCost;
-                costAdjustment.AdjustCostDifference = newCost - oldCost;
-                costAdjustment.NewCost = newCost * newQuantity;
-                costAdjustment.OldCost = oldCost * newQuantity;
-                costAdjustment.CostDifference = costAdjustment.NewCost - costAdjustment.OldCost;
-                costAdjustment.LoggedTime = loggedTime;
-                costAdjustment.Reason = (short)AdjustmentReason.Reverse;
-                costAdjustment.Status = (short)AdjustmentStatus.Reversed;
-                costAdjustment.UserCreated = Define.USER.LoginName;
-                costAdjustment.IsReversed = true;
-                costAdjustment.StoreCode = quantityAdjustmentItem.StoreCode;
+                // Get logged time
+                DateTime loggedTime = DateTimeExt.Now;
 
-                // Add new cost adjustment item to database
-                _costAdjustmentRepository.Add(costAdjustment);
+                // Get product store model
+                base_ProductStore productStore = quantityAdjustmentItem.base_QuantityAdjustment.base_Product.base_ProductStore.
+                    SingleOrDefault(x => x.StoreCode.Equals(quantityAdjustmentItem.StoreCode));
+
+                // Get new and old quantity
+                decimal newQuantity = quantityAdjustmentItem.OldQty;
+                decimal oldQuantity = productStore.QuantityOnHand;
+
+                // Get new and old cost
+                decimal newCost = quantityAdjustmentItem.ProductModel.AverageUnitCost;
+                decimal oldCost = newCost;
+
+                // Save quantity adjustment
+                // Create new quantity adjustment
+                base_QuantityAdjustmentModel quantityAdjustmentModel = new base_QuantityAdjustmentModel();
+                quantityAdjustmentModel.ProductId = quantityAdjustmentItem.ProductModel.Id;
+                quantityAdjustmentModel.ProductResource = quantityAdjustmentItem.ProductModel.Resource.ToString();
+                quantityAdjustmentModel.NewQty = newQuantity;
+                quantityAdjustmentModel.OldQty = oldQuantity;
+                quantityAdjustmentModel.AdjustmentQtyDiff = newQuantity - oldQuantity;
+                quantityAdjustmentModel.CostDifference = newCost * quantityAdjustmentModel.AdjustmentQtyDiff;
+                quantityAdjustmentModel.LoggedTime = loggedTime;
+                quantityAdjustmentModel.Reason = (short)AdjustmentReason.Reverse;
+                quantityAdjustmentModel.Status = (short)AdjustmentStatus.Reversed;
+                quantityAdjustmentModel.UserCreated = Define.USER.LoginName;
+                quantityAdjustmentModel.IsReversed = true;
+                quantityAdjustmentModel.StoreCode = quantityAdjustmentItem.StoreCode;
+                quantityAdjustmentModel.StoreName = quantityAdjustmentItem.StoreName;
+                quantityAdjustmentModel.ProductModel = quantityAdjustmentItem.ProductModel;
+
+                // Add new quantity adjustment item to database
+                _quantityAdjustmentRepository.Add(quantityAdjustmentModel.base_QuantityAdjustment);
+
+                // Save cost adjustment
+                if (newQuantity > 0)
+                {
+                    // Create new cost adjustment
+                    base_CostAdjustment costAdjustment = new base_CostAdjustment();
+                    costAdjustment.ProductId = quantityAdjustmentItem.ProductModel.Id;
+                    costAdjustment.ProductResource = quantityAdjustmentItem.ProductModel.Resource.ToString();
+                    costAdjustment.AdjustmentNewCost = newCost;
+                    costAdjustment.AdjustmentOldCost = oldCost;
+                    costAdjustment.AdjustCostDifference = newCost - oldCost;
+                    costAdjustment.NewCost = newCost * newQuantity;
+                    costAdjustment.OldCost = oldCost * newQuantity;
+                    costAdjustment.CostDifference = costAdjustment.NewCost - costAdjustment.OldCost;
+                    costAdjustment.LoggedTime = loggedTime;
+                    costAdjustment.Reason = (short)AdjustmentReason.Reverse;
+                    costAdjustment.Status = (short)AdjustmentStatus.Reversed;
+                    costAdjustment.UserCreated = Define.USER.LoginName;
+                    costAdjustment.IsReversed = true;
+                    costAdjustment.StoreCode = quantityAdjustmentItem.StoreCode;
+
+                    // Add new cost adjustment item to database
+                    _costAdjustmentRepository.Add(costAdjustment);
+                }
+
+                // Map data from model to entity
+                quantityAdjustmentModel.ToEntity();
+
+                // Add new quantity adjustment to collection
+                QuantityAdjustmentCollection.Add(quantityAdjustmentModel);
+
+                // Update total quantity adjustment
+                TotalQuantityAdjustment++;
+
+                // Update quantity for product store
+                productStore.QuantityOnHand = newQuantity;
+
+                // Update quantity on hand for other UOM
+                foreach (base_ProductUOM productUOM in productStore.base_ProductUOM)
+                {
+                    if (productUOM.BaseUnitNumber != 0)
+                        productUOM.QuantityOnHand = Math.Round((decimal)newQuantity / productUOM.BaseUnitNumber, 2);
+                }
             }
-
-            // Map data from model to entity
-            quantityAdjustmentModel.ToEntity();
-
-            // Add new quantity adjustment to collection
-            QuantityAdjustmentCollection.Add(quantityAdjustmentModel);
-
-            // Update total quantity adjustment
-            TotalQuantityAdjustment++;
-
-            // Update quantity for product store
-            productStore.QuantityOnHand = newQuantity;
-
-            // Update quantity on hand for other UOM
-            foreach (base_ProductUOM productUOM in productStore.base_ProductUOM)
+            catch (Exception ex)
             {
-                if (productUOM.BaseUnitNumber != 0)
-                    productUOM.QuantityOnHand = Math.Round((decimal)newQuantity / productUOM.BaseUnitNumber, 2);
+                _log4net.Error(ex);
             }
         }
+
+
+        #region Auto Searching
+        /// <summary>
+        /// Event Tick for search ching
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        protected virtual void _waitingTimer_Tick(object sender, EventArgs e)
+        {
+            _timerCounter++;
+            if (_timerCounter == Define.DelaySearching)
+            {
+                OnSearchCommandExecute(null);
+                _waitingTimer.Stop();
+            }
+        }
+
+        /// <summary>
+        /// Reset timer for Auto complete search
+        /// </summary>
+        protected virtual void ResetTimer()
+        {
+            if (Define.CONFIGURATION.IsAutoSearch && this._waitingTimer != null)
+            {
+                this._waitingTimer.Stop();
+                this._waitingTimer.Start();
+                _timerCounter = 0;
+            }
+        }
+        #endregion
 
         #endregion
 

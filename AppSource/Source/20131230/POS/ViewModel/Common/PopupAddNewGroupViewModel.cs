@@ -1,15 +1,14 @@
-﻿using System.Collections.ObjectModel;
+﻿using System;
+using System.Collections;
+using System.Collections.Generic;
 using System.Linq;
 using System.Windows;
 using System.Windows.Input;
+using CPC.POS.Database;
 using CPC.POS.Model;
+using CPC.POS.Repository;
 using CPC.Toolkit.Base;
 using CPC.Toolkit.Command;
-using System;
-using CPC.POS.Repository;
-using System.Collections;
-using CPC.POS.Database;
-using System.Collections.Generic;
 
 namespace CPC.POS.ViewModel
 {
@@ -95,7 +94,7 @@ namespace CPC.POS.ViewModel
             {
                 if (IsExistedName(SelectedGuestGroup))
                 {
-                    MessageBoxResult msgResult = Xceed.Wpf.Toolkit.MessageBox.Show("Group name is existed!", "POS", MessageBoxButton.OK,MessageBoxImage.Warning,MessageBoxResult.OK);
+                    MessageBoxResult msgResult = Xceed.Wpf.Toolkit.MessageBox.Show("Group name is existed!", "POS", MessageBoxButton.OK, MessageBoxImage.Warning, MessageBoxResult.OK);
                 }
                 else
                 {
@@ -116,7 +115,7 @@ namespace CPC.POS.ViewModel
             }
             catch (Exception ex)
             {
-                Xceed.Wpf.Toolkit.MessageBox.Show(ex.ToString(),"ERROR",MessageBoxButton.OK,MessageBoxImage.Warning,MessageBoxResult.OK);
+                Xceed.Wpf.Toolkit.MessageBox.Show(ex.ToString(), "ERROR", MessageBoxButton.OK, MessageBoxImage.Warning, MessageBoxResult.OK);
             }
         }
 

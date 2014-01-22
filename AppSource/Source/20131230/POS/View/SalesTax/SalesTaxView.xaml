@@ -18,8 +18,7 @@
              x:Name="UserControl"
              Background="{DynamicResource UserControlBackground}"
              helper:ValidationHelper.IsEnabled="True"
-             helper:ValidationHelper.IsValid="{Binding IsValid,
-                                                       Mode=OneWayToSource}"
+             helper:ValidationHelper.IsValid="{Binding IsValid, Mode=OneWayToSource}"
              mc:Ignorable="d">
     <UserControl.Resources>
         <converter:IntegerToBooleanConverter x:Key="integerToBooleanConverter" />
@@ -27,13 +26,12 @@
         <converter:IntergerToVisibilityConverter x:Key="intergerToVisibilityConverter" />
         <converter:PermissionConverter x:Key="permissionConverter" />
         <ContextMenu x:Key="SaleTaxLocationMenu">
-            <MenuItem Command="{Binding DataContext.NewCommand,
-                                        RelativeSource={RelativeSource AncestorType={x:Type UserControl},
-                                                                       Mode=FindAncestor}}"
-                      CommandParameter="0"
-                      Header="New Tax Location">
+            <MenuItem Header="New Tax Location"
+                      Command="{Binding DataContext.NewCommand, RelativeSource={RelativeSource AncestorType={x:Type UserControl}, Mode=FindAncestor}}"
+                      CommandParameter="0">
                 <MenuItem.Visibility>
-                    <Binding ConverterParameter="0" Path="ParentId">
+                    <Binding Path="ParentId"
+                             ConverterParameter="0">
                         <Binding.Converter>
                             <converter:IntergerToVisibilityConverter />
                         </Binding.Converter>
@@ -55,14 +53,12 @@
                     </i:Interaction.Triggers>
                 -->
             </MenuItem>
-            <MenuItem Command="{Binding DataContext.NewCommand,
-                                        RelativeSource={RelativeSource AncestorType={x:Type UserControl},
-                                                                       Mode=FindAncestor}}"
-                      CommandParameter="{Binding Id,
-                                                 Mode=TwoWay}"
-                      Header="New Tax Code">
+            <MenuItem Header="New Tax Code"
+                      Command="{Binding DataContext.NewCommand, RelativeSource={RelativeSource AncestorType={x:Type UserControl}, Mode=FindAncestor}}"
+                      CommandParameter="{Binding Id, Mode=TwoWay}">
                 <MenuItem.Visibility>
-                    <Binding ConverterParameter="0" Path="ParentId">
+                    <Binding Path="ParentId"
+                             ConverterParameter="0">
                         <Binding.Converter>
                             <converter:IntergerToVisibilityConverter />
                         </Binding.Converter>
@@ -84,11 +80,9 @@
                                Stretch="Fill" />
                 </MenuItem.Icon>
             </MenuItem>
-            <MenuItem Command="{Binding DataContext.DeleteCommand,
-                                        RelativeSource={RelativeSource AncestorType={x:Type UserControl},
-                                                                       Mode=FindAncestor}}"
-                      CommandParameter="{Binding .}"
-                      Header="Delete">
+            <MenuItem Header="Delete"
+                      Command="{Binding DataContext.DeleteCommand, RelativeSource={RelativeSource AncestorType={x:Type UserControl}, Mode=FindAncestor}}"
+                      CommandParameter="{Binding .}">
                 <MenuItem.Icon>
                     <Rectangle Width="16"
                                Height="16"
@@ -97,12 +91,18 @@
                 </MenuItem.Icon>
             </MenuItem>
         </ContextMenu>
-        <Style x:Key="listTaxCodeOptionStyle" TargetType="{x:Type ListBoxItem}">
-            <Setter Property="Background" Value="Transparent" />
-            <Setter Property="HorizontalContentAlignment" Value="{Binding HorizontalContentAlignment, RelativeSource={RelativeSource AncestorType={x:Type ItemsControl}}}" />
-            <Setter Property="VerticalContentAlignment" Value="{Binding VerticalContentAlignment, RelativeSource={RelativeSource AncestorType={x:Type ItemsControl}}}" />
-            <Setter Property="Padding" Value="0,0,0,0" />
-            <Setter Property="Margin" Value="0,0,0,0" />
+        <Style x:Key="listTaxCodeOptionStyle"
+               TargetType="{x:Type ListBoxItem}">
+            <Setter Property="Background"
+                    Value="Transparent" />
+            <Setter Property="HorizontalContentAlignment"
+                    Value="{Binding HorizontalContentAlignment, RelativeSource={RelativeSource AncestorType={x:Type ItemsControl}}}" />
+            <Setter Property="VerticalContentAlignment"
+                    Value="{Binding VerticalContentAlignment, RelativeSource={RelativeSource AncestorType={x:Type ItemsControl}}}" />
+            <Setter Property="Padding"
+                    Value="0,0,0,0" />
+            <Setter Property="Margin"
+                    Value="0,0,0,0" />
             <Setter Property="Template">
                 <Setter.Value>
                     <ControlTemplate TargetType="{x:Type ListBoxItem}">
@@ -118,19 +118,23 @@
                                             HorizontalAlignment="Stretch"
                                             Orientation="Horizontal">
                                     <!--  Collect  -->
-                                    <TextBlock Foreground="{TemplateBinding Foreground}" Style="{DynamicResource TextBlockNormal}">
+                                    <TextBlock Foreground="{TemplateBinding Foreground}"
+                                               Style="{DynamicResource TextBlockNormal}">
                                         <Run Text="{DynamicResource Tax_Text_Collect}" />
                                         <Run Text=" " />
                                     </TextBlock>
                                     <!--  TaxRate %  -->
                                     <TextBlock x:Name="tblPaidTaxRate">
-                                        <Run FontWeight="Bold" Text="{Binding TaxRate}" /><Run FontWeight="Bold" Text="%" />
+                                        <Run FontWeight="Bold"
+                                             Text="{Binding TaxRate}" /><Run FontWeight="Bold"
+                                                                             Text="%" />
                                     </TextBlock>
                                     <!--  paid to "TaxAgency"  -->
                                     <TextBlock x:Name="txtblPaidTaxAgency"
                                                Foreground="{TemplateBinding Foreground}"
                                                Style="{DynamicResource TextBlockNormal}"
-                                               TextWrapping="NoWrap"><Run Text=" " /> <Run Text="{DynamicResource Tax_Text_PaidTo}" /><Run Text=" " /><Run FontWeight="Bold" Text="{Binding TaxAgency}" />
+                                               TextWrapping="NoWrap"><Run Text=" " /> <Run Text="{DynamicResource Tax_Text_PaidTo}" /><Run Text=" " /><Run FontWeight="Bold"
+                                                                                                                                                           Text="{Binding TaxAgency}" />
                                     </TextBlock>
                                     <!--  When is "range"  -->
                                     <StackPanel x:Name="stTaxOptionInRange"
@@ -138,15 +142,16 @@
                                                 VerticalAlignment="Center"
                                                 Orientation="Horizontal">
                                         <StackPanel.Visibility>
-                                            <Binding Mode="OneWay"
-                                                     Path="IsAllowSpecificItemPriceRange"
+                                            <Binding Path="IsAllowSpecificItemPriceRange"
+                                                     Mode="OneWay"
                                                      UpdateSourceTrigger="PropertyChanged">
                                                 <Binding.Converter>
                                                     <converter:BoolToVisibilityConverter FalseToVisibility="Collapsed" />
                                                 </Binding.Converter>
                                             </Binding>
                                         </StackPanel.Visibility>
-                                        <TextBlock Foreground="{TemplateBinding Foreground}" Style="{DynamicResource TextBlockNormal}">
+                                        <TextBlock Foreground="{TemplateBinding Foreground}"
+                                                   Style="{DynamicResource TextBlockNormal}">
                                             <Run Text=" " />
                                             <Run Text="{DynamicResource Tax_Text_WhenPriceIs}" />
                                             <Run Text=" " />
@@ -157,10 +162,10 @@
                                                    Foreground="{TemplateBinding Foreground}"
                                                    Style="{DynamicResource TextBlockNormal}"
                                                    TextWrapping="NoWrap"
-                                                   Visibility="{Binding TaxRateOption,
-                                                                        ConverterParameter=1,
-                                                                        Converter={StaticResource intergerToVisibilityConverter}}">
-                                            <Run FontWeight="Bold" Text="{Binding PriceFrom, Mode=OneWay, ConverterCulture={x:Static local:Define.ConverterCulture}, StringFormat={x:Static local:Define.CurrencyFormat}}" /><Run Text=" " /><Run Text="{DynamicResource Tax_Text_To}" /><Run Text=" " /><Run FontWeight="Bold" Text="{Binding PriceTo, Mode=OneWay, ConverterCulture={x:Static local:Define.ConverterCulture}, StringFormat={x:Static local:Define.CurrencyFormat}}" />
+                                                   Visibility="{Binding TaxRateOption, ConverterParameter=1, Converter={StaticResource intergerToVisibilityConverter}}">
+                                            <Run FontWeight="Bold"
+                                                 Text="{Binding PriceFrom, Mode=OneWay, ConverterCulture={x:Static local:Define.ConverterCulture}, StringFormat={x:Static local:Define.CurrencyFormat}}" /><Run Text=" " /><Run Text="{DynamicResource Tax_Text_To}" /><Run Text=" " /><Run FontWeight="Bold"
+                                                                                                                                                                                                                                                                                            Text="{Binding PriceTo, Mode=OneWay, ConverterCulture={x:Static local:Define.ConverterCulture}, StringFormat={x:Static local:Define.CurrencyFormat}}" />
                                         </TextBlock>
                                         <!--  Pay 20% when prices is $200.00 and above  -->
                                         <TextBlock x:Name="txtblReviewFromAbove"
@@ -168,9 +173,9 @@
                                                    Foreground="{TemplateBinding Foreground}"
                                                    Style="{DynamicResource TextBlockNormal}"
                                                    TextWrapping="NoWrap"
-                                                   Visibility="{Binding TaxRateOption,
-                                                                        ConverterParameter=2,
-                                                                        Converter={StaticResource intergerToVisibilityConverter}}"><Run FontWeight="Bold" Text="{Binding PriceFrom, Mode=OneWay, ConverterCulture={x:Static local:Define.ConverterCulture}, StringFormat={x:Static local:Define.CurrencyFormat}}" /><Run Text=" " /><Run Text="{DynamicResource Tax_Text_And}" /><Run Text=" " /><Run FontWeight="Bold" Text="{DynamicResource Tax_Text_Above}" />
+                                                   Visibility="{Binding TaxRateOption, ConverterParameter=2, Converter={StaticResource intergerToVisibilityConverter}}"><Run FontWeight="Bold"
+                                                                                                                                                                             Text="{Binding PriceFrom, Mode=OneWay, ConverterCulture={x:Static local:Define.ConverterCulture}, StringFormat={x:Static local:Define.CurrencyFormat}}" /><Run Text=" " /><Run Text="{DynamicResource Tax_Text_And}" /><Run Text=" " /><Run FontWeight="Bold"
+                                                                                                                                                                                                                                                                                                                                                                                                                         Text="{DynamicResource Tax_Text_Above}" />
                                         </TextBlock>
                                         <!--  Pay 10% when prices is under $50.00  -->
                                         <TextBlock x:Name="txtblReviewPriceToUnder"
@@ -178,37 +183,54 @@
                                                    Foreground="{TemplateBinding Foreground}"
                                                    Style="{DynamicResource TextBlockNormal}"
                                                    TextWrapping="NoWrap"
-                                                   Visibility="{Binding TaxRateOption,
-                                                                        ConverterParameter=3,
-                                                                        Converter={StaticResource intergerToVisibilityConverter}}"><Run FontWeight="Bold" Text="{DynamicResource Tax_Text_under}" /><Run Text=" " /> <Run FontWeight="Bold" Text="{Binding PriceTo, Mode=OneWay, ConverterCulture={x:Static local:Define.ConverterCulture}, StringFormat={x:Static local:Define.CurrencyFormat}}" />
+                                                   Visibility="{Binding TaxRateOption, ConverterParameter=3, Converter={StaticResource intergerToVisibilityConverter}}"><Run FontWeight="Bold"
+                                                                                                                                                                             Text="{DynamicResource Tax_Text_under}" /><Run Text=" " /> <Run FontWeight="Bold"
+                                                                                                                                                                                                                                             Text="{Binding PriceTo, Mode=OneWay, ConverterCulture={x:Static local:Define.ConverterCulture}, StringFormat={x:Static local:Define.CurrencyFormat}}" />
                                         </TextBlock>
                                     </StackPanel>
                                 </StackPanel>
                             </Grid>
                         </Border>
                         <ControlTemplate.Triggers>
-                            <DataTrigger Binding="{Binding TaxAgency}" Value="{x:Static sys:String.Empty}">
-                                <Setter TargetName="txtblPaidTaxAgency" Property="Visibility" Value="Collapsed" />
+                            <DataTrigger Binding="{Binding TaxAgency}"
+                                         Value="{x:Static sys:String.Empty}">
+                                <Setter TargetName="txtblPaidTaxAgency"
+                                        Property="Visibility"
+                                        Value="Collapsed" />
                             </DataTrigger>
                         </ControlTemplate.Triggers>
                     </ControlTemplate>
                 </Setter.Value>
             </Setter>
         </Style>
-        <Style x:Key="SaleTaxDataGridControlStyle" TargetType="{x:Type cpcDataGrid:DataGridControl}">
-            <Setter Property="Foreground" Value="Black" />
-            <Setter Property="RowHeaderWidth" Value="0" />
-            <Setter Property="ColumnHeaderHeight" Value="28" />
-            <Setter Property="CellStyle" Value="{DynamicResource myDataGridCellStyle}" />
-            <Setter Property="RowStyle" Value="{DynamicResource myDataGridControlRowStyle}" />
-            <Setter Property="RowHeaderStyle" Value="{DynamicResource myDataGridRowHeaderStyle}" />
-            <Setter Property="SelectionMode" Value="Single" />
-            <Setter Property="BorderBrush" Value="#FF688CAF" />
-            <Setter Property="BorderThickness" Value="1" />
-            <Setter Property="RowDetailsVisibilityMode" Value="VisibleWhenSelected" />
-            <Setter Property="ScrollViewer.CanContentScroll" Value="True" />
-            <Setter Property="ScrollViewer.PanningMode" Value="Both" />
-            <Setter Property="Stylus.IsFlicksEnabled" Value="False" />
+        <Style x:Key="SaleTaxDataGridControlStyle"
+               TargetType="{x:Type cpcDataGrid:DataGridControl}">
+            <Setter Property="Foreground"
+                    Value="Black" />
+            <Setter Property="RowHeaderWidth"
+                    Value="0" />
+            <Setter Property="ColumnHeaderHeight"
+                    Value="28" />
+            <Setter Property="CellStyle"
+                    Value="{DynamicResource myDataGridCellStyle}" />
+            <Setter Property="RowStyle"
+                    Value="{DynamicResource myDataGridControlRowStyle}" />
+            <Setter Property="RowHeaderStyle"
+                    Value="{DynamicResource myDataGridRowHeaderStyle}" />
+            <Setter Property="SelectionMode"
+                    Value="Single" />
+            <Setter Property="BorderBrush"
+                    Value="#FF688CAF" />
+            <Setter Property="BorderThickness"
+                    Value="1" />
+            <Setter Property="RowDetailsVisibilityMode"
+                    Value="VisibleWhenSelected" />
+            <Setter Property="ScrollViewer.CanContentScroll"
+                    Value="True" />
+            <Setter Property="ScrollViewer.PanningMode"
+                    Value="Both" />
+            <Setter Property="Stylus.IsFlicksEnabled"
+                    Value="False" />
             <Setter Property="Template">
                 <Setter.Value>
                     <ControlTemplate TargetType="{x:Type cpcDataGrid:DataGridControl}">
@@ -234,21 +256,35 @@
                     </ControlTemplate>
                 </Setter.Value>
             </Setter>
-            <Setter Property="IsSynchronizedWithCurrentItem" Value="True" />
-            <Setter Property="AutoGenerateColumns" Value="True" />
-            <Setter Property="IsTextSearchEnabled" Value="False" />
-            <Setter Property="Background" Value="{DynamicResource DatagridTreeViewbackground}" />
-            <Setter Property="AlternationCount" Value="1" />
-            <Setter Property="HorizontalGridLinesBrush" Value="#1A000000" />
-            <Setter Property="VerticalGridLinesBrush" Value="#FFBCBABA" />
-            <Setter Property="EnableColumnVirtualization" Value="False" />
-            <Setter Property="IsManipulationEnabled" Value="False" />
-            <Setter Property="VerticalContentAlignment" Value="Center" />
-            <Setter Property="AlternatingRowBackground" Value="{DynamicResource DatagridTreeViewAlternatingRowbackground}" />
-            <Setter Property="RowBackground" Value="{DynamicResource DatagridTreeViewRowbackground}" />
+            <Setter Property="IsSynchronizedWithCurrentItem"
+                    Value="True" />
+            <Setter Property="AutoGenerateColumns"
+                    Value="True" />
+            <Setter Property="IsTextSearchEnabled"
+                    Value="False" />
+            <Setter Property="Background"
+                    Value="{DynamicResource DatagridTreeViewbackground}" />
+            <Setter Property="AlternationCount"
+                    Value="1" />
+            <Setter Property="HorizontalGridLinesBrush"
+                    Value="#1A000000" />
+            <Setter Property="VerticalGridLinesBrush"
+                    Value="#FFBCBABA" />
+            <Setter Property="EnableColumnVirtualization"
+                    Value="False" />
+            <Setter Property="IsManipulationEnabled"
+                    Value="False" />
+            <Setter Property="VerticalContentAlignment"
+                    Value="Center" />
+            <Setter Property="AlternatingRowBackground"
+                    Value="{DynamicResource DatagridTreeViewAlternatingRowbackground}" />
+            <Setter Property="RowBackground"
+                    Value="{DynamicResource DatagridTreeViewRowbackground}" />
             <Style.Triggers>
-                <Trigger Property="IsGrouping" Value="True">
-                    <Setter Property="ScrollViewer.CanContentScroll" Value="False" />
+                <Trigger Property="IsGrouping"
+                         Value="True">
+                    <Setter Property="ScrollViewer.CanContentScroll"
+                            Value="False" />
                 </Trigger>
             </Style.Triggers>
         </Style>
@@ -282,45 +318,75 @@
                                        TextWrapping="Wrap" />
                         </BulletDecorator>
                         <ControlTemplate.Triggers>
-                            <Trigger Property="IsMouseOver" Value="True">
-                                <Setter TargetName="bg" Property="Stroke" Value="#FFFF7F00" />
+                            <Trigger Property="IsMouseOver"
+                                     Value="True">
+                                <Setter TargetName="bg"
+                                        Property="Stroke"
+                                        Value="#FFFF7F00" />
                             </Trigger>
-                            <Trigger Property="IsChecked" Value="True">
-                                <Setter TargetName="CheckIcon" Property="Visibility" Value="Visible" />
+                            <Trigger Property="IsChecked"
+                                     Value="True">
+                                <Setter TargetName="CheckIcon"
+                                        Property="Visibility"
+                                        Value="Visible" />
                             </Trigger>
-                            <Trigger Property="IsEnabled" Value="false">
-                                <Setter Property="Foreground" Value="{DynamicResource {x:Static SystemColors.GrayTextBrushKey}}" />
+                            <Trigger Property="IsEnabled"
+                                     Value="false">
+                                <Setter Property="Foreground"
+                                        Value="{DynamicResource {x:Static SystemColors.GrayTextBrushKey}}" />
                             </Trigger>
                             <MultiDataTrigger>
                                 <MultiDataTrigger.Conditions>
-                                    <Condition Binding="{Binding IsChecked, RelativeSource={RelativeSource Self}}" Value="True" />
-                                    <Condition Binding="{Binding SelectedSaleTaxLocation.HasTaxCodeOption, Mode=OneWay}" Value="True" />
+                                    <Condition Binding="{Binding IsChecked, RelativeSource={RelativeSource Self}}"
+                                               Value="True" />
+                                    <Condition Binding="{Binding SelectedSaleTaxLocation.HasTaxCodeOption, Mode=OneWay}"
+                                               Value="True" />
                                 </MultiDataTrigger.Conditions>
-                                <Setter TargetName="tbContent" Property="FontWeight" Value="UltraBold" />
-                                <Setter Property="Cursor" Value="Hand" />
+                                <Setter TargetName="tbContent"
+                                        Property="FontWeight"
+                                        Value="UltraBold" />
+                                <Setter Property="Cursor"
+                                        Value="Hand" />
                             </MultiDataTrigger>
                         </ControlTemplate.Triggers>
                     </ControlTemplate>
                 </Setter.Value>
             </Setter>
-            <Setter Property="FontSize" Value="11" />
-            <Setter Property="FontFamily" Value="Tahoma" />
-            <Setter Property="Padding" Value="7,0,0,0" />
-            <Setter Property="BorderBrush" Value="{DynamicResource ChechboxRadiobutton_Border}" />
-            <Setter Property="Background" Value="{DynamicResource ChechboxRadiobutton_Background}" />
-            <Setter Property="Foreground" Value="{DynamicResource ChechboxRadiobutton_Foreground}" />
+            <Setter Property="FontSize"
+                    Value="11" />
+            <Setter Property="FontFamily"
+                    Value="Tahoma" />
+            <Setter Property="Padding"
+                    Value="7,0,0,0" />
+            <Setter Property="BorderBrush"
+                    Value="{DynamicResource ChechboxRadiobutton_Border}" />
+            <Setter Property="Background"
+                    Value="{DynamicResource ChechboxRadiobutton_Background}" />
+            <Setter Property="Foreground"
+                    Value="{DynamicResource ChechboxRadiobutton_Foreground}" />
         </Style>
-        <Style x:Key="ListBoxStyle" TargetType="{x:Type ListBox}">
-            <Setter Property="Background" Value="{DynamicResource {x:Static SystemColors.WindowBrushKey}}" />
-            <Setter Property="Foreground" Value="{DynamicResource {x:Static SystemColors.WindowTextBrushKey}}" />
-            <Setter Property="BorderBrush" Value="{x:Static Microsoft_Windows_Themes1:ClassicBorderDecorator.ClassicBorderBrush}" />
-            <Setter Property="BorderThickness" Value="2" />
-            <Setter Property="ScrollViewer.HorizontalScrollBarVisibility" Value="Auto" />
-            <Setter Property="ScrollViewer.VerticalScrollBarVisibility" Value="Auto" />
-            <Setter Property="ScrollViewer.CanContentScroll" Value="true" />
-            <Setter Property="ScrollViewer.PanningMode" Value="Both" />
-            <Setter Property="Stylus.IsFlicksEnabled" Value="False" />
-            <Setter Property="VerticalContentAlignment" Value="Center" />
+        <Style x:Key="ListBoxStyle"
+               TargetType="{x:Type ListBox}">
+            <Setter Property="Background"
+                    Value="{DynamicResource {x:Static SystemColors.WindowBrushKey}}" />
+            <Setter Property="Foreground"
+                    Value="{DynamicResource {x:Static SystemColors.WindowTextBrushKey}}" />
+            <Setter Property="BorderBrush"
+                    Value="{x:Static Microsoft_Windows_Themes1:ClassicBorderDecorator.ClassicBorderBrush}" />
+            <Setter Property="BorderThickness"
+                    Value="2" />
+            <Setter Property="ScrollViewer.HorizontalScrollBarVisibility"
+                    Value="Auto" />
+            <Setter Property="ScrollViewer.VerticalScrollBarVisibility"
+                    Value="Auto" />
+            <Setter Property="ScrollViewer.CanContentScroll"
+                    Value="true" />
+            <Setter Property="ScrollViewer.PanningMode"
+                    Value="Both" />
+            <Setter Property="Stylus.IsFlicksEnabled"
+                    Value="False" />
+            <Setter Property="VerticalContentAlignment"
+                    Value="Center" />
             <Setter Property="Template">
                 <Setter.Value>
                     <ControlTemplate TargetType="{x:Type ListBox}">
@@ -330,16 +396,22 @@
                                                                           BorderStyle="Sunken"
                                                                           BorderThickness="{TemplateBinding BorderThickness}"
                                                                           SnapsToDevicePixels="true">
-                            <ScrollViewer Focusable="false" Padding="{TemplateBinding Padding}">
+                            <ScrollViewer Focusable="false"
+                                          Padding="{TemplateBinding Padding}">
                                 <ItemsPresenter SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}" />
                             </ScrollViewer>
                         </Microsoft_Windows_Themes1:ClassicBorderDecorator>
                         <ControlTemplate.Triggers>
-                            <Trigger Property="IsEnabled" Value="false">
-                                <Setter TargetName="Bd" Property="Background" Value="Transparent" />
+                            <Trigger Property="IsEnabled"
+                                     Value="false">
+                                <Setter TargetName="Bd"
+                                        Property="Background"
+                                        Value="Transparent" />
                             </Trigger>
-                            <Trigger Property="IsGrouping" Value="true">
-                                <Setter Property="ScrollViewer.CanContentScroll" Value="false" />
+                            <Trigger Property="IsGrouping"
+                                     Value="true">
+                                <Setter Property="ScrollViewer.CanContentScroll"
+                                        Value="false" />
                             </Trigger>
                         </ControlTemplate.Triggers>
                     </ControlTemplate>
@@ -349,16 +421,20 @@
         <Style x:Key="SalesTaxLocationDatagridRow"
                BasedOn="{StaticResource {x:Type DataGridRow}}"
                TargetType="{x:Type DataGridRow}">
-            <Setter Property="IsSelected" Value="{Binding IsSelected, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
-            <Setter Property="ContextMenu" Value="{StaticResource SaleTaxLocationMenu}" />
+            <Setter Property="IsSelected"
+                    Value="{Binding IsSelected, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+            <Setter Property="ContextMenu"
+                    Value="{StaticResource SaleTaxLocationMenu}" />
         </Style>
     </UserControl.Resources>
     <UserControl.InputBindings>
-        <KeyBinding Command="{Binding HelpCommand}" Gesture="F1" />
+        <KeyBinding Command="{Binding HelpCommand}"
+                    Gesture="F1" />
     </UserControl.InputBindings>
     <wpfControl:BusyIndicator IsBusy="{Binding IsBusy}">
         <Grid x:Name="GridLayout">
-            <Rectangle x:Name="UserControl_Background_Image" Fill="{DynamicResource UserControl_Background_Image}" />
+            <Rectangle x:Name="UserControl_Background_Image"
+                       Fill="{DynamicResource UserControl_Background_Image}" />
             <Grid x:Name="grdSalesTax">
                 <Grid.RowDefinitions>
                     <RowDefinition Height="60" />
@@ -371,10 +447,11 @@
                             VerticalAlignment="Bottom"
                             Orientation="Horizontal">
                     <Button x:Name="btnSave"
+                            Command="{Binding SaveCommand}"
                             Width="40"
                             Height="40"
-                            Command="{Binding SaveCommand}"
-                            Style="{DynamicResource ButtonSystem}">
+                            Style="{DynamicResource ButtonSystem}"
+                            ToolTip="Save Current Item">
                         <StackPanel x:Name="stkpBtnSave"
                                     HorizontalAlignment="Center"
                                     VerticalAlignment="Center"
@@ -393,11 +470,11 @@
                         </StackPanel>
                     </Button>
                     <Button x:Name="btnCancel"
+                            Command="{Binding CancelCommand}"
                             Width="40"
                             Height="40"
-                            Command="{Binding CancelCommand}"
                             Style="{DynamicResource ButtonSystem}"
-                            ToolTip="Cancel">
+                            ToolTip="Cancel Current Item">
                         <StackPanel x:Name="stkpBtnCancel"
                                     HorizontalAlignment="Center"
                                     VerticalAlignment="Center"
@@ -430,10 +507,12 @@
                         BorderThickness="1">
                     <Grid x:Name="grdSubSalesTax">
                         <Grid.ColumnDefinitions>
-                            <ColumnDefinition Width="Auto" MinWidth="220" />
+                            <ColumnDefinition Width="Auto"
+                                              MinWidth="220" />
                             <ColumnDefinition Width="*" />
                         </Grid.ColumnDefinitions>
-                        <Grid x:Name="grdSearchSalesTax" IsEnabled="{Binding EnableSelection, Mode=OneWay}">
+                        <Grid x:Name="grdSearchSalesTax"
+                              IsEnabled="{Binding EnableSelection, Mode=OneWay}">
                             <cpcDataGrid:DataGridControl x:Name="dgSaleTax"
                                                          Width="Auto"
                                                          MinWidth="200"
@@ -449,25 +528,21 @@
                                                          HeadersVisibility="Row"
                                                          IsRollBackData="False"
                                                          IsSynchronizedWithCurrentItem="False"
-                                                         ItemsSource="{Binding SaleTaxLocationCollection,
-                                                                               Mode=TwoWay}"
+                                                         ItemsSource="{Binding SaleTaxLocationCollection, Mode=TwoWay}"
                                                          MinRowHeight="28"
                                                          RowStyle="{DynamicResource SalesTaxLocationDatagridRow}"
                                                          ScrollViewer.HorizontalScrollBarVisibility="Disabled"
-                                                         SelectedItem="{Binding SelectedSaleTaxLocation,
-                                                                                Mode=TwoWay,
-                                                                                UpdateSourceTrigger=PropertyChanged}"
+                                                         SelectedItem="{Binding SelectedSaleTaxLocation, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                                                          Style="{DynamicResource SaleTaxDataGridControlStyle}"
                                                          VisibilityNavigationBar="Collapsed">
                                 <cpcDataGrid:DataGridControl.InputBindings>
                                     <KeyBinding Key="Delete"
                                                 Command="{Binding DeleteCommand}"
-                                                CommandParameter="{Binding SelectedItem,
-                                                                           ElementName=dgSaleTax}" />
+                                                CommandParameter="{Binding SelectedItem, ElementName=dgSaleTax}" />
                                 </cpcDataGrid:DataGridControl.InputBindings>
                                 <cpcDataGrid:DataGridControl.Columns>
-                                    <DataGridTemplateColumn MinWidth="150"
-                                                            Header="Name"
+                                    <DataGridTemplateColumn Header="Name"
+                                                            MinWidth="150"
                                                             IsReadOnly="True"
                                                             SortDirection="Ascending"
                                                             SortMemberPath="SortIndex">
@@ -499,8 +574,8 @@
                                                                    Fill="{DynamicResource SalesTaxPrimary}"
                                                                    ToolTip="Primary Sale Tax">
                                                             <Rectangle.Visibility>
-                                                                <Binding Mode="OneWay"
-                                                                         Path="IsPrimary"
+                                                                <Binding Path="IsPrimary"
+                                                                         Mode="OneWay"
                                                                          UpdateSourceTrigger="PropertyChanged">
                                                                     <Binding.Converter>
                                                                         <converter:BoolToVisibilityConverter FalseToVisibility="Collapsed" />
@@ -541,10 +616,10 @@
                                                                        HorizontalAlignment="Center"
                                                                        VerticalAlignment="Center">
                                                                 <TextBlock.Visibility>
-                                                                    <Binding ConverterParameter="2"
+                                                                    <Binding Path="TaxOption"
                                                                              Mode="OneWay"
-                                                                             Path="TaxOption"
-                                                                             UpdateSourceTrigger="PropertyChanged">
+                                                                             UpdateSourceTrigger="PropertyChanged"
+                                                                             ConverterParameter="2">
                                                                         <Binding.Converter>
                                                                             <converter:IntergerToVisibilityConverter FalseToVisibility="Collapsed" />
                                                                         </Binding.Converter>
@@ -552,7 +627,8 @@
                                                                 </TextBlock.Visibility>
                                                                 <Run Text=" " />
                                                                 <Run Text="{DynamicResource Tax_Text_CollectLower}" />
-                                                                <Run Text=" " /><Run FontWeight="Bold" Text="{DynamicResource Tax_Text_MultiplesRate}" />
+                                                                <Run Text=" " /><Run FontWeight="Bold"
+                                                                                     Text="{DynamicResource Tax_Text_MultiplesRate}" />
                                                             </TextBlock>
                                                             <!--  Show when tax code option is single or price  -->
                                                             <StackPanel Grid.Column="1"
@@ -560,10 +636,10 @@
                                                                         HorizontalAlignment="Stretch"
                                                                         Orientation="Horizontal">
                                                                 <StackPanel.Visibility>
-                                                                    <Binding ConverterParameter="2"
+                                                                    <Binding Path="TaxOption"
                                                                              Mode="OneWay"
-                                                                             Path="TaxOption"
-                                                                             UpdateSourceTrigger="PropertyChanged">
+                                                                             UpdateSourceTrigger="PropertyChanged"
+                                                                             ConverterParameter="2">
                                                                         <Binding.Converter>
                                                                             <converter:IntergerToVisibilityConverter FalseToVisibility="Visible" />
                                                                         </Binding.Converter>
@@ -574,8 +650,8 @@
                                                                             VerticalAlignment="Center"
                                                                             Orientation="Horizontal">
                                                                     <StackPanel.Visibility>
-                                                                        <Binding Mode="OneWay"
-                                                                                 Path="HasTaxCodeOption"
+                                                                        <Binding Path="HasTaxCodeOption"
+                                                                                 Mode="OneWay"
                                                                                  UpdateSourceTrigger="PropertyChanged">
                                                                             <Binding.Converter>
                                                                                 <converter:BoolToVisibilityConverter />
@@ -590,10 +666,14 @@
                                                                     </TextBlock>
                                                                     <!--  TaxRate %  -->
                                                                     <TextBlock x:Name="tblPaidTaxRate">
-                                                                        <Run FontWeight="Bold" Text="{Binding TaxCodeOptionModel.TaxRate}" /><Run FontWeight="Bold" Text="%" />
+                                                                        <Run FontWeight="Bold"
+                                                                             Text="{Binding TaxCodeOptionModel.TaxRate}" /><Run FontWeight="Bold"
+                                                                                                                                Text="%" />
                                                                     </TextBlock>
                                                                     <!--  paid to "TaxAgency"  -->
-                                                                    <TextBlock x:Name="txtblPaidTaxAgency" TextWrapping="NoWrap"><Run Text=" " /><Run Text="{DynamicResource Tax_Text_PaidTo}" /><Run Text=" " /><Run FontWeight="Bold" Text="{Binding TaxCodeOptionModel.TaxAgency}" />
+                                                                    <TextBlock x:Name="txtblPaidTaxAgency"
+                                                                               TextWrapping="NoWrap"><Run Text=" " /><Run Text="{DynamicResource Tax_Text_PaidTo}" /><Run Text=" " /><Run FontWeight="Bold"
+                                                                                                                                                                                          Text="{Binding TaxCodeOptionModel.TaxAgency}" />
                                                                     </TextBlock>
                                                                 </StackPanel>
                                                                 <!--  Show No tax Text  -->
@@ -601,17 +681,18 @@
                                                                            Width="Auto"
                                                                            VerticalAlignment="Center">
                                                                     <TextBlock.Visibility>
-                                                                        <Binding ConverterParameter="False"
+                                                                        <Binding Path="HasTaxCodeOption"
                                                                                  Mode="OneWay"
-                                                                                 Path="HasTaxCodeOption"
-                                                                                 UpdateSourceTrigger="PropertyChanged">
+                                                                                 UpdateSourceTrigger="PropertyChanged"
+                                                                                 ConverterParameter="False">
                                                                             <Binding.Converter>
                                                                                 <converter:BoolToVisibilityConverter />
                                                                             </Binding.Converter>
                                                                         </Binding>
                                                                     </TextBlock.Visibility> <Run Text=" " />
                                                                     <Run Text="{DynamicResource Tax_Text_CollectLower}" />
-                                                                    <Run Text=" " /><Run FontWeight="Bold" Text="{DynamicResource Tax_Text_NoTax}" />
+                                                                    <Run Text=" " /><Run FontWeight="Bold"
+                                                                                         Text="{DynamicResource Tax_Text_NoTax}" />
                                                                 </TextBlock>
                                                             </StackPanel>
                                                         </StackPanel>
@@ -626,8 +707,7 @@
                                                                  Background="Transparent"
                                                                  BorderBrush="Transparent"
                                                                  FontWeight="Normal"
-                                                                 Foreground="{Binding Foreground,
-                                                                                      ElementName=tbTaxCodeName}"
+                                                                 Foreground="{Binding Foreground, ElementName=tbTaxCodeName}"
                                                                  ItemContainerStyle="{DynamicResource listTaxCodeOptionStyle}"
                                                                  ItemsSource="{Binding SaleTaxLocationOptionCollection}"
                                                                  ScrollViewer.CanContentScroll="False"
@@ -635,10 +715,10 @@
                                                                  ScrollViewer.VerticalScrollBarVisibility="Disabled"
                                                                  Style="{DynamicResource ListBoxStyle}">
                                                             <ListBox.Visibility>
-                                                                <Binding ConverterParameter="2"
+                                                                <Binding Path="TaxOption"
                                                                          Mode="OneWay"
-                                                                         Path="TaxOption"
-                                                                         UpdateSourceTrigger="PropertyChanged">
+                                                                         UpdateSourceTrigger="PropertyChanged"
+                                                                         ConverterParameter="2">
                                                                     <Binding.Converter>
                                                                         <converter:IntergerToVisibilityConverter FalseToVisibility="Collapsed" />
                                                                     </Binding.Converter>
@@ -649,13 +729,23 @@
                                                 </Grid>
                                                 <DataTemplate.Triggers>
                                                     <!--  Collapse Textblock txtblPaidTaxAgency when not input taxagency  -->
-                                                    <DataTrigger Binding="{Binding TaxCodeOptionModel.TaxAgency}" Value="{x:Static sys:String.Empty}">
-                                                        <Setter TargetName="txtblPaidTaxAgency" Property="Visibility" Value="Collapsed" />
+                                                    <DataTrigger Binding="{Binding TaxCodeOptionModel.TaxAgency}"
+                                                                 Value="{x:Static sys:String.Empty}">
+                                                        <Setter TargetName="txtblPaidTaxAgency"
+                                                                Property="Visibility"
+                                                                Value="Collapsed" />
                                                     </DataTrigger>
-                                                    <DataTrigger Binding="{Binding ParentId}" Value="0">
-                                                        <Setter TargetName="stTaxLocation" Property="Visibility" Value="Visible" />
-                                                        <Setter TargetName="grdTaxCode" Property="Visibility" Value="Collapsed" />
-                                                        <Setter TargetName="stTaxLocation" Property="Margin" Value="0" />
+                                                    <DataTrigger Binding="{Binding ParentId}"
+                                                                 Value="0">
+                                                        <Setter TargetName="stTaxLocation"
+                                                                Property="Visibility"
+                                                                Value="Visible" />
+                                                        <Setter TargetName="grdTaxCode"
+                                                                Property="Visibility"
+                                                                Value="Collapsed" />
+                                                        <Setter TargetName="stTaxLocation"
+                                                                Property="Margin"
+                                                                Value="0" />
                                                     </DataTrigger>
                                                 </DataTemplate.Triggers>
                                             </DataTemplate>
@@ -677,15 +767,17 @@
                                 Background="{DynamicResource TabControlBackground}"
                                 BorderBrush="{DynamicResource TabControlBorder}"
                                 BorderThickness="1">
-                            <Grid x:Name="grdContentSalesTax" IsEnabled="{Binding EnableEditForm, Mode=OneWay}">
+                            <Grid x:Name="grdContentSalesTax"
+                                  IsEnabled="{Binding EnableEditForm, Mode=OneWay}">
                                 <Grid.RowDefinitions>
                                     <RowDefinition Height="Auto" />
                                     <RowDefinition />
                                 </Grid.RowDefinitions>
-                                <Grid x:Name="grdSalesTaxLocation" d:IsHidden="True">
+                                <Grid x:Name="grdSalesTaxLocation"
+                                      d:IsHidden="True">
                                     <Grid.Visibility>
-                                        <Binding Mode="OneWay"
-                                                 Path="IsParent"
+                                        <Binding Path="IsParent"
+                                                 Mode="OneWay"
                                                  UpdateSourceTrigger="PropertyChanged">
                                             <Binding.Converter>
                                                 <converter:BoolToVisibilityConverter FalseToVisibility="Collapsed" />
@@ -699,8 +791,7 @@
                                     <GroupBox x:Name="gbSalesTaxLocationName1"
                                               Margin="10,10,10,0"
                                               VerticalAlignment="Top"
-                                              IsEnabled="{Binding AllowEditSaleTax,
-                                                                  Mode=OneWay}">
+                                              IsEnabled="{Binding UserPermissions.AllowEditSaleTax, Mode=OneWay}">
                                         <GroupBox.Header>
                                             <TextBlock x:Name="txtblSalesTaxLocationName"
                                                        Style="{DynamicResource GroupboxTextBlock}"
@@ -735,9 +826,7 @@
                                                                Margin="115,2,0,2"
                                                                HorizontalAlignment="Left"
                                                                Padding="2,0,2,0"
-                                                               Text="{Binding SelectedSaleTaxLocation.Name,
-                                                                              Mode=TwoWay,
-                                                                              UpdateSourceTrigger=PropertyChanged}"
+                                                               Text="{Binding SelectedSaleTaxLocation.Name, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                                                                TextWrapping="NoWrap">
                                                 <i:Interaction.Behaviors>
                                                     <cpcBehavior:CharacterCasingBehavior CharacterCasingType="Title" />
@@ -749,8 +838,7 @@
                                               Grid.Row="1"
                                               Margin="10,10,10,0"
                                               VerticalAlignment="Top"
-                                              IsEnabled="{Binding AllowEditSaleTax,
-                                                                  Mode=OneWay}">
+                                              IsEnabled="{Binding UserPermissions.AllowEditSaleTax, Mode=OneWay}">
                                         <GroupBox.Header>
                                             <TextBlock x:Name="txtblShipping"
                                                        Style="{DynamicResource GroupboxTextBlock}"
@@ -777,9 +865,7 @@
                                                       HorizontalAlignment="Left"
                                                       VerticalAlignment="Center"
                                                       Content="{DynamicResource Tax_Text_ShippingTaxedUsingTaxCode}"
-                                                      IsChecked="{Binding SelectedSaleTaxLocation.IsShipingTaxable,
-                                                                          Mode=TwoWay,
-                                                                          UpdateSourceTrigger=PropertyChanged}" />
+                                                      IsChecked="{Binding SelectedSaleTaxLocation.IsShipingTaxable, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
                                             <ComboBox x:Name="cmbShipping"
                                                       Grid.Row="1"
                                                       Width="100"
@@ -788,22 +874,17 @@
                                                       HorizontalAlignment="Left"
                                                       VerticalAlignment="Center"
                                                       DisplayMemberPath="TaxCode"
-                                                      IsEnabled="{Binding IsChecked,
-                                                                          ElementName=cbShipping}"
-                                                      ItemsSource="{Binding PrimaryTaxLocation.TaxCodeCollection,
-                                                                            Mode=TwoWay,
-                                                                            UpdateSourceTrigger=PropertyChanged}"
-                                                      SelectedValue="{Binding SelectedSaleTaxLocation.ShippingTaxCodeId,
-                                                                              Mode=TwoWay,
-                                                                              UpdateSourceTrigger=PropertyChanged}"
+                                                      IsEnabled="{Binding IsChecked, ElementName=cbShipping}"
+                                                      ItemsSource="{Binding PrimaryTaxLocation.TaxCodeCollection, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                                      SelectedValue="{Binding SelectedSaleTaxLocation.ShippingTaxCodeId, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                                                       SelectedValuePath="Id" />
                                         </Grid>
                                     </GroupBox>
                                 </Grid>
                                 <Grid x:Name="grdSalesTaxCode">
                                     <Grid.Visibility>
-                                        <Binding Mode="OneWay"
-                                                 Path="IsParent"
+                                        <Binding Path="IsParent"
+                                                 Mode="OneWay"
                                                  UpdateSourceTrigger="PropertyChanged">
                                             <Binding.Converter>
                                                 <converter:BoolToVisibilityConverter FalseToVisibility="Visible" />
@@ -816,8 +897,7 @@
                                     </Grid.RowDefinitions>
                                     <GroupBox x:Name="gbTaxCodeName"
                                               Margin="10,10,10,0"
-                                              IsEnabled="{Binding AllowEditSaleTax,
-                                                                  Mode=OneWay}">
+                                              IsEnabled="{Binding UserPermissions.AllowEditSaleTax, Mode=OneWay}">
                                         <GroupBox.Header>
                                             <TextBlock x:Name="txtblTaxCodeName"
                                                        Style="{DynamicResource GroupboxTextBlock}"
@@ -858,11 +938,7 @@
                                                                CharacterCasing="Upper"
                                                                MaxLength="3"
                                                                Padding="2,0,2,0"
-                                                               Text="{Binding SelectedSaleTaxLocation.TaxCode,
-                                                                              Mode=TwoWay,
-                                                                              UpdateSourceTrigger=PropertyChanged,
-                                                                              NotifyOnValidationError=True,
-                                                                              ValidatesOnDataErrors=True}"
+                                                               Text="{Binding SelectedSaleTaxLocation.TaxCode, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, NotifyOnValidationError=True, ValidatesOnDataErrors=True}"
                                                                TextWrapping="NoWrap" />
                                             <TextBlock x:Name="txtblmax"
                                                        Grid.Row="1"
@@ -887,9 +963,7 @@
                                                                HorizontalAlignment="Left"
                                                                MaxLength="20"
                                                                Padding="2,0,2,0"
-                                                               Text="{Binding SelectedSaleTaxLocation.TaxCodeName,
-                                                                              Mode=TwoWay,
-                                                                              UpdateSourceTrigger=PropertyChanged}"
+                                                               Text="{Binding SelectedSaleTaxLocation.TaxCodeName, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                                                                TextWrapping="NoWrap">
                                                 <i:Interaction.Behaviors>
                                                     <cpcBehavior:CharacterCasingBehavior CharacterCasingType="Title" />
@@ -928,9 +1002,7 @@
                                                                CharacterCasing="Upper"
                                                                MaxLength="1"
                                                                Padding="2,0,2,0"
-                                                               Text="{Binding SelectedSaleTaxLocation.TaxPrintMark,
-                                                                              Mode=TwoWay,
-                                                                              UpdateSourceTrigger=PropertyChanged}"
+                                                               Text="{Binding SelectedSaleTaxLocation.TaxPrintMark, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                                                                TextWrapping="NoWrap" />
                                             <TextBlock x:Name="txtblPrintMax"
                                                        Grid.Row="4"
@@ -970,50 +1042,38 @@
                                                 <RowDefinition Height="25" />
                                             </Grid.RowDefinitions>
                                             <RadioButton x:Name="rbSingle"
+                                                         Command="{Binding TaxOptionCommand}"
+                                                         CommandParameter="{x:Static local:SalesTaxOption.Single}"
                                                          Margin="10,0,0,0"
                                                          HorizontalAlignment="Left"
                                                          VerticalAlignment="Center"
-                                                         Command="{Binding TaxOptionCommand}"
-                                                         CommandParameter="{x:Static local:SalesTaxOption.Single}"
                                                          Content="{DynamicResource Tax_Text_SingleTaxOption}"
                                                          GroupName="gTaxOption"
-                                                         IsChecked="{Binding SelectedSaleTaxLocation.TaxOption,
-                                                                             ConverterParameter=0,
-                                                                             Converter={StaticResource integerToBooleanConverter},
-                                                                             Mode=TwoWay,
-                                                                             UpdateSourceTrigger=PropertyChanged}"
+                                                         IsChecked="{Binding SelectedSaleTaxLocation.TaxOption, ConverterParameter=0, Converter={StaticResource integerToBooleanConverter}, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                                                          Style="{DynamicResource RadioButtonUnderLineStyle}" />
                                             <!--  {x:Static local:SalesTaxOption.Single}  -->
                                             <RadioButton x:Name="rbPrice"
+                                                         Command="{Binding TaxOptionCommand}"
+                                                         CommandParameter="{x:Static local:SalesTaxOption.Price}"
                                                          Grid.Row="1"
                                                          Margin="10,0,0,0"
                                                          HorizontalAlignment="Left"
                                                          VerticalAlignment="Center"
-                                                         Command="{Binding TaxOptionCommand}"
-                                                         CommandParameter="{x:Static local:SalesTaxOption.Price}"
                                                          Content="{DynamicResource Tax_Text_PriceTaxOption}"
                                                          GroupName="gTaxOption"
-                                                         IsChecked="{Binding SelectedSaleTaxLocation.TaxOption,
-                                                                             ConverterParameter=1,
-                                                                             Converter={StaticResource integerToBooleanConverter},
-                                                                             Mode=TwoWay,
-                                                                             UpdateSourceTrigger=PropertyChanged}"
+                                                         IsChecked="{Binding SelectedSaleTaxLocation.TaxOption, ConverterParameter=1, Converter={StaticResource integerToBooleanConverter}, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                                                          Style="{DynamicResource RadioButtonUnderLineStyle}" />
                                             <!--  {x:Static local:SalesTaxOption.Price}  -->
                                             <RadioButton x:Name="rbMulti"
+                                                         Command="{Binding TaxOptionCommand}"
+                                                         CommandParameter="{x:Static local:SalesTaxOption.Multi}"
                                                          Grid.Row="2"
                                                          Margin="10,0,0,0"
                                                          HorizontalAlignment="Left"
                                                          VerticalAlignment="Center"
-                                                         Command="{Binding TaxOptionCommand}"
-                                                         CommandParameter="{x:Static local:SalesTaxOption.Multi}"
                                                          Content="{DynamicResource Tax_Text_MultiTaxOption}"
                                                          GroupName="gTaxOption"
-                                                         IsChecked="{Binding SelectedSaleTaxLocation.TaxOption,
-                                                                             ConverterParameter=2,
-                                                                             Converter={StaticResource integerToBooleanConverter},
-                                                                             Mode=TwoWay,
-                                                                             UpdateSourceTrigger=PropertyChanged}"
+                                                         IsChecked="{Binding SelectedSaleTaxLocation.TaxOption, ConverterParameter=2, Converter={StaticResource integerToBooleanConverter}, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                                                          Style="{DynamicResource RadioButtonUnderLineStyle}" />
                                             <!--  {x:Static local:SalesTaxOption.Multi}  -->
                                             <CheckBox x:Name="rbMulti1"
@@ -1024,23 +1084,20 @@
                                                       Content="{DynamicResource Tax_Text_IncludedDiscountAmt}"
                                                       FontStyle="Italic"
                                                       Foreground="#FFFDFF00"
-                                                      IsChecked="{Binding SelectedSaleTaxLocation.IsTaxAfterDiscount,
-                                                                          Mode=TwoWay,
-                                                                          UpdateSourceTrigger=PropertyChanged}"
-                                                      IsEnabled="{Binding AllowEditSaleTax,
-                                                                          Mode=OneWay}"
+                                                      IsChecked="{Binding SelectedSaleTaxLocation.IsTaxAfterDiscount, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                                      IsEnabled="{Binding UserPermissions.AllowEditSaleTax, Mode=OneWay}"
                                                       Padding="0,0,7,0"
                                                       Style="{DynamicResource CheckBoxLeftSideTextStyle}" />
                                         </Grid>
                                     </GroupBox>
                                 </Grid>
-                                <Grid x:Name="grdDefaultTax" Grid.Row="1">
+                                <Grid x:Name="grdDefaultTax"
+                                      Grid.Row="1">
                                     <GroupBox x:Name="gbDefaultTax"
                                               Height="77"
                                               Margin="10"
                                               VerticalAlignment="Top"
-                                              IsEnabled="{Binding AllowEditSaleTax,
-                                                                  Mode=OneWay}">
+                                              IsEnabled="{Binding UserPermissions.AllowEditSaleTax, Mode=OneWay}">
                                         <GroupBox.Header>
                                             <TextBlock x:Name="txtblDefaultTax"
                                                        Style="{DynamicResource GroupboxTextBlock}"
@@ -1068,12 +1125,8 @@
                                                       HorizontalAlignment="Left"
                                                       VerticalAlignment="Center"
                                                       DisplayMemberPath="Name"
-                                                      ItemsSource="{Binding DefaultTaxLocationCollection,
-                                                                            Mode=TwoWay,
-                                                                            UpdateSourceTrigger=PropertyChanged}"
-                                                      SelectedItem="{Binding PrimaryTaxLocation,
-                                                                             Mode=TwoWay,
-                                                                             UpdateSourceTrigger=PropertyChanged}"
+                                                      ItemsSource="{Binding DefaultTaxLocationCollection, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                                      SelectedItem="{Binding PrimaryTaxLocation, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                                                       SelectedValuePath="Id" />
                                             <TextBlock x:Name="txtblDefualtTaxCode"
                                                        Grid.Row="1"
@@ -1091,12 +1144,8 @@
                                                       HorizontalAlignment="Left"
                                                       VerticalAlignment="Center"
                                                       DisplayMemberPath="TaxCode"
-                                                      ItemsSource="{Binding PrimaryTaxLocation.TaxCodeCollection,
-                                                                            Mode=TwoWay,
-                                                                            UpdateSourceTrigger=PropertyChanged}"
-                                                      SelectedItem="{Binding DefaultTaxCode,
-                                                                             Mode=TwoWay,
-                                                                             UpdateSourceTrigger=PropertyChanged}"
+                                                      ItemsSource="{Binding PrimaryTaxLocation.TaxCodeCollection, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                                      SelectedItem="{Binding DefaultTaxCode, Mode=TwoWay, IsAsync=True, UpdateSourceTrigger=PropertyChanged}"
                                                       SelectedValuePath="Id" />
                                         </Grid>
                                     </GroupBox>

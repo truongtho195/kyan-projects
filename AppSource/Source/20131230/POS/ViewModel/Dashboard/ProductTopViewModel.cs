@@ -1,19 +1,19 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using CPC.Toolkit.Base;
-using CPC.Helper;
-using System.Windows.Input;
-using CPC.Toolkit.Command;
 using System.Windows;
-using CPC.POS.Repository;
-using CPC.POS.Model;
-using CPC.POS.Database;
-using De.TorstenMandelkow.MetroChart;
-using System.Xml.Linq;
-using CPC.POS.Interfaces;
 using System.Windows.Controls;
 using System.Windows.Data;
+using System.Windows.Input;
+using System.Xml.Linq;
+using CPC.Helper;
+using CPC.POS.Database;
+using CPC.POS.Interfaces;
+using CPC.POS.Model;
+using CPC.POS.Repository;
+using CPC.Toolkit.Base;
+using CPC.Toolkit.Command;
+using De.TorstenMandelkow.MetroChart;
 
 namespace CPC.POS.ViewModel
 {
@@ -352,7 +352,7 @@ namespace CPC.POS.ViewModel
 
         private void OnSelectedItemChanged()
         {
-            if (_selectedItem != null)
+            if (_selectedItem != null && UserPermissions.AllowAccessProduct)
             {
                 (App.Current.MainWindow.DataContext as MainViewModel).OpenViewExecute("Product", _selectedItem.ProductModel.Resource);
             }

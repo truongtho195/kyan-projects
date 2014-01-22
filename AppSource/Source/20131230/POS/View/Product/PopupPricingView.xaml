@@ -28,7 +28,7 @@
                 BorderThickness="1">
             <Grid x:Name="grdContentPriceCalculation"
                   Margin="10"
-                  IsEnabled="{Binding AllowAccessPermission, Mode=OneWay}">
+                  IsEnabled="{Binding UserPermissions.AllowAccessProductPermission, Mode=OneWay}">
                 <Grid.RowDefinitions>
                     <RowDefinition Height="55" />
                     <RowDefinition Height="165" />

@@ -1,16 +1,16 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using CPC.Toolkit.Base;
-using CPC.POS.Model;
-using System.Windows.Input;
-using CPC.Toolkit.Command;
 using System.ComponentModel;
-using CPC.POS.Repository;
+using System.Data;
+using System.Linq;
+using System.Windows.Input;
 using CPC.Helper;
 using CPC.POS.Database;
+using CPC.POS.Model;
 using CPC.POS.Report;
-using System.Data;
+using CPC.POS.Repository;
+using CPC.Toolkit.Base;
+using CPC.Toolkit.Command;
 using Npgsql;
 
 namespace CPC.POS.ViewModel

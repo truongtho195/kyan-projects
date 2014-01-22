@@ -1,13 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
+using System.Reflection;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Documents;
 using System.Windows.Input;
-using System.Reflection;
 using System.Xml.Linq;
-using System.IO;
 using CPC.POS.Interfaces;
 
 namespace CPC.Control
@@ -405,7 +405,7 @@ namespace CPC.Control
                         dashboardItemFunction.UpdateSize(_newSize);
                     }
                 }
-                DragDrop.DoDragDrop(draggedItem, draggedItem, DragDropEffects.Move);
+                System.Windows.DragDrop.DoDragDrop(draggedItem, draggedItem, DragDropEffects.Move);
             }
         }
 

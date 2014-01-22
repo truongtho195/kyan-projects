@@ -474,7 +474,11 @@ namespace CPC.POS.ViewModel
             }
             catch (System.Exception ex)
             {
-                Xceed.Wpf.Toolkit.MessageBox.Show(ex.Message, Language.Error, System.Windows.MessageBoxButton.OK, System.Windows.MessageBoxImage.Error);   
+                App.Current.Dispatcher.BeginInvoke(new Action(delegate
+                {
+                    Xceed.Wpf.Toolkit.MessageBox.Show(ex.Message, Language.Error, System.Windows.MessageBoxButton.OK, System.Windows.MessageBoxImage.Error);
+                }), System.Windows.Threading.DispatcherPriority.Normal);
+                
                 return;
             }
         }        

@@ -6,13 +6,12 @@
              xmlns:converter="clr-namespace:CPC.Converter"
              xmlns:cpcControl="clr-namespace:CPC.Control"
              xmlns:cpcDataGridToolkit="clr-namespace:CPCToolkitExt.DataGridControl;assembly=CPCToolkitExt"
-             xmlns:textBoxToolkit="clr-namespace:CPCToolkitExt.TextBoxControl;assembly=CPCToolkitExt"
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:i="clr-namespace:System.Windows.Interactivity;assembly=System.Windows.Interactivity"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-             xmlns:Microsoft_Windows_Themes="clr-namespace:Microsoft.Windows.Themes;assembly=PresentationFramework.Luna"
              xmlns:model="clr-namespace:CPC.POS.Model"
              xmlns:sys="clr-namespace:System;assembly=mscorlib"
+             xmlns:textBoxToolkit="clr-namespace:CPCToolkitExt.TextBoxControl;assembly=CPCToolkitExt"
              xmlns:xceedToolkit="clr-namespace:Xceed.Wpf.Toolkit;assembly=WPFToolkit.Extended"
              x:Name="UserControl"
              Background="{DynamicResource UserControlBackground}"
@@ -107,8 +106,8 @@
                            Height="12"
                            Fill="{DynamicResource CloseFolder}" />
                 <TextBlock Margin="3,0,0,0"
-                           Text="{Binding FolderName, Mode=OneWay}"
-                           Style="{DynamicResource TreeviewItemTextBlock}" />
+                           Style="{DynamicResource TreeviewItemTextBlock}"
+                           Text="{Binding FolderName, Mode=OneWay}" />
             </StackPanel>
             <HierarchicalDataTemplate.Triggers>
                 <DataTrigger Binding="{Binding IsSelected, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=TreeViewItem}, Mode=OneWay}"
@@ -179,14 +178,14 @@
                                              HorizontalAlignment="Stretch"
                                              VerticalAlignment="Stretch"
                                              VerticalContentAlignment="Center"
+                                             FontFamily="Tahoma"
+                                             FontSize="11"
                                              IsVisibleChanged="TextBoxIsVisibleChanged"
                                              Loaded="TextBoxLoaded"
                                              MaxLength="{StaticResource FolderNameMaxLength}"
                                              Text="{Binding Header.FolderName, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type TreeViewItem}}}"
                                              TextWrapping="NoWrap"
-                                             Visibility="Collapsed"
-                                             FontSize="11"
-                                             FontFamily="Tahoma">
+                                             Visibility="Collapsed">
                                         <TextBox.InputBindings>
                                             <KeyBinding Key="Enter"
                                                         Command="{Binding DataContext.EndEditFolderCommand, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type UserControl}}}" />
@@ -259,7 +258,7 @@
         <Style x:Key="FileDataGridRowStyle"
                TargetType="{x:Type DataGridRow}">
             <Setter Property="behavior:DataGridCellFocusHelper.CellFocus"
-                    Value="{Binding DataContext.AllowEditDocument, RelativeSource={RelativeSource AncestorType=DataGrid, Mode=FindAncestor}, Mode=OneWay}" />
+                    Value="{Binding DataContext.UserPermissions.AllowEditDocument, RelativeSource={RelativeSource AncestorType=DataGrid, Mode=FindAncestor}, Mode=OneWay}" />
             <Setter Property="behavior:DataGridCellFocusHelper.ItemSource"
                     Value="{Binding ., RelativeSource={RelativeSource Mode=Self}}" />
             <Setter Property="SnapsToDevicePixels"
@@ -317,19 +316,19 @@
             </Grid>
         </DataTemplate>
         <DataTemplate x:Key="NameHeaderTemplate">
-            <TextBlock Text="{DynamicResource C178}"
+            <TextBlock FontFamily="Tahoma"
                        FontSize="11"
-                       FontFamily="Tahoma" />
+                       Text="{DynamicResource C178}" />
         </DataTemplate>
         <DataTemplate x:Key="CreatedDateHeaderTemplate">
-            <TextBlock Text="{DynamicResource C159}"
+            <TextBlock FontFamily="Tahoma"
                        FontSize="11"
-                       FontFamily="Tahoma" />
+                       Text="{DynamicResource C159}" />
         </DataTemplate>
         <DataTemplate x:Key="InFolderHeaderTemplate">
-            <TextBlock Text="{DynamicResource A104}"
+            <TextBlock FontFamily="Tahoma"
                        FontSize="11"
-                       FontFamily="Tahoma" />
+                       Text="{DynamicResource A104}" />
         </DataTemplate>
     </UserControl.Resources>
     <Grid x:Name="grdAttachmentScannerSearch">
@@ -979,8 +978,8 @@
                                                            Source="{StaticResource FileImage}" />
                                                     <textBoxToolkit:TextBox Margin="2,0,0,0"
                                                                             VerticalAlignment="Center"
-                                                                            Style="{DynamicResource TextBoxInsideDataGridStyle}"
                                                                             MaxLength="{StaticResource FileNameMaxLength}"
+                                                                            Style="{DynamicResource TextBoxInsideDataGridStyle}"
                                                                             Text="{Binding FileName, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
                                                 </StackPanel>
                                                 <DataTemplate.Triggers>
@@ -1097,8 +1096,8 @@
                                         </DataGridTemplateColumn.CellEditingTemplate>
                                     </DataGridTemplateColumn>
                                     <DataGridTemplateColumn Width="*"
-                                                            IsReadOnly="True"
-                                                            HeaderTemplate="{StaticResource CreatedDateHeaderTemplate}">
+                                                            HeaderTemplate="{StaticResource CreatedDateHeaderTemplate}"
+                                                            IsReadOnly="True">
                                         <DataGridTemplateColumn.CellTemplate>
                                             <DataTemplate>
                                                 <TextBlock HorizontalAlignment="Right"

@@ -10,7 +10,10 @@ using System.Reflection;
 using System.Windows;
 using System.Windows.Data;
 using System.Windows.Input;
+using System.Windows.Threading;
 using System.Xml.Linq;
+using CPC.DragDrop;
+using CPC.DragDrop.Helper;
 using CPC.Helper;
 using CPC.POS.Database;
 using CPC.POS.Model;
@@ -22,7 +25,7 @@ using CPCToolkitExt.DataGridControl;
 
 namespace CPC.POS.ViewModel
 {
-    public class ProductViewModel : ViewModelBase
+    public class ProductViewModel : ViewModelBase, IDragSource, IDropTarget
     {
         #region Defines
 
@@ -49,6 +52,16 @@ namespace CPC.POS.ViewModel
 
         private short _oldItemTypeID;
 
+        /// <summary>
+        /// Timer for searching
+        /// </summary>
+        protected DispatcherTimer _waitingTimer;
+
+        /// <summary>
+        /// Flag for count timer user input value
+        /// </summary>
+        protected int _timerCounter = 0;
+
         #endregion
 
         #region Properties
@@ -73,7 +86,29 @@ namespace CPC.POS.ViewModel
             }
         }
 
+
+
+        #region Keyword
         private string _keyword;
+        /// <summary>
+        /// Gets or sets the Keyword.
+        /// </summary>
+        public string Keyword
+        {
+            get { return _keyword; }
+            set
+            {
+                if (_keyword != value)
+                {
+                    _keyword = value;
+                    ResetTimer();
+                    OnPropertyChanged(() => Keyword);
+                }
+            }
+        }
+        #endregion
+
+
 
         private ObservableCollection<string> _columnCollection;
         /// <summary>
@@ -290,8 +325,8 @@ namespace CPC.POS.ViewModel
             get
             {
                 if (SelectedProduct == null)
-                    return AllowAccessPermission;
-                return SelectedProduct.ItemTypeId == (short)ItemTypes.Stockable && AllowAccessPermission;
+                    return UserPermissions.AllowAccessProductPermission;
+                return IsStockableItemType && UserPermissions.AllowAccessProductPermission;
             }
         }
 
@@ -524,6 +559,13 @@ namespace CPC.POS.ViewModel
             LoadStaticData();
 
             InitialCommand();
+
+            if (Define.CONFIGURATION.IsAutoSearch)
+            {
+                _waitingTimer = new DispatcherTimer();
+                _waitingTimer.Interval = TimeSpan.FromSeconds(1);
+                _waitingTimer.Tick += new EventHandler(_waitingTimer_Tick);
+            }
         }
 
         /// <summary>
@@ -535,9 +577,6 @@ namespace CPC.POS.ViewModel
             : this()
         {
             ChangeSearchMode(isList, param);
-
-            // Get permission
-            GetPermission();
         }
 
         #endregion
@@ -567,8 +606,10 @@ namespace CPC.POS.ViewModel
         {
             try
             {
-                _keyword = param.ToString();
+                //_keyword = param.ToString();
 
+                if (_waitingTimer != null)
+                    _waitingTimer.Stop();
                 // Load data by predicate
                 LoadDataByPredicate();
             }
@@ -602,6 +643,8 @@ namespace CPC.POS.ViewModel
         /// </summary>
         private void OnPopupAdvanceSearchCommandExecute(object param)
         {
+            if (_waitingTimer != null)
+                _waitingTimer.Stop();
             PopupProductAdvanceSearchViewModel viewModel = new PopupProductAdvanceSearchViewModel();
             bool? msgResult = _dialogService.ShowDialog<PopupProductAdvanceSearchView>(_ownerViewModel, viewModel, "Advance Search");
             if (msgResult.HasValue && msgResult.Value)
@@ -626,7 +669,7 @@ namespace CPC.POS.ViewModel
         /// <returns><c>true</c> if the command can be executed; otherwise <c>false</c></returns>
         private bool OnNewCommandCanExecute()
         {
-            return AllowAddProduct;
+            return UserPermissions.AllowAddProduct;
         }
 
         /// <summary>
@@ -722,7 +765,7 @@ namespace CPC.POS.ViewModel
         {
             if (SelectedProduct == null)
                 return false;
-            return !IsEdit() && !SelectedProduct.IsNew && AllowDeleteProduct;
+            return !IsEdit() && !SelectedProduct.IsNew && UserPermissions.AllowDeleteProduct;
         }
 
         /// <summary>
@@ -733,35 +776,42 @@ namespace CPC.POS.ViewModel
             MessageBoxResult msgResult = Xceed.Wpf.Toolkit.MessageBox.Show("Do you want to delete this product?", "POS", MessageBoxButton.YesNo, MessageBoxImage.Warning);
             if (msgResult.Is(MessageBoxResult.Yes))
             {
-                if (SelectedProduct.IsNew)
+                try
                 {
-                    StickyManagementViewModel.DeleteAllResourceNote();
+                    if (SelectedProduct.IsNew)
+                    {
+                        StickyManagementViewModel.DeleteAllResourceNote();
 
-                    SelectedProduct = null;
+                        SelectedProduct = null;
+                    }
+                    else if (IsValid)
+                    {
+                        StickyManagementViewModel.DeleteAllResourceNote();
+
+                        // Delete product
+                        SelectedProduct.base_Product.IsPurge = true;
+
+                        // Accept changes
+                        _productRepository.Commit();
+
+                        // Turn off IsDirty & IsNew
+                        SelectedProduct.EndUpdate();
+
+                        // Remove from collection
+                        ProductCollection.Remove(SelectedProduct);
+
+                        // Update total products
+                        TotalProducts--;
+                    }
+                    else
+                        return;
+
+                    IsSearchMode = true;
                 }
-                else if (IsValid)
+                catch (Exception ex)
                 {
-                    StickyManagementViewModel.DeleteAllResourceNote();
-
-                    // Delete product
-                    SelectedProduct.base_Product.IsPurge = true;
-
-                    // Accept changes
-                    _productRepository.Commit();
-
-                    // Turn off IsDirty & IsNew
-                    SelectedProduct.EndUpdate();
-
-                    // Remove from collection
-                    ProductCollection.Remove(SelectedProduct);
-
-                    // Update total products
-                    TotalProducts--;
+                    _log4net.Error(ex);
                 }
-                else
-                    return;
-
-                IsSearchMode = true;
             }
         }
 
@@ -786,7 +836,7 @@ namespace CPC.POS.ViewModel
             if (dataGridControl == null)
                 return false;
 
-            return dataGridControl.SelectedItems.Count > 0 && AllowDeleteProduct;
+            return dataGridControl.SelectedItems.Count > 0 && UserPermissions.AllowDeleteProduct;
         }
 
         /// <summary>
@@ -801,25 +851,32 @@ namespace CPC.POS.ViewModel
             if (msgResult.Is(MessageBoxResult.No))
                 return;
 
-            foreach (base_ProductModel productModel in dataGridControl.SelectedItems.Cast<base_ProductModel>().ToList())
+            try
             {
-                // Delete all note of this product
-                StickyManagementViewModel.DeleteAllResourceNote(productModel.ResourceNoteCollection);
+                foreach (base_ProductModel productModel in dataGridControl.SelectedItems.Cast<base_ProductModel>().ToList())
+                {
+                    // Delete all note of this product
+                    StickyManagementViewModel.DeleteAllResourceNote(productModel.ResourceNoteCollection);
 
-                // Delete product
-                productModel.base_Product.IsPurge = true;
+                    // Delete product
+                    productModel.base_Product.IsPurge = true;
 
-                // Accept changes
-                _productRepository.Commit();
+                    // Accept changes
+                    _productRepository.Commit();
 
-                // Turn off IsDirty & IsNew
-                productModel.EndUpdate();
+                    // Turn off IsDirty & IsNew
+                    productModel.EndUpdate();
 
-                // Remove from collection
-                ProductCollection.Remove(productModel);
+                    // Remove from collection
+                    ProductCollection.Remove(productModel);
 
-                // Update total products
-                TotalProducts--;
+                    // Update total products
+                    TotalProducts--;
+                }
+            }
+            catch (Exception ex)
+            {
+                _log4net.Error(ex);
             }
         }
 
@@ -1393,7 +1450,7 @@ namespace CPC.POS.ViewModel
             if (dataGridControl == null)
                 return false;
 
-            return dataGridControl.SelectedItems.Count > 0 && AllowSaleProduct;
+            return dataGridControl.SelectedItems.Count > 0 && UserPermissions.AllowSaleProduct;
         }
 
         /// <summary>
@@ -1404,7 +1461,7 @@ namespace CPC.POS.ViewModel
             // Convert param to DataGridControl
             DataGridControl dataGridControl = param as DataGridControl;
 
-            (_ownerViewModel as MainViewModel).OpenViewExecute("SalesOrder", dataGridControl.SelectedItems.Cast<base_ProductModel>());
+            (_ownerViewModel as MainViewModel).OpenViewExecute("Sales Order", dataGridControl.SelectedItems.Cast<base_ProductModel>());
         }
 
         #endregion
@@ -1428,7 +1485,7 @@ namespace CPC.POS.ViewModel
             if (dataGridControl == null)
                 return false;
 
-            return dataGridControl.SelectedItems.Count == 1 && AllowAddProduct;
+            return dataGridControl.SelectedItems.Count == 1 && UserPermissions.AllowAddProduct;
         }
 
         /// <summary>
@@ -1436,47 +1493,54 @@ namespace CPC.POS.ViewModel
         /// </summary>
         private void OnDuplicateCommandExecute(object param)
         {
-            // Convert param to DataGridControl
-            DataGridControl dataGridControl = param as DataGridControl;
-
-            // Get selected item
-            SelectedProduct = dataGridControl.SelectedItem as base_ProductModel;
-
-            // Load photo collection
-            LoadPhotoCollection(SelectedProduct);
-
-            // Load product store collection
-            LoadProductStoreCollection(SelectedProduct, Define.StoreCode);
-
-            // Load product UOM collection
-            LoadProductUOMCollection(SelectedProduct, Define.StoreCode);
-
-            // Load product group collection
-            LoadProductGroupCollection(SelectedProduct);
-
-            // Load vendor product collection
-            LoadVendorProductCollection(SelectedProduct);
-
-            PopupDuplicateItemViewModel viewModel = new PopupDuplicateItemViewModel(SelectedProduct, DepartmentCollection, CategoryCollection);
-            bool? result = _dialogService.ShowDialog<PopupDuplicateItemView>(_ownerViewModel, viewModel, "Duplicate Item");
-
-            SelectedProduct = null;
-
-            if (result.HasValue && result.Value)
+            try
             {
-                if (viewModel.IsChangeInformation)
-                {
-                    // Push new product to collection
-                    ProductCollection.Insert(0, viewModel.DuplicateProduct);
+                // Convert param to DataGridControl
+                DataGridControl dataGridControl = param as DataGridControl;
 
-                    // Update total products
-                    TotalProducts++;
-                }
-                else
+                // Get selected item
+                SelectedProduct = dataGridControl.SelectedItem as base_ProductModel;
+
+                // Load photo collection
+                LoadPhotoCollection(SelectedProduct);
+
+                // Load product store collection
+                LoadProductStoreCollection(SelectedProduct, Define.StoreCode);
+
+                // Load product UOM collection
+                LoadProductUOMCollection(SelectedProduct, Define.StoreCode);
+
+                // Load product group collection
+                LoadProductGroupCollection(SelectedProduct);
+
+                // Load vendor product collection
+                LoadVendorProductCollection(SelectedProduct);
+
+                PopupDuplicateItemViewModel viewModel = new PopupDuplicateItemViewModel(SelectedProduct, DepartmentCollection, CategoryCollection);
+                bool? result = _dialogService.ShowDialog<PopupDuplicateItemView>(_ownerViewModel, viewModel, "Duplicate Item");
+
+                SelectedProduct = null;
+
+                if (result.HasValue && result.Value)
                 {
-                    // Show detail selected product
-                    OnDoubleClickViewCommandExecute(dataGridControl.SelectedItem);
+                    if (viewModel.IsChangeInformation)
+                    {
+                        // Push new product to collection
+                        ProductCollection.Insert(0, viewModel.DuplicateProduct);
+
+                        // Update total products
+                        TotalProducts++;
+                    }
+                    else
+                    {
+                        // Show detail selected product
+                        OnDoubleClickViewCommandExecute(dataGridControl.SelectedItem);
+                    }
                 }
+            }
+            catch (Exception ex)
+            {
+                _log4net.Error(ex);
             }
         }
 
@@ -1501,7 +1565,7 @@ namespace CPC.POS.ViewModel
             if (dataGridControl == null)
                 return false;
 
-            return dataGridControl.SelectedItems.Count > 0 && AllowReceiveProduct;
+            return dataGridControl.SelectedItems.Count > 0 && UserPermissions.AllowReceiveProduct;
         }
 
         /// <summary>
@@ -1512,7 +1576,7 @@ namespace CPC.POS.ViewModel
             // Convert param to DataGridControl
             DataGridControl dataGridControl = param as DataGridControl;
 
-            (_ownerViewModel as MainViewModel).OpenViewExecute("PurchaseOrder", dataGridControl.SelectedItems.Cast<base_ProductModel>());
+            (_ownerViewModel as MainViewModel).OpenViewExecute("Purchase Order", dataGridControl.SelectedItems.Cast<base_ProductModel>());
         }
 
         #endregion
@@ -1536,7 +1600,7 @@ namespace CPC.POS.ViewModel
             if (dataGridControl == null)
                 return false;
 
-            return dataGridControl.SelectedItems.Count > 0 && AllowTransferProduct;
+            return dataGridControl.SelectedItems.Count > 0 && UserPermissions.AllowTransferProduct;
         }
 
         /// <summary>
@@ -1547,7 +1611,42 @@ namespace CPC.POS.ViewModel
             // Convert param to DataGridControl
             DataGridControl dataGridControl = param as DataGridControl;
 
-            (_ownerViewModel as MainViewModel).OpenViewExecute("TransferStock", dataGridControl.SelectedItems.Cast<base_ProductModel>());
+            (_ownerViewModel as MainViewModel).OpenViewExecute("Transfer Stock", dataGridControl.SelectedItems.Cast<base_ProductModel>());
+        }
+
+        #endregion
+
+        #region CountSheetCommand
+
+        /// <summary>
+        /// Gets the CountSheetCommand command.
+        /// </summary>
+        public ICommand CountSheetCommand { get; private set; }
+
+        /// <summary>
+        /// Method to check whether the CountSheetCommand command can be executed.
+        /// </summary>
+        /// <returns><c>true</c> if the command can be executed; otherwise <c>false</c></returns>
+        private bool OnCountSheetCommandCanExecute(object param)
+        {
+            // Convert param to DataGridControl
+            DataGridControl dataGridControl = param as DataGridControl;
+
+            if (dataGridControl == null)
+                return false;
+
+            return dataGridControl.SelectedItems.Count > 0;
+        }
+
+        /// <summary>
+        /// Method to invoke when the CountSheetCommand command is executed.
+        /// </summary>
+        private void OnCountSheetCommandExecute(object param)
+        {
+            // Convert param to DataGridControl
+            DataGridControl dataGridControl = param as DataGridControl;
+
+            (_ownerViewModel as MainViewModel).OpenViewExecute("Count Sheet", dataGridControl.SelectedItems.Cast<base_ProductModel>());
         }
 
         #endregion
@@ -1612,17 +1711,24 @@ namespace CPC.POS.ViewModel
             MessageBoxResult msgResult = Xceed.Wpf.Toolkit.MessageBox.Show("Do you want to delete?", "POS", MessageBoxButton.YesNo, MessageBoxImage.Warning);
             if (msgResult.Equals(MessageBoxResult.Yes))
             {
-                // Convert param to vendor product model
-                base_VendorProductModel vendorProductModel = param as base_VendorProductModel;
+                try
+                {
+                    // Convert param to vendor product model
+                    base_VendorProductModel vendorProductModel = param as base_VendorProductModel;
 
-                // Remove vendor product from collection
-                SelectedProduct.VendorProductCollection.Remove(vendorProductModel);
+                    // Remove vendor product from collection
+                    SelectedProduct.VendorProductCollection.Remove(vendorProductModel);
 
-                // Get vendor item
-                base_GuestModel vendorItem = ProductVendorCollection.SingleOrDefault(x => x.Resource.Value.ToString().Equals(vendorProductModel.VendorResource));
+                    // Get vendor item
+                    base_GuestModel vendorItem = ProductVendorCollection.SingleOrDefault(x => x.Resource.Value.ToString().Equals(vendorProductModel.VendorResource));
 
-                // Visible vendor item
-                vendorItem.IsChecked = false;
+                    // Visible vendor item
+                    vendorItem.IsChecked = false;
+                }
+                catch (Exception ex)
+                {
+                    _log4net.Error(ex);
+                }
             }
         }
 
@@ -1656,47 +1762,54 @@ namespace CPC.POS.ViewModel
             bool? result = _dialogService.ShowDialog<PopupBuildItemGroupView>(_ownerViewModel, viewModel, "Build Item Group");
             if (result.HasValue && result.Value)
             {
-                SelectedProduct.ProductName = viewModel.SelectedProduct.ProductName;
-                SelectedProduct.Attribute = viewModel.SelectedProduct.Attribute;
-                SelectedProduct.Size = viewModel.SelectedProduct.Size;
-                SelectedProduct.RegularPrice = viewModel.SelectedProduct.RegularPrice;
-
-                if (viewModel.SelectedProduct.ProductGroupCollection.DeletedItems != null)
+                try
                 {
-                    foreach (base_ProductGroupModel productGroupItem in viewModel.SelectedProduct.ProductGroupCollection.DeletedItems)
+                    SelectedProduct.ProductName = viewModel.SelectedProduct.ProductName;
+                    SelectedProduct.Attribute = viewModel.SelectedProduct.Attribute;
+                    SelectedProduct.Size = viewModel.SelectedProduct.Size;
+                    SelectedProduct.RegularPrice = viewModel.SelectedProduct.RegularPrice;
+
+                    if (viewModel.SelectedProduct.ProductGroupCollection.DeletedItems != null)
+                    {
+                        foreach (base_ProductGroupModel productGroupItem in viewModel.SelectedProduct.ProductGroupCollection.DeletedItems)
+                        {
+                            // Get deleted product group
+                            base_ProductGroupModel productGroupModel = SelectedProduct.ProductGroupCollection.
+                                SingleOrDefault(x => x.Resource.Equals(productGroupItem.Resource));
+
+                            // Remove from product group collection
+                            SelectedProduct.ProductGroupCollection.Remove(productGroupModel);
+                        }
+
+                        viewModel.SelectedProduct.ProductGroupCollection.DeletedItems.Clear();
+                    }
+
+                    foreach (base_ProductGroupModel productGroupItem in viewModel.SelectedProduct.ProductGroupCollection)
                     {
                         // Get deleted product group
                         base_ProductGroupModel productGroupModel = SelectedProduct.ProductGroupCollection.
                             SingleOrDefault(x => x.Resource.Equals(productGroupItem.Resource));
 
-                        // Remove from product group collection
-                        SelectedProduct.ProductGroupCollection.Remove(productGroupModel);
+                        if (productGroupModel == null)
+                        {
+                            // Add new sub product to collection
+                            SelectedProduct.ProductGroupCollection.Add(productGroupItem);
+                        }
+                        else
+                        {
+                            // Update product group
+                            productGroupModel.RegularPrice = productGroupItem.RegularPrice;
+                            productGroupModel.Quantity = productGroupItem.Quantity;
+                            productGroupModel.UOMId = productGroupItem.UOMId;
+                            productGroupModel.UOM = productGroupItem.UOM;
+                            productGroupModel.Amount = productGroupItem.Amount;
+                            productGroupModel.OnHandQty = productGroupItem.OnHandQty;
+                        }
                     }
-
-                    viewModel.SelectedProduct.ProductGroupCollection.DeletedItems.Clear();
                 }
-
-                foreach (base_ProductGroupModel productGroupItem in viewModel.SelectedProduct.ProductGroupCollection)
+                catch (Exception ex)
                 {
-                    // Get deleted product group
-                    base_ProductGroupModel productGroupModel = SelectedProduct.ProductGroupCollection.
-                        SingleOrDefault(x => x.Resource.Equals(productGroupItem.Resource));
-
-                    if (productGroupModel == null)
-                    {
-                        // Add new sub product to collection
-                        SelectedProduct.ProductGroupCollection.Add(productGroupItem);
-                    }
-                    else
-                    {
-                        // Update product group
-                        productGroupModel.RegularPrice = productGroupItem.RegularPrice;
-                        productGroupModel.Quantity = productGroupItem.Quantity;
-                        productGroupModel.UOMId = productGroupItem.UOMId;
-                        productGroupModel.UOM = productGroupItem.UOM;
-                        productGroupModel.Amount = productGroupItem.Amount;
-                        productGroupModel.OnHandQty = productGroupItem.OnHandQty;
-                    }
+                    _log4net.Error(ex);
                 }
             }
         }
@@ -1744,65 +1857,72 @@ namespace CPC.POS.ViewModel
         /// </summary>
         private void LoadStaticData()
         {
-            // Load ComboBox ItemsSource
-            // Load department, category and brand list
-            if (DepartmentCollection == null)
+            try
             {
-                IEnumerable<base_DepartmentModel> departments = _departmentRepository.
-                    GetAll(x => (x.IsActived.HasValue && x.IsActived.Value)).
-                    OrderBy(x => x.Name).Select(x => new base_DepartmentModel(x, false));
-
-                DepartmentCollection = new ObservableCollection<base_DepartmentModel>(departments.Where(x => x.LevelId == 0));
-                CategoryCollection = new ObservableCollection<base_DepartmentModel>(departments.Where(x => x.LevelId == 1));
-                BrandCollection = new ObservableCollection<base_DepartmentModel>(departments.Where(x => x.LevelId == 2));
-
-                // Initial category and brand collection view
-                _categoryCollectionView = CollectionViewSource.GetDefaultView(CategoryCollection);
-                _brandCollectionView = CollectionViewSource.GetDefaultView(BrandCollection);
-            }
-
-            // Load vendor list
-            if (VendorCollection == null)
-            {
-                string vendorType = MarkType.Vendor.ToDescription();
-                VendorCollection = new ObservableCollection<base_GuestModel>(_guestRepository.
-                    GetAll(x => x.Mark.Equals(vendorType) && x.IsActived && !x.IsPurged).
-                    OrderBy(x => x.Company).
-                    Select(x => new base_GuestModel(x, false)));
-
-                // Load product vendor collection
-                ProductVendorCollection = new ObservableCollection<base_GuestModel>(VendorCollection.CloneList());
-            }
-
-            // Load UOM list
-            if (UOMList == null)
-            {
-                UOMList = new ObservableCollection<CheckBoxItemModel>(_uomRepository.GetIQueryable(x => x.IsActived).
-                        OrderBy(x => x.Name).Select(x => new CheckBoxItemModel { Value = x.Id, Text = x.Name }));
-                UOMList.Insert(0, new CheckBoxItemModel { Value = 0, Text = string.Empty });
-            }
-
-            // Load sale tax location list
-            if (SaleTaxLocationList == null)
-            {
-                var taxLocationPrimary = _taxLocationRepository.Get(x => x.ParentId == 0 && x.IsPrimary);
-                if (taxLocationPrimary != null)
+                // Load ComboBox ItemsSource
+                // Load department, category and brand list
+                if (DepartmentCollection == null)
                 {
-                    SaleTaxLocationList = new List<string>(_taxLocationRepository.
-                        GetIQueryable(x => x.ParentId > 0 && x.ParentId.Equals(taxLocationPrimary.Id)).
-                        OrderBy(x => x.TaxCode).
-                        Select(x => x.TaxCode));
+                    IEnumerable<base_DepartmentModel> departments = _departmentRepository.
+                        GetAll(x => (x.IsActived.HasValue && x.IsActived.Value)).
+                        OrderBy(x => x.Name).Select(x => new base_DepartmentModel(x, false));
+
+                    DepartmentCollection = new ObservableCollection<base_DepartmentModel>(departments.Where(x => x.LevelId == 0));
+                    CategoryCollection = new ObservableCollection<base_DepartmentModel>(departments.Where(x => x.LevelId == 1));
+                    BrandCollection = new ObservableCollection<base_DepartmentModel>(departments.Where(x => x.LevelId == 2));
+
+                    // Initial category and brand collection view
+                    _categoryCollectionView = CollectionViewSource.GetDefaultView(CategoryCollection);
+                    _brandCollectionView = CollectionViewSource.GetDefaultView(BrandCollection);
                 }
+
+                // Load vendor list
+                if (VendorCollection == null)
+                {
+                    string vendorType = MarkType.Vendor.ToDescription();
+                    VendorCollection = new ObservableCollection<base_GuestModel>(_guestRepository.
+                        GetAll(x => x.Mark.Equals(vendorType) && x.IsActived && !x.IsPurged).
+                        OrderBy(x => x.Company).
+                        Select(x => new base_GuestModel(x, false)));
+
+                    // Load product vendor collection
+                    ProductVendorCollection = new ObservableCollection<base_GuestModel>(VendorCollection.CloneList());
+                }
+
+                // Load UOM list
+                if (UOMList == null)
+                {
+                    UOMList = new ObservableCollection<CheckBoxItemModel>(_uomRepository.GetIQueryable(x => x.IsActived).
+                            OrderBy(x => x.Name).Select(x => new CheckBoxItemModel { Value = x.Id, Text = x.Name }));
+                    UOMList.Insert(0, new CheckBoxItemModel { Value = 0, Text = string.Empty });
+                }
+
+                // Load sale tax location list
+                if (SaleTaxLocationList == null)
+                {
+                    var taxLocationPrimary = _taxLocationRepository.Get(x => x.ParentId == 0 && x.IsPrimary);
+                    if (taxLocationPrimary != null)
+                    {
+                        SaleTaxLocationList = new List<string>(_taxLocationRepository.
+                            GetIQueryable(x => x.ParentId > 0 && x.ParentId.Equals(taxLocationPrimary.Id)).
+                            OrderBy(x => x.TaxCode).
+                            Select(x => x.TaxCode));
+                    }
+                }
+
+                // Load PriceSchemas
+                LoadPriceSchemas();
+
+                // Load ItemType
+                ItemTypeList = new ObservableCollection<ComboItem>(Common.ItemTypes.Where(x => x.Flag));
+
+                // Load WarrantyType
+                WarrantyTypeAll = new ObservableCollection<ComboItem>(Common.WarrantyTypeAll);
             }
-
-            // Load PriceSchemas
-            LoadPriceSchemas();
-
-            // Load ItemType
-            ItemTypeList = new ObservableCollection<ComboItem>(Common.ItemTypes.Where(x => x.Flag));
-
-            // Load WarrantyType
-            WarrantyTypeAll = new ObservableCollection<ComboItem>(Common.WarrantyTypeAll);
+            catch (Exception ex)
+            {
+                _log4net.Error(ex);
+            }
         }
 
         /// <summary>
@@ -1831,6 +1951,7 @@ namespace CPC.POS.ViewModel
             DuplicateCommand = new RelayCommand<object>(OnDuplicateCommandExecute, OnDuplicateCommandCanExecute);
             ReceiveCommand = new RelayCommand<object>(OnReceiveCommandExecute, OnReceiveCommandCanExecute);
             TransferCommand = new RelayCommand<object>(OnTransferCommandExecute, OnTransferCommandCanExecute);
+            CountSheetCommand = new RelayCommand<object>(OnCountSheetCommandExecute, OnCountSheetCommandCanExecute);
             ViewVendorDetailCommand = new RelayCommand<object>(OnViewVendorDetailCommandExecute, OnViewVendorDetailCommandCanExecute);
             DeleteVendorCommand = new RelayCommand<object>(OnDeleteVendorCommandExecute, OnDeleteVendorCommandCanExecute);
             BuildItemsGroupCommand = new RelayCommand(OnBuildItemsGroupCommandExecute, OnBuildItemsGroupCommandCanExecute);
@@ -2064,7 +2185,7 @@ namespace CPC.POS.ViewModel
 
                     // Parse keyword to Decimal
                     decimal decimalKeyword = 0;
-                    if (decimal.TryParse(keyword, NumberStyles.Number, Define.ConverterCulture.NumberFormat, out decimalKeyword))
+                    if (decimal.TryParse(keyword, NumberStyles.Number, Define.ConverterCulture.NumberFormat, out decimalKeyword) && decimalKeyword != 0)
                     {
                         if (ColumnCollection.Contains(SearchOptions.RegularPrice.ToString()))
                         {
@@ -2145,24 +2266,31 @@ namespace CPC.POS.ViewModel
 
             bgWorker.DoWork += (sender, e) =>
             {
-                // Turn on BusyIndicator
-                if (Define.DisplayLoading)
-                    IsBusy = true;
-
-                if (refreshData)
+                try
                 {
-                    // Refresh allow multi UOM
-                    OnPropertyChanged(() => AllowMutilUOM);
+                    // Turn on BusyIndicator
+                    if (Define.DisplayLoading)
+                        IsBusy = true;
+
+                    if (refreshData)
+                    {
+                        // Refresh allow multi UOM
+                        OnPropertyChanged(() => AllowMutilUOM);
+                    }
+
+                    // Get total products with condition in predicate
+                    TotalProducts = _productRepository.GetIQueryable(predicate).Count();
+
+                    // Get data with range
+                    IList<base_Product> products = _productRepository.GetRangeDescending(currentIndex, NumberOfDisplayItems, x => x.DateCreated, predicate);
+                    foreach (base_Product product in products)
+                    {
+                        bgWorker.ReportProgress(0, product);
+                    }
                 }
-
-                // Get total products with condition in predicate
-                TotalProducts = _productRepository.GetIQueryable(predicate).Count();
-
-                // Get data with range
-                IList<base_Product> products = _productRepository.GetRangeDescending(currentIndex, NumberOfDisplayItems, x => x.DateCreated, predicate);
-                foreach (base_Product product in products)
+                catch (Exception ex)
                 {
-                    bgWorker.ReportProgress(0, product);
+                    _log4net.Error(ex);
                 }
             };
 
@@ -2236,62 +2364,69 @@ namespace CPC.POS.ViewModel
         /// </summary>
         private void LoadPriceSchemas()
         {
-            // Initial PriceSchema list
-            PriceSchemaList = new List<PriceModel>();
-
-            using (Stream stream = Common.LoadCurrentLanguagePackage())
+            try
             {
-                if (stream == null)
-                    return;
+                // Initial PriceSchema list
+                PriceSchemaList = new List<PriceModel>();
 
-                XDocument xDocument = XDocument.Load(stream);
-
-                string comboElementName = "combo";
-                string keyAttributeName = "key";
-                string keyElementName = "PriceSchemas";
-                string valueElementName = "value";
-                string nameElementName = "name";
-                string markdownElementName = "markDown";
-
-                // Get all elements type is combo
-                IEnumerable<XElement> xCombos = xDocument.Root.Elements(comboElementName);
-
-                if (xCombos != null)
+                using (Stream stream = Common.LoadCurrentLanguagePackage())
                 {
-                    // Get element have attribute is key and value is PriceSchemas
-                    XElement xPriceSchemas = xCombos.SingleOrDefault(
-                        x => x.Attribute(keyAttributeName) != null && x.Attribute(keyAttributeName).Value.Equals(keyElementName));
+                    if (stream == null)
+                        return;
 
-                    if (xPriceSchemas != null)
+                    XDocument xDocument = XDocument.Load(stream);
+
+                    string comboElementName = "combo";
+                    string keyAttributeName = "key";
+                    string keyElementName = "PriceSchemas";
+                    string valueElementName = "value";
+                    string nameElementName = "name";
+                    string markdownElementName = "markDown";
+
+                    // Get all elements type is combo
+                    IEnumerable<XElement> xCombos = xDocument.Root.Elements(comboElementName);
+
+                    if (xCombos != null)
                     {
-                        foreach (XElement xPriceSchema in xPriceSchemas.Elements())
+                        // Get element have attribute is key and value is PriceSchemas
+                        XElement xPriceSchemas = xCombos.SingleOrDefault(
+                            x => x.Attribute(keyAttributeName) != null && x.Attribute(keyAttributeName).Value.Equals(keyElementName));
+
+                        if (xPriceSchemas != null)
                         {
-                            // Create new price model
-                            PriceModel priceModel = new PriceModel();
+                            foreach (XElement xPriceSchema in xPriceSchemas.Elements())
+                            {
+                                // Create new price model
+                                PriceModel priceModel = new PriceModel();
 
-                            // Set ID value
-                            short value = 0;
-                            XElement xValue = xPriceSchema.Element(valueElementName);
-                            if (xValue != null && Int16.TryParse(xValue.Value, out value))
-                                priceModel.Id = Int16.Parse(xValue.Value);
+                                // Set ID value
+                                short value = 0;
+                                XElement xValue = xPriceSchema.Element(valueElementName);
+                                if (xValue != null && Int16.TryParse(xValue.Value, out value))
+                                    priceModel.Id = Int16.Parse(xValue.Value);
 
-                            // Set name value
-                            XElement xName = xPriceSchema.Element(nameElementName);
-                            if (xName != null)
-                                priceModel.Name = xName.Value;
+                                // Set name value
+                                XElement xName = xPriceSchema.Element(nameElementName);
+                                if (xName != null)
+                                    priceModel.Name = xName.Value;
 
-                            // Set markdown value
-                            decimal markdown = 0;
-                            XElement xMarkdown = xPriceSchema.Element(markdownElementName);
-                            if (xMarkdown != null && decimal.TryParse(xMarkdown.Value, out markdown))
-                                priceModel.MarkDown = decimal.Parse(xMarkdown.Value);
+                                // Set markdown value
+                                decimal markdown = 0;
+                                XElement xMarkdown = xPriceSchema.Element(markdownElementName);
+                                if (xMarkdown != null && decimal.TryParse(xMarkdown.Value, out markdown))
+                                    priceModel.MarkDown = decimal.Parse(xMarkdown.Value);
 
-                            if (!Define.CONFIGURATION.DefaultPriceSchema.HasValue || !priceModel.Id.Equals(Define.CONFIGURATION.DefaultPriceSchema.Value))
-                                // Push price model to list
-                                PriceSchemaList.Add(priceModel);
+                                if (!Define.CONFIGURATION.DefaultPriceSchema.HasValue || !priceModel.Id.Equals(Define.CONFIGURATION.DefaultPriceSchema.Value))
+                                    // Push price model to list
+                                    PriceSchemaList.Add(priceModel);
+                            }
                         }
                     }
                 }
+            }
+            catch (Exception ex)
+            {
+                _log4net.Error(ex);
             }
         }
 
@@ -2301,22 +2436,29 @@ namespace CPC.POS.ViewModel
         /// <param name="productModel"></param>
         private void LoadPhotoCollection(base_ProductModel productModel)
         {
-            if (productModel.PhotoCollection == null)
+            try
             {
-                // Get product resource
-                string resource = productModel.Resource.ToString();
+                if (productModel.PhotoCollection == null)
+                {
+                    // Get product resource
+                    string resource = productModel.Resource.ToString();
 
-                // Get all photo from database
-                productModel.PhotoCollection = new CollectionBase<base_ResourcePhotoModel>(
-                    _photoRepository.GetAll(x => x.Resource.Equals(resource)).
-                    Select(x => new base_ResourcePhotoModel(x)
-                    {
-                        ImagePath = Path.Combine(IMG_PRODUCT_DIRECTORY, productModel.Code, x.LargePhotoFilename),
-                        IsDirty = false
-                    }));
+                    // Get all photo from database
+                    productModel.PhotoCollection = new CollectionBase<base_ResourcePhotoModel>(
+                        _photoRepository.GetAll(x => x.Resource.Equals(resource)).
+                        Select(x => new base_ResourcePhotoModel(x)
+                        {
+                            ImagePath = Path.Combine(IMG_PRODUCT_DIRECTORY, productModel.Code, x.LargePhotoFilename),
+                            IsDirty = false
+                        }));
 
-                // Set default photo
-                productModel.PhotoDefault = productModel.PhotoCollection.FirstOrDefault();
+                    // Set default photo
+                    productModel.PhotoDefault = productModel.PhotoCollection.FirstOrDefault();
+                }
+            }
+            catch (Exception ex)
+            {
+                _log4net.Error(ex);
             }
         }
 
@@ -2326,36 +2468,43 @@ namespace CPC.POS.ViewModel
         /// <param name="productModel"></param>
         private void LoadAttributeAndSize(base_ProductModel productModel)
         {
-            if (productModel.ProductCollection == null)
+            try
             {
-                // Initial product collection
-                productModel.ProductCollection = new CollectionBase<base_ProductModel>();
-
-                // Initial predicate
-                Expression<Func<base_Product, bool>> predicate = PredicateBuilder.True<base_Product>();
-
-                // Default condition
-                predicate = predicate.And(x => x.IsPurge == false && !x.Code.Equals(productModel.Code));
-                predicate = predicate.And(x => x.GroupAttribute == productModel.GroupAttribute);
-
-                // Load product collection that have same attribute group
-                IEnumerable<base_Product> products = _productRepository.GetAll(predicate);
-                foreach (base_Product product in products)
+                if (productModel.ProductCollection == null)
                 {
-                    // Create new product model
-                    base_ProductModel productItem = new base_ProductModel(product);
+                    // Initial product collection
+                    productModel.ProductCollection = new CollectionBase<base_ProductModel>();
 
-                    // Load product store collection
-                    LoadProductStoreCollection(productItem, Define.StoreCode);
+                    // Initial predicate
+                    Expression<Func<base_Product, bool>> predicate = PredicateBuilder.True<base_Product>();
 
-                    // Load product UOM collection
-                    LoadProductUOMCollection(productItem, Define.StoreCode);
+                    // Default condition
+                    predicate = predicate.And(x => x.IsPurge == false && !x.Code.Equals(productModel.Code));
+                    predicate = predicate.And(x => x.GroupAttribute == productModel.GroupAttribute);
 
-                    // Add new product to collection
-                    productModel.ProductCollection.Add(productItem);
+                    // Load product collection that have same attribute group
+                    IEnumerable<base_Product> products = _productRepository.GetAll(predicate);
+                    foreach (base_Product product in products)
+                    {
+                        // Create new product model
+                        base_ProductModel productItem = new base_ProductModel(product);
+
+                        // Load product store collection
+                        LoadProductStoreCollection(productItem, Define.StoreCode);
+
+                        // Load product UOM collection
+                        LoadProductUOMCollection(productItem, Define.StoreCode);
+
+                        // Add new product to collection
+                        productModel.ProductCollection.Add(productItem);
+                    }
+
+                    productModel.ProductCollection.Insert(0, productModel);
                 }
-
-                productModel.ProductCollection.Insert(0, productModel);
+            }
+            catch (Exception ex)
+            {
+                _log4net.Error(ex);
             }
         }
 
@@ -2365,40 +2514,47 @@ namespace CPC.POS.ViewModel
         /// <param name="productModel"></param>
         private void LoadProductStoreCollection(base_ProductModel productModel, int storeCode)
         {
-            if (productModel.ProductStoreCollection == null)
+            try
             {
-                productModel.ProductStoreCollection = new CollectionBase<base_ProductStoreModel>(
-                    productModel.base_Product.base_ProductStore.Select(x => new base_ProductStoreModel(x)
+                if (productModel.ProductStoreCollection == null)
+                {
+                    productModel.ProductStoreCollection = new CollectionBase<base_ProductStoreModel>(
+                        productModel.base_Product.base_ProductStore.Select(x => new base_ProductStoreModel(x)
+                        {
+                            OldQuantity = x.QuantityOnHand,
+                            ProductUOMCollection = new CollectionBase<base_ProductUOMModel>(x.base_ProductUOM.Select(y => new base_ProductUOMModel(y)))
+                        }));
+
+                    // Get product store default by store code
+                    base_ProductStoreModel productStoreDefault = productModel.ProductStoreCollection.SingleOrDefault(x => x.StoreCode.Equals(storeCode));
+
+                    if (productStoreDefault == null)
                     {
-                        OldQuantity = x.QuantityOnHand,
-                        ProductUOMCollection = new CollectionBase<base_ProductUOMModel>(x.base_ProductUOM.Select(y => new base_ProductUOMModel(y)))
-                    }));
+                        // Create new product store default
+                        productStoreDefault = new base_ProductStoreModel { StoreCode = storeCode };
+                        productStoreDefault.Resource = Guid.NewGuid().ToString();
+                        productStoreDefault.ProductResource = productModel.Resource.ToString();
 
-                // Get product store default by store code
-                base_ProductStoreModel productStoreDefault = productModel.ProductStoreCollection.SingleOrDefault(x => x.StoreCode.Equals(storeCode));
+                        // Add new product store to collection
+                        productModel.ProductStoreCollection.Add(productStoreDefault);
+                    }
 
-                if (productStoreDefault == null)
-                {
-                    // Create new product store default
-                    productStoreDefault = new base_ProductStoreModel { StoreCode = storeCode };
-                    productStoreDefault.Resource = Guid.NewGuid().ToString();
-                    productStoreDefault.ProductResource = productModel.Resource.ToString();
+                    if (productModel.ProductStoreDefault == null)
+                    {
+                        // Update product store default
+                        productModel.ProductStoreDefault = productStoreDefault;
+                    }
 
-                    // Add new product store to collection
-                    productModel.ProductStoreCollection.Add(productStoreDefault);
+                    // Get quantity for product
+                    productModel.OnHandStore = productModel.ProductStoreDefault.QuantityOnHand;
+
+                    // Update available quantity
+                    //productModel.ProductStoreDefault.UpdateAvailableQuantity();
                 }
-
-                if (productModel.ProductStoreDefault == null)
-                {
-                    // Update product store default
-                    productModel.ProductStoreDefault = productStoreDefault;
-                }
-
-                // Get quantity for product
-                productModel.OnHandStore = productModel.ProductStoreDefault.QuantityOnHand;
-
-                // Update available quantity
-                //productModel.ProductStoreDefault.UpdateAvailableQuantity();
+            }
+            catch (Exception ex)
+            {
+                _log4net.Error(ex);
             }
         }
 
@@ -2407,62 +2563,69 @@ namespace CPC.POS.ViewModel
         /// </summary>
         private void LoadProductUOMCollection(base_ProductModel productModel, int storeCode)
         {
-            if (IsAllowMutilUOM(productModel) && productModel.ProductUOMCollection == null)
+            try
             {
-                if (productModel.ProductStoreDefault != null)
+                if (IsAllowMutilUOM(productModel) && productModel.ProductUOMCollection == null)
                 {
-                    // Get product UOM from database and raise properties
-                    List<base_ProductUOMModel> productUOMList = new List<base_ProductUOMModel>();
-                    if (!productModel.ProductStoreDefault.IsNew)
-                        foreach (base_ProductUOM productUOM in productModel.ProductStoreDefault.base_ProductStore.base_ProductUOM)
+                    if (productModel.ProductStoreDefault != null)
+                    {
+                        // Get product UOM from database and raise properties
+                        List<base_ProductUOMModel> productUOMList = new List<base_ProductUOMModel>();
+                        if (!productModel.ProductStoreDefault.IsNew)
+                            foreach (base_ProductUOM productUOM in productModel.ProductStoreDefault.base_ProductStore.base_ProductUOM)
+                            {
+                                base_ProductUOMModel productUOMModel = new base_ProductUOMModel(productUOM, true);
+
+                                // Set permission edit product UOM detail
+                                productUOMModel.AllowEditProductUOMDetail = productUOMModel.UOMId != 0 && UserPermissions.AllowAccessProductPermission;
+
+                                productUOMModel.PropertyChanged += new PropertyChangedEventHandler(ProductUOMModel_PropertyChanged);
+                                productUOMList.Add(productUOMModel);
+
+                                // Turn off IsDirty & IsNew
+                                productUOMModel.EndUpdate();
+                            }
+
+                        // Get selected category 
+                        base_DepartmentModel categoryItem = _categoryCollectionView.Cast<base_DepartmentModel>().
+                            FirstOrDefault(x => x.Id.Equals(productModel.ProductCategoryId));
+
+                        // Add default product UOM model to collection
+                        int deltaProductUOM = 3 - productUOMList.Count;
+                        for (int i = 0; i < deltaProductUOM; i++)
                         {
-                            base_ProductUOMModel productUOMModel = new base_ProductUOMModel(productUOM, true);
+                            // Create new a product UOM model
+                            base_ProductUOMModel productUOMModel = new base_ProductUOMModel();
+                            productUOMModel.Resource = Guid.NewGuid().ToString();
+                            productUOMModel.ProductStoreResource = productModel.ProductStoreDefault.Resource;
 
-                            // Set permission edit product UOM detail
-                            productUOMModel.AllowEditProductUOMDetail = productUOMModel.UOMId != 0 && AllowAccessPermission;
+                            // Get default markdown
+                            GetDefaultMarkdown(productUOMModel);
 
+                            if (categoryItem != null)
+                            {
+                                // Set default margin and markup value
+                                productUOMModel.MarginPercent = categoryItem.Margin;
+                                productUOMModel.MarkupPercent = categoryItem.MarkUp;
+                            }
+
+                            // Register property changed event
                             productUOMModel.PropertyChanged += new PropertyChangedEventHandler(ProductUOMModel_PropertyChanged);
+
+                            // Add default product UOM to collection
                             productUOMList.Add(productUOMModel);
 
                             // Turn off IsDirty & IsNew
                             productUOMModel.EndUpdate();
                         }
 
-                    // Get selected category 
-                    base_DepartmentModel categoryItem = _categoryCollectionView.Cast<base_DepartmentModel>().
-                        FirstOrDefault(x => x.Id.Equals(productModel.ProductCategoryId));
-
-                    // Add default product UOM model to collection
-                    int deltaProductUOM = 3 - productUOMList.Count;
-                    for (int i = 0; i < deltaProductUOM; i++)
-                    {
-                        // Create new a product UOM model
-                        base_ProductUOMModel productUOMModel = new base_ProductUOMModel();
-                        productUOMModel.Resource = Guid.NewGuid().ToString();
-                        productUOMModel.ProductStoreResource = productModel.ProductStoreDefault.Resource;
-
-                        // Get default markdown
-                        GetDefaultMarkdown(productUOMModel);
-
-                        if (categoryItem != null)
-                        {
-                            // Set default margin and markup value
-                            productUOMModel.MarginPercent = categoryItem.Margin;
-                            productUOMModel.MarkupPercent = categoryItem.MarkUp;
-                        }
-
-                        // Register property changed event
-                        productUOMModel.PropertyChanged += new PropertyChangedEventHandler(ProductUOMModel_PropertyChanged);
-
-                        // Add default product UOM to collection
-                        productUOMList.Add(productUOMModel);
-
-                        // Turn off IsDirty & IsNew
-                        productUOMModel.EndUpdate();
+                        productModel.ProductUOMCollection = new CollectionBase<base_ProductUOMModel>(productUOMList);
                     }
-
-                    productModel.ProductUOMCollection = new CollectionBase<base_ProductUOMModel>(productUOMList);
                 }
+            }
+            catch (Exception ex)
+            {
+                _log4net.Error(ex);
             }
         }
 
@@ -2473,23 +2636,30 @@ namespace CPC.POS.ViewModel
         /// <param name="storeCode"></param>
         private void LoadSaleOrderCollection(base_ProductModel productModel, int storeCode)
         {
-            if (productModel.SaleOrderCollection == null)
+            try
             {
-                string productResource = productModel.Resource.ToString();
-
-                // Get all sale order that sold this product
-                productModel.SaleOrderCollection = new ObservableCollection<base_SaleOrderModel>(_saleOrderDetailRepository.
-                    GetAll(x => x.ProductResource.Equals(productResource) && x.base_SaleOrder.StoreCode.Equals(storeCode)).
-                    OrderByDescending(x => x.base_SaleOrder.DateCreated).
-                    Select(x => new base_SaleOrderModel(x.base_SaleOrder)));
-
-                // Get total sale order for this product
-                TotalSaleOrder = new base_SaleOrderModel
+                if (productModel.SaleOrderCollection == null)
                 {
-                    Total = productModel.SaleOrderCollection.Sum(x => x.Total),
-                    Paid = productModel.SaleOrderCollection.Sum(x => x.Paid),
-                    Balance = productModel.SaleOrderCollection.Sum(x => x.Balance)
-                };
+                    string productResource = productModel.Resource.ToString();
+
+                    // Get all sale order that sold this product
+                    productModel.SaleOrderCollection = new ObservableCollection<base_SaleOrderModel>(_saleOrderDetailRepository.
+                        GetAll(x => x.ProductResource.Equals(productResource) && x.base_SaleOrder.StoreCode.Equals(storeCode)).
+                        OrderByDescending(x => x.base_SaleOrder.DateCreated).
+                        Select(x => new base_SaleOrderModel(x.base_SaleOrder)));
+
+                    // Get total sale order for this product
+                    TotalSaleOrder = new base_SaleOrderModel
+                    {
+                        Total = productModel.SaleOrderCollection.Sum(x => x.Total),
+                        Paid = productModel.SaleOrderCollection.Sum(x => x.Paid),
+                        Balance = productModel.SaleOrderCollection.Sum(x => x.Balance)
+                    };
+                }
+            }
+            catch (Exception ex)
+            {
+                _log4net.Error(ex);
             }
         }
 
@@ -2500,23 +2670,30 @@ namespace CPC.POS.ViewModel
         /// <param name="storeCode"></param>
         private void LoadPurchaseOrderCollection(base_ProductModel productModel, int storeCode)
         {
-            if (productModel.PurchaseOrderCollection == null)
+            try
             {
-                string productResource = productModel.Resource.ToString();
-
-                // Get all purchase order that sold this product
-                productModel.PurchaseOrderCollection = new ObservableCollection<base_PurchaseOrderModel>(_purchaseOrderDetailRepository.
-                    GetAll(x => x.ProductResource.Equals(productResource) && x.base_PurchaseOrder.StoreCode.Equals(storeCode)).
-                    OrderByDescending(x => x.base_PurchaseOrder.DateCreated).
-                    Select(x => new base_PurchaseOrderModel(x.base_PurchaseOrder)));
-
-                // Get total purchase order for this product
-                TotalPurchaseOrder = new base_PurchaseOrderModel
+                if (productModel.PurchaseOrderCollection == null)
                 {
-                    Total = productModel.PurchaseOrderCollection.Sum(x => x.Total),
-                    Paid = productModel.PurchaseOrderCollection.Sum(x => x.Paid),
-                    Balance = productModel.PurchaseOrderCollection.Sum(x => x.Balance)
-                };
+                    string productResource = productModel.Resource.ToString();
+
+                    // Get all purchase order that sold this product
+                    productModel.PurchaseOrderCollection = new ObservableCollection<base_PurchaseOrderModel>(_purchaseOrderDetailRepository.
+                        GetAll(x => x.ProductResource.Equals(productResource) && x.base_PurchaseOrder.StoreCode.Equals(storeCode)).
+                        OrderByDescending(x => x.base_PurchaseOrder.DateCreated).
+                        Select(x => new base_PurchaseOrderModel(x.base_PurchaseOrder)));
+
+                    // Get total purchase order for this product
+                    TotalPurchaseOrder = new base_PurchaseOrderModel
+                    {
+                        Total = productModel.PurchaseOrderCollection.Sum(x => x.Total),
+                        Paid = productModel.PurchaseOrderCollection.Sum(x => x.Paid),
+                        Balance = productModel.PurchaseOrderCollection.Sum(x => x.Balance)
+                    };
+                }
+            }
+            catch (Exception ex)
+            {
+                _log4net.Error(ex);
             }
         }
 
@@ -2810,47 +2987,54 @@ namespace CPC.POS.ViewModel
         /// <param name="productModel"></param>
         private void SaveNew(base_ProductModel productModel)
         {
-            // Set shift
-            productModel.Shift = Define.ShiftCode;
+            try
+            {
+                // Set shift
+                productModel.Shift = Define.ShiftCode;
 
-            // Map data from model to entity
-            productModel.ToEntity();
+                // Map data from model to entity
+                productModel.ToEntity();
 
-            // Save photo collection
-            SavePhotoCollection(productModel);
+                // Save photo collection
+                SavePhotoCollection(productModel);
 
-            // Save product store collection
-            SaveProductStoreCollection(productModel);
+                // Save product store collection
+                SaveProductStoreCollection(productModel);
 
-            // Save product UOM collection
-            SaveProductUOMCollection(productModel, Define.StoreCode);
+                // Save product UOM collection
+                SaveProductUOMCollection(productModel, Define.StoreCode);
 
-            // Save vendor product collection
-            SaveVendorProductCollection(productModel);
+                // Save vendor product collection
+                SaveVendorProductCollection(productModel);
 
-            // Add new product to repository
-            _productRepository.Add(SelectedProduct.base_Product);
+                // Add new product to repository
+                _productRepository.Add(SelectedProduct.base_Product);
 
-            // Accept changes
-            _productRepository.Commit();
+                // Accept changes
+                _productRepository.Commit();
 
-            // Update ID from entity to model
-            productModel.Id = productModel.base_Product.Id;
+                // Update ID from entity to model
+                productModel.Id = productModel.base_Product.Id;
 
-            // Update product store id
-            UpdateProductStoreID(productModel);
+                // Update product store id
+                UpdateProductStoreID(productModel);
 
-            // Update product UOM id
-            UpdateProductUOMID(productModel);
+                // Update product UOM id
+                UpdateProductUOMID(productModel);
 
-            // Update vendor product id
-            UpdateVendorProductID(productModel);
+                // Update vendor product id
+                UpdateVendorProductID(productModel);
 
-            // Push new product to collection
-            ProductCollection.Insert(0, productModel);
+                // Push new product to collection
+                ProductCollection.Insert(0, productModel);
 
-            // Update total products
-            TotalProducts++;
+                // Update total products
+                TotalProducts++;
+            }
+            catch (Exception ex)
+            {
+                _log4net.Error(ex);
+            }
         }
 
         /// <summary>
@@ -2858,48 +3042,55 @@ namespace CPC.POS.ViewModel
         /// </summary>
         private void SaveUpdate(base_ProductModel productModel)
         {
-            productModel.DateUpdated = DateTimeExt.Now;
-            if (Define.USER != null)
-                productModel.UserUpdated = Define.USER.LoginName;
+            try
+            {
+                productModel.DateUpdated = DateTimeExt.Now;
+                if (Define.USER != null)
+                    productModel.UserUpdated = Define.USER.LoginName;
 
-            // Save product store collection
-            SaveProductStoreCollection(productModel);
+                // Save product store collection
+                SaveProductStoreCollection(productModel);
 
-            // Map data from model to entity
-            productModel.ToEntity();
+                // Map data from model to entity
+                productModel.ToEntity();
 
-            // Save photo collection
-            SavePhotoCollection(productModel);
+                // Save photo collection
+                SavePhotoCollection(productModel);
 
-            // Save product collection have same group attribute
-            SaveAttributeAndSize(productModel);
+                // Save product collection have same group attribute
+                SaveAttributeAndSize(productModel);
 
-            // Save product UOM collection
-            SaveProductUOMCollection(productModel, Define.StoreCode);
+                // Save product UOM collection
+                SaveProductUOMCollection(productModel, Define.StoreCode);
 
-            // Save product group collection
-            SaveProductGroupCollection(productModel);
+                // Save product group collection
+                SaveProductGroupCollection(productModel);
 
-            // Save vendor product collection
-            SaveVendorProductCollection(productModel);
+                // Save vendor product collection
+                SaveVendorProductCollection(productModel);
 
-            // Accept changes
-            _productRepository.Commit();
+                // Accept changes
+                _productRepository.Commit();
 
-            // Update product store id
-            UpdateProductStoreID(productModel);
+                // Update product store id
+                UpdateProductStoreID(productModel);
 
-            // Update product UOM id
-            UpdateProductUOMID(productModel);
+                // Update product UOM id
+                UpdateProductUOMID(productModel);
 
-            // Update product id have same group attribute
-            UpdateAttributeAndSize(productModel);
+                // Update product id have same group attribute
+                UpdateAttributeAndSize(productModel);
 
-            // Update product group id
-            //UpdateProductGroupID(productModel);
+                // Update product group id
+                //UpdateProductGroupID(productModel);
 
-            // Update vendor product id
-            UpdateVendorProductID(productModel);
+                // Update vendor product id
+                UpdateVendorProductID(productModel);
+            }
+            catch (Exception ex)
+            {
+                _log4net.Error(ex);
+            }
         }
 
         /// <summary>
@@ -2907,43 +3098,50 @@ namespace CPC.POS.ViewModel
         /// </summary>
         private void SavePhotoCollection(base_ProductModel productModel)
         {
-            if (productModel.PhotoCollection != null)
+            try
             {
-                foreach (base_ResourcePhotoModel photoItem in productModel.PhotoCollection.DeletedItems)
+                if (productModel.PhotoCollection != null)
                 {
-                    // Delete photo from database
-                    _photoRepository.Delete(photoItem.base_ResourcePhoto);
+                    foreach (base_ResourcePhotoModel photoItem in productModel.PhotoCollection.DeletedItems)
+                    {
+                        // Delete photo from database
+                        _photoRepository.Delete(photoItem.base_ResourcePhoto);
+                    }
+
+                    // Clear deleted photos
+                    productModel.PhotoCollection.DeletedItems.Clear();
+
+                    foreach (base_ResourcePhotoModel photoModel in productModel.PhotoCollection.Where(x => x.IsDirty))
+                    {
+                        // Get photo filename by format
+                        string dateTime = DateTimeExt.Now.ToString(Define.GuestNoFormat);
+                        string guid = Guid.NewGuid().ToString().Substring(0, 8);
+                        string ext = new FileInfo(photoModel.ImagePath).Extension;
+
+                        // Rename photo
+                        photoModel.LargePhotoFilename = string.Format("{0}{1}{2}", dateTime, guid, ext);
+
+                        // Update resource photo
+                        if (string.IsNullOrWhiteSpace(photoModel.Resource))
+                            photoModel.Resource = productModel.Resource.ToString();
+
+                        // Map data from model to entity
+                        photoModel.ToEntity();
+
+                        if (photoModel.IsNew)
+                            _photoRepository.Add(photoModel.base_ResourcePhoto);
+
+                        // Copy image from client to server
+                        SaveImage(photoModel, productModel.Code);
+
+                        // Turn off IsDirty & IsNew
+                        photoModel.EndUpdate();
+                    }
                 }
-
-                // Clear deleted photos
-                productModel.PhotoCollection.DeletedItems.Clear();
-
-                foreach (base_ResourcePhotoModel photoModel in productModel.PhotoCollection.Where(x => x.IsDirty))
-                {
-                    // Get photo filename by format
-                    string dateTime = DateTimeExt.Now.ToString(Define.GuestNoFormat);
-                    string guid = Guid.NewGuid().ToString().Substring(0, 8);
-                    string ext = new FileInfo(photoModel.ImagePath).Extension;
-
-                    // Rename photo
-                    photoModel.LargePhotoFilename = string.Format("{0}{1}{2}", dateTime, guid, ext);
-
-                    // Update resource photo
-                    if (string.IsNullOrWhiteSpace(photoModel.Resource))
-                        photoModel.Resource = productModel.Resource.ToString();
-
-                    // Map data from model to entity
-                    photoModel.ToEntity();
-
-                    if (photoModel.IsNew)
-                        _photoRepository.Add(photoModel.base_ResourcePhoto);
-
-                    // Copy image from client to server
-                    SaveImage(photoModel, productModel.Code);
-
-                    // Turn off IsDirty & IsNew
-                    photoModel.EndUpdate();
-                }
+            }
+            catch (Exception ex)
+            {
+                _log4net.Error(ex);
             }
         }
 
@@ -2952,68 +3150,75 @@ namespace CPC.POS.ViewModel
         /// </summary>
         private void SaveAttributeAndSize(base_ProductModel productModel)
         {
-            if (productModel.ProductCollection != null)
+            try
             {
-                foreach (base_ProductModel productItem in productModel.ProductCollection.DeletedItems)
+                if (productModel.ProductCollection != null)
                 {
-                    // Turn on IsPurge to delete product
-                    productItem.IsPurge = true;
-
-                    // Map data from model to entity
-                    productItem.ToEntity();
-                }
-
-                foreach (base_ProductModel productItem in productModel.ProductCollection.Where(x => !x.Code.Equals(productModel.Code)))
-                {
-                    if (productItem.IsNew)
+                    foreach (base_ProductModel productItem in productModel.ProductCollection.DeletedItems)
                     {
-                        // Copy product and relation data
-                        productItem.ToModelByAttribute(SelectedProduct);
-                        productItem.DateCreated = DateTimeExt.Now;
-                        productItem.UserCreated = Define.USER.LoginName;
-                        productItem.Shift = Define.ShiftCode;
-                        productItem.IsPurge = false;
+                        // Turn on IsPurge to delete product
+                        productItem.IsPurge = true;
 
-                        CopyProductStoreDefault(productModel, productItem);
+                        // Map data from model to entity
+                        productItem.ToEntity();
                     }
-                    else
+
+                    foreach (base_ProductModel productItem in productModel.ProductCollection.Where(x => !x.Code.Equals(productModel.Code)))
                     {
-                        if (productModel.RegularPrice != productModel.base_Product.RegularPrice)
+                        if (productItem.IsNew)
                         {
-                            // Update regular price for product group
-                            UpdateRegularPriceProductGroup(productModel);
+                            // Copy product and relation data
+                            productItem.ToModelByAttribute(SelectedProduct);
+                            productItem.DateCreated = DateTimeExt.Now;
+                            productItem.UserCreated = Define.USER.LoginName;
+                            productItem.Shift = Define.ShiftCode;
+                            productItem.IsPurge = false;
+
+                            CopyProductStoreDefault(productModel, productItem);
+                        }
+                        else
+                        {
+                            if (productModel.RegularPrice != productModel.base_Product.RegularPrice)
+                            {
+                                // Update regular price for product group
+                                UpdateRegularPriceProductGroup(productModel);
+                            }
+
+                            productItem.DateUpdated = productModel.DateUpdated;
+                            productItem.UserUpdated = Define.USER.LoginName;
                         }
 
-                        productItem.DateUpdated = productModel.DateUpdated;
-                        productItem.UserUpdated = Define.USER.LoginName;
-                    }
+                        // Update total quantity on product
+                        productItem.UpdateQuantityOnHand();
 
-                    // Update total quantity on product
-                    productItem.UpdateQuantityOnHand();
+                        // Update total available quantity on product
+                        productModel.UpdateAvailableQuantity();
 
-                    // Update total available quantity on product
-                    productModel.UpdateAvailableQuantity();
+                        // Save product store collection
+                        SaveProductStoreCollection(productItem);
 
-                    // Save product store collection
-                    SaveProductStoreCollection(productItem);
+                        // Map data from model to entity
+                        productItem.ToEntity();
 
-                    // Map data from model to entity
-                    productItem.ToEntity();
+                        // Save product UOM collection
+                        SaveProductUOMCollection(productItem, Define.StoreCode);
 
-                    // Save product UOM collection
-                    SaveProductUOMCollection(productItem, Define.StoreCode);
-
-                    if (productItem.IsNew)
-                    {
-                        // Add new product to database
-                        _productRepository.Add(productItem.base_Product);
-                    }
-                    else
-                    {
-                        // Turn off IsDirty & IsNew
-                        productItem.EndUpdate();
+                        if (productItem.IsNew)
+                        {
+                            // Add new product to database
+                            _productRepository.Add(productItem.base_Product);
+                        }
+                        else
+                        {
+                            // Turn off IsDirty & IsNew
+                            productItem.EndUpdate();
+                        }
                     }
                 }
+            }
+            catch (Exception ex)
+            {
+                _log4net.Error(ex);
             }
         }
 
@@ -3024,31 +3229,38 @@ namespace CPC.POS.ViewModel
         /// <param name="storeCode"></param>
         private void SaveProductStoreCollection(base_ProductModel productModel)
         {
-            foreach (base_ProductStoreModel productStoreItem in productModel.ProductStoreCollection)
+            try
             {
-                // Update quantity in product
-                productModel.SetOnHandToStore(productStoreItem.QuantityOnHand, productStoreItem.StoreCode);
-
-                // Backup quantity value
-                if (!productStoreItem.IsNew)
-                    productStoreItem.OldQuantity = productStoreItem.base_ProductStore.QuantityOnHand;
-
-                // Map data from model to entity
-                productStoreItem.ToEntity();
-
-                // Save product UOM to other store
-                SaveProductUOMOtherStore(productModel, productStoreItem);
-
-                if (productStoreItem.IsNew)
+                foreach (base_ProductStoreModel productStoreItem in productModel.ProductStoreCollection)
                 {
-                    // Add new product store to database
-                    productModel.base_Product.base_ProductStore.Add(productStoreItem.base_ProductStore);
+                    // Update quantity in product
+                    productModel.SetOnHandToStore(productStoreItem.QuantityOnHand, productStoreItem.StoreCode);
+
+                    // Backup quantity value
+                    if (!productStoreItem.IsNew)
+                        productStoreItem.OldQuantity = productStoreItem.base_ProductStore.QuantityOnHand;
+
+                    // Map data from model to entity
+                    productStoreItem.ToEntity();
+
+                    // Save product UOM to other store
+                    SaveProductUOMOtherStore(productModel, productStoreItem);
+
+                    if (productStoreItem.IsNew)
+                    {
+                        // Add new product store to database
+                        productModel.base_Product.base_ProductStore.Add(productStoreItem.base_ProductStore);
+                    }
+                    else
+                    {
+                        // Turn off IsDirty & IsNew
+                        productStoreItem.EndUpdate();
+                    }
                 }
-                else
-                {
-                    // Turn off IsDirty & IsNew
-                    productStoreItem.EndUpdate();
-                }
+            }
+            catch (Exception ex)
+            {
+                _log4net.Error(ex);
             }
         }
 
@@ -3062,57 +3274,64 @@ namespace CPC.POS.ViewModel
             if (productStoreItem.StoreCode.Equals(Define.StoreCode))
                 return;
 
-            foreach (base_ProductUOMModel productUOMItem in productModel.ProductUOMCollection)
+            try
             {
-                // Get product UOM model from product UOM collection of store
-                base_ProductUOM productUOM = productStoreItem.base_ProductStore.base_ProductUOM.
-                    SingleOrDefault(x => x.UOMId.Equals(productUOMItem.UOMId));
-
-                if (productUOMItem.UOMId > 0)
+                foreach (base_ProductUOMModel productUOMItem in productModel.ProductUOMCollection)
                 {
-                    // Create new product UOM model
-                    base_ProductUOMModel productUOMModel = new base_ProductUOMModel();
+                    // Get product UOM model from product UOM collection of store
+                    base_ProductUOM productUOM = productStoreItem.base_ProductStore.base_ProductUOM.
+                        SingleOrDefault(x => x.UOMId.Equals(productUOMItem.UOMId));
 
-                    if (productUOM != null)
+                    if (productUOMItem.UOMId > 0)
                     {
                         // Create new product UOM model
-                        productUOMModel = new base_ProductUOMModel(productUOM);
+                        base_ProductUOMModel productUOMModel = new base_ProductUOMModel();
+
+                        if (productUOM != null)
+                        {
+                            // Create new product UOM model
+                            productUOMModel = new base_ProductUOMModel(productUOM);
+                        }
+
+                        // Update product UOM model
+                        productUOMModel.ToModel(productUOMItem);
+                        productUOMModel.Resource = Guid.NewGuid().ToString();
+                        productUOMModel.ProductStoreResource = productStoreItem.Resource;
+
+                        // Update quantity on hand for other UOM
+                        productUOMModel.UpdateQuantityOnHand(productStoreItem.QuantityOnHand);
+
+                        // Map data from model to entity
+                        productUOMModel.ToEntity();
+
+                        if (productUOMModel.IsNew)
+                        {
+                            // Add new product UOM to database
+                            productStoreItem.base_ProductStore.base_ProductUOM.Add(productUOMModel.base_ProductUOM);
+                        }
                     }
-
-                    // Update product UOM model
-                    productUOMModel.ToModel(productUOMItem);
-                    productUOMModel.Resource = Guid.NewGuid().ToString();
-                    productUOMModel.ProductStoreResource = productStoreItem.Resource;
-
-                    // Update quantity on hand for other UOM
-                    productUOMModel.UpdateQuantityOnHand(productStoreItem.QuantityOnHand);
-
-                    // Map data from model to entity
-                    productUOMModel.ToEntity();
-
-                    if (productUOMModel.IsNew)
+                    else if (productUOMItem.Id > 0 && productUOM != null)
                     {
-                        // Add new product UOM to database
-                        productStoreItem.base_ProductStore.base_ProductUOM.Add(productUOMModel.base_ProductUOM);
+                        // Delete product UOM from database
+                        _productUOMRepository.Delete(productUOM);
                     }
                 }
-                else if (productUOMItem.Id > 0 && productUOM != null)
+
+                // Get UOM id list
+                IEnumerable<int> uomIDList = productModel.ProductUOMCollection.Where(x => x.UOMId > 0).Select(x => x.UOMId);
+
+                foreach (base_ProductUOM productUOM in productStoreItem.base_ProductStore.base_ProductUOM.ToList())
                 {
-                    // Delete product UOM from database
-                    _productUOMRepository.Delete(productUOM);
+                    if (!uomIDList.Contains(productUOM.UOMId))
+                    {
+                        // Delete product UOM from database
+                        _productUOMRepository.Delete(productUOM);
+                    }
                 }
             }
-
-            // Get UOM id list
-            IEnumerable<int> uomIDList = productModel.ProductUOMCollection.Where(x => x.UOMId > 0).Select(x => x.UOMId);
-
-            foreach (base_ProductUOM productUOM in productStoreItem.base_ProductStore.base_ProductUOM.ToList())
+            catch (Exception ex)
             {
-                if (!uomIDList.Contains(productUOM.UOMId))
-                {
-                    // Delete product UOM from database
-                    _productUOMRepository.Delete(productUOM);
-                }
+                _log4net.Error(ex);
             }
         }
 
@@ -3121,44 +3340,51 @@ namespace CPC.POS.ViewModel
         /// </summary>
         private void SaveProductUOMCollection(base_ProductModel productModel, int storeCode)
         {
-            if (IsAllowMutilUOM(productModel) && productModel.ProductUOMCollection != null)
+            try
             {
-                foreach (base_ProductUOMModel productUOMItem in productModel.ProductUOMCollection)
+                if (IsAllowMutilUOM(productModel) && productModel.ProductUOMCollection != null)
                 {
-                    if (productUOMItem.UOMId > 0)
+                    foreach (base_ProductUOMModel productUOMItem in productModel.ProductUOMCollection)
                     {
-                        // Update quantity on hand for other UOM
-                        productUOMItem.UpdateQuantityOnHand(productModel.ProductStoreDefault.QuantityOnHand);
-
-                        // Map data from model to entity
-                        productUOMItem.ToEntity();
-
-                        if (productUOMItem.Id == 0)
+                        if (productUOMItem.UOMId > 0)
                         {
-                            // Add new product UOM to database
-                            productModel.ProductStoreDefault.base_ProductStore.base_ProductUOM.Add(productUOMItem.base_ProductUOM);
-                        }
-                        else if (productModel.ProductStoreDefault.base_ProductStore.base_ProductUOM.Count(x => x.Id.Equals(productUOMItem.Id)) == 0)
-                        {
-                            // Add new product UOM to database
-                            productModel.ProductStoreDefault.base_ProductStore.base_ProductUOM.Add(productUOMItem.base_ProductUOM);
-                        }
-                    }
-                    else if (productUOMItem.Id > 0)
-                    {
-                        // Get deleted product UOM
-                        base_ProductUOM productUOM = productModel.ProductStoreDefault.base_ProductStore.base_ProductUOM.SingleOrDefault(x => x.Id.Equals(productUOMItem.Id));
+                            // Update quantity on hand for other UOM
+                            productUOMItem.UpdateQuantityOnHand(productModel.ProductStoreDefault.QuantityOnHand);
 
-                        if (productUOM != null)
-                        {
-                            // Delete product UOM from database
-                            _productUOMRepository.Delete(productUOM);
-                        }
+                            // Map data from model to entity
+                            productUOMItem.ToEntity();
 
-                        // Delete entity of product UOM
-                        productUOMItem.ClearEntity();
+                            if (productUOMItem.Id == 0)
+                            {
+                                // Add new product UOM to database
+                                productModel.ProductStoreDefault.base_ProductStore.base_ProductUOM.Add(productUOMItem.base_ProductUOM);
+                            }
+                            else if (productModel.ProductStoreDefault.base_ProductStore.base_ProductUOM.Count(x => x.Id.Equals(productUOMItem.Id)) == 0)
+                            {
+                                // Add new product UOM to database
+                                productModel.ProductStoreDefault.base_ProductStore.base_ProductUOM.Add(productUOMItem.base_ProductUOM);
+                            }
+                        }
+                        else if (productUOMItem.Id > 0)
+                        {
+                            // Get deleted product UOM
+                            base_ProductUOM productUOM = productModel.ProductStoreDefault.base_ProductStore.base_ProductUOM.SingleOrDefault(x => x.Id.Equals(productUOMItem.Id));
+
+                            if (productUOM != null)
+                            {
+                                // Delete product UOM from database
+                                _productUOMRepository.Delete(productUOM);
+                            }
+
+                            // Delete entity of product UOM
+                            productUOMItem.ClearEntity();
+                        }
                     }
                 }
+            }
+            catch (Exception ex)
+            {
+                _log4net.Error(ex);
             }
         }
 
@@ -3168,33 +3394,40 @@ namespace CPC.POS.ViewModel
         /// <param name="productModel"></param>
         private void SaveProductGroupCollection(base_ProductModel productModel)
         {
-            if (productModel.ProductGroupCollection != null)
+            try
             {
-                if (productModel.ProductGroupCollection.DeletedItems != null)
+                if (productModel.ProductGroupCollection != null)
                 {
-                    foreach (base_ProductGroupModel productGroupItem in productModel.ProductGroupCollection.DeletedItems)
+                    if (productModel.ProductGroupCollection.DeletedItems != null)
                     {
-                        // Remove product group from database
-                        _productGroupRepository.Delete(productGroupItem.base_ProductGroup);
+                        foreach (base_ProductGroupModel productGroupItem in productModel.ProductGroupCollection.DeletedItems)
+                        {
+                            // Remove product group from database
+                            _productGroupRepository.Delete(productGroupItem.base_ProductGroup);
+                        }
+
+                        productModel.ProductGroupCollection.DeletedItems.Clear();
                     }
 
-                    productModel.ProductGroupCollection.DeletedItems.Clear();
-                }
-
-                foreach (base_ProductGroupModel productGroupItem in productModel.ProductGroupCollection)
-                {
-                    // Map data from model to entity
-                    productGroupItem.ToEntity();
-
-                    if (productGroupItem.IsNew)
+                    foreach (base_ProductGroupModel productGroupItem in productModel.ProductGroupCollection)
                     {
-                        // Add new product group to database
-                        productModel.base_Product.base_ProductGroup1.Add(productGroupItem.base_ProductGroup);
-                    }
+                        // Map data from model to entity
+                        productGroupItem.ToEntity();
 
-                    // Turn off IsDirty & IsNew
-                    productGroupItem.EndUpdate();
+                        if (productGroupItem.IsNew)
+                        {
+                            // Add new product group to database
+                            productModel.base_Product.base_ProductGroup1.Add(productGroupItem.base_ProductGroup);
+                        }
+
+                        // Turn off IsDirty & IsNew
+                        productGroupItem.EndUpdate();
+                    }
                 }
+            }
+            catch (Exception ex)
+            {
+                _log4net.Error(ex);
             }
         }
 
@@ -3204,33 +3437,40 @@ namespace CPC.POS.ViewModel
         /// <param name="productModel"></param>
         private void SaveVendorProductCollection(base_ProductModel productModel)
         {
-            if (productModel.VendorProductCollection != null)
+            try
             {
-                foreach (base_VendorProductModel vendorProductItem in productModel.VendorProductCollection.DeletedItems)
+                if (productModel.VendorProductCollection != null)
                 {
-                    // Delete vendor product from database
-                    _vendorProductRepository.Delete(vendorProductItem.base_VendorProduct);
-                }
-
-                // Clear deleted vendor products
-                productModel.VendorProductCollection.DeletedItems.Clear();
-
-                foreach (base_VendorProductModel vendorProductItem in productModel.VendorProductCollection.Where(x => x.IsDirty))
-                {
-                    // Map data from model to entity
-                    vendorProductItem.ToEntity();
-
-                    if (vendorProductItem.IsNew)
+                    foreach (base_VendorProductModel vendorProductItem in productModel.VendorProductCollection.DeletedItems)
                     {
-                        // Add new vendor product to database
-                        _vendorProductRepository.Add(vendorProductItem.base_VendorProduct);
+                        // Delete vendor product from database
+                        _vendorProductRepository.Delete(vendorProductItem.base_VendorProduct);
                     }
-                    else
+
+                    // Clear deleted vendor products
+                    productModel.VendorProductCollection.DeletedItems.Clear();
+
+                    foreach (base_VendorProductModel vendorProductItem in productModel.VendorProductCollection.Where(x => x.IsDirty))
                     {
-                        // Turn off IsDirty & IsNew
-                        vendorProductItem.EndUpdate();
+                        // Map data from model to entity
+                        vendorProductItem.ToEntity();
+
+                        if (vendorProductItem.IsNew)
+                        {
+                            // Add new vendor product to database
+                            _vendorProductRepository.Add(vendorProductItem.base_VendorProduct);
+                        }
+                        else
+                        {
+                            // Turn off IsDirty & IsNew
+                            vendorProductItem.EndUpdate();
+                        }
                     }
                 }
+            }
+            catch (Exception ex)
+            {
+                _log4net.Error(ex);
             }
         }
 
@@ -3499,22 +3739,30 @@ namespace CPC.POS.ViewModel
         /// <returns></returns>
         private bool IsDuplicateProduct(base_ProductModel productModel)
         {
-            // Create predicate
-            Expression<Func<base_Product, bool>> predicate = PredicateBuilder.True<base_Product>();
+            try
+            {
+                // Create predicate
+                Expression<Func<base_Product, bool>> predicate = PredicateBuilder.True<base_Product>();
 
-            // Get all products that IsPurge is false
-            predicate = predicate.And(x => x.IsPurge == false && !x.Resource.Equals(productModel.Resource));
+                // Get all products that IsPurge is false
+                predicate = predicate.And(x => x.IsPurge == false && !x.Resource.Equals(productModel.Resource));
 
-            // Get all products that duplicate name
-            predicate = predicate.And(x => x.ProductName.ToLower().Equals(productModel.ProductName.ToLower()));
+                // Get all products that duplicate name
+                predicate = predicate.And(x => x.ProductName.ToLower().Equals(productModel.ProductName.ToLower()));
 
-            // Get all products that duplicate category
-            predicate = predicate.And(x => x.ProductCategoryId.Equals(productModel.ProductCategoryId));
+                // Get all products that duplicate category
+                predicate = predicate.And(x => x.ProductCategoryId.Equals(productModel.ProductCategoryId));
 
-            // Get all products that duplicate attribute and size
-            predicate = predicate.And(x => x.Attribute.Equals(productModel.Attribute) && x.Size.Equals(productModel.Size));
+                // Get all products that duplicate attribute and size
+                predicate = predicate.And(x => x.Attribute.Equals(productModel.Attribute) && x.Size.Equals(productModel.Size));
 
-            return _productRepository.GetIQueryable(predicate).Count() > 0;
+                return _productRepository.GetIQueryable(predicate).Count() > 0;
+            }
+            catch (Exception ex)
+            {
+                _log4net.Error(ex);
+                return true;
+            }
         }
 
         /// <summary>
@@ -3524,29 +3772,37 @@ namespace CPC.POS.ViewModel
         /// <returns></returns>
         private bool IsDuplicateBarcode(base_ProductModel productModel)
         {
-            if (string.IsNullOrWhiteSpace(productModel.Barcode))
-                return false;
-
-            string barcode = productModel.Barcode.Trim().ToLower();
-
-            // Check duplicate in collection
-            if (IsAllowMutilUOM(productModel))
+            try
             {
-                IEnumerable<string> barcodes = productModel.ProductUOMCollection.Where(x => !string.IsNullOrWhiteSpace(x.UPC)).Select(x => x.UPC);
-                if (barcodes.Count(x => x.ToLower().Equals(barcode)) > 0)
-                    return true;
+                if (string.IsNullOrWhiteSpace(productModel.Barcode))
+                    return false;
+
+                string barcode = productModel.Barcode.Trim().ToLower();
+
+                // Check duplicate in collection
+                if (IsAllowMutilUOM(productModel))
+                {
+                    IEnumerable<string> barcodes = productModel.ProductUOMCollection.Where(x => !string.IsNullOrWhiteSpace(x.UPC)).Select(x => x.UPC);
+                    if (barcodes.Count(x => x.ToLower().Equals(barcode)) > 0)
+                        return true;
+                }
+
+                // Create predicate
+                Expression<Func<base_Product, bool>> predicate = PredicateBuilder.True<base_Product>();
+
+                // Get all products that IsPurge is false
+                predicate = predicate.And(x => x.IsPurge == false && !x.Resource.Equals(productModel.Resource));
+
+                // Get all products that duplicate barcode
+                predicate = predicate.And(x => x.Barcode.ToLower().Equals(barcode));
+
+                return _productRepository.GetIQueryable(predicate).Count() > 0;
             }
-
-            // Create predicate
-            Expression<Func<base_Product, bool>> predicate = PredicateBuilder.True<base_Product>();
-
-            // Get all products that IsPurge is false
-            predicate = predicate.And(x => x.IsPurge == false && !x.Resource.Equals(productModel.Resource));
-
-            // Get all products that duplicate barcode
-            predicate = predicate.And(x => x.Barcode.ToLower().Equals(barcode));
-
-            return _productRepository.GetIQueryable(predicate).Count() > 0;
+            catch (Exception ex)
+            {
+                _log4net.Error(ex);
+                return true;
+            }
         }
 
         /// <summary>
@@ -3556,29 +3812,37 @@ namespace CPC.POS.ViewModel
         /// <returns></returns>
         private bool IsDuplicateALU(base_ProductModel productModel)
         {
-            if (string.IsNullOrWhiteSpace(productModel.ALU))
-                return false;
-
-            string barcode = productModel.ALU.Trim().ToLower();
-
-            // Check duplicate in collection
-            if (IsAllowMutilUOM(productModel))
+            try
             {
-                IEnumerable<string> barcodes = productModel.ProductUOMCollection.Where(x => !string.IsNullOrWhiteSpace(x.ALU)).Select(x => x.ALU);
-                if (barcodes.Count(x => x.ToLower().Equals(barcode)) > 0)
-                    return true;
+                if (string.IsNullOrWhiteSpace(productModel.ALU))
+                    return false;
+
+                string barcode = productModel.ALU.Trim().ToLower();
+
+                // Check duplicate in collection
+                if (IsAllowMutilUOM(productModel))
+                {
+                    IEnumerable<string> barcodes = productModel.ProductUOMCollection.Where(x => !string.IsNullOrWhiteSpace(x.ALU)).Select(x => x.ALU);
+                    if (barcodes.Count(x => x.ToLower().Equals(barcode)) > 0)
+                        return true;
+                }
+
+                // Create predicate
+                Expression<Func<base_Product, bool>> predicate = PredicateBuilder.True<base_Product>();
+
+                // Get all products that IsPurge is false
+                predicate = predicate.And(x => x.IsPurge == false && !x.Resource.Equals(productModel.Resource));
+
+                // Get all products that duplicate barcode
+                predicate = predicate.And(x => x.ALU.ToLower().Equals(barcode));
+
+                return _productRepository.GetIQueryable(predicate).Count() > 0;
             }
-
-            // Create predicate
-            Expression<Func<base_Product, bool>> predicate = PredicateBuilder.True<base_Product>();
-
-            // Get all products that IsPurge is false
-            predicate = predicate.And(x => x.IsPurge == false && !x.Resource.Equals(productModel.Resource));
-
-            // Get all products that duplicate barcode
-            predicate = predicate.And(x => x.ALU.ToLower().Equals(barcode));
-
-            return _productRepository.GetIQueryable(predicate).Count() > 0;
+            catch (Exception ex)
+            {
+                _log4net.Error(ex);
+                return true;
+            }
         }
 
         /// <summary>
@@ -3588,19 +3852,27 @@ namespace CPC.POS.ViewModel
         /// <returns></returns>
         private bool IsDuplicateCode(base_ProductModel productModel)
         {
-            if (string.IsNullOrWhiteSpace(productModel.Code))
-                return false;
+            try
+            {
+                if (string.IsNullOrWhiteSpace(productModel.Code))
+                    return false;
 
-            // Create predicate
-            Expression<Func<base_Product, bool>> predicate = PredicateBuilder.True<base_Product>();
+                // Create predicate
+                Expression<Func<base_Product, bool>> predicate = PredicateBuilder.True<base_Product>();
 
-            // Get all products that IsPurge is false
-            predicate = predicate.And(x => x.IsPurge == false && !x.Resource.Equals(productModel.Resource));
+                // Get all products that IsPurge is false
+                predicate = predicate.And(x => x.IsPurge == false && !x.Resource.Equals(productModel.Resource));
 
-            // Get all products that duplicate barcode
-            predicate = predicate.And(x => x.Code.ToLower().Equals(productModel.Code.ToLower()));
+                // Get all products that duplicate barcode
+                predicate = predicate.And(x => x.Code.ToLower().Equals(productModel.Code.ToLower()));
 
-            return _productRepository.GetIQueryable(predicate).Count() > 0;
+                return _productRepository.GetIQueryable(predicate).Count() > 0;
+            }
+            catch (Exception ex)
+            {
+                _log4net.Error(ex);
+                return true;
+            }
         }
 
         /// <summary>
@@ -3631,47 +3903,54 @@ namespace CPC.POS.ViewModel
         {
             bool result = true;
 
-            if (SelectedProduct.Attribute != SelectedProduct.base_Product.Attribute ||
-                SelectedProduct.Size != SelectedProduct.base_Product.Size)
+            try
             {
-                MessageBoxResult msgResult = Xceed.Wpf.Toolkit.MessageBox.Show("Do you want to save this product?", "POS", MessageBoxButton.YesNo, MessageBoxImage.Warning);
-                if (msgResult.Is(MessageBoxResult.Yes))
+                if (SelectedProduct.Attribute != SelectedProduct.base_Product.Attribute ||
+                        SelectedProduct.Size != SelectedProduct.base_Product.Size)
                 {
-                    List<string> attributeList = SelectedProduct.ProductCollection.Select(x => x.Attribute).Where(x => !x.Equals(SelectedProduct.Attribute)).ToList();
-                    List<string> sizeList = SelectedProduct.ProductCollection.Select(x => x.Size).Where(x => !x.Equals(SelectedProduct.Size)).ToList();
-                    if (SelectedProduct.Attribute != SelectedProduct.base_Product.Attribute)
+                    MessageBoxResult msgResult = Xceed.Wpf.Toolkit.MessageBox.Show("Do you want to save this product?", "POS", MessageBoxButton.YesNo, MessageBoxImage.Warning);
+                    if (msgResult.Is(MessageBoxResult.Yes))
                     {
-                        if (IsAttributeOrSizeExisted(attributeList, SelectedProduct.Attribute))
+                        List<string> attributeList = SelectedProduct.ProductCollection.Select(x => x.Attribute).Where(x => !x.Equals(SelectedProduct.Attribute)).ToList();
+                        List<string> sizeList = SelectedProduct.ProductCollection.Select(x => x.Size).Where(x => !x.Equals(SelectedProduct.Size)).ToList();
+                        if (SelectedProduct.Attribute != SelectedProduct.base_Product.Attribute)
                         {
-                            Xceed.Wpf.Toolkit.MessageBox.Show("Attribute is existed", "POS", MessageBoxButton.OK, MessageBoxImage.Warning);
-                            return false;
+                            if (IsAttributeOrSizeExisted(attributeList, SelectedProduct.Attribute))
+                            {
+                                Xceed.Wpf.Toolkit.MessageBox.Show("Attribute is existed", "POS", MessageBoxButton.OK, MessageBoxImage.Warning);
+                                return false;
+                            }
                         }
-                    }
-                    else if (SelectedProduct.Size != SelectedProduct.base_Product.Size)
-                    {
-                        if (IsAttributeOrSizeExisted(sizeList, SelectedProduct.Size))
+                        else if (SelectedProduct.Size != SelectedProduct.base_Product.Size)
                         {
-                            Xceed.Wpf.Toolkit.MessageBox.Show("Size is existed", "POS", MessageBoxButton.OK, MessageBoxImage.Warning);
-                            return false;
+                            if (IsAttributeOrSizeExisted(sizeList, SelectedProduct.Size))
+                            {
+                                Xceed.Wpf.Toolkit.MessageBox.Show("Size is existed", "POS", MessageBoxButton.OK, MessageBoxImage.Warning);
+                                return false;
+                            }
                         }
+                        else
+                        {
+                            if (IsAttributeOrSizeExisted(attributeList, SelectedProduct.Attribute) ||
+                                IsAttributeOrSizeExisted(sizeList, SelectedProduct.Size))
+                            {
+                                Xceed.Wpf.Toolkit.MessageBox.Show("Attribute and Size is existed", "POS", MessageBoxButton.OK, MessageBoxImage.Warning);
+                                return false;
+                            }
+                        }
+
+                        // Update attribute and size before show popup
+                        SelectedProduct.base_Product.Attribute = SelectedProduct.Attribute;
+                        SelectedProduct.base_Product.Size = SelectedProduct.Size;
+                        _productRepository.Commit();
                     }
                     else
-                    {
-                        if (IsAttributeOrSizeExisted(attributeList, SelectedProduct.Attribute) ||
-                            IsAttributeOrSizeExisted(sizeList, SelectedProduct.Size))
-                        {
-                            Xceed.Wpf.Toolkit.MessageBox.Show("Attribute and Size is existed", "POS", MessageBoxButton.OK, MessageBoxImage.Warning);
-                            return false;
-                        }
-                    }
-
-                    // Update attribute and size before show popup
-                    SelectedProduct.base_Product.Attribute = SelectedProduct.Attribute;
-                    SelectedProduct.base_Product.Size = SelectedProduct.Size;
-                    _productRepository.Commit();
+                        result = false;
                 }
-                else
-                    result = false;
+            }
+            catch (Exception ex)
+            {
+                _log4net.Error(ex);
             }
 
             return result;
@@ -3696,29 +3975,36 @@ namespace CPC.POS.ViewModel
         /// <param name="productModel"></param>
         private void UpdateRegularPriceProductGroup(base_ProductModel productModel)
         {
-            if (Define.CONFIGURATION.IsAUPPG)
+            try
             {
-                // Get all product group that same id
-                IEnumerable<base_ProductGroup> productGroups = _productGroupRepository.GetAll(x => x.base_Product.Id.Equals(productModel.Id));
-
-                foreach (base_ProductGroup productGroup in productGroups)
+                if (Define.CONFIGURATION.IsAUPPG)
                 {
-                    // Update new regular price for product group by base UOM
-                    if (productGroup.UOMId.Equals(productModel.BaseUOMId) &&
-                        productModel.RegularPrice != productModel.base_Product.RegularPrice)
-                    {
-                        productGroup.RegularPrice = productModel.RegularPrice;
-                    }
-                    else if (IsAllowMutilUOM(productModel) && productModel.ProductUOMCollection != null)
-                    {
-                        base_ProductUOMModel productUOMModel = productModel.ProductUOMCollection.SingleOrDefault(x => x.UOMId.Equals(productGroup.UOMId));
-                        if (productUOMModel != null && productUOMModel.RegularPrice != productUOMModel.base_ProductUOM.RegularPrice)
-                            productGroup.RegularPrice = productUOMModel.RegularPrice;
-                    }
+                    // Get all product group that same id
+                    IEnumerable<base_ProductGroup> productGroups = _productGroupRepository.GetAll(x => x.base_Product.Id.Equals(productModel.Id));
 
-                    // Update product group amount
-                    productGroup.Amount = productGroup.RegularPrice * productGroup.Quantity;
+                    foreach (base_ProductGroup productGroup in productGroups)
+                    {
+                        // Update new regular price for product group by base UOM
+                        if (productGroup.UOMId.Equals(productModel.BaseUOMId) &&
+                            productModel.RegularPrice != productModel.base_Product.RegularPrice)
+                        {
+                            productGroup.RegularPrice = productModel.RegularPrice;
+                        }
+                        else if (IsAllowMutilUOM(productModel) && productModel.ProductUOMCollection != null)
+                        {
+                            base_ProductUOMModel productUOMModel = productModel.ProductUOMCollection.SingleOrDefault(x => x.UOMId.Equals(productGroup.UOMId));
+                            if (productUOMModel != null && productUOMModel.RegularPrice != productUOMModel.base_ProductUOM.RegularPrice)
+                                productGroup.RegularPrice = productUOMModel.RegularPrice;
+                        }
+
+                        // Update product group amount
+                        productGroup.Amount = productGroup.RegularPrice * productGroup.Quantity;
+                    }
                 }
+            }
+            catch (Exception ex)
+            {
+                _log4net.Error(ex);
             }
         }
 
@@ -3825,50 +4111,57 @@ namespace CPC.POS.ViewModel
         /// <param name="productModel"></param>
         private void LoadVendorProductCollection(base_ProductModel productModel)
         {
-            if (productModel.VendorProductCollection == null)
+            try
             {
-                // Initial vendor product collection
-                productModel.VendorProductCollection = new CollectionBase<base_VendorProductModel>();
-
-                foreach (base_VendorProduct vendorProduct in productModel.base_Product.base_VendorProduct)
+                if (productModel.VendorProductCollection == null)
                 {
-                    // Get vendor model of product
-                    base_GuestModel vendorModel = ProductVendorCollection.SingleOrDefault(x => x.Resource.Value.ToString().Equals(vendorProduct.VendorResource));
+                    // Initial vendor product collection
+                    productModel.VendorProductCollection = new CollectionBase<base_VendorProductModel>();
 
-                    if (vendorModel != null)
+                    foreach (base_VendorProduct vendorProduct in productModel.base_Product.base_VendorProduct)
                     {
-                        // Create new vendor product model
-                        base_VendorProductModel vendorProductModel = new base_VendorProductModel(vendorProduct);
-                        vendorProductModel.VendorCode = vendorModel.GuestNo;
-                        vendorProductModel.Company = vendorModel.Company;
-                        vendorProductModel.Phone = vendorModel.Phone1;
-                        vendorProductModel.Email = vendorModel.Email;
+                        // Get vendor model of product
+                        base_GuestModel vendorModel = ProductVendorCollection.SingleOrDefault(x => x.Resource.Value.ToString().Equals(vendorProduct.VendorResource));
 
-                        // Push new vendor product to collection
-                        productModel.VendorProductCollection.Add(vendorProductModel);
+                        if (vendorModel != null)
+                        {
+                            // Create new vendor product model
+                            base_VendorProductModel vendorProductModel = new base_VendorProductModel(vendorProduct);
+                            vendorProductModel.VendorCode = vendorModel.GuestNo;
+                            vendorProductModel.Company = vendorModel.Company;
+                            vendorProductModel.Phone = vendorModel.Phone1;
+                            vendorProductModel.Email = vendorModel.Email;
 
-                        // Turn off IsDirty & IsNew
-                        vendorProductModel.EndUpdate();
+                            // Push new vendor product to collection
+                            productModel.VendorProductCollection.Add(vendorProductModel);
+
+                            // Turn off IsDirty & IsNew
+                            vendorProductModel.EndUpdate();
+                        }
+                    }
+                }
+
+                // Reset vendor collection
+                foreach (base_GuestModel vendorItem in ProductVendorCollection)
+                {
+                    // Get vendor id list
+                    IEnumerable<long> vendorIDs = productModel.VendorProductCollection.Select(x => x.VendorId);
+
+                    if (vendorItem.Id.Equals(productModel.VendorId) || vendorIDs.Contains(vendorItem.Id))
+                    {
+                        // Hidden selected vendor
+                        vendorItem.IsChecked = true;
+                    }
+                    else
+                    {
+                        // Visible vendor item
+                        vendorItem.IsChecked = false;
                     }
                 }
             }
-
-            // Reset vendor collection
-            foreach (base_GuestModel vendorItem in ProductVendorCollection)
+            catch (Exception ex)
             {
-                // Get vendor id list
-                IEnumerable<long> vendorIDs = productModel.VendorProductCollection.Select(x => x.VendorId);
-
-                if (vendorItem.Id.Equals(productModel.VendorId) || vendorIDs.Contains(vendorItem.Id))
-                {
-                    // Hidden selected vendor
-                    vendorItem.IsChecked = true;
-                }
-                else
-                {
-                    // Visible vendor item
-                    vendorItem.IsChecked = false;
-                }
+                _log4net.Error(ex);
             }
         }
 
@@ -3957,40 +4250,47 @@ namespace CPC.POS.ViewModel
         /// <param name="productStoreModel"></param>
         private void SaveAdjustment(base_ProductModel productModel, base_ProductStoreModel productStoreModel)
         {
-            // Get logged time
-            DateTime loggedTime = DateTimeExt.Now;
-
-            // Get new and old quantity
-            decimal newQuantity = productStoreModel.QuantityOnHand;
-            decimal oldQuantity = productStoreModel.OldQuantity;
-
-            // Get new and old cost
-            decimal newCost = productModel.AverageUnitCost;
-            decimal oldCost = productModel.OldCost;
-
-            // Check quatity or cost changed
-            if (newQuantity != oldQuantity)
+            try
             {
-                // Save quantity adjustment
-                SaveQuantityAdjustment(productModel, productStoreModel, loggedTime, newQuantity, oldQuantity, newCost);
+                // Get logged time
+                DateTime loggedTime = DateTimeExt.Now;
 
-                // Save cost adjustment
-                SaveCostAdjustment(productModel, productStoreModel, loggedTime, newQuantity, newCost, oldCost);
+                // Get new and old quantity
+                decimal newQuantity = productStoreModel.QuantityOnHand;
+                decimal oldQuantity = productStoreModel.OldQuantity;
+
+                // Get new and old cost
+                decimal newCost = productModel.AverageUnitCost;
+                decimal oldCost = productModel.OldCost;
+
+                // Check quatity or cost changed
+                if (newQuantity != oldQuantity)
+                {
+                    // Save quantity adjustment
+                    SaveQuantityAdjustment(productModel, productStoreModel, loggedTime, newQuantity, oldQuantity, newCost);
+
+                    // Save cost adjustment
+                    SaveCostAdjustment(productModel, productStoreModel, loggedTime, newQuantity, newCost, oldCost);
+                }
+                else if (newCost != oldCost && productStoreModel.StoreCode.Equals(Define.StoreCode))
+                {
+                    // Save quantity adjustment
+                    SaveQuantityAdjustment(productModel, productStoreModel, loggedTime, newQuantity, oldQuantity, newCost);
+
+                    // Save cost adjustment
+                    SaveCostAdjustment(productModel, productStoreModel, loggedTime, newQuantity, newCost, oldCost);
+                }
+
+                // Accept all changes
+                _productRepository.Commit();
+
+                // Update old quantity
+                productStoreModel.OldQuantity = productStoreModel.QuantityOnHand;
             }
-            else if (newCost != oldCost && productStoreModel.StoreCode.Equals(Define.StoreCode))
+            catch (Exception ex)
             {
-                // Save quantity adjustment
-                SaveQuantityAdjustment(productModel, productStoreModel, loggedTime, newQuantity, oldQuantity, newCost);
-
-                // Save cost adjustment
-                SaveCostAdjustment(productModel, productStoreModel, loggedTime, newQuantity, newCost, oldCost);
+                _log4net.Error(ex);
             }
-
-            // Accept all changes
-            _productRepository.Commit();
-
-            // Update old quantity
-            productStoreModel.OldQuantity = productStoreModel.QuantityOnHand;
         }
 
         /// <summary>
@@ -4004,23 +4304,30 @@ namespace CPC.POS.ViewModel
         /// <param name="newCost"></param>
         private void SaveQuantityAdjustment(base_ProductModel productModel, base_ProductStoreModel productStoreModel, DateTime loggedTime, decimal newQuantity, decimal oldQuantity, decimal newCost)
         {
-            // Create new quantity adjustment item
-            base_QuantityAdjustment quantityAdjustment = new base_QuantityAdjustment();
-            quantityAdjustment.ProductId = productModel.Id;
-            quantityAdjustment.ProductResource = productModel.Resource.ToString();
-            quantityAdjustment.NewQty = newQuantity;
-            quantityAdjustment.OldQty = oldQuantity;
-            quantityAdjustment.AdjustmentQtyDiff = newQuantity - oldQuantity;
-            quantityAdjustment.CostDifference = newCost * quantityAdjustment.AdjustmentQtyDiff;
-            quantityAdjustment.LoggedTime = loggedTime;
-            quantityAdjustment.Reason = (short)AdjustmentReason.ItemEdited;
-            quantityAdjustment.Status = (short)AdjustmentStatus.Normal;
-            quantityAdjustment.UserCreated = Define.USER.LoginName;
-            quantityAdjustment.IsReversed = false;
-            quantityAdjustment.StoreCode = productStoreModel.StoreCode;
+            try
+            {
+                // Create new quantity adjustment item
+                base_QuantityAdjustment quantityAdjustment = new base_QuantityAdjustment();
+                quantityAdjustment.ProductId = productModel.Id;
+                quantityAdjustment.ProductResource = productModel.Resource.ToString();
+                quantityAdjustment.NewQty = newQuantity;
+                quantityAdjustment.OldQty = oldQuantity;
+                quantityAdjustment.AdjustmentQtyDiff = newQuantity - oldQuantity;
+                quantityAdjustment.CostDifference = newCost * quantityAdjustment.AdjustmentQtyDiff;
+                quantityAdjustment.LoggedTime = loggedTime;
+                quantityAdjustment.Reason = (short)AdjustmentReason.ItemEdited;
+                quantityAdjustment.Status = (short)AdjustmentStatus.Normal;
+                quantityAdjustment.UserCreated = Define.USER.LoginName;
+                quantityAdjustment.IsReversed = false;
+                quantityAdjustment.StoreCode = productStoreModel.StoreCode;
 
-            // Add new quantity adjustment item to database
-            _quantityAdjustmentRepository.Add(quantityAdjustment);
+                // Add new quantity adjustment item to database
+                _quantityAdjustmentRepository.Add(quantityAdjustment);
+            }
+            catch (Exception ex)
+            {
+                _log4net.Error(ex);
+            }
         }
 
         /// <summary>
@@ -4034,27 +4341,34 @@ namespace CPC.POS.ViewModel
         /// <param name="oldCost"></param>
         private void SaveCostAdjustment(base_ProductModel productModel, base_ProductStoreModel productStoreModel, DateTime loggedTime, decimal newQuantity, decimal newCost, decimal oldCost)
         {
-            if (newQuantity > 0)
+            try
             {
-                // Create new cost adjustment item
-                base_CostAdjustment costAdjustment = new base_CostAdjustment();
-                costAdjustment.ProductId = productModel.Id;
-                costAdjustment.ProductResource = productModel.Resource.ToString();
-                costAdjustment.AdjustmentNewCost = newCost;
-                costAdjustment.AdjustmentOldCost = oldCost;
-                costAdjustment.AdjustCostDifference = newCost - oldCost;
-                costAdjustment.NewCost = newCost * newQuantity;
-                costAdjustment.OldCost = oldCost * newQuantity;
-                costAdjustment.CostDifference = costAdjustment.NewCost - costAdjustment.OldCost;
-                costAdjustment.LoggedTime = loggedTime;
-                costAdjustment.Reason = (short)AdjustmentReason.ItemEdited;
-                costAdjustment.Status = (short)AdjustmentStatus.Normal;
-                costAdjustment.UserCreated = Define.USER.LoginName;
-                costAdjustment.IsReversed = false;
-                costAdjustment.StoreCode = productStoreModel.StoreCode;
+                if (newQuantity > 0)
+                {
+                    // Create new cost adjustment item
+                    base_CostAdjustment costAdjustment = new base_CostAdjustment();
+                    costAdjustment.ProductId = productModel.Id;
+                    costAdjustment.ProductResource = productModel.Resource.ToString();
+                    costAdjustment.AdjustmentNewCost = newCost;
+                    costAdjustment.AdjustmentOldCost = oldCost;
+                    costAdjustment.AdjustCostDifference = newCost - oldCost;
+                    costAdjustment.NewCost = newCost * newQuantity;
+                    costAdjustment.OldCost = oldCost * newQuantity;
+                    costAdjustment.CostDifference = costAdjustment.NewCost - costAdjustment.OldCost;
+                    costAdjustment.LoggedTime = loggedTime;
+                    costAdjustment.Reason = (short)AdjustmentReason.ItemEdited;
+                    costAdjustment.Status = (short)AdjustmentStatus.Normal;
+                    costAdjustment.UserCreated = Define.USER.LoginName;
+                    costAdjustment.IsReversed = false;
+                    costAdjustment.StoreCode = productStoreModel.StoreCode;
 
-                // Add new cost adjustment item to database
-                _costAdjustmentRepository.Add(costAdjustment);
+                    // Add new cost adjustment item to database
+                    _costAdjustmentRepository.Add(costAdjustment);
+                }
+            }
+            catch (Exception ex)
+            {
+                _log4net.Error(ex);
             }
         }
 
@@ -4384,7 +4698,7 @@ namespace CPC.POS.ViewModel
                     }
 
                     // Set permission edit product UOM detail
-                    productUOMModel.AllowEditProductUOMDetail = productUOMModel.UOMId != 0 && AllowAccessPermission;
+                    productUOMModel.AllowEditProductUOMDetail = productUOMModel.UOMId != 0 && UserPermissions.AllowAccessProductPermission;
                     break;
                 case "BaseUnitNumber":
                     // Update average cost
@@ -4398,6 +4712,34 @@ namespace CPC.POS.ViewModel
                     // Calculator margin, markup and price
                     productUOMModel.UpdateMarginMarkupAndPrice();
                     break;
+            }
+        }
+
+        /// <summary>
+        /// Event Tick for search ching
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        protected virtual void _waitingTimer_Tick(object sender, EventArgs e)
+        {
+            _timerCounter++;
+            if (_timerCounter == Define.DelaySearching)
+            {
+                OnSearchCommandExecute(null);
+                _waitingTimer.Stop();
+            }
+        }
+
+        /// <summary>
+        /// Reset timer for Auto complete search
+        /// </summary>
+        protected virtual void ResetTimer()
+        {
+            if (Define.CONFIGURATION.IsAutoSearch)
+            {
+                this._waitingTimer.Stop();
+                this._waitingTimer.Start();
+                _timerCounter = 0;
             }
         }
 
@@ -4441,7 +4783,7 @@ namespace CPC.POS.ViewModel
             }
             catch (Exception ex)
             {
-                Console.WriteLine("Save Image" + ex.ToString());
+                _log4net.Error(ex);
             }
         }
 
@@ -4465,13 +4807,20 @@ namespace CPC.POS.ViewModel
         /// <param name="productModel"></param>
         private void LoadResourceNoteCollection(base_ProductModel productModel)
         {
-            // Load resource note collection
-            if (productModel.ResourceNoteCollection == null)
+            try
             {
-                string resource = productModel.Resource.ToString();
-                productModel.ResourceNoteCollection = new CollectionBase<base_ResourceNoteModel>(
-                    _resourceNoteRepository.GetAll(x => x.Resource.Equals(resource)).
-                    Select(x => new base_ResourceNoteModel(x)));
+                // Load resource note collection
+                if (productModel.ResourceNoteCollection == null)
+                {
+                    string resource = productModel.Resource.ToString();
+                    productModel.ResourceNoteCollection = new CollectionBase<base_ResourceNoteModel>(
+                        _resourceNoteRepository.GetAll(x => x.Resource.Equals(resource)).
+                        Select(x => new base_ResourceNoteModel(x)));
+                }
+            }
+            catch (Exception ex)
+            {
+                _log4net.Error(ex);
             }
         }
 
@@ -4481,144 +4830,16 @@ namespace CPC.POS.ViewModel
 
         #region Properties
 
-        private bool _allowEditQuantity = true;
         /// <summary>
-        /// Gets or sets the AllowEditQuantity.
+        /// Gets the AllowEditQuantity.
         /// </summary>
         public bool AllowEditQuantity
         {
             get
             {
                 if (SelectedProduct == null)
-                    return _allowEditQuantity;
-                return _allowEditQuantity && IsEditOnHandQuantity;
-            }
-            set
-            {
-                if (_allowEditQuantity != value)
-                {
-                    _allowEditQuantity = value;
-                    OnPropertyChanged(() => AllowEditQuantity);
-                }
-            }
-        }
-
-        private bool _allowAddDepartment = true;
-        /// <summary>
-        /// Gets or sets the AllowAddDepartment.
-        /// </summary>
-        public bool AllowAddDepartment
-        {
-            get { return _allowAddDepartment; }
-            set
-            {
-                if (_allowAddDepartment != value)
-                {
-                    _allowAddDepartment = value;
-                    OnPropertyChanged(() => AllowAddDepartment);
-                }
-            }
-        }
-
-        private bool _allowAddVendor = true;
-        /// <summary>
-        /// Gets or sets the AllowAddVendor.
-        /// </summary>
-        public bool AllowAddVendor
-        {
-            get { return _allowAddVendor; }
-            set
-            {
-                if (_allowAddVendor != value)
-                {
-                    _allowAddVendor = value;
-                    OnPropertyChanged(() => AllowAddVendor);
-                }
-            }
-        }
-
-        private bool _allowAddProduct = true;
-        /// <summary>
-        /// Gets or sets the AllowAddProduct.
-        /// </summary>
-        public bool AllowAddProduct
-        {
-            get { return _allowAddProduct; }
-            set
-            {
-                if (_allowAddProduct != value)
-                {
-                    _allowAddProduct = value;
-                    OnPropertyChanged(() => AllowAddProduct);
-                }
-            }
-        }
-
-        private bool _allowDeleteProduct = true;
-        /// <summary>
-        /// Gets or sets the AllowDeleteProduct.
-        /// </summary>
-        public bool AllowDeleteProduct
-        {
-            get { return _allowDeleteProduct; }
-            set
-            {
-                if (_allowDeleteProduct != value)
-                {
-                    _allowDeleteProduct = value;
-                    OnPropertyChanged(() => AllowDeleteProduct);
-                }
-            }
-        }
-
-        private bool _allowSaleProduct = true;
-        /// <summary>
-        /// Gets or sets the AllowSaleProduct.
-        /// </summary>
-        public bool AllowSaleProduct
-        {
-            get { return _allowSaleProduct; }
-            set
-            {
-                if (_allowSaleProduct != value)
-                {
-                    _allowSaleProduct = value;
-                    OnPropertyChanged(() => AllowSaleProduct);
-                }
-            }
-        }
-
-        private bool _allowReceiveProduct = true;
-        /// <summary>
-        /// Gets or sets the AllowReceiveProduct.
-        /// </summary>
-        public bool AllowReceiveProduct
-        {
-            get { return _allowReceiveProduct; }
-            set
-            {
-                if (_allowReceiveProduct != value)
-                {
-                    _allowReceiveProduct = value;
-                    OnPropertyChanged(() => AllowReceiveProduct);
-                }
-            }
-        }
-
-        private bool _allowTransferProduct = true;
-        /// <summary>
-        /// Gets or sets the AllowTransferProduct.
-        /// </summary>
-        public bool AllowTransferProduct
-        {
-            get { return _allowTransferProduct; }
-            set
-            {
-                if (_allowTransferProduct != value)
-                {
-                    _allowTransferProduct = value;
-                    OnPropertyChanged(() => AllowTransferProduct);
-                }
+                    return UserPermissions.AllowEditQuantity;
+                return UserPermissions.AllowEditQuantity && IsEditOnHandQuantity;
             }
         }
 
@@ -4630,63 +4851,20 @@ namespace CPC.POS.ViewModel
             get
             {
                 if (SelectedProduct == null)
-                    return AllowAccessPermission;
+                    return UserPermissions.AllowAccessProductPermission;
 
-                return SelectedProduct.BaseUOMId != 0 && AllowAccessPermission;
+                return SelectedProduct.BaseUOMId != 0 && UserPermissions.AllowAccessProductPermission;
             }
         }
 
-        private bool _allowEditPrice = true;
         /// <summary>
-        /// Gets or sets the AllowEditPrice.
-        /// </summary>
-        public bool AllowEditPrice
-        {
-            get { return _allowEditPrice; }
-            set
-            {
-                if (_allowEditPrice != value)
-                {
-                    _allowEditPrice = value;
-                    OnPropertyChanged(() => AllowEditPrice);
-                }
-            }
-        }
-
-        private bool _allowEditCost = true;
-        /// <summary>
-        /// Gets or sets the AllowEditCost.
+        /// Gets the AllowEditCost.
         /// </summary>
         public bool AllowEditCost
         {
             get
             {
-                return _allowEditCost && !IsGroupItemType;
-            }
-            set
-            {
-                if (_allowEditCost != value)
-                {
-                    _allowEditCost = value;
-                    OnPropertyChanged(() => AllowEditCost);
-                }
-            }
-        }
-
-        private bool _allowAddProductImage = true;
-        /// <summary>
-        /// Gets or sets the AllowAddProductImage.
-        /// </summary>
-        public bool AllowAddProductImage
-        {
-            get { return _allowAddProductImage; }
-            set
-            {
-                if (_allowAddProductImage != value)
-                {
-                    _allowAddProductImage = value;
-                    OnPropertyChanged(() => AllowAddProductImage);
-                }
+                return UserPermissions.AllowEditCost && !IsGroupItemType;
             }
         }
 
@@ -4699,71 +4877,35 @@ namespace CPC.POS.ViewModel
             {
                 if (IsGroupItemType)
                     return false;
-                return AllowAccessPermission;
+                return UserPermissions.AllowAccessProductPermission;
             }
         }
 
         #endregion
 
-        /// <summary>
-        /// Get permissions
-        /// </summary>
-        public override void GetPermission()
+        #endregion
+
+        #region IDragSource Members
+
+        public void StartDrag(DragInfo dragInfo)
         {
-            if (!IsAdminPermission)
-            {
-                if (IsFullPermission)
-                {
-                    // Set default permission
-                    AllowAddDepartment = IsMainStore;
-                    AllowAddVendor = IsMainStore;
-                    AllowAddProduct = IsMainStore;
-                    AllowDeleteProduct = IsMainStore;
-                    AllowReceiveProduct = IsMainStore;
-                    AllowTransferProduct = IsMainStore;
-                    AllowEditPrice = IsMainStore;
-                    AllowEditCost = IsMainStore;
-                    AllowAddProductImage = IsMainStore;
-                }
-                else
-                {
-                    // Get all user rights
-                    IEnumerable<string> userRightCodes = Define.USER_AUTHORIZATION.Select(x => x.Code);
+            dragInfo.Data = TypeUtilities.CreateDynamicallyTypedList(dragInfo.SourceItems);
 
-                    // Get edit quantity permission
-                    AllowEditQuantity = userRightCodes.Contains("IV100-01-07");
+            dragInfo.Effects = (dragInfo.Data != null) ? DragDropEffects.Move : DragDropEffects.None;
+        }
 
-                    // Get add department permission
-                    AllowAddDepartment = userRightCodes.Contains("IV100-01-03") && IsMainStore;
+        #endregion
 
-                    // Get add vendor permission
-                    AllowAddVendor = userRightCodes.Contains("PO100-01-01") && IsMainStore;
+        #region IDropTarget Members
 
-                    // Get add/copy product permission
-                    AllowAddProduct = userRightCodes.Contains("IV100-01-01") && IsMainStore;
+        public void DragOver(DropInfo dropInfo)
+        {
+            dropInfo.Effects = DragDropEffects.Move;
+        }
 
-                    // Get delete product permission
-                    AllowDeleteProduct = userRightCodes.Contains("IV100-01-04") && IsMainStore;
+        public void Drop(DropInfo dropInfo)
+        {
 
-                    // Union sale product and add/copy sale order permission
-                    AllowSaleProduct = userRightCodes.Contains("IV100-01-11") && userRightCodes.Contains("SO100-04-02");
-
-                    // Union receive product and add/copy purchase order permission
-                    AllowReceiveProduct = userRightCodes.Contains("IV100-01-12") && userRightCodes.Contains("PO100-02-02") && IsMainStore;
-
-                    // Union transfer product and add transfer stock permission
-                    AllowTransferProduct = userRightCodes.Contains("IV100-01-13") && userRightCodes.Contains("IV100-04-05") && IsMainStore;
-
-                    // Get edit price permission
-                    AllowEditPrice = userRightCodes.Contains("IV100-01-05") && IsMainStore;
-
-                    // Get edit cost permission
-                    AllowEditCost = userRightCodes.Contains("IV100-01-06") && IsMainStore;
-
-                    // Get add/change/delete product image permission
-                    AllowAddProductImage = userRightCodes.Contains("IV100-01-08") && IsMainStore;
-                }
-            }
         }
 
         #endregion

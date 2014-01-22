@@ -77,9 +77,6 @@ namespace CPC.POS.ViewModel
             _backgroundWorker.DoWork += new DoWorkEventHandler(WorkerDoWork);
             _backgroundWorker.ProgressChanged += new ProgressChangedEventHandler(WorkerProgressChanged);
             _backgroundWorker.RunWorkerCompleted += new RunWorkerCompletedEventHandler(WorkerRunWorkerCompleted);
-
-            // Get permission
-            GetPermission();
         }
 
         #endregion
@@ -927,7 +924,7 @@ namespace CPC.POS.ViewModel
             {
                 return false;
             }
-            return AllowAddDepartment;
+            return UserPermissions.AllowAddDepartment;
         }
 
         #endregion
@@ -2944,57 +2941,6 @@ namespace CPC.POS.ViewModel
             }
 
             IsBusy = false;
-        }
-
-        #endregion
-
-        #region Permission
-
-        #region Properties
-
-        private bool _allowAddDepartment = true;
-        /// <summary>
-        /// Gets or sets the AllowAddDepartment.
-        /// </summary>
-        public bool AllowAddDepartment
-        {
-            get
-            {
-                return _allowAddDepartment;
-            }
-            set
-            {
-                if (_allowAddDepartment != value)
-                {
-                    _allowAddDepartment = value;
-                    OnPropertyChanged(() => AllowAddDepartment);
-                }
-            }
-        }
-
-        #endregion
-
-        /// <summary>
-        /// Get permissions
-        /// </summary>
-        public override void GetPermission()
-        {
-            if (!IsAdminPermission)
-            {
-                if (IsFullPermission)
-                {
-                    // Set default permission
-                    AllowAddDepartment = IsMainStore;
-                }
-                else
-                {
-                    // Get all user rights
-                    IEnumerable<string> userRightCodes = Define.USER_AUTHORIZATION.Select(x => x.Code);
-
-                    // Get add/copy department permission
-                    AllowAddDepartment = userRightCodes.Contains("IV100-01-03") && IsMainStore;
-                }
-            }
         }
 
         #endregion

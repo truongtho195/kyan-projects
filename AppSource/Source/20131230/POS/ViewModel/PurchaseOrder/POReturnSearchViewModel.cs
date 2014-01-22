@@ -1,17 +1,17 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using CPC.Toolkit.Base;
-using System.Windows.Input;
-using CPC.Toolkit.Command;
 using System.ComponentModel;
-using CPC.POS.Database;
-using System.Windows;
-using CPC.POS.Repository;
-using CPC.Helper;
-using CPC.POS.Model;
-using System.Linq.Expressions;
 using System.Globalization;
+using System.Linq;
+using System.Linq.Expressions;
+using System.Windows;
+using System.Windows.Input;
+using CPC.Helper;
+using CPC.POS.Database;
+using CPC.POS.Model;
+using CPC.POS.Repository;
+using CPC.Toolkit.Base;
+using CPC.Toolkit.Command;
 
 namespace CPC.POS.ViewModel
 {
@@ -609,17 +609,17 @@ namespace CPC.POS.ViewModel
         {
             if (parameter == "PO")
             {
-                (_ownerViewModel as MainViewModel).OpenViewExecute("PurchaseOrder", new base_PurchaseOrderModel());
+                (_ownerViewModel as MainViewModel).OpenViewExecute("Purchase Order", new base_PurchaseOrderModel());
                 Close(false);
             }
             else if (parameter == "POList")
             {
-                (_ownerViewModel as MainViewModel).OpenViewExecute("PurchaseOrderList");
+                (_ownerViewModel as MainViewModel).OpenViewExecute("Purchase Order List");
                 Close(false);
             }
             else
             {
-                (_ownerViewModel as MainViewModel).OpenViewExecute("PurchaseOrder", _selectedPurchaseOrder);
+                (_ownerViewModel as MainViewModel).OpenViewExecute("Purchase Order", _selectedPurchaseOrder);
                 Close(true);
             }
         }

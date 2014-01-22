@@ -3,6 +3,7 @@ using System.Linq;
 using System.Windows;
 using System.Windows.Input;
 using CPC.POS;
+using CPC.POS.ViewModel;
 using CPC.Service;
 using CPC.Toolkit.Command;
 using log4net;
@@ -92,12 +93,24 @@ namespace CPC.Toolkit.Base
             }
         }
 
+        /// <summary>
+        /// Gets the AllowAccessPermission.
+        /// </summary>
         public bool AllowAccessPermission
         {
             get
             {
                 return IsAdminPermission ? true : IsMainStore;
             }
+        }
+
+        /// <summary>
+        /// Gets the UserPermissions.
+        /// </summary>
+        public UserPermissions UserPermissions
+        {
+            get { return Define.UserPermissions; }
+
         }
 
         #endregion
@@ -183,14 +196,6 @@ namespace CPC.Toolkit.Base
         }
 
         public virtual void ChangeSearchMode(bool isList, object param = null)
-        {
-            // TODO: Handle command logic here
-        }
-
-        /// <summary>
-        /// Get permission function
-        /// </summary>
-        public virtual void GetPermission()
         {
             // TODO: Handle command logic here
         }

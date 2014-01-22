@@ -11,7 +11,6 @@
              xmlns:i="clr-namespace:System.Windows.Interactivity;assembly=System.Windows.Interactivity"
              xmlns:local="clr-namespace:CPC.POS"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-             xmlns:Microsoft_Windows_Themes="clr-namespace:Microsoft.Windows.Themes;assembly=PresentationFramework.Luna"
              xmlns:textBoxControl="clr-namespace:CPCToolkitExt.TextBoxControl;assembly=CPCToolkitExt"
              x:Name="UserControl"
              Background="{DynamicResource UserControlBackground}"
@@ -123,7 +122,7 @@
                 <Grid x:Name="grdSearch"
                       Grid.Row="0"
                       Margin="0,0,15,0"
-                      d:LayoutOverrides="GridBox">
+                      d:IsHidden="True">
                     <Grid.Visibility>
                         <Binding Path="IsSearchMode"
                                  Mode="OneWay"
@@ -156,18 +155,18 @@
                                 <control:WatermarkTextBox x:Name="txtKeyword"
                                                           Margin="10,2"
                                                           VerticalContentAlignment="Center"
+                                                          BorderBrush="{DynamicResource TextBoxCanlendarComboboxBorderBrush}"
                                                           Padding="24,0,2,0"
                                                           Text="{Binding FilterText, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                                                           TextWrapping="NoWrap"
-                                                          Watermark="Keyword"
-                                                          BorderBrush="{DynamicResource TextBoxCanlendarComboboxBorderBrush}">
+                                                          Watermark="Keyword">
                                     <i:Interaction.Behaviors>
                                         <behavior:AutoFocusBehavior />
                                     </i:Interaction.Behaviors>
                                     <control:WatermarkTextBox.InputBindings>
                                         <KeyBinding Key="Enter"
                                                     Command="{Binding SearchCommand}"
-                                                    CommandParameter="{Binding Path=Text, ElementName=txtKeyword}" />
+                                                    CommandParameter="{Binding Text, ElementName=txtKeyword}" />
                                     </control:WatermarkTextBox.InputBindings>
                                 </control:WatermarkTextBox>
                                 <Rectangle x:Name="imgFind"
@@ -423,25 +422,26 @@
                                                      HorizontalAlignment="Stretch"
                                                      VerticalAlignment="Stretch"
                                                      AutoGenerateColumns="False"
+                                                     behavior:DoubleClickCommandBehavior.CanDoubleClickOnChild="False"
                                                      behavior:DoubleClickCommandBehavior.DoubleClickCommand="{Binding DoubleClickViewCommand}"
-                                                     behavior:DoubleClickCommandBehavior.DoubleClickCommandParameter="DoubleClick"
-                                                     CurrentColumnCollection="{Binding ColumnCollection,Mode=OneWayToSource,UpdateSourceTrigger=PropertyChanged}"
+                                                     behavior:DoubleClickCommandBehavior.DoubleClickCommandParameter="{Binding SelectedItem, ElementName=dtgrdCountSheetDirectory}"
                                                      CanUserAddRows="False"
                                                      CanUserDeleteRows="False"
+                                                     CurrentColumnCollection="{Binding ColumnCollection, Mode=OneWayToSource, UpdateSourceTrigger=PropertyChanged}"
                                                      CurrentPageIndex="{Binding CurrentPageIndex}"
                                                      DisplayItems="{Binding NumberOfDisplayItems}"
-                                                     IsRollBackData="False"
                                                      IsColunmHidden="True"
-                                                     SelectedIndex="{Binding SelectedIndex,Mode=OneWay,UpdateSourceTrigger=PropertyChanged}"
+                                                     IsRollBackData="False"
                                                      ItemsSource="{Binding CountStockCollection}"
                                                      NumberOfItems="{Binding TotalCountSheet}"
-                                                     SelectedItem="{Binding SelectedCountStock}"
+                                                     SelectedIndex="{Binding SelectedIndex, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}"
+                                                     SelectionMode="Extended"
                                                      Style="{DynamicResource DatagridWithRowHeader}">
                         <dataGridControl:DataGridControl.ContextMenu>
                             <ContextMenu Tag="{Binding PlacementTarget, RelativeSource={RelativeSource Mode=Self}}">
                                 <MenuItem Command="{Binding NewCommand}"
                                           HeaderTemplate="{StaticResource NewItemHeaderTemplate}"
-                                          IsEnabled="{Binding ., Converter={StaticResource permissionConverter}, ConverterParameter=IV100-04-02}">
+                                          IsEnabled="{Binding ., ConverterParameter=IV100-04-02, Converter={StaticResource permissionConverter}}">
                                     <MenuItem.Icon>
                                         <Rectangle Width="16"
                                                    Height="16"
@@ -450,7 +450,7 @@
                                     </MenuItem.Icon>
                                 </MenuItem>
                                 <MenuItem Command="{Binding EditCommand}"
-                                          CommandParameter="ContextMenu"
+                                          CommandParameter="{Binding Tag.SelectedItems, RelativeSource={RelativeSource AncestorType={x:Type ContextMenu}, Mode=FindAncestor}}"
                                           HeaderTemplate="{StaticResource EditItemHeaderTemplate}">
                                     <MenuItem.Icon>
                                         <Rectangle Width="16"
@@ -460,8 +460,9 @@
                                     </MenuItem.Icon>
                                 </MenuItem>
                                 <MenuItem Command="{Binding ApplyCommand}"
+                                          CommandParameter="{Binding Tag.SelectedItems, RelativeSource={RelativeSource AncestorType={x:Type ContextMenu}, Mode=FindAncestor}}"
                                           HeaderTemplate="{StaticResource AdjustItemHeaderTemplate}"
-                                          IsEnabled="{Binding ., Converter={StaticResource permissionConverter}, ConverterParameter=IV100-04-03}">
+                                          IsEnabled="{Binding ., ConverterParameter=IV100-04-03, Converter={StaticResource permissionConverter}}">
                                     <MenuItem.Icon>
                                         <Rectangle Width="16"
                                                    Height="16"
@@ -474,11 +475,11 @@
                         <dataGridControl:DataGridControl.Columns>
                             <DataGridTemplateColumn Header="Sheet #"
                                                     Width="0.20*"
+                                                    dataGridControl:DataGridColumnExtensions.Name="{x:Static local:SearchOptions.AccountNum}"
                                                     IsReadOnly="True">
                                 <DataGridTemplateColumn.CellTemplate>
                                     <DataTemplate>
                                         <TextBlock HorizontalAlignment="Left"
-                                                   dataGridControl:DataGridColumnExtensions.Name="{x:Static local:SearchOptions.AccountNum}"
                                                    Text="{Binding DocumentNo, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}" />
                                     </DataTemplate>
                                 </DataGridTemplateColumn.CellTemplate>
@@ -491,7 +492,7 @@
                                 <DataGridTemplateColumn.CellTemplate>
                                     <DataTemplate>
                                         <TextBlock HorizontalAlignment="Left"
-                                                   Text="{Binding Status, Converter={StaticResource comboxItemToTextConverter}, ConverterParameter=CountStockStatus, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}" />
+                                                   Text="{Binding Status, ConverterParameter=CountStockStatus, Converter={StaticResource comboxItemToTextConverter}, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}" />
                                     </DataTemplate>
                                 </DataGridTemplateColumn.CellTemplate>
                             </DataGridTemplateColumn>
@@ -502,18 +503,18 @@
                                 <DataGridTemplateColumn.CellTemplate>
                                     <DataTemplate>
                                         <TextBlock HorizontalAlignment="Left"
-                                                   Text="{Binding DateCreated, StringFormat={x:Static local:Define.DateFormat}, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}" />
+                                                   Text="{Binding DateCreated, Mode=OneWay, StringFormat={x:Static local:Define.DateFormat}, UpdateSourceTrigger=PropertyChanged}" />
                                     </DataTemplate>
                                 </DataGridTemplateColumn.CellTemplate>
                             </DataGridTemplateColumn>
                             <DataGridTemplateColumn Header="Completed Date"
-                                                    dataGridControl:DataGridColumnExtensions.Name="{x:Static local:SearchOptions.CompleteDate}"
                                                     Width="0.20*"
+                                                    dataGridControl:DataGridColumnExtensions.Name="{x:Static local:SearchOptions.CompleteDate}"
                                                     IsReadOnly="True">
                                 <DataGridTemplateColumn.CellTemplate>
                                     <DataTemplate>
                                         <TextBlock HorizontalAlignment="Left"
-                                                   Text="{Binding CompletedDate, StringFormat={x:Static local:Define.DateFormat}, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}" />
+                                                   Text="{Binding CompletedDate, Mode=OneWay, StringFormat={x:Static local:Define.DateFormat}, UpdateSourceTrigger=PropertyChanged}" />
                                     </DataTemplate>
                                 </DataGridTemplateColumn.CellTemplate>
                             </DataGridTemplateColumn>
@@ -532,7 +533,7 @@
                     </dataGridControl:DataGridControl>
                 </Grid>
                 <Grid x:Name="grdContentCoutSheet"
-                      Grid.Column="1" d:IsHidden="True">
+                      Grid.Column="1">
                     <Grid.Visibility>
                         <Binding Path="IsSearchMode"
                                  Mode="OneWay"
@@ -592,8 +593,9 @@
                                     Command="{Binding NewCommand}"
                                     Width="40"
                                     Height="40"
-                                    IsEnabled="{Binding ., Converter={StaticResource permissionConverter}, ConverterParameter=IV100-04-02}"
-                                    Style="{DynamicResource ButtonSystem}">
+                                    IsEnabled="{Binding ., ConverterParameter=IV100-04-02, Converter={StaticResource permissionConverter}}"
+                                    Style="{DynamicResource ButtonSystem}"
+                                    ToolTip="New Item">
                                 <StackPanel x:Name="stkpBtnNew"
                                             HorizontalAlignment="Center"
                                             VerticalAlignment="Center">
@@ -613,7 +615,8 @@
                                     Command="{Binding SaveCommand}"
                                     Width="40"
                                     Height="40"
-                                    Style="{DynamicResource ButtonSystem}">
+                                    Style="{DynamicResource ButtonSystem}"
+                                    ToolTip="Save Current Item">
                                 <StackPanel x:Name="stkpBtnSave"
                                             HorizontalAlignment="Center"
                                             VerticalAlignment="Center"
@@ -635,8 +638,9 @@
                                     Command="{Binding ApplyCommand}"
                                     Width="40"
                                     Height="40"
-                                    IsEnabled="{Binding ., Converter={StaticResource permissionConverter}, ConverterParameter=IV100-04-03}"
-                                    Style="{DynamicResource ButtonSystem}">
+                                    IsEnabled="{Binding ., ConverterParameter=IV100-04-03, Converter={StaticResource permissionConverter}}"
+                                    Style="{DynamicResource ButtonSystem}"
+                                    ToolTip="Apply Current Item">
                                 <StackPanel x:Name="stkpBtnDelete"
                                             HorizontalAlignment="Center"
                                             VerticalAlignment="Center">
@@ -659,6 +663,7 @@
                                     Height="40"
                                     VerticalAlignment="Center"
                                     Style="{DynamicResource ButtonSystem}"
+                                    ToolTip="Print Current Item"
                                     Visibility="Collapsed">
                                 <StackPanel x:Name="stkpBtnPrint"
                                             HorizontalAlignment="Center"
@@ -706,17 +711,16 @@
                                 <RowDefinition Height="0" />
                             </Grid.RowDefinitions>
                             <Grid.ColumnDefinitions>
-                                <ColumnDefinition Width="60"/>
-							<ColumnDefinition Width="137"/>
-							<ColumnDefinition Width="50"/>
-							<ColumnDefinition Width="100"/>
-							<ColumnDefinition Width="0.5*"/>
-							<ColumnDefinition Width="72"/>
-							<ColumnDefinition Width="90"/>
-							
-							<ColumnDefinition Width="0.5*"/>
-							<ColumnDefinition Width="88"/>
-							<ColumnDefinition Width="100"/>
+                                <ColumnDefinition Width="60" />
+                                <ColumnDefinition Width="137" />
+                                <ColumnDefinition Width="41" />
+                                <ColumnDefinition Width="100" />
+                                <ColumnDefinition Width="0.5*" />
+                                <ColumnDefinition Width="72" />
+                                <ColumnDefinition Width="90" />
+                                <ColumnDefinition Width="0.5*" />
+                                <ColumnDefinition Width="88" />
+                                <ColumnDefinition Width="100" />
                             </Grid.ColumnDefinitions>
                             <TextBlock x:Name="txtblSheetNo"
                                        Grid.Row="0"
@@ -735,23 +739,24 @@
                             <TextBlock x:Name="txtblStatus"
                                        Grid.Column="2"
                                        Margin="0,0,10,0"
-                                       HorizontalAlignment="Right"
+                                       HorizontalAlignment="Left"
                                        VerticalAlignment="Center"
                                        Style="{DynamicResource TextBlockNormal}"
                                        Text="{DynamicResource CS_TextBlock_Status}"
                                        TextWrapping="NoWrap" />
                             <ComboBox x:Name="cmbStatus"
                                       Grid.Column="3"
+                                      Margin="0,2"
                                       DisplayMemberPath="Text"
                                       IsEditable="True"
                                       IsEnabled="False"
                                       ItemsSource="{x:Static helper:Common.CountStockStatus}"
-                                      SelectedValue="{Binding SelectedCountStock.Status, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"
+                                      SelectedValue="{Binding SelectedCountStock.Status, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                                       SelectedValuePath="Value" />
                             <TextBlock x:Name="txtblStartedDate"
                                        Grid.Column="5"
                                        Margin="0,0,10,0"
-                                       HorizontalAlignment="Right"
+                                       HorizontalAlignment="Left"
                                        VerticalAlignment="Center"
                                        Style="{DynamicResource TextBlockNormal}"
                                        Text="{DynamicResource CS_TextBlock_StartedDate}"
@@ -766,7 +771,7 @@
                             <TextBlock x:Name="txtblCompletedDate"
                                        Grid.Column="8"
                                        Margin="0,0,10,0"
-                                       HorizontalAlignment="Right"
+                                       HorizontalAlignment="Left"
                                        VerticalAlignment="Center"
                                        Style="{DynamicResource TextBlockNormal}"
                                        Text="{DynamicResource CS_TextBlock_CompletedDate}"
@@ -787,13 +792,14 @@
                             <Grid x:Name="grdContentCountSheet">
                                 <Grid.RowDefinitions>
                                     <RowDefinition Height="35" />
+                                    <RowDefinition Height="25" />
                                     <RowDefinition Height="Auto" />
                                     <RowDefinition Height="*" />
                                 </Grid.RowDefinitions>
                                 <TextBlock x:Name="txtblStore"
-                                           Margin="10,0,0,0"
+                                           Margin="10,0,0,6"
                                            HorizontalAlignment="Left"
-                                           VerticalAlignment="Center"
+                                           VerticalAlignment="Bottom"
                                            Style="{DynamicResource TextBlockNormal}"
                                            Text="{DynamicResource C155}"
                                            TextWrapping="NoWrap"
@@ -801,25 +807,44 @@
                                 <ComboBox x:Name="cmbLocation"
                                           Width="250"
                                           Height="21"
-                                          Margin="50,0,0,0"
+                                          Margin="50,2,0,2"
                                           HorizontalAlignment="Left"
-                                          VerticalAlignment="Center"
+                                          VerticalAlignment="Bottom"
                                           DisplayMemberPath="Name"
+                                          IsEnabled="{Binding SelectedCountStock.IsEnable}"
                                           ItemsSource="{Binding StoreCollection}"
                                           SelectedItem="{Binding SelectedStore}" />
+                                <Button x:Name="btnAssignItem"
+                                        Command="{Binding SearchProductAdvanceCommand}"
+                                        Width="90"
+                                        Height="21"
+                                        Margin="305,0,0,2"
+                                        HorizontalAlignment="Left"
+                                        VerticalAlignment="Bottom"
+                                        d:LayoutOverrides="Height">
+                                    <TextBlock x:Name="txtblAssignItem"
+                                               VerticalAlignment="Center"
+                                               Style="{DynamicResource ButtonTextBlock}"
+                                               Text="Assign Item(s)"
+                                               TextWrapping="NoWrap" />
+                                </Button>
                                 <CheckBox x:Name="cbSet"
-                                          Margin="310,0,0,0"
+                                          Grid.Row="1"
+                                          Margin="10,0,0,0"
                                           HorizontalAlignment="Left"
                                           VerticalAlignment="Center"
                                           Content="Set all item not counted to zero"
-                                          IsChecked="{Binding IsSetAllQuantity}" />
+                                          IsChecked="{Binding IsSetAllQuantity}"
+                                          IsEnabled="{Binding SelectedCountStock.IsEnable}" />
                                 <dataGridControl:DataGridControl x:Name="dtgrdCountSheetVendor"
-                                                                 Grid.Row="2"
+                                                                 Command="{Binding LoadProductByStepCommand}"
+                                                                 Grid.Row="3"
                                                                  Margin="10,0.2,10,10"
                                                                  AutoGenerateColumns="False"
                                                                  CanUserAddRows="False"
                                                                  CanUserDeleteRows="False"
-                                                                 IsPaging="False"
+                                                                 DisplayItems="{Binding NumberOfDisplayItems}"
+                                                                 IsPaging="True"
                                                                  IsRollBackData="False"
                                                                  ItemsSource="{Binding SelectedCountStock.CountStockDetailCollection}"
                                                                  NumberOfItems="{Binding TotalProducts}"
@@ -887,7 +912,7 @@
                                             <DataGridTemplateColumn.CellTemplate>
                                                 <DataTemplate>
                                                     <TextBlock HorizontalAlignment="Right"
-                                                               Text="{Binding Quantity, Mode=OneWay, UpdateSourceTrigger=PropertyChanged, StringFormat={x:Static local:Define.NumericFormat}, ConverterCulture={x:Static local:Define.ConverterCulture}}" />
+                                                               Text="{Binding Quantity, ConverterCulture={x:Static local:Define.ConverterCulture}, Mode=OneWay, StringFormat={x:Static local:Define.NumericFormat}, UpdateSourceTrigger=PropertyChanged}" />
                                                 </DataTemplate>
                                             </DataGridTemplateColumn.CellTemplate>
                                         </DataGridTemplateColumn>
@@ -901,7 +926,7 @@
                                                                Foreground="{DynamicResource ForegroundGreenBrush}">
                                                         <TextBlock.Style>
                                                             <Style BasedOn="{StaticResource {x:Type TextBlock}}"
-                                                                   TargetType="TextBlock">
+                                                                   TargetType="{x:Type TextBlock}">
                                                                 <Style.Triggers>
                                                                     <MultiDataTrigger>
                                                                         <MultiDataTrigger.Conditions>
@@ -909,7 +934,7 @@
                                                                                        Value="False" />
                                                                         </MultiDataTrigger.Conditions>
                                                                         <Setter Property="Text"
-                                                                                Value="{Binding CountedQty, Mode=OneWay, UpdateSourceTrigger=PropertyChanged, StringFormat={x:Static local:Define.NumericFormat}, ConverterCulture={x:Static local:Define.ConverterCulture}}" />
+                                                                                Value="{Binding CountedQty, ConverterCulture={x:Static local:Define.ConverterCulture}, Mode=OneWay, StringFormat={x:Static local:Define.NumericFormat}, UpdateSourceTrigger=PropertyChanged}" />
                                                                     </MultiDataTrigger>
                                                                     <MultiDataTrigger>
                                                                         <MultiDataTrigger.Conditions>
@@ -947,7 +972,7 @@
                                                     <TextBlock Margin="0,0,2,0"
                                                                HorizontalAlignment="Right"
                                                                Foreground="{DynamicResource ForegroundRedBrush}"
-                                                               Text="{Binding Difference, Mode=OneWay, UpdateSourceTrigger=PropertyChanged, StringFormat={x:Static local:Define.NumericFormat}, ConverterCulture={x:Static local:Define.ConverterCulture}}" />
+                                                               Text="{Binding Difference, ConverterCulture={x:Static local:Define.ConverterCulture}, Mode=OneWay, StringFormat={x:Static local:Define.NumericFormat}, UpdateSourceTrigger=PropertyChanged}" />
                                                 </DataTemplate>
                                             </DataGridTemplateColumn.CellTemplate>
                                         </DataGridTemplateColumn>

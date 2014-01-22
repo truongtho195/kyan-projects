@@ -461,7 +461,7 @@
                                     Margin="0"
                                     IsEnabled="{Binding ., Converter={StaticResource permissionConverter}, ConverterParameter=IV100-04-05}"
                                     Style="{DynamicResource ButtonSystem}"
-                                    Visibility="Visible">
+                                    Visibility="Visible" ToolTip="New Item">
                                 <StackPanel x:Name="stkpBtnNew"
                                             HorizontalAlignment="Center"
                                             VerticalAlignment="Center">
@@ -482,7 +482,7 @@
                                     Width="40"
                                     Height="40"
                                     Style="{DynamicResource ButtonSystem}"
-                                    Visibility="Visible">
+                                    Visibility="Visible" ToolTip="Save Current Item">
                                 <StackPanel x:Name="stkpBtnSave"
                                             HorizontalAlignment="Center"
                                             VerticalAlignment="Center"
@@ -506,7 +506,7 @@
                                     Height="40"
                                     IsEnabled="{Binding ., Converter={StaticResource permissionConverter}, ConverterParameter=IV100-04-07}"
                                     Style="{DynamicResource ButtonSystem}"
-                                    Visibility="{Binding SelectedTransferStock.VisibilityReversed, Mode=OneWay}">
+                                    Visibility="{Binding SelectedTransferStock.VisibilityReversed, Mode=OneWay}" ToolTip="Restore Current Item">
                                 <StackPanel x:Name="stkpRestore"
                                             HorizontalAlignment="Center"
                                             VerticalAlignment="Center">
@@ -529,7 +529,7 @@
                                     Height="40"
                                     IsEnabled="{Binding ., Converter={StaticResource permissionConverter}, ConverterParameter=IV100-04-06}"
                                     Style="{DynamicResource ButtonSystem}"
-                                    Visibility="{Binding SelectedTransferStock.VisibilityApplied, Mode=OneWay}">
+                                    Visibility="{Binding SelectedTransferStock.VisibilityApplied, Mode=OneWay}" ToolTip="Apply Current Item">
                                 <StackPanel x:Name="stkpApply"
                                             HorizontalAlignment="Center"
                                             VerticalAlignment="Center">

@@ -107,10 +107,10 @@
         <s:Int32 x:Key="GetValueMaxLength">3</s:Int32>
         <s:Int32 x:Key="TakeValueMaxLength">3</s:Int32>
     </UserControl.Resources>
-	<UserControl.InputBindings>
-		<KeyBinding Command="{Binding HelpCommand}"
+    <UserControl.InputBindings>
+        <KeyBinding Command="{Binding HelpCommand}"
                     Gesture="F1" />
-	</UserControl.InputBindings>
+    </UserControl.InputBindings>
     <Grid x:Name="GridLayout">
         <Rectangle x:Name="UserControl_Background_Image"
                    Fill="{DynamicResource UserControl_Background_Image}" />
@@ -153,12 +153,13 @@
                                                           VerticalContentAlignment="Center"
                                                           BorderBrush="{DynamicResource TextBoxCanlendarComboboxBorderBrush}"
                                                           Padding="24,0,2,0"
+                                                          Text="{Binding Keyword, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                                                           TextWrapping="NoWrap"
                                                           Watermark="{DynamicResource C135}">
                                     <control:WatermarkTextBox.InputBindings>
                                         <KeyBinding Key="Enter"
                                                     Command="{Binding SearchCommand}"
-                                                    CommandParameter="{Binding Path=Text, ElementName=txtKeyword}" />
+                                                    CommandParameter="{Binding Text, ElementName=txtKeyword}" />
                                     </control:WatermarkTextBox.InputBindings>
                                     <i:Interaction.Behaviors>
                                         <behavior:AutoFocusBehavior />
@@ -171,7 +172,7 @@
                                            Fill="{DynamicResource Find}" />
                                 <Button x:Name="btnAdvanceSearch"
                                         Command="{Binding PopupAdvanceSearchCommand}"
-                                        CommandParameter="{Binding Path=Text, ElementName=txtKeyword}"
+                                        CommandParameter="{Binding Text, ElementName=txtKeyword}"
                                         Grid.Row="1"
                                         Width="100"
                                         Height="20"
@@ -187,8 +188,6 @@
                                                          Grid.Row="1"
                                                          Margin="10,10.2,0,10"
                                                          AutoGenerateColumns="False"
-                                                         behavior:DataGridHiddenColunmHelper.ColunmIndex="0"
-                                                         behavior:DataGridHiddenColunmHelper.IsHiddenColunm="{Binding HiddenWarningConflict, Mode=OneWay}"
                                                          behavior:DoubleClickCommandBehavior.DoubleClickCommand="{Binding DoubleClickViewCommand}"
                                                          behavior:DoubleClickCommandBehavior.DoubleClickCommandParameter="{Binding SelectedItem, ElementName=dtgrdDiscountCoupon}"
                                                          CanUserAddRows="False"
@@ -213,7 +212,7 @@
                                     </MenuItem>
                                     <MenuItem Header="Edit Item"
                                               Command="{Binding EditCommand}"
-                                              CommandParameter="{Binding Tag, RelativeSource={RelativeSource AncestorType=ContextMenu, Mode=FindAncestor}}">
+                                              CommandParameter="{Binding Tag, RelativeSource={RelativeSource AncestorType={x:Type ContextMenu}, Mode=FindAncestor}}">
                                         <MenuItem.Icon>
                                             <Rectangle Width="16"
                                                        Height="16"
@@ -222,27 +221,27 @@
                                         </MenuItem.Icon>
                                     </MenuItem>
                                     <MenuItem Command="{Binding ChangeStatusCommand}"
-                                              CommandParameter="{Binding Tag, RelativeSource={RelativeSource AncestorType=ContextMenu, Mode=FindAncestor}}"
-                                              Tag="{Binding Tag.SelectedItem.Status, RelativeSource={RelativeSource AncestorType=ContextMenu, Mode=FindAncestor}}">
+                                              CommandParameter="{Binding Tag, RelativeSource={RelativeSource AncestorType={x:Type ContextMenu}, Mode=FindAncestor}}"
+                                              Tag="{Binding Tag.SelectedItem.Status, RelativeSource={RelativeSource AncestorType={x:Type ContextMenu}, Mode=FindAncestor}}">
                                         <MenuItem.Style>
                                             <Style BasedOn="{StaticResource {x:Type MenuItem}}"
-                                                   TargetType="MenuItem">
+                                                   TargetType="{x:Type MenuItem}">
                                                 <Style.Triggers>
-                                                    <DataTrigger Binding="{Binding Tag.SelectedItem.Status, RelativeSource={RelativeSource AncestorType=ContextMenu, Mode=FindAncestor}}"
+                                                    <DataTrigger Binding="{Binding Tag.SelectedItem.Status, RelativeSource={RelativeSource AncestorType={x:Type ContextMenu}, Mode=FindAncestor}}"
                                                                  Value="2">
                                                         <Setter Property="Header"
                                                                 Value="Active" />
                                                         <Setter Property="Icon"
                                                                 Value="{StaticResource ActiveTemplete}" />
                                                     </DataTrigger>
-                                                    <DataTrigger Binding="{Binding Tag.SelectedItem.Status, RelativeSource={RelativeSource AncestorType=ContextMenu, Mode=FindAncestor}}"
+                                                    <DataTrigger Binding="{Binding Tag.SelectedItem.Status, RelativeSource={RelativeSource AncestorType={x:Type ContextMenu}, Mode=FindAncestor}}"
                                                                  Value="1">
                                                         <Setter Property="Header"
                                                                 Value="Deactive" />
                                                         <Setter Property="Icon"
                                                                 Value="{StaticResource DeActiveTemplete}" />
                                                     </DataTrigger>
-                                                    <DataTrigger Binding="{Binding Tag.SelectedItem, RelativeSource={RelativeSource AncestorType=ContextMenu, Mode=FindAncestor}}"
+                                                    <DataTrigger Binding="{Binding Tag.SelectedItem, RelativeSource={RelativeSource AncestorType={x:Type ContextMenu}, Mode=FindAncestor}}"
                                                                  Value="{x:Null}">
                                                         <Setter Property="Header"
                                                                 Value="Active" />
@@ -255,7 +254,7 @@
                                     </MenuItem>
                                     <MenuItem Header="Delete Item(s)"
                                               Command="{Binding DeletesCommand}"
-                                              CommandParameter="{Binding Tag, RelativeSource={RelativeSource AncestorType=ContextMenu, Mode=FindAncestor}}">
+                                              CommandParameter="{Binding Tag, RelativeSource={RelativeSource AncestorType={x:Type ContextMenu}, Mode=FindAncestor}}">
                                         <MenuItem.Icon>
                                             <Rectangle Width="16"
                                                        Height="16"
@@ -265,51 +264,7 @@
                                     </MenuItem>
                                 </ContextMenu>
                             </dataGridControl:DataGridControl.ContextMenu>
-                            <DataGrid.Columns>
-                                <DataGridTemplateColumn SortMemberPath="IsConflict">
-                                    <DataGridTemplateColumn.CellTemplate>
-                                        <DataTemplate>
-                                            <Rectangle x:Name="recActiveTemplete"
-                                                       Width="16"
-                                                       Height="16"
-                                                       Fill="{DynamicResource Warning}"
-                                                       Stretch="Fill"
-                                                       Visibility="Collapsed">
-                                                <Rectangle.ToolTip>
-                                                    <ToolTip Background="Transparent"
-                                                             BorderBrush="Transparent">
-                                                        <Border x:Name="brdConflictTooltip"
-                                                                Grid.Row="2"
-                                                                Width="250"
-                                                                HorizontalAlignment="Stretch"
-                                                                Background="{DynamicResource UserControlBackground}"
-                                                                BorderBrush="{DynamicResource TitleBarBorder}"
-                                                                BorderThickness="1"
-                                                                CornerRadius="5">
-                                                            <Grid x:Name="grdConflict"
-                                                                  Margin="5">
-                                                                <TextBlock x:Name="txtblRewardHas"
-                                                                           Grid.Row="1"
-                                                                           VerticalAlignment="Center"
-                                                                           Style="{DynamicResource TextBlockNormal}"
-                                                                           Text="One or more items on the discount are listed or other active discount. The discount defined may not be applied."
-                                                                           TextWrapping="Wrap" />
-                                                            </Grid>
-                                                        </Border>
-                                                    </ToolTip>
-                                                </Rectangle.ToolTip>
-                                            </Rectangle>
-                                            <DataTemplate.Triggers>
-                                                <DataTrigger Binding="{Binding IsConflict}"
-                                                             Value="True">
-                                                    <Setter TargetName="recActiveTemplete"
-                                                            Property="Visibility"
-                                                            Value="Visible" />
-                                                </DataTrigger>
-                                            </DataTemplate.Triggers>
-                                        </DataTemplate>
-                                    </DataGridTemplateColumn.CellTemplate>
-                                </DataGridTemplateColumn>
+                            <dataGridControl:DataGridControl.Columns>
                                 <DataGridTextColumn Binding="{Binding Name, Mode=OneWay}"
                                                     Width="*"
                                                     HeaderTemplate="{StaticResource DataTemplate_PM_Header_DiscountName}" />
@@ -321,21 +276,21 @@
                                                     HeaderTemplate="{StaticResource DataTemplate_PM_Header_Status}" />
                                 <DataGridTemplateColumn Width="70"
                                                         HeaderTemplate="{StaticResource DataTemplate_PM_Header_StartDate}"
-                                                        SortMemberPath="PromotionScheduleModel.StartDate">
+                                                        SortMemberPath="StartDate">
                                     <DataGridTemplateColumn.CellTemplate>
                                         <DataTemplate>
                                             <TextBlock HorizontalAlignment="Center"
-                                                       Text="{Binding PromotionScheduleModel.StartDate, Mode=OneWay, StringFormat={x:Static local:Define.DateFormat}}" />
+                                                       Text="{Binding StartDate, Mode=OneWay, StringFormat={x:Static local:Define.DateFormat}}" />
                                         </DataTemplate>
                                     </DataGridTemplateColumn.CellTemplate>
                                 </DataGridTemplateColumn>
                                 <DataGridTemplateColumn Width="70"
                                                         HeaderTemplate="{StaticResource DataTemplate_PM_Header_EndDate}"
-                                                        SortMemberPath="PromotionScheduleModel.EndDate">
+                                                        SortMemberPath="EndDate">
                                     <DataGridTemplateColumn.CellTemplate>
                                         <DataTemplate>
                                             <TextBlock HorizontalAlignment="Center"
-                                                       Text="{Binding PromotionScheduleModel.EndDate, Mode=OneWay, StringFormat={x:Static local:Define.DateFormat}}" />
+                                                       Text="{Binding EndDate, Mode=OneWay, StringFormat={x:Static local:Define.DateFormat}}" />
                                         </DataTemplate>
                                     </DataGridTemplateColumn.CellTemplate>
                                 </DataGridTemplateColumn>
@@ -352,12 +307,13 @@
                                         </DataTemplate>
                                     </DataGridTemplateColumn.CellTemplate>
                                 </DataGridTemplateColumn>
-                            </DataGrid.Columns>
+                            </dataGridControl:DataGridControl.Columns>
                         </dataGridControl:DataGridControl>
                     </Grid>
                 </Grid>
                 <Grid x:Name="grdSubDiscountPriceCoupon"
-                      Grid.Column="1" d:IsHidden="True">
+                      Grid.Column="1"
+                      d:IsHidden="True">
                     <Grid.Visibility>
                         <Binding Path="IsSearchMode"
                                  Mode="OneWay"
@@ -415,6 +371,7 @@
                                 Width="40"
                                 Height="40"
                                 Style="{DynamicResource ButtonSystem}"
+                                ToolTip="New Item"
                                 Visibility="Visible">
                             <StackPanel x:Name="stkpBtnNew"
                                         HorizontalAlignment="Center"
@@ -436,6 +393,7 @@
                                 Width="40"
                                 Height="40"
                                 Style="{DynamicResource ButtonSystem}"
+                                ToolTip="Save Current Item"
                                 Visibility="Visible">
                             <StackPanel x:Name="stkpBtnSave"
                                         HorizontalAlignment="Center"
@@ -458,7 +416,8 @@
                                 Command="{Binding DeleteCommand}"
                                 Width="40"
                                 Height="40"
-                                Style="{DynamicResource ButtonSystem}">
+                                Style="{DynamicResource ButtonSystem}"
+                                ToolTip="Delete Current Item">
                             <StackPanel x:Name="stkpBtnDelete"
                                         HorizontalAlignment="Center"
                                         VerticalAlignment="Center">
@@ -480,6 +439,7 @@
                                 Height="40"
                                 VerticalAlignment="Center"
                                 Style="{DynamicResource ButtonSystem}"
+                                ToolTip="Print Current Item"
                                 Visibility="Collapsed">
                             <StackPanel x:Name="stkpBtnPrint"
                                         HorizontalAlignment="Center"
@@ -597,7 +557,7 @@
                                VerticalAlignment="Bottom"
                                FontFamily="Times New Roman"
                                Style="{DynamicResource TextBlockTitleFormView}"
-                               Text="{Binding SelectedItem.Text, Mode=OneWay, ElementName=cmbDiscountType}"
+                               Text="{Binding SelectedItem.Text, ElementName=cmbDiscountType, Mode=OneWay}"
                                TextWrapping="NoWrap" />
                     <Grid x:Name="grdBasic"
                           Grid.Row="1"
@@ -621,7 +581,7 @@
                                                 Background="#FFF8F49A"
                                                 MaxLength="{StaticResource NameMaxLength}"
                                                 Padding="2,0,2,0"
-                                                Text="{Binding SelectedPromotion.Name, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, NotifyOnValidationError=True, ValidatesOnDataErrors=True}"
+                                                Text="{Binding SelectedPromotion.Name, Mode=TwoWay, NotifyOnValidationError=True, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True}"
                                                 TextWrapping="NoWrap">
                             <i:Interaction.Behaviors>
                                 <behavior:AutoFocusBehavior />
@@ -653,13 +613,33 @@
                             BorderThickness="1">
                         <Grid x:Name="grdContentDiscountPriceCoupon">
                             <Grid.RowDefinitions>
-                                <RowDefinition Height="135" />
+                                <RowDefinition Height="35" />
+                                <RowDefinition Height="125" />
                                 <RowDefinition Height="Auto" />
                                 <RowDefinition Height="Auto" />
                                 <RowDefinition />
                             </Grid.RowDefinitions>
+                            <TextBlock x:Name="txtblCategory"
+                                       Margin="10,0,0,5"
+                                       HorizontalAlignment="Left"
+                                       VerticalAlignment="Bottom"
+                                       Style="{DynamicResource TextBlockNormal}"
+                                       Text="Category"
+                                       TextWrapping="NoWrap" />
+                            <ComboBox x:Name="cmbCategory"
+                                      Width="240"
+                                      Height="21"
+                                      Margin="90,0,0,2"
+                                      HorizontalAlignment="Left"
+                                      VerticalAlignment="Bottom"
+                                      DisplayMemberPath="Text"
+                                      ItemsSource="{Binding CategoryCollection}"
+                                      SelectedValue="{Binding SelectedPromotion.CategoryId, NotifyOnValidationError=True, ValidatesOnDataErrors=True}"
+                                      SelectedValuePath="IntValue"
+                                      Visibility="{Binding IsChecked, Converter={StaticResource boolToVisibilityConverter}, ElementName=rbAllItemsinDepartment}" />
                             <Grid x:Name="grdDiscountType"
-                                  Margin="0,10,0,0">
+                                  Grid.Row="1"
+                                  Margin="0">
                                 <Grid.RowDefinitions>
                                     <RowDefinition Height="25" />
                                     <RowDefinition Height="100" />
@@ -668,14 +648,13 @@
                                            Margin="10,0,0,0"
                                            HorizontalAlignment="Left"
                                            VerticalAlignment="Center"
-                                           FontWeight="Bold"
                                            Style="{DynamicResource TextBlockNormal}"
                                            Text="{DynamicResource CS146}"
                                            TextWrapping="NoWrap" />
                                 <ComboBox x:Name="cmbDiscountType"
-                                          Width="241"
+                                          Width="240"
                                           Height="21"
-                                          Margin="110,2,0,0"
+                                          Margin="90,2,0,0"
                                           HorizontalAlignment="Left"
                                           VerticalAlignment="Top"
                                           DisplayMemberPath="Text"
@@ -684,14 +663,14 @@
                                           SelectedValuePath="Value" />
                                 <Grid x:Name="grdContentDiscountType"
                                       Grid.Row="1"
-                                      Margin="110,0,0,0"
+                                      Margin="90,0,0,0"
                                       HorizontalAlignment="Left">
                                     <Grid x:Name="grdPercent"
                                           Height="25"
                                           HorizontalAlignment="Left"
                                           VerticalAlignment="Top"
                                           d:IsHidden="True"
-                                          Visibility="{Binding SelectedPromotion.PromotionTypeId, Mode=OneWay, Converter={StaticResource intergerToVisibilityConverter}, ConverterParameter=1}">
+                                          Visibility="{Binding SelectedPromotion.PromotionTypeId, ConverterParameter=1, Converter={StaticResource intergerToVisibilityConverter}, Mode=OneWay}">
                                         <TextBlock x:Name="txtblTake"
                                                    Grid.Row="6"
                                                    HorizontalAlignment="Left"
@@ -710,7 +689,7 @@
                                                                        NumericStringFormat="{x:Static local:Define.NumericFormat}"
                                                                        Padding="2,0,2,0"
                                                                        TextWrapping="NoWrap"
-                                                                       Value="{Binding SelectedPromotion.TakeOff, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, NotifyOnValidationError=True, ValidatesOnDataErrors=True}" />
+                                                                       Value="{Binding SelectedPromotion.TakeOff, Mode=TwoWay, NotifyOnValidationError=True, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True}" />
                                         <TextBlock x:Name="txtblPercentOff"
                                                    Grid.Row="6"
                                                    Margin="95,0,0,0"
@@ -726,7 +705,7 @@
                                           HorizontalAlignment="Left"
                                           VerticalAlignment="Top"
                                           d:IsHidden="True"
-                                          Visibility="{Binding SelectedPromotion.PromotionTypeId, Mode=OneWay, Converter={StaticResource intergerToVisibilityConverter}, ConverterParameter=2}">
+                                          Visibility="{Binding SelectedPromotion.PromotionTypeId, ConverterParameter=2, Converter={StaticResource intergerToVisibilityConverter}, Mode=OneWay}">
                                         <TextBlock x:Name="txtblDolarTake"
                                                    Grid.Row="6"
                                                    HorizontalAlignment="Left"
@@ -741,7 +720,7 @@
                                                                      CurrencyStringFormat="{x:Static local:Define.CurrencyFormat}"
                                                                      Padding="2,0,2,0"
                                                                      TextWrapping="NoWrap"
-                                                                     Value="{Binding SelectedPromotion.TakeOff, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, NotifyOnValidationError=True, ValidatesOnDataErrors=True}" />
+                                                                     Value="{Binding SelectedPromotion.TakeOff, Mode=TwoWay, NotifyOnValidationError=True, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True}" />
                                         <TextBlock x:Name="txtblDolarOff"
                                                    Grid.Row="6"
                                                    Margin="90,0,0,0"
@@ -756,7 +735,7 @@
                                           HorizontalAlignment="Left"
                                           VerticalAlignment="Top"
                                           d:IsHidden="True"
-                                          Visibility="{Binding SelectedPromotion.PromotionTypeId, Mode=OneWay, Converter={StaticResource intergerToVisibilityConverter}, ConverterParameter=3}">
+                                          Visibility="{Binding SelectedPromotion.PromotionTypeId, ConverterParameter=3, Converter={StaticResource intergerToVisibilityConverter}, Mode=OneWay}">
                                         <Grid.RowDefinitions>
                                             <RowDefinition Height="25" />
                                             <RowDefinition Height="25" />
@@ -801,7 +780,7 @@
                                                                        NumericStringFormat="{}{0:N0}"
                                                                        Padding="2,0,2,0"
                                                                        TextWrapping="NoWrap"
-                                                                       Value="{Binding SelectedPromotion.BuyingQty, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, NotifyOnValidationError=True, ValidatesOnDataErrors=True}" />
+                                                                       Value="{Binding SelectedPromotion.BuyingQty, Mode=TwoWay, NotifyOnValidationError=True, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True}" />
                                         <TextBlock x:Name="txtblBuyXYfor"
                                                    Grid.Row="1"
                                                    Margin="103,0,0,0"
@@ -820,7 +799,7 @@
                                                                      CurrencyStringFormat="{x:Static local:Define.CurrencyFormat}"
                                                                      Padding="2,0,2,0"
                                                                      TextWrapping="NoWrap"
-                                                                     Value="{Binding SelectedPromotion.GetingValue, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, NotifyOnValidationError=True, ValidatesOnDataErrors=True}" />
+                                                                     Value="{Binding SelectedPromotion.GetingValue, Mode=TwoWay, NotifyOnValidationError=True, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True}" />
                                         <TextBlock x:Name="txtblBuyXYEqual"
                                                    Grid.Row="1"
                                                    Margin="215,0,0,0"
@@ -840,7 +819,7 @@
                                                                      IsEnabled="False"
                                                                      Padding="2,0,2,0"
                                                                      TextWrapping="NoWrap"
-                                                                     Value="{Binding SelectedPromotion.TakeOff, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, NotifyOnValidationError=True, ValidatesOnDataErrors=True}" />
+                                                                     Value="{Binding SelectedPromotion.TakeOff, Mode=TwoWay, NotifyOnValidationError=True, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True}" />
                                         <TextBlock x:Name="txtblBuyXYEach"
                                                    Grid.Row="1"
                                                    Margin="320,0,0,0"
@@ -861,7 +840,7 @@
                                           HorizontalAlignment="Left"
                                           VerticalAlignment="Top"
                                           d:IsHidden="True"
-                                          Visibility="{Binding SelectedPromotion.PromotionTypeId, Mode=OneWay, Converter={StaticResource intergerToVisibilityConverter}, ConverterParameter=4}">
+                                          Visibility="{Binding SelectedPromotion.PromotionTypeId, ConverterParameter=4, Converter={StaticResource intergerToVisibilityConverter}, Mode=OneWay}">
                                         <Grid.RowDefinitions>
                                             <RowDefinition Height="25" />
                                             <RowDefinition Height="25" />
@@ -898,7 +877,7 @@
                                                                        NumericStringFormat="{}{0:N0}"
                                                                        Padding="2,0,2,0"
                                                                        TextWrapping="NoWrap"
-                                                                       Value="{Binding SelectedPromotion.BuyingQty, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, NotifyOnValidationError=True, ValidatesOnDataErrors=True}" />
+                                                                       Value="{Binding SelectedPromotion.BuyingQty, Mode=TwoWay, NotifyOnValidationError=True, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True}" />
                                         <TextBlock x:Name="txtblAndGet"
                                                    Grid.Row="1"
                                                    Margin="82,0,0,0"
@@ -917,7 +896,7 @@
                                                                        NumericStringFormat="{x:Static local:Define.NumericFormat}"
                                                                        Padding="2,0,2,0"
                                                                        TextWrapping="NoWrap"
-                                                                       Value="{Binding SelectedPromotion.TakeOff, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, NotifyOnValidationError=True, ValidatesOnDataErrors=True}" />
+                                                                       Value="{Binding SelectedPromotion.TakeOff, Mode=TwoWay, NotifyOnValidationError=True, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True}" />
                                         <TextBlock x:Name="txtblItems"
                                                    Grid.Row="1"
                                                    Margin="180,0,0,0"
@@ -937,7 +916,7 @@
                                     <Grid x:Name="grdDiscountCoupon"
                                           HorizontalAlignment="Left"
                                           VerticalAlignment="Top"
-                                          Visibility="{Binding SelectedPromotion.PromotionTypeId, Mode=OneWay, Converter={StaticResource intergerToVisibilityConverter}, ConverterParameter=5}">
+                                          Visibility="{Binding SelectedPromotion.PromotionTypeId, ConverterParameter=5, Converter={StaticResource intergerToVisibilityConverter}, Mode=OneWay}">
                                         <Grid.RowDefinitions>
                                             <RowDefinition Height="25" />
                                             <RowDefinition Height="25" />
@@ -959,7 +938,7 @@
                                                                        IntegerLength="{StaticResource DiscountMaxLength}"
                                                                        NumericStringFormat="{x:Static local:Define.NumericFormat}"
                                                                        Padding="2,0,2,0"
-                                                                       Value="{Binding SelectedPromotion.TakeOff, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, NotifyOnValidationError=True, ValidatesOnDataErrors=True}" />
+                                                                       Value="{Binding SelectedPromotion.TakeOff, Mode=TwoWay, NotifyOnValidationError=True, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True}" />
                                         <ComboBox x:Name="cmbDicount"
                                                   Width="70"
                                                   Margin="115,2,0,2"
@@ -983,7 +962,7 @@
                                                                             HorizontalAlignment="Left"
                                                                             MaxLength="{StaticResource BarcodeMaxLength}"
                                                                             Padding="2,0,2,0"
-                                                                            Text="{Binding SelectedPromotion.CouponBarCode, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, NotifyOnValidationError=True, ValidatesOnDataErrors=True}"
+                                                                            Text="{Binding SelectedPromotion.CouponBarCode, Mode=TwoWay, NotifyOnValidationError=True, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True}"
                                                                             TextType="Numeric" />
                                         <CheckBox x:Name="cbCouponExpires"
                                                   Grid.Row="2"
@@ -1026,7 +1005,7 @@
                                 </Grid>
                             </Grid>
                             <Grid x:Name="grdSchedule"
-                                  Grid.Row="1">
+                                  Grid.Row="2">
                                 <Grid.RowDefinitions>
                                     <RowDefinition Height="25" />
                                     <RowDefinition Height="50" />
@@ -1037,7 +1016,7 @@
                                            VerticalAlignment="Center"
                                            FontWeight="Bold"
                                            Style="{DynamicResource TextBlockValidationStyle}"
-                                           Tag="{Binding SelectedPromotion.PromotionScheduleModel.ExpirationNoEndDate, NotifyOnValidationError=True, ValidatesOnDataErrors=True}"
+                                           Tag="{Binding SelectedPromotion.ExpirationNoEndDate, NotifyOnValidationError=True, ValidatesOnDataErrors=True}"
                                            Text="{DynamicResource EM_Header_Schedule}"
                                            TextWrapping="NoWrap" />
                                 <Rectangle x:Name="LineSchedule"
@@ -1061,7 +1040,7 @@
                                               HorizontalAlignment="Left"
                                               VerticalAlignment="Center"
                                               Content="{DynamicResource PM_ExpirationNoEndDate}"
-                                              IsChecked="{Binding SelectedPromotion.PromotionScheduleModel.ExpirationNoEndDate}" />
+                                              IsChecked="{Binding SelectedPromotion.ExpirationNoEndDate}" />
                                     <TextBlock x:Name="txtblStartDate"
                                                Grid.Row="2"
                                                Margin="10,0,0,0"
@@ -1077,7 +1056,7 @@
                                                 Margin="0,2"
                                                 HorizontalAlignment="Left"
                                                 IsEnabled="{Binding IsChecked, ElementName=cbExpirationNoEndDate}"
-                                                SelectedDate="{Binding SelectedPromotion.PromotionScheduleModel.StartDate, Mode=TwoWay, NotifyOnValidationError=True, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True}">
+                                                SelectedDate="{Binding SelectedPromotion.StartDate, Mode=TwoWay, NotifyOnValidationError=True, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True}">
                                         <i:Interaction.Behaviors>
                                             <behavior:AutoFocusBehavior />
                                         </i:Interaction.Behaviors>
@@ -1097,7 +1076,7 @@
                                                                   IsDisplayDayOfWeek="False"
                                                                   IsEnabled="{Binding IsChecked, ElementName=cbExpirationNoEndDate}"
                                                                   IsFormat12Hour="False"
-                                                                  RealTime="{Binding SelectedPromotion.PromotionScheduleModel.StartDate, Mode=TwoWay, NotifyOnValidationError=True, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True}" />
+                                                                  RealTime="{Binding SelectedPromotion.StartDate, Mode=TwoWay, NotifyOnValidationError=True, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True}" />
                                     <TextBlock x:Name="txtblEndDate"
                                                Grid.Row="2"
                                                Grid.Column="1"
@@ -1115,7 +1094,7 @@
                                                 Margin="315,2,0,2"
                                                 HorizontalAlignment="Left"
                                                 IsEnabled="{Binding IsChecked, ElementName=cbExpirationNoEndDate}"
-                                                SelectedDate="{Binding SelectedPromotion.PromotionScheduleModel.EndDate, Mode=TwoWay, NotifyOnValidationError=True, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True}" />
+                                                SelectedDate="{Binding SelectedPromotion.EndDate, Mode=TwoWay, NotifyOnValidationError=True, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True}" />
                                     <timePicker:TimePickerControl x:Name="nudEndDate"
                                                                   Grid.Row="2"
                                                                   Grid.Column="1"
@@ -1131,11 +1110,11 @@
                                                                   IsDisplayDayOfWeek="False"
                                                                   IsEnabled="{Binding IsChecked, ElementName=cbExpirationNoEndDate}"
                                                                   IsFormat12Hour="False"
-                                                                  RealTime="{Binding SelectedPromotion.PromotionScheduleModel.EndDate, Mode=TwoWay, NotifyOnValidationError=True, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True}" />
+                                                                  RealTime="{Binding SelectedPromotion.EndDate, Mode=TwoWay, NotifyOnValidationError=True, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True}" />
                                 </Grid>
                             </Grid>
                             <Grid x:Name="grdPriceChange"
-                                  Grid.Row="2">
+                                  Grid.Row="3">
                                 <Grid.RowDefinitions>
                                     <RowDefinition Height="25" />
                                     <RowDefinition Height="25" />
@@ -1218,113 +1197,6 @@
                                         </ItemsPanelTemplate>
                                     </ListBox.ItemsPanel>
                                 </ListBox>
-                            </Grid>
-                            <Grid x:Name="grdProductAffect"
-                                  Grid.Row="3">
-                                <Grid.RowDefinitions>
-                                    <RowDefinition Height="25" />
-                                    <RowDefinition />
-                                </Grid.RowDefinitions>
-                                <TextBlock x:Name="txtblProductAffect"
-                                           Margin="10,0,0,0"
-                                           HorizontalAlignment="Left"
-                                           VerticalAlignment="Center"
-                                           FontWeight="Bold"
-                                           Style="{DynamicResource TextBlockNormal}"
-                                           Text="{DynamicResource PM_ProductAffect}"
-                                           TextWrapping="NoWrap" />
-                                <Rectangle x:Name="LineProductAffect"
-                                           Height="1"
-                                           Margin="100,0,10,0"
-                                           HorizontalAlignment="Stretch"
-                                           VerticalAlignment="Center"
-                                           Fill="{DynamicResource GroupboxBorder}" />
-                                <Grid x:Name="grdContentProductAffect"
-                                      Grid.Row="1">
-                                    <Grid.RowDefinitions>
-                                        <RowDefinition Height="25" />
-                                        <RowDefinition Height="25" />
-                                        <RowDefinition Height="25" />
-                                        <RowDefinition Height="25" />
-                                    </Grid.RowDefinitions>
-                                    <RadioButton x:Name="rbAllItem"
-                                                 Margin="10,0,0,0"
-                                                 HorizontalAlignment="Left"
-                                                 VerticalAlignment="Center"
-                                                 Content="{DynamicResource C166}"
-                                                 GroupName="rbAllItem"
-                                                 IsChecked="{Binding SelectedPromotion.AffectDiscount, Converter={StaticResource integerToBooleanConverter}, ConverterParameter=0}" />
-                                    <RadioButton x:Name="rbAllItemsinDepartment"
-                                                 Grid.Row="1"
-                                                 Margin="10,0,0,0"
-                                                 HorizontalAlignment="Left"
-                                                 VerticalAlignment="Center"
-                                                 Content="{DynamicResource C167}"
-                                                 GroupName="rbAllItemsinDepartment"
-                                                 IsChecked="{Binding SelectedPromotion.AffectDiscount, Converter={StaticResource integerToBooleanConverter}, ConverterParameter=1}" />
-                                    <ComboBox x:Name="cmbAllItemsinDepartment"
-                                              Grid.Row="1"
-                                              Width="190"
-                                              Height="21"
-                                              Margin="160,0,0,0"
-                                              HorizontalAlignment="Left"
-                                              VerticalAlignment="Center"
-                                              DisplayMemberPath="Text"
-                                              ItemsSource="{Binding CategoryCollection}"
-                                              SelectedValue="{Binding SelectedPromotion.CategoryId, NotifyOnValidationError=True, ValidatesOnDataErrors=True}"
-                                              SelectedValuePath="IntValue"
-                                              Visibility="{Binding IsChecked, ElementName=rbAllItemsinDepartment, Converter={StaticResource boolToVisibilityConverter}}">
-                                        <i:Interaction.Behaviors>
-                                            <behavior:AutoFocusBehavior />
-                                        </i:Interaction.Behaviors>
-                                    </ComboBox>
-                                    <RadioButton x:Name="rbAllItemsinVendor"
-                                                 Grid.Row="2"
-                                                 Margin="10,0,0,0"
-                                                 HorizontalAlignment="Left"
-                                                 VerticalAlignment="Center"
-                                                 Content="{DynamicResource C168}"
-                                                 GroupName="cbAllItemsinVendor"
-                                                 IsChecked="{Binding SelectedPromotion.AffectDiscount, Converter={StaticResource integerToBooleanConverter}, ConverterParameter=2}" />
-                                    <ComboBox x:Name="cmbAllItemsinVendor"
-                                              Grid.Row="2"
-                                              Width="190"
-                                              Height="21"
-                                              Margin="160,0,0,0"
-                                              HorizontalAlignment="Left"
-                                              VerticalAlignment="Center"
-                                              DisplayMemberPath="Text"
-                                              ItemsSource="{Binding VendorCollection}"
-                                              SelectedValue="{Binding SelectedPromotion.VendorId, NotifyOnValidationError=True, ValidatesOnDataErrors=True}"
-                                              SelectedValuePath="LongValue"
-                                              Visibility="{Binding IsChecked, ElementName=rbAllItemsinVendor, Converter={StaticResource boolToVisibilityConverter}}">
-                                        <i:Interaction.Behaviors>
-                                            <behavior:AutoFocusBehavior />
-                                        </i:Interaction.Behaviors>
-                                    </ComboBox>
-                                    <RadioButton x:Name="rbCustom"
-                                                 Command="{Binding PopupCustomCommand}"
-                                                 Grid.Row="3"
-                                                 Margin="10,0,0,0"
-                                                 HorizontalAlignment="Left"
-                                                 VerticalAlignment="Center"
-                                                 Content="{DynamicResource C169}"
-                                                 GroupName="rbCustom"
-                                                 IsChecked="{Binding SelectedPromotion.AffectDiscount, Converter={StaticResource integerToBooleanConverter}, ConverterParameter=3}" />
-                                    <Button x:Name="txtblCustom"
-                                            Command="{Binding PopupCustomCommand}"
-                                            CommandParameter="Edit"
-                                            Grid.Row="3"
-                                            Width="75"
-                                            Height="28"
-                                            Margin="70,0,0,0"
-                                            HorizontalAlignment="Left"
-                                            VerticalAlignment="Center"
-                                            Content="{Binding SelectedPromotion.TotalSelectedProducts, Mode=OneWay}"
-                                            Foreground="Yellow"
-                                            Style="{DynamicResource ButtonDatagrid}"
-                                            Visibility="{Binding SelectedPromotion.AffectDiscount, Converter={StaticResource intergerToVisibilityConverter}, ConverterParameter=3}" />
-                                </Grid>
                             </Grid>
                         </Grid>
                     </Border>

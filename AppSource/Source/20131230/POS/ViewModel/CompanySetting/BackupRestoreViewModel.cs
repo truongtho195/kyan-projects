@@ -37,9 +37,6 @@ namespace CPC.POS.ViewModel
         {
             this.InitialCommand();
             this.GetAllFile();
-
-            // Get permission
-            GetPermission();
         }
 
         #endregion
@@ -272,7 +269,7 @@ namespace CPC.POS.ViewModel
         {
             if (param == null)
                 return false;
-            return AllowRestoreData;
+            return UserPermissions.AllowRestoreData;
         }
 
         /// <summary>
@@ -410,46 +407,6 @@ namespace CPC.POS.ViewModel
             catch (Exception ex)
             {
                 Debug.WriteLine(ex);
-            }
-        }
-
-        #endregion
-
-        #region Permission
-
-        #region Properties
-
-        private bool _allowRestoreData = true;
-        /// <summary>
-        /// Gets or sets the AllowRestoreData.
-        /// </summary>
-        public bool AllowRestoreData
-        {
-            get { return _allowRestoreData; }
-            set
-            {
-                if (_allowRestoreData != value)
-                {
-                    _allowRestoreData = value;
-                    OnPropertyChanged(() => AllowRestoreData);
-                }
-            }
-        }
-
-        #endregion
-
-        /// <summary>
-        /// Get permissions
-        /// </summary>
-        public override void GetPermission()
-        {
-            if (!IsAdminPermission && !IsFullPermission)
-            {
-                // Get all user rights
-                IEnumerable<string> userRightCodes = Define.USER_AUTHORIZATION.Select(x => x.Code);
-
-                // Get edit quantity permission
-                AllowRestoreData = userRightCodes.Contains("MN200");
             }
         }
 

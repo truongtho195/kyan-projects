@@ -148,44 +148,51 @@ namespace CPC.POS.ViewModel
         /// <param name="itemList"></param>
         private void SaveXml(IList<ComboItem> itemList, string sKey)
         {
-            // Load xml file stream
-            FileStream fileStream = Common.LoadCurrentLanguagePackage() as FileStream;
-
-            // Get file path
-            string xmlFilePath = fileStream.Name;
-
-            // Load xml document
-            XDocument xDoc = XDocument.Load(fileStream);
-
-            // Close stream
-            fileStream.Close();
-            fileStream.Dispose();
-
-            // Get xml element by key
-            XElement xElements = xDoc.Root.Elements("combo").FirstOrDefault(x => x.Attribute("key").Value.Equals(sKey));
-
-            if (xElements == null)
+            try
             {
-                XElement newElements = new XElement("combo");
-                newElements.Add(new XAttribute("key", sKey));
+                // Load xml file stream
+                FileStream fileStream = Common.LoadCurrentLanguagePackage() as FileStream;
 
-                xDoc.Add(newElements);
+                // Get file path
+                string xmlFilePath = fileStream.Name;
+
+                // Load xml document
+                XDocument xDoc = XDocument.Load(fileStream);
+
+                // Close stream
+                fileStream.Close();
+                fileStream.Dispose();
+
+                // Get xml element by key
+                XElement xElements = xDoc.Root.Elements("combo").FirstOrDefault(x => x.Attribute("key").Value.Equals(sKey));
+
+                if (xElements == null)
+                {
+                    XElement newElements = new XElement("combo");
+                    newElements.Add(new XAttribute("key", sKey));
+
+                    xDoc.Add(newElements);
+                }
+
+                // Get max id and next id
+                int maxID = itemList.Max(x => x.Value);
+                WarrantyItem.Value = Convert.ToInt16(maxID + 1);
+                WarrantyItem.ObjValue = WarrantyItem.Value;
+
+                XElement newElement = new XElement("item");
+                newElement.Add(new XElement("value", WarrantyItem.Value));
+                newElement.Add(new XElement("name", WarrantyItem.Text.Trim()));
+                xElements.Add(newElement);
+
+                xDoc.Save(xmlFilePath);
+
+                // Add new element to list
+                itemList.Add(WarrantyItem);
             }
-
-            // Get max id and next id
-            int maxID = itemList.Max(x => x.Value);
-            WarrantyItem.Value = Convert.ToInt16(maxID + 1);
-            WarrantyItem.ObjValue = WarrantyItem.Value;
-
-            XElement newElement = new XElement("item");
-            newElement.Add(new XElement("value", WarrantyItem.Value));
-            newElement.Add(new XElement("name", WarrantyItem.Text.Trim()));
-            xElements.Add(newElement);
-
-            xDoc.Save(xmlFilePath);
-
-            // Add new element to list
-            itemList.Add(WarrantyItem);
+            catch (Exception ex)
+            {
+                _log4net.Error(ex);
+            }
         }
 
         #endregion
