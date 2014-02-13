@@ -1515,6 +1515,26 @@ namespace CPC.TimeClock.Model
             }
         }
 
+        protected bool _isCOD;
+        /// <summary>
+        /// Property Model
+        /// <param>Gets or sets the IsCOD</param>
+        /// </summary>
+        public bool IsCOD
+        {
+            get { return this._isCOD; }
+            set
+            {
+                if (this._isCOD != value)
+                {
+                    this.IsDirty = true;
+                    this._isCOD = value;
+                    OnPropertyChanged(() => IsCOD);
+                    PropertyChangedCompleted(() => IsCOD);
+                }
+            }
+        }
+
         #endregion
 
         #region Public Methods
@@ -1629,6 +1649,7 @@ namespace CPC.TimeClock.Model
             this.base_SaleOrder.LOtherFee = this.LOtherFee;
             this.base_SaleOrder.LayawayFee = this.LayawayFee;
             this.base_SaleOrder.LTotalFee = this.LTotalFee;
+            this.base_SaleOrder.IsCOD = this.IsCOD;
         }
 
         /// <summary>
@@ -1710,6 +1731,7 @@ namespace CPC.TimeClock.Model
             this._lOtherFee = this.base_SaleOrder.LOtherFee;
             this._layawayFee = this.base_SaleOrder.LayawayFee;
             this._lTotalFee = this.base_SaleOrder.LTotalFee;
+            this._isCOD = this.base_SaleOrder.IsCOD;
         }
 
         /// <summary>
@@ -1791,6 +1813,7 @@ namespace CPC.TimeClock.Model
             this.LOtherFee = this.base_SaleOrder.LOtherFee;
             this.LayawayFee = this.base_SaleOrder.LayawayFee;
             this.LTotalFee = this.base_SaleOrder.LTotalFee;
+            this.IsCOD = this.base_SaleOrder.IsCOD;
         }
 
         #endregion

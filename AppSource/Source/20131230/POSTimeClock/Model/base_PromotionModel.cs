@@ -255,26 +255,6 @@ namespace CPC.TimeClock.Model
             }
         }
 
-        protected short _affectDiscount;
-        /// <summary>
-        /// Property Model
-        /// <param>Gets or sets the AffectDiscount</param>
-        /// </summary>
-        public short AffectDiscount
-        {
-            get { return this._affectDiscount; }
-            set
-            {
-                if (this._affectDiscount != value)
-                {
-                    this.IsDirty = true;
-                    this._affectDiscount = value;
-                    OnPropertyChanged(() => AffectDiscount);
-                    PropertyChangedCompleted(() => AffectDiscount);
-                }
-            }
-        }
-
         protected System.DateTime _dateCreated;
         /// <summary>
         /// Property Model
@@ -515,26 +495,6 @@ namespace CPC.TimeClock.Model
             }
         }
 
-        protected Nullable<long> _vendorId;
-        /// <summary>
-        /// Property Model
-        /// <param>Gets or sets the VendorId</param>
-        /// </summary>
-        public Nullable<long> VendorId
-        {
-            get { return this._vendorId; }
-            set
-            {
-                if (this._vendorId != value)
-                {
-                    this.IsDirty = true;
-                    this._vendorId = value;
-                    OnPropertyChanged(() => VendorId);
-                    PropertyChangedCompleted(() => VendorId);
-                }
-            }
-        }
-
         protected string _couponBarCode;
         /// <summary>
         /// Property Model
@@ -635,6 +595,46 @@ namespace CPC.TimeClock.Model
             }
         }
 
+        protected Nullable<System.DateTime> _startDate;
+        /// <summary>
+        /// Property Model
+        /// <param>Gets or sets the StartDate</param>
+        /// </summary>
+        public Nullable<System.DateTime> StartDate
+        {
+            get { return this._startDate; }
+            set
+            {
+                if (this._startDate != value)
+                {
+                    this.IsDirty = true;
+                    this._startDate = value;
+                    OnPropertyChanged(() => StartDate);
+                    PropertyChangedCompleted(() => StartDate);
+                }
+            }
+        }
+
+        protected Nullable<System.DateTime> _endDate;
+        /// <summary>
+        /// Property Model
+        /// <param>Gets or sets the EndDate</param>
+        /// </summary>
+        public Nullable<System.DateTime> EndDate
+        {
+            get { return this._endDate; }
+            set
+            {
+                if (this._endDate != value)
+                {
+                    this.IsDirty = true;
+                    this._endDate = value;
+                    OnPropertyChanged(() => EndDate);
+                    PropertyChangedCompleted(() => EndDate);
+                }
+            }
+        }
+
         #endregion
 
         #region Public Methods
@@ -668,7 +668,6 @@ namespace CPC.TimeClock.Model
             this.base_Promotion.GetingValue = this.GetingValue;
             this.base_Promotion.IsApplyToAboveQuantities = this.IsApplyToAboveQuantities;
             this.base_Promotion.Status = this.Status;
-            this.base_Promotion.AffectDiscount = this.AffectDiscount;
             this.base_Promotion.DateCreated = this.DateCreated;
             if (this.UserCreated != null)
                 this.base_Promotion.UserCreated = this.UserCreated.Trim();
@@ -684,7 +683,6 @@ namespace CPC.TimeClock.Model
             this.base_Promotion.Sold = this.Sold;
             this.base_Promotion.TotalPrice = this.TotalPrice;
             this.base_Promotion.CategoryId = this.CategoryId;
-            this.base_Promotion.VendorId = this.VendorId;
             if (this.CouponBarCode != null)
                 this.base_Promotion.CouponBarCode = this.CouponBarCode.Trim();
             if (this.BarCodeNumber != null)
@@ -693,6 +691,8 @@ namespace CPC.TimeClock.Model
             this.base_Promotion.IsConflict = this.IsConflict;
             if (this.Shift != null)
                 this.base_Promotion.Shift = this.Shift.Trim();
+            this.base_Promotion.StartDate = this.StartDate;
+            this.base_Promotion.EndDate = this.EndDate;
         }
 
         /// <summary>
@@ -711,7 +711,6 @@ namespace CPC.TimeClock.Model
             this._getingValue = this.base_Promotion.GetingValue;
             this._isApplyToAboveQuantities = this.base_Promotion.IsApplyToAboveQuantities;
             this._status = this.base_Promotion.Status;
-            this._affectDiscount = this.base_Promotion.AffectDiscount;
             this._dateCreated = this.base_Promotion.DateCreated;
             this._userCreated = this.base_Promotion.UserCreated;
             this._dateUpdated = this.base_Promotion.DateUpdated;
@@ -724,12 +723,13 @@ namespace CPC.TimeClock.Model
             this._sold = this.base_Promotion.Sold;
             this._totalPrice = this.base_Promotion.TotalPrice;
             this._categoryId = this.base_Promotion.CategoryId;
-            this._vendorId = this.base_Promotion.VendorId;
             this._couponBarCode = this.base_Promotion.CouponBarCode;
             this._barCodeNumber = this.base_Promotion.BarCodeNumber;
             this._barCodeImage = this.base_Promotion.BarCodeImage;
             this._isConflict = this.base_Promotion.IsConflict;
             this._shift = this.base_Promotion.Shift;
+            this._startDate = this.base_Promotion.StartDate;
+            this._endDate = this.base_Promotion.EndDate;
         }
 
         /// <summary>
@@ -748,7 +748,6 @@ namespace CPC.TimeClock.Model
             this.GetingValue = this.base_Promotion.GetingValue;
             this.IsApplyToAboveQuantities = this.base_Promotion.IsApplyToAboveQuantities;
             this.Status = this.base_Promotion.Status;
-            this.AffectDiscount = this.base_Promotion.AffectDiscount;
             this.DateCreated = this.base_Promotion.DateCreated;
             this.UserCreated = this.base_Promotion.UserCreated;
             this.DateUpdated = this.base_Promotion.DateUpdated;
@@ -761,12 +760,13 @@ namespace CPC.TimeClock.Model
             this.Sold = this.base_Promotion.Sold;
             this.TotalPrice = this.base_Promotion.TotalPrice;
             this.CategoryId = this.base_Promotion.CategoryId;
-            this.VendorId = this.base_Promotion.VendorId;
             this.CouponBarCode = this.base_Promotion.CouponBarCode;
             this.BarCodeNumber = this.base_Promotion.BarCodeNumber;
             this.BarCodeImage = this.base_Promotion.BarCodeImage;
             this.IsConflict = this.base_Promotion.IsConflict;
             this.Shift = this.base_Promotion.Shift;
+            this.StartDate = this.base_Promotion.StartDate;
+            this.EndDate = this.base_Promotion.EndDate;
         }
 
         #endregion

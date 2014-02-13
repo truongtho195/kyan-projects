@@ -935,6 +935,86 @@ namespace CPC.TimeClock.Model
             }
         }
 
+        protected decimal _taxAmount;
+        /// <summary>
+        /// Property Model
+        /// <param>Gets or sets the TaxAmount</param>
+        /// </summary>
+        public decimal TaxAmount
+        {
+            get { return this._taxAmount; }
+            set
+            {
+                if (this._taxAmount != value)
+                {
+                    this.IsDirty = true;
+                    this._taxAmount = value;
+                    OnPropertyChanged(() => TaxAmount);
+                    PropertyChangedCompleted(() => TaxAmount);
+                }
+            }
+        }
+
+        protected bool _isCOD;
+        /// <summary>
+        /// Property Model
+        /// <param>Gets or sets the IsCOD</param>
+        /// </summary>
+        public bool IsCOD
+        {
+            get { return this._isCOD; }
+            set
+            {
+                if (this._isCOD != value)
+                {
+                    this.IsDirty = true;
+                    this._isCOD = value;
+                    OnPropertyChanged(() => IsCOD);
+                    PropertyChangedCompleted(() => IsCOD);
+                }
+            }
+        }
+
+        protected decimal _taxPercent;
+        /// <summary>
+        /// Property Model
+        /// <param>Gets or sets the TaxPercent</param>
+        /// </summary>
+        public decimal TaxPercent
+        {
+            get { return this._taxPercent; }
+            set
+            {
+                if (this._taxPercent != value)
+                {
+                    this.IsDirty = true;
+                    this._taxPercent = value;
+                    OnPropertyChanged(() => TaxPercent);
+                    PropertyChangedCompleted(() => TaxPercent);
+                }
+            }
+        }
+
+        protected long _billAddressId;
+        /// <summary>
+        /// Property Model
+        /// <param>Gets or sets the BillAddressId</param>
+        /// </summary>
+        public long BillAddressId
+        {
+            get { return this._billAddressId; }
+            set
+            {
+                if (this._billAddressId != value)
+                {
+                    this.IsDirty = true;
+                    this._billAddressId = value;
+                    OnPropertyChanged(() => BillAddressId);
+                    PropertyChangedCompleted(() => BillAddressId);
+                }
+            }
+        }
+
         #endregion
 
         #region Public Methods
@@ -1012,6 +1092,10 @@ namespace CPC.TimeClock.Model
                 this.base_PurchaseOrder.POCard = this.POCard.Trim();
             this.base_PurchaseOrder.POCardImg = this.POCardImg;
             this.base_PurchaseOrder.IsReturned = this.IsReturned;
+            this.base_PurchaseOrder.TaxAmount = this.TaxAmount;
+            this.base_PurchaseOrder.IsCOD = this.IsCOD;
+            this.base_PurchaseOrder.TaxPercent = this.TaxPercent;
+            this.base_PurchaseOrder.BillAddressId = this.BillAddressId;
         }
 
         /// <summary>
@@ -1064,6 +1148,10 @@ namespace CPC.TimeClock.Model
             this._pOCard = this.base_PurchaseOrder.POCard;
             this._pOCardImg = this.base_PurchaseOrder.POCardImg;
             this._isReturned = this.base_PurchaseOrder.IsReturned;
+            this._taxAmount = this.base_PurchaseOrder.TaxAmount;
+            this._isCOD = this.base_PurchaseOrder.IsCOD;
+            this._taxPercent = this.base_PurchaseOrder.TaxPercent;
+            this._billAddressId = this.base_PurchaseOrder.BillAddressId;
         }
 
         /// <summary>
@@ -1116,6 +1204,10 @@ namespace CPC.TimeClock.Model
             this.POCard = this.base_PurchaseOrder.POCard;
             this.POCardImg = this.base_PurchaseOrder.POCardImg;
             this.IsReturned = this.base_PurchaseOrder.IsReturned;
+            this.TaxAmount = this.base_PurchaseOrder.TaxAmount;
+            this.IsCOD = this.base_PurchaseOrder.IsCOD;
+            this.TaxPercent = this.base_PurchaseOrder.TaxPercent;
+            this.BillAddressId = this.base_PurchaseOrder.BillAddressId;
         }
 
         #endregion

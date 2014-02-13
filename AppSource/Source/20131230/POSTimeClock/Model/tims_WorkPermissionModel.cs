@@ -255,86 +255,6 @@ namespace CPC.TimeClock.Model
             }
         }
 
-        protected System.DateTime _createdDate;
-        /// <summary>
-        /// Property Model
-        /// <param>Gets or sets the CreatedDate</param>
-        /// </summary>
-        public System.DateTime CreatedDate
-        {
-            get { return this._createdDate; }
-            set
-            {
-                if (this._createdDate != value)
-                {
-                    this.IsDirty = true;
-                    this._createdDate = value;
-                    OnPropertyChanged(() => CreatedDate);
-                    PropertyChangedCompleted(() => CreatedDate);
-                }
-            }
-        }
-
-        protected int _createdById;
-        /// <summary>
-        /// Property Model
-        /// <param>Gets or sets the CreatedById</param>
-        /// </summary>
-        public int CreatedById
-        {
-            get { return this._createdById; }
-            set
-            {
-                if (this._createdById != value)
-                {
-                    this.IsDirty = true;
-                    this._createdById = value;
-                    OnPropertyChanged(() => CreatedById);
-                    PropertyChangedCompleted(() => CreatedById);
-                }
-            }
-        }
-
-        protected Nullable<System.DateTime> _modifiedDate;
-        /// <summary>
-        /// Property Model
-        /// <param>Gets or sets the ModifiedDate</param>
-        /// </summary>
-        public Nullable<System.DateTime> ModifiedDate
-        {
-            get { return this._modifiedDate; }
-            set
-            {
-                if (this._modifiedDate != value)
-                {
-                    this.IsDirty = true;
-                    this._modifiedDate = value;
-                    OnPropertyChanged(() => ModifiedDate);
-                    PropertyChangedCompleted(() => ModifiedDate);
-                }
-            }
-        }
-
-        protected Nullable<int> _modifiedById;
-        /// <summary>
-        /// Property Model
-        /// <param>Gets or sets the ModifiedById</param>
-        /// </summary>
-        public Nullable<int> ModifiedById
-        {
-            get { return this._modifiedById; }
-            set
-            {
-                if (this._modifiedById != value)
-                {
-                    this.IsDirty = true;
-                    this._modifiedById = value;
-                    OnPropertyChanged(() => ModifiedById);
-                    PropertyChangedCompleted(() => ModifiedById);
-                }
-            }
-        }
-
         protected int _overtimeOptions;
         /// <summary>
         /// Property Model
@@ -351,6 +271,86 @@ namespace CPC.TimeClock.Model
                     this._overtimeOptions = value;
                     OnPropertyChanged(() => OvertimeOptions);
                     PropertyChangedCompleted(() => OvertimeOptions);
+                }
+            }
+        }
+
+        protected string _userCreated;
+        /// <summary>
+        /// Property Model
+        /// <param>Gets or sets the UserCreated</param>
+        /// </summary>
+        public string UserCreated
+        {
+            get { return this._userCreated; }
+            set
+            {
+                if (this._userCreated != value)
+                {
+                    this.IsDirty = true;
+                    this._userCreated = value;
+                    OnPropertyChanged(() => UserCreated);
+                    PropertyChangedCompleted(() => UserCreated);
+                }
+            }
+        }
+
+        protected Nullable<System.DateTime> _dateCreated;
+        /// <summary>
+        /// Property Model
+        /// <param>Gets or sets the DateCreated</param>
+        /// </summary>
+        public Nullable<System.DateTime> DateCreated
+        {
+            get { return this._dateCreated; }
+            set
+            {
+                if (this._dateCreated != value)
+                {
+                    this.IsDirty = true;
+                    this._dateCreated = value;
+                    OnPropertyChanged(() => DateCreated);
+                    PropertyChangedCompleted(() => DateCreated);
+                }
+            }
+        }
+
+        protected string _userUpdated;
+        /// <summary>
+        /// Property Model
+        /// <param>Gets or sets the UserUpdated</param>
+        /// </summary>
+        public string UserUpdated
+        {
+            get { return this._userUpdated; }
+            set
+            {
+                if (this._userUpdated != value)
+                {
+                    this.IsDirty = true;
+                    this._userUpdated = value;
+                    OnPropertyChanged(() => UserUpdated);
+                    PropertyChangedCompleted(() => UserUpdated);
+                }
+            }
+        }
+
+        protected Nullable<System.DateTime> _dateUpdated;
+        /// <summary>
+        /// Property Model
+        /// <param>Gets or sets the DateUpdated</param>
+        /// </summary>
+        public Nullable<System.DateTime> DateUpdated
+        {
+            get { return this._dateUpdated; }
+            set
+            {
+                if (this._dateUpdated != value)
+                {
+                    this.IsDirty = true;
+                    this._dateUpdated = value;
+                    OnPropertyChanged(() => DateUpdated);
+                    PropertyChangedCompleted(() => DateUpdated);
                 }
             }
         }
@@ -387,11 +387,13 @@ namespace CPC.TimeClock.Model
             this.tims_WorkPermission.HourPerDay = this.HourPerDay;
             this.tims_WorkPermission.PaidFlag = this.PaidFlag;
             this.tims_WorkPermission.ActiveFlag = this.ActiveFlag;
-            this.tims_WorkPermission.CreatedDate = this.CreatedDate;
-            this.tims_WorkPermission.CreatedById = this.CreatedById;
-            this.tims_WorkPermission.ModifiedDate = this.ModifiedDate;
-            this.tims_WorkPermission.ModifiedById = this.ModifiedById;
             this.tims_WorkPermission.OvertimeOptions = this.OvertimeOptions;
+            if (this.UserCreated != null)
+                this.tims_WorkPermission.UserCreated = this.UserCreated.Trim();
+            this.tims_WorkPermission.DateCreated = this.DateCreated;
+            if (this.UserUpdated != null)
+                this.tims_WorkPermission.UserUpdated = this.UserUpdated.Trim();
+            this.tims_WorkPermission.DateUpdated = this.DateUpdated;
         }
 
         /// <summary>
@@ -410,11 +412,11 @@ namespace CPC.TimeClock.Model
             this._hourPerDay = this.tims_WorkPermission.HourPerDay;
             this._paidFlag = this.tims_WorkPermission.PaidFlag;
             this._activeFlag = this.tims_WorkPermission.ActiveFlag;
-            this._createdDate = this.tims_WorkPermission.CreatedDate;
-            this._createdById = this.tims_WorkPermission.CreatedById;
-            this._modifiedDate = this.tims_WorkPermission.ModifiedDate;
-            this._modifiedById = this.tims_WorkPermission.ModifiedById;
             this._overtimeOptions = this.tims_WorkPermission.OvertimeOptions;
+            this._userCreated = this.tims_WorkPermission.UserCreated;
+            this._dateCreated = this.tims_WorkPermission.DateCreated;
+            this._userUpdated = this.tims_WorkPermission.UserUpdated;
+            this._dateUpdated = this.tims_WorkPermission.DateUpdated;
         }
 
         /// <summary>
@@ -433,11 +435,11 @@ namespace CPC.TimeClock.Model
             this.HourPerDay = this.tims_WorkPermission.HourPerDay;
             this.PaidFlag = this.tims_WorkPermission.PaidFlag;
             this.ActiveFlag = this.tims_WorkPermission.ActiveFlag;
-            this.CreatedDate = this.tims_WorkPermission.CreatedDate;
-            this.CreatedById = this.tims_WorkPermission.CreatedById;
-            this.ModifiedDate = this.tims_WorkPermission.ModifiedDate;
-            this.ModifiedById = this.tims_WorkPermission.ModifiedById;
             this.OvertimeOptions = this.tims_WorkPermission.OvertimeOptions;
+            this.UserCreated = this.tims_WorkPermission.UserCreated;
+            this.DateCreated = this.tims_WorkPermission.DateCreated;
+            this.UserUpdated = this.tims_WorkPermission.UserUpdated;
+            this.DateUpdated = this.tims_WorkPermission.DateUpdated;
         }
 
         #endregion

@@ -1087,79 +1087,86 @@ namespace CPC.ViewModel
         /// </summary>
         private void LoadDatas()
         {
-            // Load configuration model
-            base_ConfigurationRepository configurationRepository = new base_ConfigurationRepository();
-            IQueryable<base_Configuration> configQuery = configurationRepository.GetIQueryable();
-            if (configQuery.Count() > 0)
+            try
             {
-                define.CONFIGURATION = new base_ConfigurationModel(configurationRepository.GetIQueryable().FirstOrDefault());
-            }
-            OnPropertyChanged(() => CompanyName);
-            OnPropertyChanged(() => Website);
-
-            DateTime tomorrow = DateTimeExt.Today.AddDays(1);
-
-            // Refresh data
-            if (EmployeeFingerprintCollection != null)
-            {
-                _employeeFingerprintRepository.Refresh();
-            }
-
-            EmployeeFingerprintCollection = new ObservableCollection<base_GuestFingerPrintModel>();
-
-            IList<base_GuestFingerPrint> employeeFingerPrints = _employeeFingerprintRepository.GetAll(x => !x.base_Guest.IsPurged &&
-                x.base_Guest.IsActived && x.base_Guest.IsTrackingHour);
-
-            foreach (base_GuestFingerPrint employeeFingerPrint in employeeFingerPrints)
-            {
-                // Initial employee fingerprint model
-                base_GuestFingerPrintModel employeeFingerPrintModel = new base_GuestFingerPrintModel(employeeFingerPrint);
-
-                // Initial employee model by fingerprint
-                employeeFingerPrintModel.EmployeeModel = new base_GuestModel(employeeFingerPrint.base_Guest);
-
-                // Get previous employee fingerprint model
-                base_GuestFingerPrintModel previousEmployeeFingerPrintModel = EmployeeFingerprintCollection.SingleOrDefault(x => x.GuestId.Equals(employeeFingerPrintModel.GuestId));
-                if (previousEmployeeFingerPrintModel == null)
+                // Load configuration model
+                base_ConfigurationRepository configurationRepository = new base_ConfigurationRepository();
+                IQueryable<base_Configuration> configQuery = configurationRepository.GetIQueryable();
+                if (configQuery.Count() > 0)
                 {
-                    // Load timelog collection
-                    employeeFingerPrintModel.EmployeeModel.TimeLogCollection = new ObservableCollection<tims_TimeLogModel>(
-                        employeeFingerPrint.base_Guest.tims_TimeLog.
-                        Where(x => x.ClockIn.Date == DateTimeExt.Today).
-                        OrderByDescending(x => x.ClockIn).
-                        ThenBy(x => x.ClockOut).
-                        Select(x => new tims_TimeLogModel(x)));
+                    define.CONFIGURATION = new base_ConfigurationModel(configurationRepository.GetIQueryable().FirstOrDefault());
                 }
-                else
+                OnPropertyChanged(() => CompanyName);
+                OnPropertyChanged(() => Website);
+
+                DateTime tomorrow = DateTimeExt.Today.AddDays(1);
+
+                // Refresh data
+                if (EmployeeFingerprintCollection != null)
                 {
-                    employeeFingerPrintModel.EmployeeModel.TimeLogCollection = new ObservableCollection<tims_TimeLogModel>();
+                    _employeeFingerprintRepository.Refresh();
                 }
 
-                // Load employee schedule collection
-                employeeFingerPrintModel.EmployeeModel.EmployeeScheduleCollection = new ObservableCollection<base_GuestScheduleModel>(
-                    employeeFingerPrint.base_Guest.base_GuestSchedule.
-                    Where(x => x.StartDate <= tomorrow && x.Status > (int)EmployeeScheduleStatuses.Inactive).
-                    Select(x => new base_GuestScheduleModel(x)
+                EmployeeFingerprintCollection = new ObservableCollection<base_GuestFingerPrintModel>();
+
+                IList<base_GuestFingerPrint> employeeFingerPrints = _employeeFingerprintRepository.GetAll(x => !x.base_Guest.IsPurged &&
+                    x.base_Guest.IsActived && x.base_Guest.IsTrackingHour);
+
+                foreach (base_GuestFingerPrint employeeFingerPrint in employeeFingerPrints)
+                {
+                    // Initial employee fingerprint model
+                    base_GuestFingerPrintModel employeeFingerPrintModel = new base_GuestFingerPrintModel(employeeFingerPrint);
+
+                    // Initial employee model by fingerprint
+                    employeeFingerPrintModel.EmployeeModel = new base_GuestModel(employeeFingerPrint.base_Guest);
+
+                    // Get previous employee fingerprint model
+                    base_GuestFingerPrintModel previousEmployeeFingerPrintModel = EmployeeFingerprintCollection.SingleOrDefault(x => x.GuestId.Equals(employeeFingerPrintModel.GuestId));
+                    if (previousEmployeeFingerPrintModel == null)
                     {
-                        WorkScheduleModel = new tims_WorkScheduleModel(x.tims_WorkSchedule)
+                        // Load timelog collection
+                        employeeFingerPrintModel.EmployeeModel.TimeLogCollection = new ObservableCollection<tims_TimeLogModel>(
+                            employeeFingerPrint.base_Guest.tims_TimeLog.
+                            Where(x => x.ClockIn.Date == DateTimeExt.Today).
+                            OrderByDescending(x => x.ClockIn).
+                            ThenBy(x => x.ClockOut).
+                            Select(x => new tims_TimeLogModel(x)));
+                    }
+                    else
+                    {
+                        employeeFingerPrintModel.EmployeeModel.TimeLogCollection = new ObservableCollection<tims_TimeLogModel>();
+                    }
+
+                    // Load employee schedule collection
+                    employeeFingerPrintModel.EmployeeModel.EmployeeScheduleCollection = new ObservableCollection<base_GuestScheduleModel>(
+                        employeeFingerPrint.base_Guest.base_GuestSchedule.
+                        Where(x => x.StartDate <= tomorrow && x.Status > (int)EmployeeScheduleStatuses.Inactive).
+                        Select(x => new base_GuestScheduleModel(x)
                         {
-                            WorkWeekCollection = new ObservableCollection<tims_WorkWeekModel>(
-                                x.tims_WorkSchedule.tims_WorkWeek.Select(y => new tims_WorkWeekModel(y)))
-                        }
-                    }));
+                            WorkScheduleModel = new tims_WorkScheduleModel(x.tims_WorkSchedule)
+                            {
+                                WorkWeekCollection = new ObservableCollection<tims_WorkWeekModel>(
+                                    x.tims_WorkSchedule.tims_WorkWeek.Select(y => new tims_WorkWeekModel(y)))
+                            }
+                        }));
 
-                // Load work permission collection
-                employeeFingerPrintModel.EmployeeModel.WorkPermissionCollection = new ObservableCollection<tims_WorkPermissionModel>(
-                    employeeFingerPrint.base_Guest.tims_WorkPermission.
-                    Where(x => (x.FromDate <= DateTimeExt.Today && DateTimeExt.Today <= x.ToDate) ||
-                        (x.FromDate <= tomorrow && tomorrow <= x.ToDate)).
-                    Select(y => new tims_WorkPermissionModel(y)));
+                    // Load work permission collection
+                    employeeFingerPrintModel.EmployeeModel.WorkPermissionCollection = new ObservableCollection<tims_WorkPermissionModel>(
+                        employeeFingerPrint.base_Guest.tims_WorkPermission.
+                        Where(x => (x.FromDate <= DateTimeExt.Today && DateTimeExt.Today <= x.ToDate) ||
+                            (x.FromDate <= tomorrow && tomorrow <= x.ToDate)).
+                        Select(y => new tims_WorkPermissionModel(y)));
 
-                // Add employee fingerprint to collection
-                EmployeeFingerprintCollection.Add(employeeFingerPrintModel);
+                    // Add employee fingerprint to collection
+                    EmployeeFingerprintCollection.Add(employeeFingerPrintModel);
+                }
+
+                _dayOfWorkWeekDictionary = new Dictionary<string, tims_WorkWeekModel>();
             }
-
-            _dayOfWorkWeekDictionary = new Dictionary<string, tims_WorkWeekModel>();
+            catch (Exception ex)
+            {
+                _log4net.Error(ex);
+            }
         }
 
         public void RefreshDatas()
@@ -1299,6 +1306,7 @@ namespace CPC.ViewModel
                         {
                             employeeModel = ProcessEmployee(employeeFingerprintItem.EmployeeModel);
                         }
+                        break;
                         //m_Logger.Info("The fingerprint was VERIFIED.");
                     }
                 }
