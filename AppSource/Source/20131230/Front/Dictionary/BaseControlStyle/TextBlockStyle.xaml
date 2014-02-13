@@ -23,6 +23,12 @@
             </Trigger>
         </Style.Triggers>
     </Style>
+	<Style x:Key="TextBlockFrontHandNormal" 
+	TargetType="{x:Type TextBlock}"
+	BasedOn="{StaticResource TextBlockNormal}">
+		<Setter Property="FontWeight" Value="Bold"/>
+		
+	</Style>
 	<Style x:Key="TextBlockBasic" TargetType="{x:Type TextBlock}">
 		<Setter Property="TextWrapping" Value="NoWrap"/>
 		<Setter Property="TextTrimming" Value="None"/>

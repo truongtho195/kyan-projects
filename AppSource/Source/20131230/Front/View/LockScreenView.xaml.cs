@@ -15,6 +15,12 @@ namespace CPC.POS
 
             // Insert code required on object creation below this point.
             this.SourceInitialized += new System.EventHandler(LockScreenView_SourceInitialized);
+            this.Activated += new EventHandler(LockScreenView_Activated);
+        }
+
+        void LockScreenView_Activated(object sender, EventArgs e)
+        {
+            MaximinzedScreen();
         }
 
         #region Prevent move window

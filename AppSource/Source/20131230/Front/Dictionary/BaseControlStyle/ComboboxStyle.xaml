@@ -405,6 +405,12 @@
             </Trigger>
         </Style.Triggers>
     </Style>
+	<Style x:Key="ComBoBoxFrontHandDefault" 
+			TargetType="{x:Type ComboBox}"
+			BasedOn="{StaticResource {x:Type ComboBox}}">
+		
+		<Setter Property="FontSize" Value="15"/>
+	</Style>
     <Visibility x:Key="ComboboxItem">Visible</Visibility>
     <Style TargetType="{x:Type ComboBoxItem}">
         <Setter Property="HorizontalContentAlignment"

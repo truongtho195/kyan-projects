@@ -284,21 +284,18 @@
     <Compile Include="Control\NumericUpDown.xaml.cs">
       <DependentUpon>NumericUpDown.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Control\OnScreenKeyboard\Command.cs" />
-    <Compile Include="Control\OnScreenKeyboard\DelegateCommand.cs" />
-    <Compile Include="Control\OnScreenKeyboard\IPhoneKeyboard.xaml.cs">
+    <Compile Include="Control\OnScreenKeyboard\Control\Command.cs" />
+    <Compile Include="Control\OnScreenKeyboard\Control\DelegateCommand.cs" />
+    <Compile Include="Control\OnScreenKeyboard\Control\IPhoneKeyboard.xaml.cs">
       <DependentUpon>IPhoneKeyboard.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Control\OnScreenKeyboard\KeyboardModel.cs" />
-    <Compile Include="Control\OnScreenKeyboard\KeyboardView.xaml.cs">
-      <DependentUpon>KeyboardView.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Control\OnScreenKeyboard\NativeWin32.cs" />
+    <Compile Include="Control\OnScreenKeyboard\Control\KeyboardModel.cs" />
+    <Compile Include="Control\OnScreenKeyboard\Control\NativeWin32.cs" />
     <Compile Include="Control\OnScreenKeyboard\OnScreenKeyboard.xaml.cs">
       <DependentUpon>OnScreenKeyboard.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Control\OnScreenKeyboard\VK.cs" />
-    <Compile Include="Control\OnScreenKeyboard\WoskViewModel.cs" />
+    <Compile Include="Control\OnScreenKeyboard\Control\VK.cs" />
+    <Compile Include="Control\OnScreenKeyboard\Control\WoskViewModel.cs" />
     <Compile Include="Control\PopupContainer.xaml.cs">
       <DependentUpon>PopupContainer.xaml</DependentUpon>
       <SubType>Code</SubType>
@@ -311,7 +308,6 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="Control\TabItemControl.cs" />
-    <Compile Include="Control\TouchScreenKeyboard\TouchScreenKeyboard.cs" />
     <Compile Include="Converter\BinaryTotalToBooleanConverter.cs" />
     <Compile Include="Converter\BooleanToIntegerConverter.cs" />
     <Compile Include="Converter\BooleanToVisibilityConverter.cs" />
@@ -1053,6 +1049,8 @@
     <Compile Include="Ultility\VisibleBinding.cs" />
     <Compile Include="ViewModel\Front\SalesOrderFrontHandViewModel.cs" />
     <Compile Include="ViewModel\LockScreenViewModel.cs" />
+    <Compile Include="ViewModel\Popup\FrontHandEditProductViewModel.cs" />
+    <Compile Include="ViewModel\Popup\PricingDemoViewModel.cs" />
     <Compile Include="ViewModel\SplashScreenViewModel.cs" />
     <Compile Include="ViewModel\User\ChangePasswordViewModel.cs" />
     <Compile Include="ViewModel\User\LoginViewModel.cs" />
@@ -1063,6 +1061,12 @@
     </Compile>
     <Compile Include="View\LockScreenView.xaml.cs">
       <DependentUpon>LockScreenView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="View\Popup\FrontHandEditProductView.xaml.cs">
+      <DependentUpon>FrontHandEditProductView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="View\Popup\PricingDemoView.xaml.cs">
+      <DependentUpon>PricingDemoView.xaml</DependentUpon>
     </Compile>
     <Compile Include="View\SplashScreenView.xaml.cs">
       <DependentUpon>SplashScreenView.xaml</DependentUpon>
@@ -1273,11 +1277,7 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
-    <Page Include="Control\OnScreenKeyboard\IPhoneKeyboard.xaml">
-      <Generator>MSBuild:Compile</Generator>
-      <SubType>Designer</SubType>
-    </Page>
-    <Page Include="Control\OnScreenKeyboard\KeyboardView.xaml">
+    <Page Include="Control\OnScreenKeyboard\Control\IPhoneKeyboard.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
@@ -1296,10 +1296,6 @@
     <Page Include="Control\SystemButton.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="Control\TouchScreenKeyboard\Themes\Generic.xaml">
-      <Generator>MSBuild:Compile</Generator>
-      <SubType>Designer</SubType>
     </Page>
     <Page Include="Dictionary\BaseControlStyle\AlignmentStyle.xaml">
       <Generator>MSBuild:Compile</Generator>
@@ -1460,6 +1456,14 @@
     <Page Include="View\LockScreenView.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
+    </Page>
+    <Page Include="View\Popup\FrontHandEditProductView.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="View\Popup\PricingDemoView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="View\SplashScreenView.xaml">
       <SubType>Designer</SubType>
@@ -1946,6 +1950,9 @@
     <Content Include="Control\OnScreenKeyboard\Media\Click.wav" />
     <Content Include="Control\OnScreenKeyboard\Media\Click2.wav" />
     <Resource Include="Control\OnScreenKeyboard\Media\Settings.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Repository\Custom\" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
