@@ -1,0 +1,209 @@
+﻿//public List<T> ConverterToIEnumerable<T>(IEnumerable source)
+ //       {
+ //           return source.Cast<T>().ToList();
+ //       }
+
+//private void SetVaueAddressTextBox(bool idDefault)
+//        {
+//            try
+//            {
+
+//                if (!IsSetValue == idDefault) return;
+//                string myText = string.Empty;
+//                ///Get content of Address comboBox
+//                foreach (var item in ItemSource)
+//                {
+//                    bool flag = false;
+//                    if (bool.Parse(item.GetType().GetProperty("IsDefault").GetValue(item, null).ToString()) && idDefault)
+//                    {
+//                        flag = true;
+//                        this.IsSetValue = true;
+//                        this.SelectedItemAddress = this.AddressTypeCollection.Where(x => x.ID == int.Parse(item.GetType().GetProperty("AddressType").GetValue(item, null).ToString())).SingleOrDefault();
+//                    }
+
+//                    ///Check Addresstype and ID Address ComboBox
+//                    else if (!idDefault)
+//                    {
+//                        int idAddressType = this.SelectedItemAddress.ID;
+//                        if (int.Parse(item.GetType().GetProperty("AddressType").GetValue(item, null).ToString()) == idAddressType)
+//                            flag = true;
+//                        else
+//                        {
+//                            item.GetType().GetProperty("IsDefault").SetValue(item, false, null);
+//                        }
+//                    }
+//                    if (flag)
+//                    {
+//                        if (item.GetType().GetProperty("Street").GetValue(item, null) != null)
+//                        {
+//                            if (item.GetType().GetProperty("Street").GetValue(item, null).ToString().Length != 0)
+//                                myText = item.GetType().GetProperty("Street").GetValue(item, null).ToString() + "\n";
+//                        }
+
+//                        if (item.GetType().GetProperty("City").GetValue(item, null) != null)
+//                            if (item.GetType().GetProperty("City").GetValue(item, null).ToString().Length != 0)
+//                                myText += item.GetType().GetProperty("City").GetValue(item, null).ToString() + "\n";
+
+//                        if (item.GetType().GetProperty("State").GetValue(item, null) != null)
+//                            if (item.GetType().GetProperty("State").GetValue(item, null).ToString().Length != 0
+//                               && !string.IsNullOrEmpty(GetValueState(item)))
+//                                myText += GetValueState(item) + "\n";
+
+//                        if (item.GetType().GetProperty("Zip").GetValue(item, null) != null)
+//                            if (item.GetType().GetProperty("Zip").GetValue(item, null).ToString().Length != 0
+//                                && item.GetType().GetProperty("Zip").GetValue(item, null).ToString().CompareTo("0") == 1)
+//                                myText += item.GetType().GetProperty("Zip").GetValue(item, null).ToString() + "\n";
+
+//                        if (item.GetType().GetProperty("Country").GetValue(item, null) != null)
+//                            if (item.GetType().GetProperty("Country").GetValue(item, null).ToString().Length > 0
+//                                && !string.IsNullOrEmpty(GetValueCountry(item)))
+//                                myText += GetValueCountry(item);
+//                        ///Set IsDefault
+//                        item.GetType().GetProperty("IsDefault").SetValue(item, true, null);
+
+//                        ///Set value binding for AddressPopup
+//                        _currentItem = int.Parse(item.GetType().GetProperty("AddressType").GetValue(item, null).ToString());
+//                        this.SelectedValue = item;
+//                        if (myText.Length == 0)
+//                        {
+//                            this.MyText = string.Empty;
+//                            this.Tag = true;
+//                        }
+//                        else
+//                        {
+//                            this.Tag = false;
+//                            this.MyText = myText;
+//                        }
+//                        break;
+//                    }
+//                }
+
+//                //Set value for TextBox
+//                IsSetValue = false;
+
+//            }
+//            catch (Exception ex)
+//            {
+//                Debug.Write(ex.ToString());
+//            }
+//        }
+
+
+//public static class IEnumerableExtension
+    //{
+    //    public static TSource SingleOrDefault<TSource>(this IEnumerable source)
+    //    {
+    //        return source.Cast<TSource>().SingleOrDefault();
+    //    }
+    //    public static TSource SingleOrDefault<TSource>(this IEnumerable source, Func<TSource, bool> predicate)
+    //    {
+    //        return source.Cast<TSource>().SingleOrDefault(predicate);
+    //    }
+
+    //    public static List<TSource> ToList<TSource>(this IEnumerable source)
+    //    {
+    //        //object a = source.Cast<TSource>().ToList();
+    //        object a = (from p in typeof(TSource).GetProperties()
+    //                    select p) // Returns IQueryable
+    //               .ToList();  // Otherwise we would be returning IQueryable so change it to a List to get the data.
+    //        return source.Cast<TSource>().ToList();
+    //    }
+    //    public static List<PropertyInfo> GetPublicV2<TSource>(this IEnumerable source)
+    //    {
+    //        return (from p in typeof(TSource).GetProperties()
+    //                where p.PropertyType == typeof(string)
+    //                select p) // Returns IQueryable
+    //               .ToList();  // Otherwise we would be returning IQueryable so change it to a List to get the data.
+    //    }
+
+    //    //public static List<PropertyInfo> ConverterToIEnumerable<TSource>(this IEnumerable source)
+    //    //{
+    //    //    return (from p in typeof(TSource).GetProperties()
+    //    //            where p.PropertyType == typeof(string)
+    //    //            select p) // Returns IQueryable
+    //    //           .ToList();
+    //    //}
+    //}
+
+	 /////Binding TextBox Street
+                //if (_dataContext != null)
+                //{
+                //    Binding bindtextBoxName = new Binding("Street");
+                //    bindtextBoxName.Source = _dataContext;
+                //    bindtextBoxName.Mode = BindingMode.TwoWay;
+                //    bindtextBoxName.UpdateSourceTrigger = UpdateSourceTrigger.PropertyChanged;
+                //    bindtextBoxName.ValidatesOnDataErrors = true;
+                //    bindtextBoxName.ValidatesOnExceptions = true;
+                //    bindtextBoxName.NotifyOnValidationError = true;
+                //    txtStreet.SetBinding(TextBox.TextProperty, bindtextBoxName);
+
+                //    ///Binding TextBox Street
+                //    Binding bindtxtCity = new Binding("City");
+                //    bindtxtCity.Source = _dataContext;
+                //    bindtxtCity.Mode = BindingMode.TwoWay;
+                //    bindtxtCity.UpdateSourceTrigger = UpdateSourceTrigger.PropertyChanged;
+                //    bindtxtCity.ValidatesOnDataErrors = true;
+                //    bindtxtCity.ValidatesOnExceptions = true;
+                //    bindtxtCity.NotifyOnValidationError = true;
+                //    txtCity.SetBinding(TextBox.TextProperty, bindtxtCity);
+
+                //    ///Binding TextBox Zip
+                //    Binding bindZip = new Binding("Zip");
+                //    bindZip.Source = _dataContext;
+                //    bindZip.Mode = BindingMode.TwoWay;
+                //    bindZip.UpdateSourceTrigger = UpdateSourceTrigger.PropertyChanged;
+                //    bindZip.ValidatesOnDataErrors = true;
+                //    bindZip.ValidatesOnExceptions = true;
+                //    bindZip.NotifyOnValidationError = true;
+                //    txtZip.SetBinding(CustomTextBox.TextBoxZip.TextRealDependencyProperty, bindZip);
+
+                //    ///Binding TextBox State
+                //    Binding bindState = new Binding("State");
+                //    bindState.Source = _dataContext;
+                //    bindState.Mode = BindingMode.TwoWay;
+                //    bindState.UpdateSourceTrigger = UpdateSourceTrigger.PropertyChanged;
+                //    bindState.ValidatesOnDataErrors = true;
+                //    bindState.ValidatesOnExceptions = true;
+                //    bindState.NotifyOnValidationError = true;
+                //    cmbState.SetBinding(ComboBox.SelectedValueProperty, bindState);
+
+                //    ///Binding TextBox Country
+                //    Binding bindCountry = new Binding("Country");
+                //    bindCountry.Source = _dataContext;
+                //    bindCountry.Mode = BindingMode.TwoWay;
+                //    bindCountry.UpdateSourceTrigger = UpdateSourceTrigger.PropertyChanged;
+                //    bindCountry.ValidatesOnDataErrors = true;
+                //    bindCountry.ValidatesOnExceptions = true;
+                //    bindCountry.NotifyOnValidationError = true;
+                //    cmbCountry.SetBinding(ComboBox.SelectedValueProperty, bindCountry);
+                //    if (_dataContext != null && !bool.Parse(_dataContext.GetType().GetProperty("IsEdit").GetValue(_dataContext, null).ToString()))
+                //        _dataContext.GetType().GetProperty("IsEdit").SetValue(_dataContext, false, null);
+                //}
+                //else
+                //{
+                //    txtStreet.Text = string.Empty;
+                //    txtCity.Text = string.Empty;
+                //    txtZip.TextReal = string.Empty;
+                //    cmbCountry.Text = string.Empty;
+                //    cmbState.Text = string.Empty;
+                //}
+
+                //if (this.cmbCountry.SelectedItem == null)
+                //{
+                //    this.cmbState.Visibility = Visibility.Collapsed;
+                //    this.txtblState.Visibility = Visibility.Collapsed;
+                //    //Set possition for Zip Grid.Column="0" Grid.Row="4"
+                //    //HorizontalAlignment="Left"
+                //    //VerticalAlignment="Center"
+                //    Grid.SetRow(this.txtblZip, 4);
+                //    Grid.SetColumn(this.txtblZip, 0);
+                //    this.txtblZip.HorizontalAlignment = HorizontalAlignment.Left;
+                //    this.txtblZip.VerticalAlignment = VerticalAlignment.Center;
+                //    this.txtblZip.Margin = new Thickness(0);
+
+                //    Grid.SetRow(this.txtZip, 4);
+                //    Grid.SetColumn(this.txtZip, 1);
+                //    this.txtZip.Margin = new Thickness(0);
+                //    this.txtZip.HorizontalAlignment = HorizontalAlignment.Left;
+                //    this.UpdateLayout();
+                //}

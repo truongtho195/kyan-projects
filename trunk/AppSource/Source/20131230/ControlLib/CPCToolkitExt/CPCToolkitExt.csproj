@@ -1,0 +1,329 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProductVersion>8.0.30703</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{6B440606-31E2-485A-9E8E-50B6EB4A8736}</ProjectGuid>
+    <OutputType>library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>CPCToolkitExt</RootNamespace>
+    <AssemblyName>CPCToolkitExt</AssemblyName>
+    <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
+    <TargetFrameworkProfile>
+    </TargetFrameworkProfile>
+    <FileAlignment>512</FileAlignment>
+    <ProjectTypeGuids>{60dc8134-eba5-43b8-bcc9-bb4bc16c2548};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
+    <WarningLevel>4</WarningLevel>
+    <Utf8Output>true</Utf8Output>
+    <ExpressionBlendVersion>4.0.20525.0</ExpressionBlendVersion>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <PlatformTarget>AnyCPU</PlatformTarget>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="Microsoft.Expression.Drawing">
+      <HintPath>bin\Debug\Microsoft.Expression.Drawing.dll</HintPath>
+    </Reference>
+    <Reference Include="PresentationFramework.Luna" />
+    <Reference Include="System" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Data.Linq" />
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.Windows.Interactivity, Version=4.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>bin\Debug\System.Windows.Interactivity.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Xml" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="System.Xaml">
+      <RequiredTargetFramework>4.0</RequiredTargetFramework>
+    </Reference>
+    <Reference Include="WindowsBase" />
+    <Reference Include="PresentationCore" />
+    <Reference Include="PresentationFramework" />
+    <Reference Include="WPFToolkit.Extended, Version=1.8.0.0, Culture=neutral, PublicKeyToken=3e4669d2f30244f4, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>bin\Debug\WPFToolkit.Extended.dll</HintPath>
+    </Reference>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="AddressControl\Address.xaml.cs">
+      <DependentUpon>Address.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="AddressControl\ControlHelper.cs" />
+    <Compile Include="AddressControl\Converter\ErrorContentConverter.cs" />
+    <Compile Include="AddressControl\Converter\ErrorConverter.cs" />
+    <Compile Include="AddressControl\PopupAddress.xaml.cs">
+      <DependentUpon>PopupAddress.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="AutoCompleteControl\Base\AutoCompleteBase.cs" />
+    <Compile Include="AutoCompleteControl\Control\AutoCompleteBox.xaml.cs">
+      <DependentUpon>AutoCompleteBox.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="AutoCompleteControl\Control\AutoCompleteComboBox.xaml.cs">
+      <DependentUpon>AutoCompleteComboBox.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="AutoCompleteControl\Control\AutoCompleteTextBox.xaml.cs">
+      <DependentUpon>AutoCompleteTextBox.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="AutoCompleteControl\Control\AutoCompleteTextBoxExt.xaml.cs">
+      <DependentUpon>AutoCompleteTextBoxExt.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="AutoCompleteControl\Control\AutoCompleteDropDownList.xaml.cs">
+      <DependentUpon>AutoCompleteDropDownList.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="AutoCompleteControl\Helper\AutoCompleteFilterMode.cs" />
+    <Compile Include="AutoCompleteControl\Helper\AutoCompleteHelper.cs" />
+    <Compile Include="AutoCompleteControl\Helper\AutoCompleteSearch.cs" />
+    <Compile Include="AutoCompleteControl\Helper\DataGridHelper.cs" />
+    <Compile Include="AutoCompleteControl\Helper\IDataGridHelper.cs" />
+    <Compile Include="Behavior\CharacterCasingBehavior.cs" />
+    <Compile Include="Behavior\MaskVisibilityBehavior.cs" />
+    <Compile Include="Behavior\MoveFocusBehavior.cs" />
+    <Compile Include="ComboBoxControl\ComboBoxBase.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="ComboBoxControl\ComboBoxControl.cs" />
+    <Compile Include="ComboBoxControl\ComboBoxDiscount.xaml.cs">
+      <DependentUpon>ComboBoxDiscount.xaml</DependentUpon>
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="ComboBoxControl\ComboBoxQuantity.xaml.cs">
+      <DependentUpon>ComboBoxQuantity.xaml</DependentUpon>
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Commands\CommandReference.cs" />
+    <Compile Include="Commands\DelegateCommand.cs" />
+    <Compile Include="Commands\RelayCommand.cs" />
+    <Compile Include="Converter\ControlTypeToVisibilityConverter.cs" />
+    <Compile Include="DataGridControl\Converter.cs" />
+    <Compile Include="DataGridControl\DataGridControl.cs" />
+    <Compile Include="DataGridControl\Filter\DataGridColunmExt.cs" />
+    <Compile Include="DataGridControl\Filter\FilterType.cs" />
+    <Compile Include="DataGridControl\Helper.cs" />
+    <Compile Include="DataGridControl\RowDataInfoValidationRule.cs" />
+    <Compile Include="DataGridControl\View\CustomizeColumn.xaml.cs">
+      <DependentUpon>CustomizeColumn.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="OtherControl\ColorControl.xaml.cs">
+      <DependentUpon>ColorControl.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="OtherControl\CPCTabControl.cs" />
+    <Compile Include="OtherControl\CPCTabItemControl.cs" />
+    <Compile Include="OtherControl\TabItemStatusControl.cs" />
+    <Compile Include="TextBoxControl\Base\TextBoxCustomBase.cs" />
+    <Compile Include="TextBoxControl\Base\TextBoxNumberBase.cs" />
+    <Compile Include="TextBoxControl\Control\DelayTextBox.cs" />
+    <Compile Include="TextBoxControl\Control\TextBox.cs" />
+    <Compile Include="TextBoxControl\Control\TextBoxAlphaNumeric.cs" />
+    <Compile Include="TextBoxControl\Control\TextBoxCardNumber.cs" />
+    <Compile Include="TextBoxControl\Control\TextBoxDecimal.cs" />
+    <Compile Include="TextBoxControl\Control\TextBoxEmail.cs" />
+    <Compile Include="TextBoxControl\Control\TextBoxFax.cs" />
+    <Compile Include="TextBoxControl\Control\TextBoxIdentification.cs" />
+    <Compile Include="TextBoxControl\Control\TextBoxMoney.cs" />
+    <Compile Include="TextBoxControl\Control\TextBoxName.cs" />
+    <Compile Include="TextBoxControl\Control\TextBoxNumber.cs" />
+    <Compile Include="TextBoxControl\Control\TextBoxNumeric.cs" />
+    <Compile Include="TextBoxControl\Control\TextBoxPercent.cs" />
+    <Compile Include="TextBoxControl\Control\TextBoxPhone.cs" />
+    <Compile Include="TextBoxControl\Control\TextBoxSerialNumber.cs" />
+    <Compile Include="TextBoxControl\Control\TextBoxSSN.cs" />
+    <Compile Include="TextBoxControl\Control\TextBoxTaxID.cs" />
+    <Compile Include="TextBoxControl\Control\TextBoxUserName.cs" />
+    <Compile Include="TextBoxControl\Control\TextBoxWithResetValue.cs" />
+    <Compile Include="TextBoxControl\Control\TextBoxZip.cs" />
+    <Compile Include="TextBoxControl\Helper\ConvertHelper.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Properties\AssemblyInfo.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Properties\Resources.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Resources.resx</DependentUpon>
+    </Compile>
+    <Compile Include="Properties\Settings.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DependentUpon>Settings.settings</DependentUpon>
+      <DesignTimeSharedInput>True</DesignTimeSharedInput>
+    </Compile>
+    <EmbeddedResource Include="Properties\Resources.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>Resources.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Include="TextBoxControl\Background.resources" />
+    <None Include="Properties\Settings.settings">
+      <Generator>SettingsSingleFileGenerator</Generator>
+      <LastGenOutput>Settings.Designer.cs</LastGenOutput>
+    </None>
+    <AppDesigner Include="Properties\" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="AutoCompleteControl\Code.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\Find.png" />
+    <Resource Include="Images\Find1.png" />
+    <Resource Include="Images\TabGeenCheck.png" />
+    <Resource Include="Images\TabOrangeCheck.png" />
+    <Resource Include="Images\TabRedCheck.png" />
+    <Resource Include="Theme\Images\TabGeenCheck.png" />
+    <Resource Include="Theme\Images\TabOrangeCheck.png" />
+    <Resource Include="Theme\Images\TabRedCheck.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Page Include="AddressControl\Address.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="AddressControl\PopupAddress.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="AddressControl\Themes\Generic.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="AutoCompleteControl\Control\AutoCompleteBox.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="AutoCompleteControl\Control\AutoCompleteComboBox.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="AutoCompleteControl\Control\AutoCompleteTextBox.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="AutoCompleteControl\Control\AutoCompleteTextBoxExt.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="AutoCompleteControl\Control\AutoCompleteDropDownList.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="ComboBoxControl\ComboBoxDiscount.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="ComboBoxControl\ComboBoxQuantity.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="DataGridControl\View\CustomizeColumn.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="OtherControl\ColorControl.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="TextBoxControl\Them\DefaultStyle.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Theme\Dictionary.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="AddressControl\Image\Cancel.png" />
+    <Resource Include="AddressControl\Image\Ok.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\error.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\top.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\next.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\1358410186_media-play.png" />
+    <Resource Include="Images\1358410191_Media-WMP.png" />
+    <Resource Include="Images\1358410197_video_play.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\label_new yellow.png" />
+    <Resource Include="Images\1358522405_document-new.png" />
+    <Resource Include="Images\1358522408_filenew.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="AddressControl\Model\" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\Arrow.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\Add.png" />
+    <Resource Include="Images\YellowAlert.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\1361348925_edit.png" />
+    <Resource Include="Images\1361348941_gtk-media-play-ltr.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\1361349249_gtk-media-play-ltr.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\1361357177_gtk-media-play-ltr.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\1361436656_Error.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\Editing.png" />
+    <Resource Include="Images\Filter.png" />
+    <Resource Include="Images\New.png" />
+    <Resource Include="Images\Select.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\Edit.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\CancelImageDrop.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\Clear.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\CPCToolkitExtLibraries\CPCToolkitExtLibraries.csproj">
+      <Project>{56730884-FCBF-4B6C-A786-43C315ED4437}</Project>
+      <Name>CPCToolkitExtLibraries</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>

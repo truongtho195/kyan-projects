@@ -1,0 +1,30 @@
+﻿Phiên bản này đã có 1 số thay đổi: 
+  * Các control nhập số có 1 lớp base chung (TextBoxMoney,TextBoxPercent,TextBoxNuber,TextBoxDecimal,TextBoxNumeric ).
+  * Xóa 1 số cái không dùng đến ( TextBoxCurrency,TextBoxNormal).
+  * Thay đổi Resource cho control Phone.
+  * Chưa thay đổi để TextBoxPercent có thể nhập giá trị âm.
+
+  /////Code
+        //public bool CheckNonSymbolstrange(char localchar)
+        //{
+        //    int temp = char.ConvertToUtf32(localchar.ToString(), 0);
+        //    ////"." , 0-->9
+        //    if (
+        //        temp == 48 || // 0
+        //        temp == 49 || // 1
+        //        temp == 50 || // 2
+        //        temp == 51 || // 3
+        //        temp == 52 || // 4
+        //        temp == 53 || // 5
+        //        temp == 54 || // 6
+        //        temp == 55 || // 7
+        //        temp == 56 || // 8
+        //        temp == 57    // 9
+        //        )
+        //        return true;
+
+        //    return false;
+        //}
+
+		Phiên bản ngày 11-03-2013 
+		Cập nhận FocusingBrush cho các TextBox.

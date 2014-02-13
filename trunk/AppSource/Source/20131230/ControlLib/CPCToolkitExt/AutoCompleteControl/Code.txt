@@ -1,0 +1,785 @@
+﻿ <!--Style Tab Item Status Control -->
+        <Style x:Key="TabItemFocusVisual">
+            <Setter Property="Control.Template">
+                <Setter.Value>
+                    <ControlTemplate>
+                        <Rectangle Stroke="Black"
+                                   StrokeDashArray="1 2"
+                                   StrokeThickness="1"
+                                   Margin="4,4,4,2"
+                                   SnapsToDevicePixels="true" />
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+        <Style x:Key="TabItemStatusControlStyle"
+               TargetType="{x:Type local:TabItemStatusControl}">
+            <Setter Property="FocusVisualStyle"
+                    Value="{StaticResource TabItemFocusVisual}" />
+            <Setter Property="Padding"
+                    Value="12,2,12,2" />
+            <Setter Property="Foreground"
+                    Value="{DynamicResource {x:Static SystemColors.ControlTextBrushKey}}" />
+            <Setter Property="Background"
+                    Value="{DynamicResource {x:Static SystemColors.ControlBrushKey}}" />
+            <Setter Property="HorizontalContentAlignment"
+                    Value="Stretch" />
+            <Setter Property="VerticalContentAlignment"
+                    Value="Stretch" />
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="{x:Type local:TabItemStatusControl}">
+                        <Grid Height="20.45">
+                            <Grid>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="0.168*" />
+                                    <ColumnDefinition Width="0.832*" />
+                                </Grid.ColumnDefinitions>
+                                <ContentPresenter HorizontalAlignment="{Binding HorizontalContentAlignment, RelativeSource={RelativeSource AncestorType={x:Type ItemsControl}}}"
+                                                  Margin="{TemplateBinding Padding}"
+                                                  VerticalAlignment="{Binding VerticalContentAlignment, RelativeSource={RelativeSource AncestorType={x:Type ItemsControl}}}"
+                                                  SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}"
+                                                  ContentSource="Header"
+                                                  RecognizesAccessKey="True"
+                                                  Grid.Column="1" />
+                                <Grid x:Name="grdImage" Margin="1,2" VerticalAlignment="Center" HorizontalAlignment="Center">
+                                	<Image x:Name="imgRed"
+                                		Source="Images/TabRedCheck.png"
+                                		Width="15"
+                                		Height="15"
+                                		Margin="0" HorizontalAlignment="Center" VerticalAlignment="Center" Stretch="Fill" />
+                                	<Image x:Name="imgYellow"
+                                		Source="Images/TabOrangeCheck.png"
+                                		Stretch="Fill"
+                                		Width="15"
+                                		Height="15"
+                                		HorizontalAlignment="Center"
+                                		VerticalAlignment="Center"
+                                		Margin="0" />
+                                	<Image x:Name="imgGreen"
+                                		Margin="0"
+                                		Source="Images/TabGeenCheck.png"
+                                		Stretch="Fill"
+                                		Width="15"
+                                		Height="15" HorizontalAlignment="Center" VerticalAlignment="Center" />
+                                </Grid>
+                            </Grid>
+                        </Grid>
+                        <ControlTemplate.Triggers>
+                            <DataTrigger Binding="{Binding Status,RelativeSource={RelativeSource Self}}"
+                                         Value="0">
+                                <Setter Property="Visibility"
+                                        Value="Visible"
+                                        TargetName="imgRed" />
+                                <Setter Property="Visibility"
+                                        Value="Collapsed"
+                                        TargetName="imgYellow" />
+                                <Setter Property="Visibility"
+                                        Value="Collapsed"
+                                        TargetName="imgGreen" />
+                            </DataTrigger>
+                            <DataTrigger Binding="{Binding Status,RelativeSource={RelativeSource Self}}"
+                                         Value="1">
+                                <Setter Property="Visibility"
+                                        Value="Collapsed"
+                                        TargetName="imgRed" />
+                                <Setter Property="Visibility"
+                                        Value="Visible"
+                                        TargetName="imgYellow" />
+                                <Setter Property="Visibility"
+                                        Value="Collapsed"
+                                        TargetName="imgGreen" />
+                            </DataTrigger>
+                            <DataTrigger Binding="{Binding Status,RelativeSource={RelativeSource Self}}"
+                                         Value="2">
+                                <Setter Property="Visibility"
+                                        Value="Collapsed"
+                                        TargetName="imgRed" />
+                                <Setter Property="Visibility"
+                                        Value="Collapsed"
+                                        TargetName="imgYellow" />
+                                <Setter Property="Visibility"
+                                        Value="Visible"
+                                        TargetName="imgGreen" />
+                            </DataTrigger>
+
+                            <Trigger Property="IsSelected"
+                                     Value="true">
+                                <Setter Property="Panel.ZIndex"
+                                        Value="1" />
+                            </Trigger>
+                            <Trigger Property="TabStripPlacement"
+                                     Value="Bottom" />
+                            <Trigger Property="TabStripPlacement"
+                                     Value="Left" />
+                            <Trigger Property="TabStripPlacement"
+                                     Value="Right" />
+                            <MultiTrigger>
+                                <MultiTrigger.Conditions>
+                                    <Condition Property="IsSelected"
+                                               Value="true" />
+                                    <Condition Property="TabStripPlacement"
+                                               Value="Top" />
+                                </MultiTrigger.Conditions>
+                                <Setter Property="Margin"
+                                        Value="-2" />
+                            </MultiTrigger>
+                            <MultiTrigger>
+                                <MultiTrigger.Conditions>
+                                    <Condition Property="IsSelected"
+                                               Value="true" />
+                                    <Condition Property="TabStripPlacement"
+                                               Value="Bottom" />
+                                </MultiTrigger.Conditions>
+                                <Setter Property="Margin"
+                                        Value="-2" />
+                            </MultiTrigger>
+                            <MultiTrigger>
+                                <MultiTrigger.Conditions>
+                                    <Condition Property="IsSelected"
+                                               Value="true" />
+                                    <Condition Property="TabStripPlacement"
+                                               Value="Left" />
+                                </MultiTrigger.Conditions>
+                                <Setter Property="Padding"
+                                        Value="11,2,14,2" />
+                                <Setter Property="Margin"
+                                        Value="-2" />
+                            </MultiTrigger>
+                            <MultiTrigger>
+                                <MultiTrigger.Conditions>
+                                    <Condition Property="IsSelected"
+                                               Value="true" />
+                                    <Condition Property="TabStripPlacement"
+                                               Value="Right" />
+                                </MultiTrigger.Conditions>
+                                <Setter Property="Padding"
+                                        Value="14,2,11,2" />
+                                <Setter Property="Margin"
+                                        Value="-2" />
+                            </MultiTrigger>
+                            <Trigger Property="IsEnabled"
+                                     Value="false">
+                                <Setter Property="Foreground"
+                                        Value="{DynamicResource {x:Static SystemColors.GrayTextBrushKey}}" />
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+        <!--End Style Tab Item Status Control -->
+
+		***************************************************************
+
+
+		  void LstComplete_PreviewKeyDown(object sender, KeyEventArgs e)
+        {
+            if (IsNavigationKey(e.Key))
+            {
+                _isKeyAcceptFromList = false;
+                return;
+            }
+        }
+
+        void LstComplete_KeyUp(object sender, KeyEventArgs e)
+        {
+            if (IsChooseCurrentItemKey(e.Key))
+            {
+                _isKeyAcceptFromList = true;
+                this.CloseHideDataSuggestion();
+                txtKeyWord.Focus();
+            }
+            else if (IsCancelKey(e.Key))
+            {
+                _isKeyAcceptFromList = false;
+                this.CloseHideDataSuggestion();
+                this.dbNoResult.Visibility = Visibility.Collapsed;
+                txtKeyWord.Focus();
+            }
+
+        }
+
+        void TxtKeyWord_TextChanged(object sender, TextChangedEventArgs e)
+        {
+            try
+            {
+                if (_isSelectedItem) return;
+                this.IsLoad = true;
+                this.SelectedItemResult = null;
+                this.SelectedValue = null;
+                this.lstComplete.SelectedItem = null;
+                if (string.IsNullOrEmpty(this.txtKeyWord.Text))
+                {
+                    this.ReturnValueDefault();
+                    this.CloseHideDataSuggestion();
+                    return;
+                }
+                else if (this.FieldSource == null)
+                {
+                    this.ShowHideDataSuggestion();
+                    return;
+                }
+                if (!_isKeyAcceptFromList)
+                {
+                    this.txtKeyWord.Dispatcher.BeginInvoke(
+                    DispatcherPriority.Input,
+                    (ThreadStart)delegate
+                    {
+                        if (this.txtKeyWord.Text.Trim().Length == 0) return;
+                        this.Filter();
+                        this.ShowHideDataSuggestion();
+
+                    });
+                }
+                _isKeyAcceptFromList = false;
+                this.IsLoad = false;
+            }
+            catch (Exception ex)
+            {
+                System.Diagnostics.Debug.WriteLine("<<<<<<<<<<<<<<<<<<<<<<<Text Changed>>>>>>>>>>>>>>>>>>>>>" + ex.Message);
+            }
+        }
+
+        void TxtKeyWord_KeyUp(object sender, KeyEventArgs e)
+        {
+            try
+            {
+                if (this.IsReadOnly || this.IsTextBlock)
+                {
+                    e.Handled = true;
+                    return;
+                }
+                if (IsNavigationKey(e.Key) && this.dbNoResult.Visibility == Visibility.Collapsed)
+                {
+                    if (!this.popupResult.IsOpen)
+                    {
+                        this.popupResult.StaysOpen = false;
+                        this.popupResult.IsOpen = true;
+                    }
+                    if (this.lstComplete.SelectedItem == null && e.Key == Key.Down)
+                    {
+                        //Set Index
+                        this.lstComplete.SelectedIndex = 0;
+                        //Set ScrollIntoView ,Focus
+                        //this.lstComplete.Dispatcher.BeginInvoke(DispatcherPriority.Input, (ThreadStart)delegate
+                        //   {
+                        //this.lstComplete.ScrollIntoView(this.lstComplete.SelectedItem);
+                        //ListViewItem item = (ListViewItem)lstComplete.ItemContainerGenerator.ContainerFromIndex(0);
+                        //if (item != null)
+                        //{
+                        //    item.Focus();
+                        //}
+                        //});
+
+                    }
+                    else
+                    {  //Set ScrollIntoView ,Focus
+                        //this.lstComplete.Dispatcher.BeginInvoke(
+                        //   DispatcherPriority.Input,
+                        //   (ThreadStart)delegate
+                        //   {
+                        //ListViewItem item = (ListViewItem)lstComplete.ItemContainerGenerator.ContainerFromItem(this.lstComplete.SelectedItem);
+                        //if (item != null)
+                        //{
+                        //    item.Focus();
+                        //}
+                        // });
+                        //this.lstComplete.ScrollIntoView(this.lstComplete.SelectedItem);
+                    }
+                    _isKeyAcceptFromList = false;
+                }
+                else if (this.dbNoResult.Visibility == Visibility.Visible)
+                {
+                    if (!this.popupResult.IsOpen)
+                    {
+                        this.popupResult.StaysOpen = false;
+                        this.popupResult.IsOpen = true;
+                    }
+                    _isKeyAcceptFromList = false;
+                }
+
+                if (IsCancelKey(e.Key))
+                {
+                    this.CloseHideDataSuggestion();
+                    this.tbNoResult.Visibility = Visibility.Collapsed;
+                    _isKeyAcceptFromList = false;
+                }
+
+            }
+            catch (Exception ex)
+            {
+                Debug.Write("<<<<<<<<<<<<<<<<<<TxtKeyWord_KeyUp>>>>>>>>>>>>>>" + ex.ToString());
+            }
+        }
+
+        void PopupResult_Closed(object sender, EventArgs e)
+        {
+            try
+            {
+                this.popupResult.Dispatcher.BeginInvoke(
+                           DispatcherPriority.Input,
+                           (ThreadStart)delegate
+                           {
+                               this.BorderThickness = new Thickness(1, 1, 1, 1);
+                               this.IsLoad = true;
+                               if (this.lstComplete.SelectedItem != null)
+                               {
+                                   //Set SelectedItemResult,SelectedValue
+                                   this.SelectedItemResult = this.lstComplete.SelectedItem;
+                                   if (this.lstComplete.SelectedValue != null)
+                                       this.SelectedValue = this.lstComplete.SelectedValue;
+                                   if (IsTextCompletionEnabled)
+                                   {
+                                       _isSelectedItem = true;
+                                       object content = this.GetDataFieldShow(this.SelectedItemResult, FieldShow);
+                                       if (content != null)
+                                       {
+                                           this.txtKeyWord.Text = content.ToString();
+                                           this.txtKeyWord.SelectAll();
+                                           this.txtKeyWord.Focus();
+                                       }
+                                       _isSelectedItem = false;
+                                   }
+                               }
+                               else
+                               {
+                                   this.SelectedItemResult = null;
+                                   this.SelectedValue = null;
+                                   this.dbNoResult.Visibility = Visibility.Collapsed;
+                               }
+                               this.IsLoad = false;
+                           });
+            }
+            catch (Exception ex)
+            {
+                Debug.Write("<<<<<<<<<<<<<<<<<<PopupResult_Closed>>>>>>>>>>>>>>" + ex.ToString());
+            }
+        }
+
+        void AutoCompleteTextBox_Loaded(object sender, RoutedEventArgs e)
+        {
+            try
+            {
+                this.Dispatcher.BeginInvoke(
+                           DispatcherPriority.Input,
+                           (ThreadStart)delegate
+                           {
+                               this.popupResult.PlacementTarget = this;
+                               this.popupResult.IsOpen = false;
+                               this.popupResult.StaysOpen = true;
+                               //if (this.MaxDropDownHeight <= 0)
+                                   this.MaxDropDownHeight = 256;
+                               this.dbNoResult.Visibility = Visibility.Collapsed;
+                               this._bachgroundBase = this.Background;
+                               this._borderBase = this.BorderThickness;
+                           });
+            }
+            catch (Exception ex)
+            {
+                Debug.Write("<<<<<<<<<<<<<<<<<<AutoCompleteTextBox_Loaded>>>>>>>>>>>>>>" + ex.ToString());
+            }
+        }
+
+
+
+
+
+
+		  #region Methods
+
+        private bool GetDataHasChildren(object data, DataSearchModel searchModel)
+        {
+            try
+            {
+                //object content = null;
+                switch (searchModel.Level)
+                {
+                    ///Search data when level=0
+                    case 0:
+                        object dataLevel = data.GetType().GetProperty(searchModel.KeyName).GetValue(data, null);
+                        if (dataLevel == null) return false;
+                        else
+                            return AutoCompleteSearch.GetFilter(FilterMode, this.txtKeyWord.Text.Trim(), dataLevel.ToString());
+
+                    ///Search data when level=1
+                    case 1:
+                        object dataLevel1 = data.GetType().GetProperty(searchModel.PropertyChildren).GetValue(data, null);
+                        if (dataLevel1 == null) return false;
+                        else if (searchModel.PropertyType.Equals(CPCToolkitExtPropertyType.Collection.ToString()))
+                        {
+                            foreach (var item in (dataLevel1 as IEnumerable))
+                            {
+                                object contentLevel1 = item.GetType().GetProperty(searchModel.KeyName).GetValue(item, null);
+                                if (contentLevel1 == null) return false;
+                                if (AutoCompleteSearch.GetFilter(FilterMode, this.txtKeyWord.Text, contentLevel1.ToString()))
+                                    return true;
+                            }
+                            return false;
+                        }
+                        else
+                        {
+                            object contentLevel1 = dataLevel1.GetType().GetProperty(searchModel.KeyName).GetValue(dataLevel1, null);
+                            if (contentLevel1 == null) return false;
+                            return AutoCompleteSearch.GetFilter(FilterMode, this.txtKeyWord.Text.Trim(), contentLevel1.ToString());
+                        }
+
+                    ///Search data when level=2
+                    case 2:
+                        string[] arrayLevel = searchModel.PropertyChildren.Split('.');
+                        object dataFirstArray = data.GetType().GetProperty(arrayLevel[0]).GetValue(data, null);
+
+                        if (dataFirstArray == null) return false;
+
+                        //Level 1 is colllection
+                        else if (dataFirstArray is IEnumerable)
+                        {
+                            foreach (var itemFirstArray in (dataFirstArray as IEnumerable))
+                            {
+                                object dataItemFirstArray = itemFirstArray.GetType().GetProperty(arrayLevel[1]).GetValue(itemFirstArray, null);
+                                if (dataItemFirstArray != null)
+                                {
+                                    //Level 2 is collection
+                                    if (dataItemFirstArray is IEnumerable)
+                                    {
+                                        foreach (var itemLastArray in (dataItemFirstArray as IEnumerable))
+                                        {
+                                            //////////////************///////////////
+                                            object dataItemLastArray = itemLastArray.GetType().GetProperty(searchModel.KeyName).GetValue(itemLastArray, null);
+                                            if (dataItemLastArray != null && AutoCompleteSearch.GetFilter(FilterMode, this.txtKeyWord.Text, dataItemLastArray.ToString()))
+                                                return true;
+                                        }
+                                    }
+                                    //Level 2 is model
+                                    else
+                                    {
+                                        //////////////************///////////////
+                                        object contentLevel2 = dataItemFirstArray.GetType().GetProperty(searchModel.KeyName).GetValue(dataItemFirstArray, null);
+                                        if (contentLevel2 != null && AutoCompleteSearch.GetFilter(FilterMode, this.txtKeyWord.Text, contentLevel2.ToString()))
+                                            return true;
+                                    }
+                                }
+                            }
+                            return false;
+                        }
+
+                        //Level 1 is model
+                        else
+                        {
+                            object dataLevel2 = dataFirstArray.GetType().GetProperty(arrayLevel[1]).GetValue(dataFirstArray, null);
+                            if (dataLevel2 == null) return false;
+                            //Level 2 is collection
+                            else if (searchModel.PropertyType.Equals(CPCToolkitExtPropertyType.Collection.ToString()))
+                            {
+                                foreach (var itemChildren in (dataLevel2 as IEnumerable))
+                                {
+                                    object contentLevel2 = itemChildren.GetType().GetProperty(searchModel.KeyName).GetValue(itemChildren, null);
+                                    if (contentLevel2 != null && AutoCompleteSearch.GetFilter(FilterMode, this.txtKeyWord.Text, contentLevel2.ToString()))
+                                        return true;
+                                }
+                                return false;
+                            }
+                            //Level 2 is model
+                            else
+                            {
+                                object contentLevel2 = dataLevel2.GetType().GetProperty(searchModel.KeyName).GetValue(dataLevel2, null);
+                                if (contentLevel2 == null) return false;
+                                return AutoCompleteSearch.GetFilter(FilterMode, this.txtKeyWord.Text.Trim(), contentLevel2.ToString());
+                            }
+                        }
+                }
+            }
+            catch (Exception ex)
+            {
+                System.Diagnostics.Debug.WriteLine("<<<<<<<<<<<<<<<<<<<<<<<<<<<<GetDataHasChildren>>>>>>>>>>>>>>>>>>>>>>>>>>>>" + ex.Message);
+            }
+
+            return false;
+        }
+
+        private string GetDataFieldShow(object data, string fieldshow)
+        {
+            string content = string.Empty;
+            try
+            {
+                string[] level = fieldshow.Split('.');
+                switch (level.Count())
+                {
+                    case 1:
+                        object datalevel = data.GetType().GetProperty(level[0]).GetValue(data, null);
+                        if (datalevel == null) content = string.Empty;
+                        else
+                            content = datalevel.ToString();
+                        break;
+                    case 2:
+                        object datahaschildren = data.GetType().GetProperty(level[0]).GetValue(data, null);
+                        if (datahaschildren == null)
+                            return content = string.Empty;
+                        object datalevel1 = datahaschildren.GetType().GetProperty(level[1]).GetValue(datahaschildren, null);
+                        if (datalevel1 == null)
+                            content = string.Empty;
+                        else
+                            content = datalevel1.ToString();
+                        break;
+                    default:
+                        return content = string.Empty;
+                }
+            }
+            catch (Exception ex)
+            {
+                System.Diagnostics.Debug.WriteLine("<<<<<<<<<<<<<<<<<<<<<<<<<<<<GetDataFieldShow>>>>>>>>>>>>>>>>>>>>>>>>>>>>" + ex.Message);
+            }
+            return content;
+        }
+
+        /// <summary>
+        /// Filter item in ItemSource 
+        /// Return data for ListView result
+        /// </summary>
+        private void Filter()
+        {
+            try
+            {
+                //Default value for search
+                if (this.FieldSource != null && this.FieldSource.Count > 0)
+                {
+                    this.lstComplete.Items.Filter = (item) =>
+                    {
+                        //foreach (var field in this.FieldSource)
+                        //{
+                        if (this.GetDataHasChildren(item, this.FieldSource[0]))
+                                return true;
+                        //}
+                        return false;
+                    };
+                }
+            }
+            catch (Exception ex)
+            {
+                System.Diagnostics.Debug.WriteLine("<<<<<<<<<<<<<<<<<<<<<<<<<<<<Filter()>>>>>>>>>>>>>>>>>>>>>>>>>>>>" + ex.Message);
+            }
+        }
+
+        /// <summary>
+        /// Return data for ListView 
+        /// </summary>
+        private void ReturnValueDefault()
+        {
+            try
+            {
+                //Default value for search
+                if (this.FieldSource != null && this.FieldSource.Count > 0)
+                {
+                    this.lstComplete.Items.Filter = (item) =>
+                    {
+                        return true;
+                    };
+                }
+            }
+            catch (Exception ex)
+            {
+                System.Diagnostics.Debug.WriteLine("<<<<<<<<<<<<<<<<<<<<<<<<<<<<ReturnValueDefault()>>>>>>>>>>>>>>>>>>>>>>>>>>>>" + ex.Message);
+            }
+        }
+
+        /// <summary>
+        /// Show Result
+        /// </summary>
+        private void ShowHideDataSuggestion()
+        {
+            try
+            {
+                this.Dispatcher.BeginInvoke(
+                           DispatcherPriority.Input,
+                           (ThreadStart)delegate
+                           {
+                               if (string.IsNullOrEmpty(txtKeyWord.Text))
+                               {
+                                   this.dbShowResult.Visibility = Visibility.Collapsed;
+                                   this.dbNoResult.Visibility = Visibility.Visible;
+                               }
+                               else if (this.lstComplete.Items.IsEmpty
+                                   || this.FieldSource == null)
+                               {
+                                   this.dbShowResult.Visibility = Visibility.Collapsed;
+                                   this.dbNoResult.Visibility = Visibility.Visible;
+                                   this.dbNoResult.Width = this.AutoControl.Width;
+                                   this.popupResult.StaysOpen = false;
+                                   this.popupResult.IsOpen = true;
+                               }
+                               else
+                               {
+                                   this.dbShowResult.Visibility = Visibility.Visible;
+                                   this.dbNoResult.Visibility = Visibility.Collapsed;
+                                   this.popupResult.StaysOpen = false;
+                                   this.popupResult.IsOpen = true;
+                               }
+                           });
+            }
+            catch (Exception ex)
+            {
+                Debug.Write("<<<<<<<<<<<<<<<<<<<ShowHideDataSuggestion>>>>>>>>>>>>>>" + ex.ToString() + ">>>>>>>>>>>>>>>>>>>>" + "\n");
+            }
+        }
+        //private void ShowHideDataSuggestion()
+        //{
+        //    try
+        //    {
+        //        this.Shdw.Dispatcher.BeginInvoke(
+        //                   DispatcherPriority.Input,
+        //                   (ThreadStart)delegate
+        //                   {
+        //                       if (string.IsNullOrEmpty(txtKeyWord.Text))
+        //                       {
+        //                           this.lstComplete.SelectedItem = null;
+        //                           this.dbShowResult.Visibility = Visibility.Collapsed;
+        //                           this.dbNoResult.Visibility = Visibility.Visible;
+        //                       }
+        //                       else if (this.lstComplete.Items.IsEmpty
+        //                           || this.FieldSource == null)
+        //                       {
+        //                           this.dbShowResult.Visibility = Visibility.Collapsed;
+        //                           this.dbNoResult.Visibility = Visibility.Visible;
+        //                           this.dbNoResult.Width = this.AutoControl.Width;
+        //                           this.popupResult.StaysOpen = false;
+        //                           this.popupResult.IsOpen = true;
+        //                       }
+        //                       else
+        //                       {
+        //                           this.dbShowResult.Visibility = Visibility.Visible;
+        //                           this.dbNoResult.Visibility = Visibility.Collapsed;
+        //                           this.popupResult.StaysOpen = false;
+        //                           this.popupResult.IsOpen = true;
+        //                       }
+        //                       //this.BorderThickness = new Thickness(1, 1, 1, 0);
+        //                   });
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //        Debug.Write("<<<<<<<<<<<<<<<<<<<ShowHideDataSuggestion>>>>>>>>>>>>>>" + ex.ToString() + ">>>>>>>>>>>>>>>>>>>>" + "\n");
+        //    }
+        //}
+
+        /// <summary>
+        /// Close Result
+        /// </summary>
+        private void CloseHideDataSuggestion()
+        {
+            try
+            {
+                this.popupResult.Dispatcher.BeginInvoke(
+                                 DispatcherPriority.Input,
+                                 (ThreadStart)delegate
+                                 {
+                                     this.popupResult.StaysOpen = true;
+                                     this.popupResult.IsOpen = false;
+                                     this.dbNoResult.Visibility = Visibility.Collapsed;
+                                 });
+            }
+            catch (Exception ex)
+            {
+                Debug.Write("<<<<<<<<<<<<<<<<<<<<<<<<<<<<CloseHideDataSuggestion>>>>>>>>>>>>>>>>>>>>>>>>" + ex.ToString());
+            }
+        }
+
+        public void SetValueDefault()
+        {
+            try
+            {
+                this.popupResult.Dispatcher.BeginInvoke(
+                             DispatcherPriority.Input,
+                             (ThreadStart)delegate
+                             {
+                                 if (this.SelectedItemResult != null && (this.ItemsSource != null && this.ItemsSource.Cast<object>().ToList().Count > 0))
+                                 {
+                                     this.lstComplete.SelectedItem = this.SelectedItemResult;
+                                     if (IsTextCompletionEnabled && this.SelectedItemResult != null)
+                                     {
+                                         _isSelectedItem = true;
+                                         object content = this.GetDataFieldShow(this.SelectedItemResult, FieldShow);//this.SelectedItemResult.GetType().GetProperty(FieldShow).GetValue(this.SelectedItemResult, null);
+                                         if (content != null)
+                                             this.txtKeyWord.Text = content.ToString();
+                                         _isSelectedItem = false;
+                                     }
+                                 }
+                             });
+            }
+            catch (Exception ex)
+            {
+                Debug.Write("<<<<<<<<<<<<<<<<<<<SetValueDefault>>>>>>>>>>>>>>>>>>>>>>" + ex.ToString());
+            }
+        }
+
+        public void SetValueforSelectedValue()
+        {
+            try
+            {
+                this.popupResult.Dispatcher.BeginInvoke(
+                             DispatcherPriority.Input,
+                             (ThreadStart)delegate
+                             {
+                                 if (this.SelectedValuePath != null && !string.IsNullOrEmpty(SelectedValuePath.ToString()))
+                                 {
+                                     this.lstComplete.SelectedValuePath = this.SelectedValuePath;
+                                     this.lstComplete.SelectedValue = this.SelectedValue;
+                                     if (this.IsTextCompletionEnabled && this.lstComplete.SelectedValue != null)
+                                     {
+                                         _isSelectedItem = true;
+                                         object content = this.GetDataFieldShow(this.lstComplete.SelectedItem, FieldShow);//this.SelectedItemResult.GetType().GetProperty(FieldShow).GetValue(this.SelectedItemResult, null);
+                                         if (content != null)
+                                             this.txtKeyWord.Text = content.ToString();
+                                         _isSelectedItem = false;
+                                     }
+                                 }
+                             });
+            }
+            catch (Exception ex)
+            {
+                Debug.Write("<<<<<<<<<<<<<<<<<<<SetValueforSelectedValue>>>>>>>>>>>>>>>>>>>>>>" + ex.ToString());
+            }
+        }
+
+        public void ClearValue()
+        {
+            _isSelectedItem = true;
+            this.txtKeyWord.Text = string.Empty;
+            this.lstComplete.SelectedItem = null;
+            this.SelectedValue = null;
+            _isSelectedItem = false;
+        }
+
+        public void ChangeStyle()
+        {
+            this.BorderThickness = new Thickness(0);
+            this.Background = Brushes.Transparent;
+            this.popupResult.Visibility = Visibility.Collapsed;
+            this.txtKeyWord.IsReadOnly = true;
+            this.txtKeyWord.Background = Brushes.Transparent;
+            this.recIsTextBlock.Visibility = Visibility.Visible;
+        }
+
+        public void PreviousStyle()
+        {
+            this.Background = this._bachgroundBase;
+            this.BorderThickness = this._borderBase;
+            this.popupResult.Visibility = Visibility.Collapsed;
+            this.txtKeyWord.IsReadOnly = false;
+            this.recIsTextBlock.Visibility = Visibility.Collapsed;
+            this.txtKeyWord.Background = Brushes.White;
+        }
+
+        public void ChangeReadOnly(bool isReadOnly)
+        {
+            if (isReadOnly)
+            {
+                this.txtKeyWord.IsReadOnly = true;
+                this.popupResult.Visibility = Visibility.Collapsed;
+            }
+            else
+            {
+                this.txtKeyWord.IsReadOnly = false;
+                this.popupResult.Visibility = Visibility.Visible;
+            }
+        }
+
+        #endregion

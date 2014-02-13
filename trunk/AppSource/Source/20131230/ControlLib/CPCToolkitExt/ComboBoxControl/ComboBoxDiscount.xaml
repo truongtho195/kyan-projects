@@ -1,0 +1,222 @@
+﻿<local:ComboBoxBase xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                    xmlns:local="clr-namespace:CPCToolkitExt.ComboBoxControl"
+                    xmlns:Microsoft_Windows_Themes="clr-namespace:Microsoft.Windows.Themes;assembly=PresentationFramework.Luna"
+                    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+                    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+                    mc:Ignorable="d"
+                    x:Class="CPCToolkitExt.ComboBoxControl.ComboBoxDiscount"
+                    xmlns:textBoxControl="clr-namespace:CPCToolkitExt.TextBoxControl"
+                    x:Name="comboBoxDiscount"
+                    Focusable="True"
+                    Style="{DynamicResource myComboBoxBaseStyle}">
+    <local:ComboBoxBase.Resources>
+        <SolidColorBrush x:Key="ListBorder"
+                         Color="#FF7F9DB9" />
+        <Style x:Key="myListBoxStyle"
+               TargetType="{x:Type ListBox}">
+            <Setter Property="Background"
+                    Value="{DynamicResource {x:Static SystemColors.WindowBrushKey}}" />
+            <Setter Property="BorderBrush"
+                    Value="{StaticResource ListBorder}" />
+            <Setter Property="BorderThickness"
+                    Value="1" />
+            <EventSetter Event="UIElement.MouseLeftButtonUp"
+                         Handler="Content_MouseLeftButtonDown" />
+            <Setter Property="Foreground"
+                    Value="{DynamicResource {x:Static SystemColors.ControlTextBrushKey}}" />
+            <Setter Property="ScrollViewer.HorizontalScrollBarVisibility"
+                    Value="Auto" />
+            <Setter Property="ScrollViewer.VerticalScrollBarVisibility"
+                    Value="Auto" />
+            <Setter Property="ScrollViewer.CanContentScroll"
+                    Value="true" />
+            <Setter Property="VerticalContentAlignment"
+                    Value="Center" />
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="{x:Type ListBox}">
+                        <Border x:Name="Bd"
+                                SnapsToDevicePixels="true"
+                                Background="{TemplateBinding Background}"
+                                BorderBrush="{TemplateBinding BorderBrush}"
+                                BorderThickness="{TemplateBinding BorderThickness}"
+                                Padding="1">
+                            <ScrollViewer Padding="{TemplateBinding Padding}"
+                                          Focusable="false">
+                                <ItemsPresenter SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}" />
+                            </ScrollViewer>
+                        </Border>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsEnabled"
+                                     Value="false">
+                                <Setter Property="Background"
+                                        TargetName="Bd"
+                                        Value="{DynamicResource {x:Static SystemColors.ControlBrushKey}}" />
+                            </Trigger>
+                            <Trigger Property="IsGrouping"
+                                     Value="true">
+                                <Setter Property="ScrollViewer.CanContentScroll"
+                                        Value="false" />
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+        <LinearGradientBrush x:Key="myIsOverItemColor"
+                             EndPoint="0,1"
+                             StartPoint="0,0">
+            <GradientStop Color="#FFFFFFFF"
+                          Offset="0.004" />
+            <GradientStop Color="White"
+                          Offset="1" />
+            <GradientStop Color="#FFD8DDE0"
+                          Offset="0.5" />
+        </LinearGradientBrush>
+        <SolidColorBrush x:Key="myIsSelectedItemColor"
+                         Color="#CC89C0CE" />
+        <Style x:Key="myListBoxItemStyle"
+               TargetType="{x:Type ListBoxItem}">
+            <Setter Property="Background"
+                    Value="#02FFFFFF" />
+            <Setter Property="FocusVisualStyle"
+                    Value="{x:Null}" />
+            <Setter Property="HorizontalContentAlignment"
+                    Value="{Binding HorizontalContentAlignment, RelativeSource={RelativeSource AncestorType={x:Type ItemsControl}}}" />
+            <Setter Property="Padding"
+                    Value="2,0,0,0" />
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="{x:Type ListBoxItem}">
+                        <Border x:Name="Bd"
+                                SnapsToDevicePixels="true"
+                                Background="{TemplateBinding Background}"
+                                BorderBrush="{TemplateBinding BorderBrush}"
+                                BorderThickness="{TemplateBinding BorderThickness}"
+                                Padding="{TemplateBinding Padding}"
+                                Cursor="{TemplateBinding Cursor}">
+                            <ContentPresenter HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}"
+                                              VerticalAlignment="{TemplateBinding VerticalContentAlignment}"
+                                              SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}" />
+                        </Border>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsMouseOver"
+                                     Value="True">
+                                <Setter Property="Background"
+                                        TargetName="Bd"
+                                        Value="{DynamicResource myIsOverItemColor}" />
+                            </Trigger>
+                            <Trigger Property="IsSelected"
+                                     Value="true">
+                                <Setter Property="Background"
+                                        TargetName="Bd"
+                                        Value="{DynamicResource myIsSelectedItemColor}" />
+                            </Trigger>
+                            <Trigger Property="IsEnabled"
+                                     Value="false">
+                                <Setter Property="Foreground"
+                                        Value="{DynamicResource {x:Static SystemColors.GrayTextBrushKey}}" />
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+            <Setter Property="BorderThickness"
+                    Value="0,0,0,0.5" />
+            <Setter Property="BorderBrush"
+                    Value="#7F000000" />
+            <Setter Property="MinHeight"
+                    Value="22" />
+            <Setter Property="Cursor"
+                    Value="Hand" />
+        </Style>
+        <LinearGradientBrush EndPoint="0,1"
+                             StartPoint="0,0"
+                             x:Key="BackgroundBrush">
+            <GradientStop Color="#FFFFFFFF"
+                          Offset="0" />
+            <GradientStop Color="#FFD9DBDE"
+                          Offset="0.988" />
+            <GradientStop Color="#FFD6DCDC"
+                          Offset="0.493" />
+        </LinearGradientBrush>
+        <Style x:Key="myComboBoxBaseStyle"
+               TargetType="{x:Type local:ComboBoxBase}">
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="{x:Type local:ComboBoxBase}">
+                        <Border BorderBrush="{TemplateBinding BorderBrush}"
+                                BorderThickness="{TemplateBinding BorderThickness}"
+                                Background="{TemplateBinding Background}"
+                                Padding="{TemplateBinding Padding}"
+                                SnapsToDevicePixels="True"
+                                CornerRadius="0,4,4,0">
+                            <ContentPresenter ContentTemplate="{TemplateBinding ContentTemplate}"
+                                              Content="{TemplateBinding Content}"
+                                              ContentStringFormat="{TemplateBinding ContentStringFormat}"
+                                              HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}"
+                                              SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}"
+                                              VerticalAlignment="{TemplateBinding VerticalContentAlignment}" />
+                        </Border>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+        <Color x:Key="ToggleButtonBackground">#FFC3D3FD</Color>
+    </local:ComboBoxBase.Resources>
+    <Grid x:Name="grdMain"
+          SnapsToDevicePixels="True">
+        <Grid.RowDefinitions>
+            <RowDefinition />
+        </Grid.RowDefinitions>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition />
+            <ColumnDefinition Width="Auto" />
+        </Grid.ColumnDefinitions>
+        <textBoxControl:TextBox x:Name="txtKeyWord"
+                                TextAlignment="Right"
+                                BorderThickness="1,1,1.5,1"
+                                Focusable="{Binding Focusable, ElementName=comboBoxDiscount}"
+                                Tag="{Binding NameChildrenControl, ElementName=comboBoxDiscount}"
+                                Foreground="{Binding Foreground,UpdateSourceTrigger=PropertyChanged, ElementName=comboBoxDiscount}"
+                                BorderBrush="{Binding BorderBrush,UpdateSourceTrigger=PropertyChanged, ElementName=comboBoxDiscount}"
+                                VerticalContentAlignment="Center"
+                                HorizontalContentAlignment="{Binding ContentAlignment, ElementName=comboBoxDiscount}" />
+        <Button Grid.Column="1"
+                x:Name="btnShowPopup"
+                Focusable="False" Style="{DynamicResource myEditButtonComboBoxStyle}" Background="{Binding ButtonBackground, ElementName=comboBoxDiscount}" BorderThickness="0,1,1,1" BorderBrush="{Binding BorderBrush, ElementName=comboBoxDiscount}"/>
+        <Popup x:Name="popupContent"
+               AllowsTransparency="true"
+               PopupAnimation="{DynamicResource {x:Static SystemParameters.ComboBoxPopupAnimationKey}}"
+               ScrollViewer.VerticalScrollBarVisibility="Disabled"
+               HorizontalAlignment="Left"
+               VerticalOffset="-1">
+            <Microsoft_Windows_Themes:SystemDropShadowChrome x:Name="Shdw"
+                                                             Width="{Binding ActualWidth, ElementName=comboBoxDiscount}"
+                                                             SnapsToDevicePixels="False"
+                                                             ScrollViewer.VerticalScrollBarVisibility="Disabled"
+                                                             MinHeight="35">
+                <Border x:Name="dbShowContent"
+                        Background="White">
+                    <ListBox x:Name="lstContent"
+                             SelectionMode="Single"
+                             BorderBrush="{Binding BorderBrush, ElementName=comboBoxDiscount}"
+                             HorizontalContentAlignment="Right"
+                             VerticalContentAlignment="Stretch"
+                             Style="{DynamicResource myListBoxStyle}"
+                             ItemContainerStyle="{DynamicResource myListBoxItemStyle}"
+                             Background="{Binding Background, ElementName=comboBoxDiscount}"
+                             FontSize="12"
+                             BorderThickness="1"
+                             Foreground="{Binding Foreground, ElementName=comboBoxDiscount}" />
+                </Border>
+            </Microsoft_Windows_Themes:SystemDropShadowChrome>
+        </Popup>
+        <Rectangle x:Name="recIsTextBlock"
+                   Fill="Transparent"
+                   Stroke="Transparent"
+                   Visibility="Collapsed" />
+
+    </Grid>
+</local:ComboBoxBase>
