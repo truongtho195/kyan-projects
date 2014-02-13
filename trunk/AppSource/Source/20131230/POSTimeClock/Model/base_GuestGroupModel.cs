@@ -155,6 +155,26 @@ namespace CPC.TimeClock.Model
             }
         }
 
+        protected string _mark;
+        /// <summary>
+        /// Property Model
+        /// <param>Gets or sets the Mark</param>
+        /// </summary>
+        public string Mark
+        {
+            get { return this._mark; }
+            set
+            {
+                if (this._mark != value)
+                {
+                    this.IsDirty = true;
+                    this._mark = value;
+                    OnPropertyChanged(() => Mark);
+                    PropertyChangedCompleted(() => Mark);
+                }
+            }
+        }
+
         #endregion
 
         #region Public Methods
@@ -183,6 +203,8 @@ namespace CPC.TimeClock.Model
                 this.base_GuestGroup.UserCreated = this.UserCreated.Trim();
             this.base_GuestGroup.DateCreated = this.DateCreated;
             this.base_GuestGroup.Resource = this.Resource;
+            if (this.Mark != null)
+                this.base_GuestGroup.Mark = this.Mark.Trim();
         }
 
         /// <summary>
@@ -196,6 +218,7 @@ namespace CPC.TimeClock.Model
             this._userCreated = this.base_GuestGroup.UserCreated;
             this._dateCreated = this.base_GuestGroup.DateCreated;
             this._resource = this.base_GuestGroup.Resource;
+            this._mark = this.base_GuestGroup.Mark;
         }
 
         /// <summary>
@@ -209,6 +232,7 @@ namespace CPC.TimeClock.Model
             this.UserCreated = this.base_GuestGroup.UserCreated;
             this.DateCreated = this.base_GuestGroup.DateCreated;
             this.Resource = this.base_GuestGroup.Resource;
+            this.Mark = this.base_GuestGroup.Mark;
         }
 
         #endregion

@@ -43,8 +43,6 @@
     <EntitySet Name="base_ProductStore" EntityType="POSModel.Store.base_ProductStore" store:Type="Tables" Schema="public" />
     <EntitySet Name="base_ProductUOM" EntityType="POSModel.Store.base_ProductUOM" store:Type="Tables" Schema="public" />
     <EntitySet Name="base_Promotion" EntityType="POSModel.Store.base_Promotion" store:Type="Tables" Schema="public" />
-    <EntitySet Name="base_PromotionAffect" EntityType="POSModel.Store.base_PromotionAffect" store:Type="Tables" Schema="public" />
-    <EntitySet Name="base_PromotionSchedule" EntityType="POSModel.Store.base_PromotionSchedule" store:Type="Tables" Schema="public" />
     <EntitySet Name="base_PurchaseOrder" EntityType="POSModel.Store.base_PurchaseOrder" store:Type="Tables" Schema="public" />
     <EntitySet Name="base_PurchaseOrderDetail" EntityType="POSModel.Store.base_PurchaseOrderDetail" store:Type="Tables" Schema="public" />
     <EntitySet Name="base_PurchaseOrderReceive" EntityType="POSModel.Store.base_PurchaseOrderReceive" store:Type="Tables" Schema="public" />
@@ -176,14 +174,6 @@
     <AssociationSet Name="FK_base_ProductUOM_UOMId_base_UOM_Id" Association="POSModel.Store.FK_base_ProductUOM_UOMId_base_UOM_Id">
       <End Role="base_UOM" EntitySet="base_UOM" />
       <End Role="base_ProductUOM" EntitySet="base_ProductUOM" />
-    </AssociationSet>
-    <AssociationSet Name="FK_base_PromotionAffect_PromotionId_base_Promotion_Id" Association="POSModel.Store.FK_base_PromotionAffect_PromotionId_base_Promotion_Id">
-      <End Role="base_Promotion" EntitySet="base_Promotion" />
-      <End Role="base_PromotionAffect" EntitySet="base_PromotionAffect" />
-    </AssociationSet>
-    <AssociationSet Name="FK_base_PromotionSchedule_PromotionId_base_Promotion_Id" Association="POSModel.Store.FK_base_PromotionSchedule_PromotionId_base_Promotion_Id">
-      <End Role="base_Promotion" EntitySet="base_Promotion" />
-      <End Role="base_PromotionSchedule" EntitySet="base_PromotionSchedule" />
     </AssociationSet>
     <AssociationSet Name="FK_base_PurchaseOrderDetail_PurchaseOrderId_base_PurchaseOrder_" Association="POSModel.Store.FK_base_PurchaseOrderDetail_PurchaseOrderId_base_PurchaseOrder_">
       <End Role="base_PurchaseOrder" EntitySet="base_PurchaseOrder" />
@@ -608,6 +598,7 @@ warning 6005: The data type '_bool' is not supported; the column 'jscmonths' in 
     <Property Name="WeekHour" Type="int4" Nullable="false" />
     <Property Name="RefundVoucherThresHold" Type="numeric" Nullable="false" Precision="12" Scale="2" />
     <Property Name="SysDate" Type="date" Nullable="false" />
+    <Property Name="IsAutoSearch" Type="bool" Nullable="false" />
   </EntityType>
   <EntityType Name="base_CostAdjustment">
     <Key>
@@ -738,7 +729,7 @@ warning 6005: The data type '_bool' is not supported; the column 'jscmonths' in 
     <Property Name="IsActived" Type="bool" Nullable="false" />
     <Property Name="GuestNo" Type="varchar" MaxLength="16" />
     <Property Name="PositionId" Type="int2" />
-    <Property Name="Department" Type="varchar" MaxLength="30" />
+    <Property Name="Department" Type="int4" Nullable="false" />
     <Property Name="Mark" Type="bpchar" />
     <Property Name="AccountNumber" Type="varchar" MaxLength="30" />
     <Property Name="ParentId" Type="int8" />
@@ -770,7 +761,7 @@ warning 6005: The data type '_bool' is not supported; the column 'jscmonths' in 
     <Property Name="Shift" Type="varchar" MaxLength="3" />
     <Property Name="IdCard" Type="varchar" MaxLength="30" />
     <Property Name="IdCardImg" Type="bytea" />
-    <Property Name="Remark" Type="varchar" MaxLength="1000" />
+    <Property Name="Remark" Type="varchar" MaxLength="3000" />
     <Property Name="GroupResource" Type="varchar" MaxLength="36" />
     <Property Name="IM" Type="varchar" MaxLength="50" />
     <Property Name="Custom1" Type="varchar" MaxLength="50" />
@@ -787,6 +778,7 @@ warning 6005: The data type '_bool' is not supported; the column 'jscmonths' in 
     <Property Name="ManagerResource" Type="varchar" MaxLength="36" />
     <Property Name="IsVIP" Type="bool" Nullable="false" />
     <Property Name="Picture" Type="bytea" />
+    <Property Name="IsCOD" Type="bool" Nullable="false" />
   </EntityType>
   <EntityType Name="base_GuestAdditional">
     <Key>
@@ -826,6 +818,7 @@ warning 6005: The data type '_bool' is not supported; the column 'jscmonths' in 
     <Property Name="UserUpdated" Type="varchar" MaxLength="30" />
     <Property Name="IsDefault" Type="bool" Nullable="false" />
     <Property Name="GuestResource" Type="varchar" MaxLength="36" />
+    <Property Name="Resource" Type="uuid" Nullable="false" />
   </EntityType>
   <EntityType Name="base_GuestFingerPrint">
     <Key>
@@ -848,6 +841,7 @@ warning 6005: The data type '_bool' is not supported; the column 'jscmonths' in 
     <Property Name="UserCreated" Type="varchar" MaxLength="30" />
     <Property Name="DateCreated" Type="timestamp" />
     <Property Name="Resource" Type="uuid" Nullable="false" />
+    <Property Name="Mark" Type="varchar" MaxLength="1" />
   </EntityType>
   <EntityType Name="base_GuestPaymentCard">
     <Key>
@@ -907,6 +901,7 @@ warning 6005: The data type '_bool' is not supported; the column 'jscmonths' in 
     <Property Name="SIdentification" Type="varchar" MaxLength="20" />
     <Property Name="ETitle" Type="int2" Nullable="false" />
     <Property Name="GuestResource" Type="varchar" MaxLength="36" />
+    <Property Name="Resource" Type="uuid" Nullable="false" />
   </EntityType>
   <EntityType Name="base_GuestReward">
     <Key>
@@ -1237,7 +1232,6 @@ warning 6005: The data type '_bool' is not supported; the column 'jscmonths' in 
     <Property Name="GetingValue" Type="numeric" Nullable="false" Precision="12" Scale="2" />
     <Property Name="IsApplyToAboveQuantities" Type="bool" Nullable="false" />
     <Property Name="Status" Type="int2" Nullable="false" />
-    <Property Name="AffectDiscount" Type="int2" Nullable="false" />
     <Property Name="DateCreated" Type="timestamp" Nullable="false" />
     <Property Name="UserCreated" Type="varchar" Nullable="false" MaxLength="30" />
     <Property Name="DateUpdated" Type="timestamp" Nullable="false" />
@@ -1250,39 +1244,13 @@ warning 6005: The data type '_bool' is not supported; the column 'jscmonths' in 
     <Property Name="Sold" Type="int4" Nullable="false" />
     <Property Name="TotalPrice" Type="numeric" Nullable="false" Precision="12" Scale="2" />
     <Property Name="CategoryId" Type="int4" />
-    <Property Name="VendorId" Type="int8" />
     <Property Name="CouponBarCode" Type="varchar" MaxLength="15" />
     <Property Name="BarCodeNumber" Type="varchar" MaxLength="15" />
     <Property Name="BarCodeImage" Type="bytea" />
     <Property Name="IsConflict" Type="bool" Nullable="false" />
     <Property Name="Shift" Type="varchar" MaxLength="3" />
-  </EntityType>
-  <EntityType Name="base_PromotionAffect">
-    <Key>
-      <PropertyRef Name="Id" />
-    </Key>
-    <Property Name="Id" Type="int4" Nullable="false" StoreGeneratedPattern="Identity" />
-    <Property Name="PromotionId" Type="int4" Nullable="false" />
-    <Property Name="ItemId" Type="int8" Nullable="false" />
-    <Property Name="Price1" Type="numeric" Nullable="false" Precision="12" Scale="2" />
-    <Property Name="Price2" Type="numeric" Nullable="false" Precision="12" Scale="2" />
-    <Property Name="Price3" Type="numeric" Nullable="false" Precision="12" Scale="2" />
-    <Property Name="Price4" Type="numeric" Nullable="false" Precision="12" Scale="2" />
-    <Property Name="Price5" Type="numeric" Nullable="false" Precision="12" Scale="2" />
-    <Property Name="Discount1" Type="numeric" Nullable="false" Precision="12" Scale="2" />
-    <Property Name="Discount2" Type="numeric" Nullable="false" Precision="12" Scale="2" />
-    <Property Name="Discount3" Type="numeric" Nullable="false" Precision="12" Scale="2" />
-    <Property Name="Discount4" Type="numeric" Nullable="false" Precision="12" Scale="2" />
-    <Property Name="Discount5" Type="numeric" Nullable="false" Precision="12" Scale="2" />
-  </EntityType>
-  <EntityType Name="base_PromotionSchedule">
-    <Key>
-      <PropertyRef Name="Id" />
-    </Key>
-    <Property Name="Id" Type="int4" Nullable="false" StoreGeneratedPattern="Identity" />
-    <Property Name="PromotionId" Type="int4" Nullable="false" />
-    <Property Name="EndDate" Type="timestamp" />
     <Property Name="StartDate" Type="timestamp" />
+    <Property Name="EndDate" Type="timestamp" />
   </EntityType>
   <EntityType Name="base_PurchaseOrder">
     <Key>
@@ -1333,6 +1301,9 @@ warning 6005: The data type '_bool' is not supported; the column 'jscmonths' in 
     <Property Name="POCardImg" Type="bytea" />
     <Property Name="IsReturned" Type="bool" Nullable="false" />
     <Property Name="TaxAmount" Type="numeric" Nullable="false" Precision="12" Scale="2" />
+    <Property Name="IsCOD" Type="bool" Nullable="false" />
+    <Property Name="TaxPercent" Type="numeric" Nullable="false" Precision="4" Scale="2" />
+    <Property Name="BillAddressId" Type="int8" Nullable="false" />
   </EntityType>
   <EntityType Name="base_PurchaseOrderDetail">
     <Key>
@@ -1713,6 +1684,7 @@ warning 6005: The data type '_bool' is not supported; the column 'jscmonths' in 
     <Property Name="LOtherFee" Type="numeric" Nullable="false" Precision="12" Scale="2" />
     <Property Name="LayawayFee" Type="numeric" Nullable="false" Precision="12" Scale="2" />
     <Property Name="LTotalFee" Type="numeric" Nullable="false" Precision="12" Scale="2" />
+    <Property Name="IsCOD" Type="bool" Nullable="false" />
   </EntityType>
   <EntityType Name="base_SaleOrderDetail">
     <Key>
@@ -2094,11 +2066,11 @@ warning 6005: The data type '_bool' is not supported; the column 'jscmonths' in 
     <Property Name="HourPerDay" Type="float4" Nullable="false" />
     <Property Name="PaidFlag" Type="bool" Nullable="false" />
     <Property Name="ActiveFlag" Type="bool" Nullable="false" />
-    <Property Name="CreatedDate" Type="timestamp" Nullable="false" />
-    <Property Name="CreatedById" Type="int4" Nullable="false" />
-    <Property Name="ModifiedDate" Type="timestamp" />
-    <Property Name="ModifiedById" Type="int4" />
     <Property Name="OvertimeOptions" Type="int4" Nullable="false" />
+    <Property Name="UserCreated" Type="varchar" MaxLength="30" />
+    <Property Name="DateCreated" Type="timestamp" />
+    <Property Name="UserUpdated" Type="varchar" MaxLength="30" />
+    <Property Name="DateUpdated" Type="timestamp" />
   </EntityType>
   <EntityType Name="tims_WorkSchedule">
     <Key>
@@ -2431,34 +2403,6 @@ warning 6005: The data type '_bool' is not supported; the column 'jscmonths' in 
       </Principal>
       <Dependent Role="base_ProductUOM">
         <PropertyRef Name="UOMId" />
-      </Dependent>
-    </ReferentialConstraint>
-  </Association>
-  <Association Name="FK_base_PromotionAffect_PromotionId_base_Promotion_Id">
-    <End Role="base_Promotion" Type="POSModel.Store.base_Promotion" Multiplicity="1">
-      <OnDelete Action="Cascade" />
-    </End>
-    <End Role="base_PromotionAffect" Type="POSModel.Store.base_PromotionAffect" Multiplicity="*" />
-    <ReferentialConstraint>
-      <Principal Role="base_Promotion">
-        <PropertyRef Name="Id" />
-      </Principal>
-      <Dependent Role="base_PromotionAffect">
-        <PropertyRef Name="PromotionId" />
-      </Dependent>
-    </ReferentialConstraint>
-  </Association>
-  <Association Name="FK_base_PromotionSchedule_PromotionId_base_Promotion_Id">
-    <End Role="base_Promotion" Type="POSModel.Store.base_Promotion" Multiplicity="1">
-      <OnDelete Action="Cascade" />
-    </End>
-    <End Role="base_PromotionSchedule" Type="POSModel.Store.base_PromotionSchedule" Multiplicity="*" />
-    <ReferentialConstraint>
-      <Principal Role="base_Promotion">
-        <PropertyRef Name="Id" />
-      </Principal>
-      <Dependent Role="base_PromotionSchedule">
-        <PropertyRef Name="PromotionId" />
       </Dependent>
     </ReferentialConstraint>
   </Association>
@@ -2865,7 +2809,7 @@ warning 6005: The data type '_bool' is not supported; the column 'jscmonths' in 
   <Function Name="sp_check_report_code" ReturnType="bool" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="true" ParameterTypeSemantics="AllowImplicitConversion" Schema="public">
     <Parameter Name="code" Type="bpchar" Mode="In" />
   </Function>
-  <Function Name="sp_get_reminder" ReturnType="bool" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="true" ParameterTypeSemantics="AllowImplicitConversion" Schema="public" />
+  <Function Name="sp_get_reminder" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="public" />
   <!--Errors Found During Generation:
 warning 6013: The table/view 'pos2013.public.v_configuration' does not have a primary key defined and no valid primary key could be inferred. This table/view has been excluded. To use the entity, you will need to review your schema, add the correct keys, and uncomment it.
 
@@ -2882,6 +2826,12 @@ warning 6013: The table/view 'pos2013.public.v_configuration' does not have a pr
   <Property Name="DecimalPlaces" Type="int2" />
   <Property Name="FomartCurrency" Type="varchar" MaxLength="5" />
   <Property Name="ReceiptMessage" Type="varchar" MaxLength="300" />
+</EntityType>
+Errors Found During Generation:
+warning 6013: The table/view 'pos2013.public.v_get_all_product_barcode' does not have a primary key defined and no valid primary key could be inferred. This table/view has been excluded. To use the entity, you will need to review your schema, add the correct keys, and uncomment it.
+
+<EntityType Name="v_get_all_product_barcode">
+  <Property Name="BarCodeImg" Type="bytea" />
 </EntityType>
 Errors Found During Generation:
 warning 6013: The table/view 'pos2013.public.v_get_all_store_name' does not have a primary key defined and no valid primary key could be inferred. This table/view has been excluded. To use the entity, you will need to review your schema, add the correct keys, and uncomment it.
@@ -2909,6 +2859,15 @@ warning 6013: The table/view 'pos2013.public.v_rpt_get_all_permission' does not 
   <Property Name="IsView" Type="bool" />
   <Property Name="IsPrint" Type="bool" />
   <Property Name="Right" Type="bool" />
+</EntityType>
+Errors Found During Generation:
+warning 6013: The table/view 'pos2013.public.v_rpt_get_all_product' does not have a primary key defined and no valid primary key could be inferred. This table/view has been excluded. To use the entity, you will need to review your schema, add the correct keys, and uncomment it.
+
+<EntityType Name="v_rpt_get_all_product">
+  <Property Name="Id" Type="int8" />
+  <Property Name="ProductName" Type="varchar" MaxLength="300" />
+  <Property Name="Resource" Type="uuid" />
+  <Property Name="ProductCategoryId" Type="int4" />
 </EntityType>
 Errors Found During Generation:
 warning 6013: The table/view 'pos2013.public.v_rpt_inv_cost_adjustment' does not have a primary key defined and no valid primary key could be inferred. This table/view has been excluded. To use the entity, you will need to review your schema, add the correct keys, and uncomment it.
@@ -4586,8 +4545,6 @@ warning 6005: The function 'sp_update_user_permission' has a return data type 't
     <EntitySet Name="base_ProductStore" EntityType="POSModel.base_ProductStore" />
     <EntitySet Name="base_ProductUOM" EntityType="POSModel.base_ProductUOM" />
     <EntitySet Name="base_Promotion" EntityType="POSModel.base_Promotion" />
-    <EntitySet Name="base_PromotionAffect" EntityType="POSModel.base_PromotionAffect" />
-    <EntitySet Name="base_PromotionSchedule" EntityType="POSModel.base_PromotionSchedule" />
     <EntitySet Name="base_PurchaseOrder" EntityType="POSModel.base_PurchaseOrder" />
     <EntitySet Name="base_PurchaseOrderDetail" EntityType="POSModel.base_PurchaseOrderDetail" />
     <EntitySet Name="base_PurchaseOrderReceive" EntityType="POSModel.base_PurchaseOrderReceive" />
@@ -4770,14 +4727,6 @@ warning 6005: The function 'sp_update_user_permission' has a return data type 't
     <AssociationSet Name="FK_base_ProductUOM_UOMId_base_UOM_Id" Association="POSModel.FK_base_ProductUOM_UOMId_base_UOM_Id">
       <End Role="base_UOM" EntitySet="base_UOM" />
       <End Role="base_ProductUOM" EntitySet="base_ProductUOM" />
-    </AssociationSet>
-    <AssociationSet Name="FK_base_PromotionAffect_PromotionId_base_Promotion_Id" Association="POSModel.FK_base_PromotionAffect_PromotionId_base_Promotion_Id">
-      <End Role="base_Promotion" EntitySet="base_Promotion" />
-      <End Role="base_PromotionAffect" EntitySet="base_PromotionAffect" />
-    </AssociationSet>
-    <AssociationSet Name="FK_base_PromotionSchedule_PromotionId_base_Promotion_Id" Association="POSModel.FK_base_PromotionSchedule_PromotionId_base_Promotion_Id">
-      <End Role="base_Promotion" EntitySet="base_Promotion" />
-      <End Role="base_PromotionSchedule" EntitySet="base_PromotionSchedule" />
     </AssociationSet>
     <AssociationSet Name="FK_base_PurchaseOrderDetail_PurchaseOrderId_base_PurchaseOrder_" Association="POSModel.FK_base_PurchaseOrderDetail_PurchaseOrderId_base_PurchaseOrder_">
       <End Role="base_PurchaseOrder" EntitySet="base_PurchaseOrder" />
@@ -5147,6 +5096,7 @@ warning 6005: The function 'sp_update_user_permission' has a return data type 't
     <Property Name="WeekHour" Type="Int32" Nullable="false" />
     <Property Name="RefundVoucherThresHold" Type="Decimal" Nullable="false" Precision="12" Scale="2" />
     <Property Name="SysDate" Type="DateTime" Nullable="false" Precision="0" />
+    <Property Name="IsAutoSearch" Type="Boolean" Nullable="false" />
   </EntityType>
   <EntityType Name="base_CostAdjustment">
     <Key>
@@ -5282,7 +5232,7 @@ warning 6005: The function 'sp_update_user_permission' has a return data type 't
     <Property Name="IsActived" Type="Boolean" Nullable="false" />
     <Property Name="GuestNo" Type="String" MaxLength="16" Unicode="true" FixedLength="false" />
     <Property Name="PositionId" Type="Int16" />
-    <Property Name="Department" Type="String" MaxLength="30" Unicode="true" FixedLength="false" />
+    <Property Name="Department" Type="Int32" Nullable="false" />
     <Property Name="Mark" Type="String" MaxLength="1" Unicode="true" FixedLength="true" />
     <Property Name="AccountNumber" Type="String" MaxLength="30" Unicode="true" FixedLength="false" />
     <Property Name="ParentId" Type="Int64" />
@@ -5314,7 +5264,7 @@ warning 6005: The function 'sp_update_user_permission' has a return data type 't
     <Property Name="Shift" Type="String" MaxLength="3" Unicode="true" FixedLength="false" />
     <Property Name="IdCard" Type="String" MaxLength="30" Unicode="true" FixedLength="false" />
     <Property Name="IdCardImg" Type="Binary" MaxLength="2147483647" FixedLength="false" />
-    <Property Name="Remark" Type="String" MaxLength="1000" Unicode="true" FixedLength="false" />
+    <Property Name="Remark" Type="String" MaxLength="3000" Unicode="true" FixedLength="false" />
     <Property Name="GroupResource" Type="String" MaxLength="36" Unicode="true" FixedLength="false" />
     <Property Name="IM" Type="String" MaxLength="50" Unicode="true" FixedLength="false" />
     <Property Name="Custom1" Type="String" MaxLength="50" Unicode="true" FixedLength="false" />
@@ -5331,6 +5281,7 @@ warning 6005: The function 'sp_update_user_permission' has a return data type 't
     <Property Name="ManagerResource" Type="String" MaxLength="36" Unicode="true" FixedLength="false" />
     <Property Name="IsVIP" Type="Boolean" Nullable="false" />
     <Property Name="Picture" Type="Binary" MaxLength="2147483647" FixedLength="false" />
+    <Property Name="IsCOD" Type="Boolean" Nullable="false" />
     <NavigationProperty Name="base_Guest1" Relationship="POSModel.FK_base_Guest_ParentId_base_Guest_Id" FromRole="base_Guest" ToRole="base_Guest1" />
     <NavigationProperty Name="base_Guest2" Relationship="POSModel.FK_base_Guest_ParentId_base_Guest_Id" FromRole="base_Guest1" ToRole="base_Guest" />
     <NavigationProperty Name="base_GuestAdditional" Relationship="POSModel.FK_base_GuestAdditional_base_Guest_Id" FromRole="base_Guest" ToRole="base_GuestAdditional" />
@@ -5384,6 +5335,7 @@ warning 6005: The function 'sp_update_user_permission' has a return data type 't
     <Property Name="UserUpdated" Type="String" MaxLength="30" Unicode="true" FixedLength="false" />
     <Property Name="IsDefault" Type="Boolean" Nullable="false" />
     <Property Name="GuestResource" Type="String" MaxLength="36" Unicode="true" FixedLength="false" />
+    <Property Name="Resource" Type="Guid" Nullable="false" />
     <NavigationProperty Name="base_Guest" Relationship="POSModel.FK_base_GuestAddress_base_Guest_Id" FromRole="base_GuestAddress" ToRole="base_Guest" />
   </EntityType>
   <EntityType Name="base_GuestFingerPrint">
@@ -5408,6 +5360,7 @@ warning 6005: The function 'sp_update_user_permission' has a return data type 't
     <Property Name="UserCreated" Type="String" MaxLength="30" Unicode="true" FixedLength="false" />
     <Property Name="DateCreated" Type="DateTime" Precision="6" />
     <Property Name="Resource" Type="Guid" Nullable="false" />
+    <Property Name="Mark" Type="String" MaxLength="1" Unicode="true" FixedLength="false" />
   </EntityType>
   <EntityType Name="base_GuestPaymentCard">
     <Key>
@@ -5468,6 +5421,7 @@ warning 6005: The function 'sp_update_user_permission' has a return data type 't
     <Property Name="SIdentification" Type="String" MaxLength="20" Unicode="true" FixedLength="false" />
     <Property Name="ETitle" Type="Int16" Nullable="false" />
     <Property Name="GuestResource" Type="String" MaxLength="36" Unicode="true" FixedLength="false" />
+    <Property Name="Resource" Type="Guid" Nullable="false" />
     <NavigationProperty Name="base_Guest" Relationship="POSModel.FK_base_GuestProfile_GuestId_base_Guest_Id" FromRole="base_GuestProfile" ToRole="base_Guest" />
   </EntityType>
   <EntityType Name="base_GuestReward">
@@ -5822,7 +5776,6 @@ warning 6005: The function 'sp_update_user_permission' has a return data type 't
     <Property Name="GetingValue" Type="Decimal" Nullable="false" Precision="12" Scale="2" />
     <Property Name="IsApplyToAboveQuantities" Type="Boolean" Nullable="false" />
     <Property Name="Status" Type="Int16" Nullable="false" />
-    <Property Name="AffectDiscount" Type="Int16" Nullable="false" />
     <Property Name="DateCreated" Type="DateTime" Nullable="false" Precision="6" />
     <Property Name="UserCreated" Type="String" Nullable="false" MaxLength="30" Unicode="true" FixedLength="false" />
     <Property Name="DateUpdated" Type="DateTime" Nullable="false" Precision="6" />
@@ -5835,43 +5788,13 @@ warning 6005: The function 'sp_update_user_permission' has a return data type 't
     <Property Name="Sold" Type="Int32" Nullable="false" />
     <Property Name="TotalPrice" Type="Decimal" Nullable="false" Precision="12" Scale="2" />
     <Property Name="CategoryId" Type="Int32" />
-    <Property Name="VendorId" Type="Int64" />
     <Property Name="CouponBarCode" Type="String" MaxLength="15" Unicode="true" FixedLength="false" />
     <Property Name="BarCodeNumber" Type="String" MaxLength="15" Unicode="true" FixedLength="false" />
     <Property Name="BarCodeImage" Type="Binary" MaxLength="2147483647" FixedLength="false" />
     <Property Name="IsConflict" Type="Boolean" Nullable="false" />
     <Property Name="Shift" Type="String" MaxLength="3" Unicode="true" FixedLength="false" />
-    <NavigationProperty Name="base_PromotionAffect" Relationship="POSModel.FK_base_PromotionAffect_PromotionId_base_Promotion_Id" FromRole="base_Promotion" ToRole="base_PromotionAffect" />
-    <NavigationProperty Name="base_PromotionSchedule" Relationship="POSModel.FK_base_PromotionSchedule_PromotionId_base_Promotion_Id" FromRole="base_Promotion" ToRole="base_PromotionSchedule" />
-  </EntityType>
-  <EntityType Name="base_PromotionAffect">
-    <Key>
-      <PropertyRef Name="Id" />
-    </Key>
-    <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-    <Property Name="PromotionId" Type="Int32" Nullable="false" />
-    <Property Name="ItemId" Type="Int64" Nullable="false" />
-    <Property Name="Price1" Type="Decimal" Nullable="false" Precision="12" Scale="2" />
-    <Property Name="Price2" Type="Decimal" Nullable="false" Precision="12" Scale="2" />
-    <Property Name="Price3" Type="Decimal" Nullable="false" Precision="12" Scale="2" />
-    <Property Name="Price4" Type="Decimal" Nullable="false" Precision="12" Scale="2" />
-    <Property Name="Price5" Type="Decimal" Nullable="false" Precision="12" Scale="2" />
-    <Property Name="Discount1" Type="Decimal" Nullable="false" Precision="12" Scale="2" />
-    <Property Name="Discount2" Type="Decimal" Nullable="false" Precision="12" Scale="2" />
-    <Property Name="Discount3" Type="Decimal" Nullable="false" Precision="12" Scale="2" />
-    <Property Name="Discount4" Type="Decimal" Nullable="false" Precision="12" Scale="2" />
-    <Property Name="Discount5" Type="Decimal" Nullable="false" Precision="12" Scale="2" />
-    <NavigationProperty Name="base_Promotion" Relationship="POSModel.FK_base_PromotionAffect_PromotionId_base_Promotion_Id" FromRole="base_PromotionAffect" ToRole="base_Promotion" />
-  </EntityType>
-  <EntityType Name="base_PromotionSchedule">
-    <Key>
-      <PropertyRef Name="Id" />
-    </Key>
-    <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-    <Property Name="PromotionId" Type="Int32" Nullable="false" />
-    <Property Name="EndDate" Type="DateTime" Precision="6" />
     <Property Name="StartDate" Type="DateTime" Precision="6" />
-    <NavigationProperty Name="base_Promotion" Relationship="POSModel.FK_base_PromotionSchedule_PromotionId_base_Promotion_Id" FromRole="base_PromotionSchedule" ToRole="base_Promotion" />
+    <Property Name="EndDate" Type="DateTime" Precision="6" />
   </EntityType>
   <EntityType Name="base_PurchaseOrder">
     <Key>
@@ -5922,6 +5845,9 @@ warning 6005: The function 'sp_update_user_permission' has a return data type 't
     <Property Name="POCardImg" Type="Binary" MaxLength="2147483647" FixedLength="false" />
     <Property Name="IsReturned" Type="Boolean" Nullable="false" />
     <Property Name="TaxAmount" Type="Decimal" Nullable="false" Precision="12" Scale="2" />
+    <Property Name="IsCOD" Type="Boolean" Nullable="false" />
+    <Property Name="TaxPercent" Type="Decimal" Nullable="false" Precision="4" Scale="2" />
+    <Property Name="BillAddressId" Type="Int64" Nullable="false" />
     <NavigationProperty Name="base_PurchaseOrderDetail" Relationship="POSModel.FK_base_PurchaseOrderDetail_PurchaseOrderId_base_PurchaseOrder_" FromRole="base_PurchaseOrder" ToRole="base_PurchaseOrderDetail" />
   </EntityType>
   <EntityType Name="base_PurchaseOrderDetail">
@@ -6312,6 +6238,7 @@ warning 6005: The function 'sp_update_user_permission' has a return data type 't
     <Property Name="LOtherFee" Type="Decimal" Nullable="false" Precision="12" Scale="2" />
     <Property Name="LayawayFee" Type="Decimal" Nullable="false" Precision="12" Scale="2" />
     <Property Name="LTotalFee" Type="Decimal" Nullable="false" Precision="12" Scale="2" />
+    <Property Name="IsCOD" Type="Boolean" Nullable="false" />
     <NavigationProperty Name="base_SaleOrderDetail" Relationship="POSModel.FK_base_SaleOrderDetail_SaleOrderId_base_SaleOrder_Id" FromRole="base_SaleOrder" ToRole="base_SaleOrderDetail" />
     <NavigationProperty Name="base_SaleOrderShip" Relationship="POSModel.FK_base_SaleOrderShip_SaleOrderId_base_SaleOrder_Id" FromRole="base_SaleOrder" ToRole="base_SaleOrderShip" />
   </EntityType>
@@ -6708,11 +6635,11 @@ warning 6005: The function 'sp_update_user_permission' has a return data type 't
     <Property Name="HourPerDay" Type="Single" Nullable="false" />
     <Property Name="PaidFlag" Type="Boolean" Nullable="false" />
     <Property Name="ActiveFlag" Type="Boolean" Nullable="false" />
-    <Property Name="CreatedDate" Type="DateTime" Nullable="false" Precision="6" />
-    <Property Name="CreatedById" Type="Int32" Nullable="false" />
-    <Property Name="ModifiedDate" Type="DateTime" Precision="6" />
-    <Property Name="ModifiedById" Type="Int32" />
     <Property Name="OvertimeOptions" Type="Int32" Nullable="false" />
+    <Property Name="UserCreated" Type="String" MaxLength="30" Unicode="true" FixedLength="false" />
+    <Property Name="DateCreated" Type="DateTime" Precision="6" />
+    <Property Name="UserUpdated" Type="String" MaxLength="30" Unicode="true" FixedLength="false" />
+    <Property Name="DateUpdated" Type="DateTime" Precision="6" />
     <NavigationProperty Name="base_Guest" Relationship="POSModel.FK_tims_WorkPermission_EmployeeId_base_Guest_Id" FromRole="tims_WorkPermission" ToRole="base_Guest" />
     <NavigationProperty Name="tims_TimeLog" Relationship="POSModel.tims_TimeLogPermission" FromRole="tims_WorkPermission" ToRole="tims_TimeLog" />
   </EntityType>
@@ -7226,34 +7153,6 @@ warning 6005: The function 'sp_update_user_permission' has a return data type 't
       </Dependent>
     </ReferentialConstraint>
   </Association>
-  <Association Name="FK_base_PromotionAffect_PromotionId_base_Promotion_Id">
-    <End Role="base_Promotion" Type="POSModel.base_Promotion" Multiplicity="1">
-      <OnDelete Action="Cascade" />
-    </End>
-    <End Role="base_PromotionAffect" Type="POSModel.base_PromotionAffect" Multiplicity="*" />
-    <ReferentialConstraint>
-      <Principal Role="base_Promotion">
-        <PropertyRef Name="Id" />
-      </Principal>
-      <Dependent Role="base_PromotionAffect">
-        <PropertyRef Name="PromotionId" />
-      </Dependent>
-    </ReferentialConstraint>
-  </Association>
-  <Association Name="FK_base_PromotionSchedule_PromotionId_base_Promotion_Id">
-    <End Role="base_Promotion" Type="POSModel.base_Promotion" Multiplicity="1">
-      <OnDelete Action="Cascade" />
-    </End>
-    <End Role="base_PromotionSchedule" Type="POSModel.base_PromotionSchedule" Multiplicity="*" />
-    <ReferentialConstraint>
-      <Principal Role="base_Promotion">
-        <PropertyRef Name="Id" />
-      </Principal>
-      <Dependent Role="base_PromotionSchedule">
-        <PropertyRef Name="PromotionId" />
-      </Dependent>
-    </ReferentialConstraint>
-  </Association>
   <Association Name="FK_base_PurchaseOrderDetail_PurchaseOrderId_base_PurchaseOrder_">
     <End Role="base_PurchaseOrder" Type="POSModel.base_PurchaseOrder" Multiplicity="1">
       <OnDelete Action="Cascade" />
@@ -7752,6 +7651,7 @@ warning 6005: The function 'sp_update_user_permission' has a return data type 't
           <ScalarProperty Name="WeekHour" ColumnName="WeekHour" />
           <ScalarProperty Name="RefundVoucherThresHold" ColumnName="RefundVoucherThresHold" />
           <ScalarProperty Name="SysDate" ColumnName="SysDate" />
+          <ScalarProperty Name="IsAutoSearch" ColumnName="IsAutoSearch" />
         </MappingFragment>
       </EntityTypeMapping>
     </EntitySetMapping>
@@ -7939,6 +7839,7 @@ warning 6005: The function 'sp_update_user_permission' has a return data type 't
           <ScalarProperty Name="ManagerResource" ColumnName="ManagerResource" />
           <ScalarProperty Name="IsVIP" ColumnName="IsVIP" />
           <ScalarProperty Name="Picture" ColumnName="Picture" />
+          <ScalarProperty Name="IsCOD" ColumnName="IsCOD" />
         </MappingFragment>
       </EntityTypeMapping>
     </EntitySetMapping>
@@ -7980,6 +7881,7 @@ warning 6005: The function 'sp_update_user_permission' has a return data type 't
           <ScalarProperty Name="UserUpdated" ColumnName="UserUpdated" />
           <ScalarProperty Name="IsDefault" ColumnName="IsDefault" />
           <ScalarProperty Name="GuestResource" ColumnName="GuestResource" />
+          <ScalarProperty Name="Resource" ColumnName="Resource" />
         </MappingFragment>
       </EntityTypeMapping>
     </EntitySetMapping>
@@ -8004,6 +7906,7 @@ warning 6005: The function 'sp_update_user_permission' has a return data type 't
           <ScalarProperty Name="UserCreated" ColumnName="UserCreated" />
           <ScalarProperty Name="DateCreated" ColumnName="DateCreated" />
           <ScalarProperty Name="Resource" ColumnName="Resource" />
+          <ScalarProperty Name="Mark" ColumnName="Mark" />
         </MappingFragment>
       </EntityTypeMapping>
     </EntitySetMapping>
@@ -8065,6 +7968,7 @@ warning 6005: The function 'sp_update_user_permission' has a return data type 't
           <ScalarProperty Name="SIdentification" ColumnName="SIdentification" />
           <ScalarProperty Name="ETitle" ColumnName="ETitle" />
           <ScalarProperty Name="GuestResource" ColumnName="GuestResource" />
+          <ScalarProperty Name="Resource" ColumnName="Resource" />
         </MappingFragment>
       </EntityTypeMapping>
     </EntitySetMapping>
@@ -8408,7 +8312,6 @@ warning 6005: The function 'sp_update_user_permission' has a return data type 't
           <ScalarProperty Name="GetingValue" ColumnName="GetingValue" />
           <ScalarProperty Name="IsApplyToAboveQuantities" ColumnName="IsApplyToAboveQuantities" />
           <ScalarProperty Name="Status" ColumnName="Status" />
-          <ScalarProperty Name="AffectDiscount" ColumnName="AffectDiscount" />
           <ScalarProperty Name="DateCreated" ColumnName="DateCreated" />
           <ScalarProperty Name="UserCreated" ColumnName="UserCreated" />
           <ScalarProperty Name="DateUpdated" ColumnName="DateUpdated" />
@@ -8421,41 +8324,13 @@ warning 6005: The function 'sp_update_user_permission' has a return data type 't
           <ScalarProperty Name="Sold" ColumnName="Sold" />
           <ScalarProperty Name="TotalPrice" ColumnName="TotalPrice" />
           <ScalarProperty Name="CategoryId" ColumnName="CategoryId" />
-          <ScalarProperty Name="VendorId" ColumnName="VendorId" />
           <ScalarProperty Name="CouponBarCode" ColumnName="CouponBarCode" />
           <ScalarProperty Name="BarCodeNumber" ColumnName="BarCodeNumber" />
           <ScalarProperty Name="BarCodeImage" ColumnName="BarCodeImage" />
           <ScalarProperty Name="IsConflict" ColumnName="IsConflict" />
           <ScalarProperty Name="Shift" ColumnName="Shift" />
-        </MappingFragment>
-      </EntityTypeMapping>
-    </EntitySetMapping>
-    <EntitySetMapping Name="base_PromotionAffect">
-      <EntityTypeMapping TypeName="POSModel.base_PromotionAffect">
-        <MappingFragment StoreEntitySet="base_PromotionAffect">
-          <ScalarProperty Name="Id" ColumnName="Id" />
-          <ScalarProperty Name="PromotionId" ColumnName="PromotionId" />
-          <ScalarProperty Name="ItemId" ColumnName="ItemId" />
-          <ScalarProperty Name="Price1" ColumnName="Price1" />
-          <ScalarProperty Name="Price2" ColumnName="Price2" />
-          <ScalarProperty Name="Price3" ColumnName="Price3" />
-          <ScalarProperty Name="Price4" ColumnName="Price4" />
-          <ScalarProperty Name="Price5" ColumnName="Price5" />
-          <ScalarProperty Name="Discount1" ColumnName="Discount1" />
-          <ScalarProperty Name="Discount2" ColumnName="Discount2" />
-          <ScalarProperty Name="Discount3" ColumnName="Discount3" />
-          <ScalarProperty Name="Discount4" ColumnName="Discount4" />
-          <ScalarProperty Name="Discount5" ColumnName="Discount5" />
-        </MappingFragment>
-      </EntityTypeMapping>
-    </EntitySetMapping>
-    <EntitySetMapping Name="base_PromotionSchedule">
-      <EntityTypeMapping TypeName="POSModel.base_PromotionSchedule">
-        <MappingFragment StoreEntitySet="base_PromotionSchedule">
-          <ScalarProperty Name="Id" ColumnName="Id" />
-          <ScalarProperty Name="PromotionId" ColumnName="PromotionId" />
-          <ScalarProperty Name="EndDate" ColumnName="EndDate" />
           <ScalarProperty Name="StartDate" ColumnName="StartDate" />
+          <ScalarProperty Name="EndDate" ColumnName="EndDate" />
         </MappingFragment>
       </EntityTypeMapping>
     </EntitySetMapping>
@@ -8507,6 +8382,9 @@ warning 6005: The function 'sp_update_user_permission' has a return data type 't
           <ScalarProperty Name="POCardImg" ColumnName="POCardImg" />
           <ScalarProperty Name="IsReturned" ColumnName="IsReturned" />
           <ScalarProperty Name="TaxAmount" ColumnName="TaxAmount" />
+          <ScalarProperty Name="IsCOD" ColumnName="IsCOD" />
+          <ScalarProperty Name="TaxPercent" ColumnName="TaxPercent" />
+          <ScalarProperty Name="BillAddressId" ColumnName="BillAddressId" />
         </MappingFragment>
       </EntityTypeMapping>
     </EntitySetMapping>
@@ -8900,6 +8778,7 @@ warning 6005: The function 'sp_update_user_permission' has a return data type 't
           <ScalarProperty Name="LOtherFee" ColumnName="LOtherFee" />
           <ScalarProperty Name="LayawayFee" ColumnName="LayawayFee" />
           <ScalarProperty Name="LTotalFee" ColumnName="LTotalFee" />
+          <ScalarProperty Name="IsCOD" ColumnName="IsCOD" />
         </MappingFragment>
       </EntityTypeMapping>
     </EntitySetMapping>
@@ -9295,11 +9174,11 @@ warning 6005: The function 'sp_update_user_permission' has a return data type 't
           <ScalarProperty Name="HourPerDay" ColumnName="HourPerDay" />
           <ScalarProperty Name="PaidFlag" ColumnName="PaidFlag" />
           <ScalarProperty Name="ActiveFlag" ColumnName="ActiveFlag" />
-          <ScalarProperty Name="CreatedDate" ColumnName="CreatedDate" />
-          <ScalarProperty Name="CreatedById" ColumnName="CreatedById" />
-          <ScalarProperty Name="ModifiedDate" ColumnName="ModifiedDate" />
-          <ScalarProperty Name="ModifiedById" ColumnName="ModifiedById" />
           <ScalarProperty Name="OvertimeOptions" ColumnName="OvertimeOptions" />
+          <ScalarProperty Name="UserCreated" ColumnName="UserCreated" />
+          <ScalarProperty Name="DateCreated" ColumnName="DateCreated" />
+          <ScalarProperty Name="UserUpdated" ColumnName="UserUpdated" />
+          <ScalarProperty Name="DateUpdated" ColumnName="DateUpdated" />
         </MappingFragment>
       </EntityTypeMapping>
     </EntitySetMapping>
@@ -9350,130 +9229,127 @@ warning 6005: The function 'sp_update_user_permission' has a return data type 't
 <edmx:Options />
 <edmx:Diagrams >
       <Diagram Name="POS">
-        <EntityTypeShape EntityType="POSModel.pga_exception" Width="1.5" PointX="12.5" PointY="13.25" Height="1.7566536458333317" IsExpanded="true" />
-        <EntityTypeShape EntityType="POSModel.pga_job" Width="1.5" PointX="8" PointY="9.25" Height="3.5644742838541674" IsExpanded="true" />
-        <EntityTypeShape EntityType="POSModel.pga_jobagent" Width="1.5" PointX="5.75" PointY="10.25" Height="1.5923063151041674" IsExpanded="true" />
-        <EntityTypeShape EntityType="POSModel.pga_jobclass" Width="1.5" PointX="5.75" PointY="17.25" Height="1.427958984374996" IsExpanded="true" />
-        <EntityTypeShape EntityType="POSModel.pga_joblog" Width="1.5" PointX="10.25" PointY="6.625" Height="1.9210009765624996" IsExpanded="true" />
-        <EntityTypeShape EntityType="POSModel.pga_jobstep" Width="1.5" PointX="10.25" PointY="9.375" Height="2.9070849609374996" IsExpanded="true" />
-        <EntityTypeShape EntityType="POSModel.pga_jobsteplog" Width="1.5" PointX="12.5" PointY="8.25" Height="2.4140429687499996" IsExpanded="true" />
-        <EntityTypeShape EntityType="POSModel.pga_schedule" Width="1.5" PointX="10.25" PointY="13" Height="2.4140429687499996" IsExpanded="true" />
-        <EntityTypeShape EntityType="POSModel.base_Attachment" Width="1.5" PointX="10" PointY="17.125" Height="3.0714322916666674" IsExpanded="true" />
-        <EntityTypeShape EntityType="POSModel.base_Authorize" Width="1.5" PointX="0.75" PointY="10.875" Height="1.4279589843749996" IsExpanded="true" />
-        <EntityTypeShape EntityType="POSModel.base_CardManagement" Width="1.5" PointX="8.75" PointY="21.875" Height="3.8931689453125031" IsExpanded="true" />
-        <EntityTypeShape EntityType="POSModel.base_CashFlow" Width="1.5" PointX="25.75" PointY="23.875" Height="9.1522835286458317" IsExpanded="true" />
-        <EntityTypeShape EntityType="POSModel.base_Configuration" Width="1.5" PointX="27.75" PointY="23.875" Height="16.547913411458332" IsExpanded="true" />
+        <EntityTypeShape EntityType="POSModel.pga_exception" Width="1.5" PointX="12.5" PointY="13.125" Height="1.7566536458333317" IsExpanded="true" />
+        <EntityTypeShape EntityType="POSModel.pga_job" Width="1.5" PointX="8" PointY="9" Height="3.5644742838541674" IsExpanded="true" />
+        <EntityTypeShape EntityType="POSModel.pga_jobagent" Width="1.5" PointX="5.75" PointY="10" Height="1.5923063151041674" IsExpanded="true" />
+        <EntityTypeShape EntityType="POSModel.pga_jobclass" Width="1.5" PointX="5.75" PointY="17.125" Height="1.427958984374996" IsExpanded="true" />
+        <EntityTypeShape EntityType="POSModel.pga_joblog" Width="1.5" PointX="10.25" PointY="6.5" Height="1.9210009765624996" IsExpanded="true" />
+        <EntityTypeShape EntityType="POSModel.pga_jobstep" Width="1.5" PointX="10.25" PointY="9.125" Height="2.9070849609374996" IsExpanded="true" />
+        <EntityTypeShape EntityType="POSModel.pga_jobsteplog" Width="1.5" PointX="12.5" PointY="8" Height="2.4140429687499996" IsExpanded="true" />
+        <EntityTypeShape EntityType="POSModel.pga_schedule" Width="1.5" PointX="10.25" PointY="12.75" Height="2.4140429687499996" IsExpanded="true" />
+        <EntityTypeShape EntityType="POSModel.base_Attachment" Width="1.5" PointX="10" PointY="16.875" Height="3.0714322916666674" IsExpanded="true" />
+        <EntityTypeShape EntityType="POSModel.base_Authorize" Width="1.5" PointX="0.75" PointY="10.625" Height="1.4279589843749996" IsExpanded="true" />
+        <EntityTypeShape EntityType="POSModel.base_CardManagement" Width="1.5" PointX="8.75" PointY="21.625" Height="3.8931689453125031" IsExpanded="true" />
+        <EntityTypeShape EntityType="POSModel.base_CashFlow" Width="1.5" PointX="15.75" PointY="29.625" Height="9.1522835286458317" IsExpanded="true" />
+        <EntityTypeShape EntityType="POSModel.base_Configuration" Width="1.5" PointX="17.75" PointY="29.625" Height="16.712260742187507" IsExpanded="true" />
         <EntityTypeShape EntityType="POSModel.base_CostAdjustment" Width="1.5" PointX="6" PointY="52" Height="3.8931689453125102" IsExpanded="true" />
-        <EntityTypeShape EntityType="POSModel.base_CountStock" Width="1.5" PointX="25.75" PointY="20.125" Height="2.5783902994791674" IsExpanded="true" />
-        <EntityTypeShape EntityType="POSModel.base_CountStockDetail" Width="1.5" PointX="28" PointY="20.125" Height="2.4140429687500031" IsExpanded="true" />
-        <EntityTypeShape EntityType="POSModel.base_CustomerReminder" Width="1.5" PointX="10.75" PointY="21.875" Height="2.7427376302083388" IsExpanded="true" />
-        <EntityTypeShape EntityType="POSModel.base_CustomField" Width="1.5" PointX="0.75" PointY="13.875" Height="1.7566536458333388" IsExpanded="true" />
-        <EntityTypeShape EntityType="POSModel.base_Department" Width="1.5" PointX="0.75" PointY="5.875" Height="3.400126953124996" IsExpanded="true" />
-        <EntityTypeShape EntityType="POSModel.base_GenericCode" Width="1.5" PointX="5.75" PointY="13.875" Height="1.7566536458333388" IsExpanded="true" />
-        <EntityTypeShape EntityType="POSModel.base_Guest" Width="1.5" PointX="0.75" PointY="22.75" Height="14.740092773437493" IsExpanded="true" />
-        <EntityTypeShape EntityType="POSModel.base_GuestAdditional" Width="1.5" PointX="3" PointY="16.875" Height="3.400126953124996" IsExpanded="true" />
-        <EntityTypeShape EntityType="POSModel.base_GuestAddress" Width="1.5" PointX="3" PointY="21" Height="3.5644742838541674" IsExpanded="true" />
+        <EntityTypeShape EntityType="POSModel.base_CountStock" Width="1.5" PointX="25.75" PointY="18.875" Height="2.5783902994791674" IsExpanded="true" />
+        <EntityTypeShape EntityType="POSModel.base_CountStockDetail" Width="1.5" PointX="28" PointY="19" Height="2.4140429687500031" IsExpanded="true" />
+        <EntityTypeShape EntityType="POSModel.base_CustomerReminder" Width="1.5" PointX="10.75" PointY="21.625" Height="2.7427376302083388" IsExpanded="true" />
+        <EntityTypeShape EntityType="POSModel.base_CustomField" Width="1.5" PointX="0.75" PointY="13.625" Height="1.7566536458333388" IsExpanded="true" />
+        <EntityTypeShape EntityType="POSModel.base_Department" Width="1.5" PointX="0.75" PointY="5.625" Height="3.400126953124996" IsExpanded="true" />
+        <EntityTypeShape EntityType="POSModel.base_GenericCode" Width="1.5" PointX="5.75" PointY="13.625" Height="1.7566536458333388" IsExpanded="true" />
+        <EntityTypeShape EntityType="POSModel.base_Guest" Width="1.5" PointX="0.75" PointY="22.625" Height="14.904440104166667" IsExpanded="true" />
+        <EntityTypeShape EntityType="POSModel.base_GuestAdditional" Width="1.5" PointX="3" PointY="16.625" Height="3.400126953124996" IsExpanded="true" />
+        <EntityTypeShape EntityType="POSModel.base_GuestAddress" Width="1.5" PointX="3" PointY="20.875" Height="3.7288216145833246" IsExpanded="true" />
         <EntityTypeShape EntityType="POSModel.base_GuestFingerPrint" Width="1.5" PointX="3" PointY="25.25" Height="2.2496956380208246" IsExpanded="true" />
-        <EntityTypeShape EntityType="POSModel.base_GuestGroup" Width="1.5" PointX="26.75" PointY="5.875" Height="1.7566536458333246" IsExpanded="true" />
+        <EntityTypeShape EntityType="POSModel.base_GuestGroup" Width="1.5" PointX="25.75" PointY="5.625" Height="1.9210009765625102" IsExpanded="true" />
         <EntityTypeShape EntityType="POSModel.base_GuestPaymentCard" Width="1.5" PointX="3" PointY="28.25" Height="3.400126953124996" IsExpanded="true" />
-        <EntityTypeShape EntityType="POSModel.base_GuestProfile" Width="1.5" PointX="3" PointY="32.5" Height="6.851420898437496" IsExpanded="true" />
+        <EntityTypeShape EntityType="POSModel.base_GuestProfile" Width="1.5" PointX="3" PointY="32.5" Height="7.0157682291666674" IsExpanded="true" />
         <EntityTypeShape EntityType="POSModel.base_GuestReward" Width="1.5" PointX="6" PointY="27.875" Height="4.38621093750001" IsExpanded="true" />
         <EntityTypeShape EntityType="POSModel.base_GuestRewardDetail" Width="1.5" PointX="8.25" PointY="33.75" Height="2.5783902994791674" IsExpanded="true" />
-        <EntityTypeShape EntityType="POSModel.base_GuestRewardSaleOrder" Width="1.5" PointX="28.75" PointY="5.875" Height="2.0853483072916674" IsExpanded="true" />
+        <EntityTypeShape EntityType="POSModel.base_GuestRewardSaleOrder" Width="1.5" PointX="25.75" PointY="22.625" Height="2.0853483072916674" IsExpanded="true" />
         <EntityTypeShape EntityType="POSModel.base_GuestSchedule" Width="1.5" PointX="6" PointY="24" Height="2.2496956380208388" IsExpanded="true" />
-        <EntityTypeShape EntityType="POSModel.base_LayawayManager" Width="1.5" PointX="28.75" PointY="8.875" Height="5.7009895833333246" IsExpanded="true" />
-        <EntityTypeShape EntityType="POSModel.base_MemberShip" Width="1.5" PointX="3" PointY="48.25" Height="3.2357796223958246" IsExpanded="true" />
+        <EntityTypeShape EntityType="POSModel.base_LayawayManager" Width="1.5" PointX="25.75" PointY="25.625" Height="5.7009895833333246" IsExpanded="true" />
+        <EntityTypeShape EntityType="POSModel.base_MemberShip" Width="1.5" PointX="3" PointY="48.375" Height="3.2357796223958246" IsExpanded="true" />
         <EntityTypeShape EntityType="POSModel.base_PricingChange" Width="1.5" PointX="6" PointY="56.625" Height="2.9070849609375102" IsExpanded="true" />
         <EntityTypeShape EntityType="POSModel.base_PricingManager" Width="1.5" PointX="3.75" PointY="42.875" Height="4.386210937499996" IsExpanded="true" />
         <EntityTypeShape EntityType="POSModel.base_Product" Width="1.5" PointX="3.75" PointY="53" Height="16.219218749999989" IsExpanded="true" />
         <EntityTypeShape EntityType="POSModel.base_ProductGroup" Width="1.5" PointX="6" PointY="60.25" Height="3.7288216145833388" IsExpanded="true" />
         <EntityTypeShape EntityType="POSModel.base_ProductStore" Width="1.5" PointX="6" PointY="64.75" Height="4.7149055989583388" IsExpanded="true" />
         <EntityTypeShape EntityType="POSModel.base_ProductUOM" Width="1.5" PointX="8.25" PointY="64.75" Height="4.7149055989583388" IsExpanded="true" />
-        <EntityTypeShape EntityType="POSModel.base_Promotion" Width="1.5" PointX="18.75" PointY="14.25" Height="6.0296842447916532" IsExpanded="true" />
-        <EntityTypeShape EntityType="POSModel.base_PromotionAffect" Width="1.5" PointX="21" PointY="14.375" Height="3.2357796223958246" IsExpanded="true" />
-        <EntityTypeShape EntityType="POSModel.base_PromotionSchedule" Width="1.5" PointX="21" PointY="18.375" Height="1.7566536458333246" IsExpanded="true" />
-        <EntityTypeShape EntityType="POSModel.base_PurchaseOrder" Width="1.5" PointX="14.75" PointY="6.375" Height="8.4948942057291674" IsExpanded="true" />
-        <EntityTypeShape EntityType="POSModel.base_PurchaseOrderDetail" Width="1.5" PointX="17" PointY="8.125" Height="4.87925292968751" IsExpanded="true" />
-        <EntityTypeShape EntityType="POSModel.base_PurchaseOrderReceive" Width="1.5" PointX="19.25" PointY="8.875" Height="3.4001269531249818" IsExpanded="true" />
+        <EntityTypeShape EntityType="POSModel.base_Promotion" Width="1.5" PointX="27.75" PointY="5.625" Height="5.7009895833333246" IsExpanded="true" />
+        <EntityTypeShape EntityType="POSModel.base_PurchaseOrder" Width="1.5" PointX="15.75" PointY="6.25" Height="8.9879361979166674" IsExpanded="true" />
+        <EntityTypeShape EntityType="POSModel.base_PurchaseOrderDetail" Width="1.5" PointX="18" PointY="8.25" Height="4.879252929687496" IsExpanded="true" />
+        <EntityTypeShape EntityType="POSModel.base_PurchaseOrderReceive" Width="1.5" PointX="20.25" PointY="9" Height="3.4001269531250102" IsExpanded="true" />
         <EntityTypeShape EntityType="POSModel.base_QuantityAdjustment" Width="1.5" PointX="6" PointY="70.25" Height="3.5644742838541674" IsExpanded="true" />
-        <EntityTypeShape EntityType="POSModel.base_Reminder" Width="1.5" PointX="10.75" PointY="33.875" Height="3.7288216145833246" IsExpanded="true" />
-        <EntityTypeShape EntityType="POSModel.base_ResourceAccount" Width="1.5" PointX="28.75" PointY="15.875" Height="2.2496956380208246" IsExpanded="true" />
-        <EntityTypeShape EntityType="POSModel.base_ResourceNote" Width="1.5" PointX="29.75" PointY="23.875" Height="1.7566536458333246" IsExpanded="true" />
-        <EntityTypeShape EntityType="POSModel.base_ResourcePayment" Width="1.5" PointX="13.75" PointY="31.125" Height="4.5505582682291674" IsExpanded="true" />
-        <EntityTypeShape EntityType="POSModel.base_ResourcePaymentDetail" Width="1.5" PointX="16" PointY="31.875" Height="3.0714322916666674" IsExpanded="true" />
-        <EntityTypeShape EntityType="POSModel.base_ResourcePhoto" Width="1.5" PointX="18.75" PointY="34.875" Height="2.0853483072916674" IsExpanded="true" />
-        <EntityTypeShape EntityType="POSModel.base_ResourceReturn" Width="1.5" PointX="20.75" PointY="29.375" Height="4.057516276041671" IsExpanded="true" />
-        <EntityTypeShape EntityType="POSModel.base_ResourceReturnDetail" Width="1.5" PointX="23" PointY="29.125" Height="4.3862109374999854" IsExpanded="true" />
+        <EntityTypeShape EntityType="POSModel.base_Reminder" Width="1.5" PointX="27.75" PointY="22.625" Height="3.7288216145833246" IsExpanded="true" />
+        <EntityTypeShape EntityType="POSModel.base_ResourceAccount" Width="1.5" PointX="27.75" PointY="27.625" Height="2.2496956380208246" IsExpanded="true" />
+        <EntityTypeShape EntityType="POSModel.base_ResourceNote" Width="1.5" PointX="17.75" PointY="5.625" Height="1.7566536458333246" IsExpanded="true" />
+        <EntityTypeShape EntityType="POSModel.base_ResourcePayment" Width="1.5" PointX="23.75" PointY="14" Height="4.5505582682291674" IsExpanded="true" />
+        <EntityTypeShape EntityType="POSModel.base_ResourcePaymentDetail" Width="1.5" PointX="26" PointY="14.75" Height="3.0714322916666674" IsExpanded="true" />
+        <EntityTypeShape EntityType="POSModel.base_ResourcePhoto" Width="1.5" PointX="27.75" PointY="30.625" Height="2.0853483072916674" IsExpanded="true" />
+        <EntityTypeShape EntityType="POSModel.base_ResourceReturn" Width="1.5" PointX="20.75" PointY="28.125" Height="4.057516276041671" IsExpanded="true" />
+        <EntityTypeShape EntityType="POSModel.base_ResourceReturnDetail" Width="1.5" PointX="23" PointY="28" Height="4.3862109374999854" IsExpanded="true" />
         <EntityTypeShape EntityType="POSModel.base_RewardManager" Width="1.5" PointX="3.75" PointY="0.75" Height="10.631409505208353" IsExpanded="true" />
-        <EntityTypeShape EntityType="POSModel.base_SaleCommission" Width="1.5" PointX="20.75" PointY="34.875" Height="4.0575162760416674" IsExpanded="true" />
-        <EntityTypeShape EntityType="POSModel.base_SaleOrder" Width="1.5" PointX="13.75" PointY="16.625" Height="13.260966796874982" IsExpanded="true" />
+        <EntityTypeShape EntityType="POSModel.base_SaleCommission" Width="1.5" PointX="28.75" PointY="12.625" Height="4.0575162760416674" IsExpanded="true" />
+        <EntityTypeShape EntityType="POSModel.base_SaleOrder" Width="1.5" PointX="13.75" PointY="16.375" Height="13.425314127604167" IsExpanded="true" />
         <EntityTypeShape EntityType="POSModel.base_SaleOrderDetail" Width="1.5" PointX="16" PointY="18" Height="6.0296842447916674" IsExpanded="true" />
-        <EntityTypeShape EntityType="POSModel.base_SaleOrderShip" Width="1.5" PointX="16" PointY="25.125" Height="3.0714322916666674" IsExpanded="true" />
-        <EntityTypeShape EntityType="POSModel.base_SaleOrderShipDetail" Width="1.5" PointX="18.25" PointY="24.875" Height="3.5644742838541674" IsExpanded="true" />
-        <EntityTypeShape EntityType="POSModel.base_SaleTaxLocation" Width="1.5" PointX="23.75" PointY="15.125" Height="3.4001269531249818" IsExpanded="true" />
-        <EntityTypeShape EntityType="POSModel.base_SaleTaxLocationOption" Width="1.5" PointX="26" PointY="15.25" Height="3.0714322916666674" IsExpanded="true" />
-        <EntityTypeShape EntityType="POSModel.base_Store" Width="1.5" PointX="29.75" PointY="26.875" Height="1.9210009765624818" IsExpanded="true" />
-        <EntityTypeShape EntityType="POSModel.base_TransferStock" Width="1.5" PointX="23.75" PointY="9.125" Height="4.3862109374999818" IsExpanded="true" />
-        <EntityTypeShape EntityType="POSModel.base_TransferStockDetail" Width="1.5" PointX="26" PointY="9.5" Height="3.728821614583353" IsExpanded="true" />
+        <EntityTypeShape EntityType="POSModel.base_SaleOrderShip" Width="1.5" PointX="16" PointY="25" Height="3.0714322916666674" IsExpanded="true" />
+        <EntityTypeShape EntityType="POSModel.base_SaleOrderShipDetail" Width="1.5" PointX="18.25" PointY="24.75" Height="3.5644742838541674" IsExpanded="true" />
+        <EntityTypeShape EntityType="POSModel.base_SaleTaxLocation" Width="1.5" PointX="22.75" PointY="8.875" Height="3.4001269531249818" IsExpanded="true" />
+        <EntityTypeShape EntityType="POSModel.base_SaleTaxLocationOption" Width="1.5" PointX="25" PointY="9.125" Height="3.0714322916666674" IsExpanded="true" />
+        <EntityTypeShape EntityType="POSModel.base_Store" Width="1.5" PointX="10.75" PointY="33.625" Height="1.9210009765624818" IsExpanded="true" />
+        <EntityTypeShape EntityType="POSModel.base_TransferStock" Width="1.5" PointX="20.75" PointY="22" Height="4.3862109374999818" IsExpanded="true" />
+        <EntityTypeShape EntityType="POSModel.base_TransferStockDetail" Width="1.5" PointX="23" PointY="22.25" Height="3.728821614583353" IsExpanded="true" />
         <EntityTypeShape EntityType="POSModel.base_UOM" Width="1.5" PointX="6" PointY="74.875" Height="2.4140429687499818" IsExpanded="true" />
-        <EntityTypeShape EntityType="POSModel.base_UserLog" Width="1.5" PointX="21.75" PointY="6" Height="2.0853483072916674" IsExpanded="true" />
-        <EntityTypeShape EntityType="POSModel.base_UserLogDetail" Width="1.5" PointX="24" PointY="6.125" Height="1.9210009765624818" IsExpanded="true" />
-        <EntityTypeShape EntityType="POSModel.base_UserRight" Width="1.5" PointX="22.75" PointY="34.875" Height="1.5923063151041674" IsExpanded="true" />
+        <EntityTypeShape EntityType="POSModel.base_UserLog" Width="1.5" PointX="20.75" PointY="5.875" Height="2.0853483072916674" IsExpanded="true" />
+        <EntityTypeShape EntityType="POSModel.base_UserLogDetail" Width="1.5" PointX="23" PointY="6" Height="1.9210009765624818" IsExpanded="true" />
+        <EntityTypeShape EntityType="POSModel.base_UserRight" Width="1.5" PointX="12.75" PointY="5.625" Height="1.5923063151041674" IsExpanded="true" />
         <EntityTypeShape EntityType="POSModel.base_VendorProduct" Width="1.5" PointX="6" PointY="34" Height="2.2496956380208246" IsExpanded="true" />
-        <EntityTypeShape EntityType="POSModel.base_VirtualFolder" Width="1.5" PointX="7.75" PointY="17.125" Height="3.0714322916666674" IsExpanded="true" />
-        <EntityTypeShape EntityType="POSModel.rpt_Department" Width="1.5" PointX="29.75" PointY="29.875" Height="1.5923063151041674" IsExpanded="true" />
-        <EntityTypeShape EntityType="POSModel.rpt_Group" Width="1.5" PointX="20.75" PointY="23.75" Height="1.9210009765624818" IsExpanded="true" />
-        <EntityTypeShape EntityType="POSModel.rpt_Permission" Width="1.5" PointX="24.75" PointY="34.875" Height="2.0853483072916674" IsExpanded="true" />
-        <EntityTypeShape EntityType="POSModel.rpt_Report" Width="1.5" PointX="23" PointY="22.125" Height="5.0436002604166674" IsExpanded="true" />
-        <EntityTypeShape EntityType="POSModel.rpt_User" Width="1.5" PointX="29.75" PointY="32.875" Height="2.7427376302083246" IsExpanded="true" />
-        <EntityTypeShape EntityType="POSModel.tims_Holiday" Width="1.5" PointX="30.75" PointY="5.875" Height="3.2357796223958246" IsExpanded="true" />
+        <EntityTypeShape EntityType="POSModel.base_VirtualFolder" Width="1.5" PointX="7.75" PointY="16.875" Height="3.0714322916666674" IsExpanded="true" />
+        <EntityTypeShape EntityType="POSModel.rpt_Department" Width="1.5" PointX="12.75" PointY="33.625" Height="1.5923063151041674" IsExpanded="true" />
+        <EntityTypeShape EntityType="POSModel.rpt_Group" Width="1.5" PointX="18.75" PointY="16.625" Height="1.9210009765624818" IsExpanded="true" />
+        <EntityTypeShape EntityType="POSModel.rpt_Permission" Width="1.5" PointX="19.75" PointY="33.625" Height="2.0853483072916674" IsExpanded="true" />
+        <EntityTypeShape EntityType="POSModel.rpt_Report" Width="1.5" PointX="21" PointY="15" Height="5.0436002604166674" IsExpanded="true" />
+        <EntityTypeShape EntityType="POSModel.rpt_User" Width="1.5" PointX="21.75" PointY="33.625" Height="2.7427376302083246" IsExpanded="true" />
+        <EntityTypeShape EntityType="POSModel.tims_Holiday" Width="1.5" PointX="23.75" PointY="33.625" Height="3.2357796223958246" IsExpanded="true" />
         <EntityTypeShape EntityType="POSModel.tims_TimeLog" Width="1.5" PointX="9" PointY="27.25" Height="5.5366422526041674" IsExpanded="true" />
         <EntityTypeShape EntityType="POSModel.tims_WorkPermission" Width="1.5" PointX="11.25" PointY="28.25" Height="3.7288216145833246" IsExpanded="true" />
         <EntityTypeShape EntityType="POSModel.tims_WorkSchedule" Width="1.5" PointX="3.75" PointY="12.625" Height="2.9070849609374818" IsExpanded="true" />
-        <EntityTypeShape EntityType="POSModel.tims_WorkWeek" Width="1.5" PointX="6" PointY="5.75" Height="2.5783902994791674" IsExpanded="true" />
+        <EntityTypeShape EntityType="POSModel.tims_WorkWeek" Width="1.5" PointX="6" PointY="4.75" Height="2.5783902994791674" IsExpanded="true" />
         <AssociationConnector Association="POSModel.pga_exception_jexscid_fkey" ManuallyRouted="false">
-          <ConnectorPoint PointX="11.75" PointY="14.128326822916666" />
-          <ConnectorPoint PointX="12.5" PointY="14.128326822916666" />
+          <ConnectorPoint PointX="11.75" PointY="14.003326822916666" />
+          <ConnectorPoint PointX="12.5" PointY="14.003326822916666" />
         </AssociationConnector>
         <AssociationConnector Association="POSModel.pga_job_jobagentid_fkey" ManuallyRouted="false">
-          <ConnectorPoint PointX="7.25" PointY="11.046153157552084" />
-          <ConnectorPoint PointX="7.322916666666667" PointY="11.046153157552084" />
-          <ConnectorPoint PointX="7.489583333333333" PointY="11.046153157552084" />
-          <ConnectorPoint PointX="8" PointY="11.046153157552084" />
+          <ConnectorPoint PointX="7.25" PointY="10.796153157552084" />
+          <ConnectorPoint PointX="7.322916666666667" PointY="10.796153157552084" />
+          <ConnectorPoint PointX="7.489583333333333" PointY="10.796153157552084" />
+          <ConnectorPoint PointX="8" PointY="10.796153157552084" />
         </AssociationConnector>
         <AssociationConnector Association="POSModel.pga_job_jobjclid_fkey" ManuallyRouted="false">
-          <ConnectorPoint PointX="7.25" PointY="17.963979492187498" />
-          <ConnectorPoint PointX="7.5" PointY="17.963979492187498" />
-          <ConnectorPoint PointX="7.5" PointY="16.875" />
-          <ConnectorPoint PointX="8.75" PointY="16.875" />
-          <ConnectorPoint PointX="8.75" PointY="12.814474283854167" />
+          <ConnectorPoint PointX="7.25" PointY="17.838979492187498" />
+          <ConnectorPoint PointX="7.5" PointY="17.838979492187498" />
+          <ConnectorPoint PointX="7.5" PointY="16.625" />
+          <ConnectorPoint PointX="8.75" PointY="16.625" />
+          <ConnectorPoint PointX="8.75" PointY="12.564474283854167" />
         </AssociationConnector>
         <AssociationConnector Association="POSModel.pga_joblog_jlgjobid_fkey" ManuallyRouted="false">
-          <ConnectorPoint PointX="8.75" PointY="9.25" />
-          <ConnectorPoint PointX="8.75" PointY="7.58550048828125" />
-          <ConnectorPoint PointX="10.25" PointY="7.58550048828125" />
+          <ConnectorPoint PointX="8.75" PointY="9" />
+          <ConnectorPoint PointX="8.75" PointY="7.46050048828125" />
+          <ConnectorPoint PointX="10.25" PointY="7.46050048828125" />
         </AssociationConnector>
         <AssociationConnector Association="POSModel.pga_jobstep_jstjobid_fkey" ManuallyRouted="false">
-          <ConnectorPoint PointX="9.5" PointY="10.82854248046875" />
-          <ConnectorPoint PointX="10.25" PointY="10.82854248046875" />
+          <ConnectorPoint PointX="9.5" PointY="10.57854248046875" />
+          <ConnectorPoint PointX="10.25" PointY="10.57854248046875" />
         </AssociationConnector>
         <AssociationConnector Association="POSModel.pga_schedule_jscjobid_fkey" ManuallyRouted="false">
-          <ConnectorPoint PointX="9.1562525" PointY="12.814474283854167" />
-          <ConnectorPoint PointX="9.1562525" PointY="14.207021484375" />
-          <ConnectorPoint PointX="10.25" PointY="14.207021484375" />
+          <ConnectorPoint PointX="9.1562525" PointY="12.564474283854167" />
+          <ConnectorPoint PointX="9.1562525" PointY="13.957021484375" />
+          <ConnectorPoint PointX="10.25" PointY="13.957021484375" />
         </AssociationConnector>
         <AssociationConnector Association="POSModel.pga_jobsteplog_jsljlgid_fkey" ManuallyRouted="false">
-          <ConnectorPoint PointX="11.75" PointY="7.4374995" />
-          <ConnectorPoint PointX="13.25" PointY="7.4374995" />
-          <ConnectorPoint PointX="13.25" PointY="8.25" />
+          <ConnectorPoint PointX="11.75" PointY="8.21050048828125" />
+          <ConnectorPoint PointX="12.5" PointY="8.21050048828125" />
         </AssociationConnector>
         <AssociationConnector Association="POSModel.pga_jobsteplog_jsljstid_fkey" ManuallyRouted="false">
-          <ConnectorPoint PointX="11.75" PointY="10.019521484375" />
-          <ConnectorPoint PointX="12.5" PointY="10.019521484375" />
+          <ConnectorPoint PointX="11.75" PointY="9.769521484375" />
+          <ConnectorPoint PointX="12.5" PointY="9.769521484375" />
         </AssociationConnector>
         <AssociationConnector Association="POSModel.FK_base_Attachment_VirtualFolderId_base_VirtualFolder_Id" ManuallyRouted="false">
-          <ConnectorPoint PointX="9.25" PointY="18.660716145833334" />
-          <ConnectorPoint PointX="10" PointY="18.660716145833334" />
+          <ConnectorPoint PointX="9.25" PointY="18.410716145833334" />
+          <ConnectorPoint PointX="10" PointY="18.410716145833334" />
         </AssociationConnector>
         <AssociationConnector Association="POSModel.FK_base_CostAdjustment_base_Product" ManuallyRouted="false">
           <ConnectorPoint PointX="5.25" PointY="54.446584472656255" />
@@ -9482,29 +9358,29 @@ warning 6005: The function 'sp_update_user_permission' has a return data type 't
           <ConnectorPoint PointX="6" PointY="54.446584472656255" />
         </AssociationConnector>
         <AssociationConnector Association="POSModel.FK_base_CounStockDetail_CountStockId_base_CountStock_id" ManuallyRouted="false">
-          <ConnectorPoint PointX="27.25" PointY="21.332021484375" />
-          <ConnectorPoint PointX="28" PointY="21.332021484375" />
+          <ConnectorPoint PointX="27.25" PointY="20.207021484375" />
+          <ConnectorPoint PointX="28" PointY="20.207021484375" />
         </AssociationConnector>
         <AssociationConnector Association="POSModel.FK_base_Department_ParentId_base_Department_Id" ManuallyRouted="false">
+          <ConnectorPoint PointX="1.2819230769230767" PointY="9.025126953124996" />
           <ConnectorPoint PointX="1.2819230769230767" PointY="9.275126953124996" />
-          <ConnectorPoint PointX="1.2819230769230767" PointY="9.525126953124996" />
-          <ConnectorPoint PointX="1.7284615384615383" PointY="9.525126953124996" />
           <ConnectorPoint PointX="1.7284615384615383" PointY="9.275126953124996" />
+          <ConnectorPoint PointX="1.7284615384615383" PointY="9.025126953124996" />
         </AssociationConnector>
         <AssociationConnector Association="POSModel.FK_base_Guest_ParentId_base_Guest_Id" ManuallyRouted="false">
-          <ConnectorPoint PointX="1.2819230769230767" PointY="37.490092773437496" />
-          <ConnectorPoint PointX="1.2819230769230767" PointY="37.740092773437496" />
-          <ConnectorPoint PointX="1.7284615384615383" PointY="37.740092773437496" />
-          <ConnectorPoint PointX="1.7284615384615383" PointY="37.490092773437496" />
+          <ConnectorPoint PointX="1.2819230769230767" PointY="37.529440104166667" />
+          <ConnectorPoint PointX="1.2819230769230767" PointY="37.779440104166667" />
+          <ConnectorPoint PointX="1.7284615384615383" PointY="37.779440104166667" />
+          <ConnectorPoint PointX="1.7284615384615383" PointY="37.529440104166667" />
         </AssociationConnector>
         <AssociationConnector Association="POSModel.FK_base_GuestAdditional_base_Guest_Id" ManuallyRouted="false">
-          <ConnectorPoint PointX="1.5" PointY="22.75" />
-          <ConnectorPoint PointX="1.5" PointY="18.575063476562498" />
-          <ConnectorPoint PointX="3" PointY="18.575063476562498" />
+          <ConnectorPoint PointX="1.5" PointY="22.625" />
+          <ConnectorPoint PointX="1.5" PointY="18.325063476562498" />
+          <ConnectorPoint PointX="3" PointY="18.325063476562498" />
         </AssociationConnector>
         <AssociationConnector Association="POSModel.FK_base_GuestAddress_base_Guest_Id" ManuallyRouted="false">
-          <ConnectorPoint PointX="2.25" PointY="23.657237141927084" />
-          <ConnectorPoint PointX="3" PointY="23.657237141927084" />
+          <ConnectorPoint PointX="2.25" PointY="23.614410807291662" />
+          <ConnectorPoint PointX="3" PointY="23.614410807291662" />
         </AssociationConnector>
         <AssociationConnector Association="POSModel.FK_base_GuestFingerPrint_GuestId_base_Guest_Id" ManuallyRouted="false">
           <ConnectorPoint PointX="2.25" PointY="26.374847819010412" />
@@ -9517,8 +9393,8 @@ warning 6005: The function 'sp_update_user_permission' has a return data type 't
           <ConnectorPoint PointX="3" PointY="29.950063476562498" />
         </AssociationConnector>
         <AssociationConnector Association="POSModel.FK_base_GuestProfile_GuestId_base_Guest_Id" ManuallyRouted="false">
-          <ConnectorPoint PointX="2.25" PointY="34.995046386718748" />
-          <ConnectorPoint PointX="3" PointY="34.995046386718748" />
+          <ConnectorPoint PointX="2.25" PointY="35.014720052083334" />
+          <ConnectorPoint PointX="3" PointY="35.014720052083334" />
         </AssociationConnector>
         <AssociationConnector Association="POSModel.FK_base_GuestReward_GuestId_base_Guest_Id" ManuallyRouted="false">
           <ConnectorPoint PointX="2.25" PointY="31.986918945312503" />
@@ -9529,17 +9405,17 @@ warning 6005: The function 'sp_update_user_permission' has a return data type 't
           <ConnectorPoint PointX="6" PointY="31.986918945312503" />
         </AssociationConnector>
         <AssociationConnector Association="POSModel.FK_base_GuestSchedule_GuestId_base_Guest_Id" ManuallyRouted="false">
-          <ConnectorPoint PointX="2.25" PointY="24.907237141927084" />
-          <ConnectorPoint PointX="5.0260441666666669" PointY="24.907237141927084" />
-          <ConnectorPoint PointX="5.1927108333333329" PointY="24.907237141927084" />
-          <ConnectorPoint PointX="5.416666666666667" PointY="24.907237141927084" />
-          <ConnectorPoint PointX="5.583333333333333" PointY="24.907237141927084" />
-          <ConnectorPoint PointX="6" PointY="24.907237141927084" />
+          <ConnectorPoint PointX="2.25" PointY="24.926910807291662" />
+          <ConnectorPoint PointX="5.0260441666666669" PointY="24.926910807291662" />
+          <ConnectorPoint PointX="5.1927108333333329" PointY="24.926910807291662" />
+          <ConnectorPoint PointX="5.416666666666667" PointY="24.926910807291662" />
+          <ConnectorPoint PointX="5.583333333333333" PointY="24.926910807291662" />
+          <ConnectorPoint PointX="6" PointY="24.926910807291662" />
         </AssociationConnector>
         <AssociationConnector Association="POSModel.FK_base_MemberShip_GuestId_base_Guest_Id" ManuallyRouted="false">
-          <ConnectorPoint PointX="0.98470903846153834" PointY="37.490092773437496" />
-          <ConnectorPoint PointX="0.98470903846153834" PointY="49.867889811197912" />
-          <ConnectorPoint PointX="3" PointY="49.867889811197912" />
+          <ConnectorPoint PointX="0.98470903846153834" PointY="37.529440104166667" />
+          <ConnectorPoint PointX="0.98470903846153834" PointY="49.992889811197912" />
+          <ConnectorPoint PointX="3" PointY="49.992889811197912" />
         </AssociationConnector>
         <AssociationConnector Association="POSModel.FK_base_VendorProduct_VendorId_base_Guest_Id" ManuallyRouted="false">
           <ConnectorPoint PointX="2.25" PointY="28.162455647786455" />
@@ -9561,8 +9437,8 @@ warning 6005: The function 'sp_update_user_permission' has a return data type 't
           <ConnectorPoint PointX="9" PointY="27.687347819010412" />
         </AssociationConnector>
         <AssociationConnector Association="POSModel.FK_tims_WorkPermission_EmployeeId_base_Guest_Id" ManuallyRouted="false">
-          <ConnectorPoint PointX="2.25" PointY="33.490982666015626" />
-          <ConnectorPoint PointX="2.5" PointY="33.490982666015626" />
+          <ConnectorPoint PointX="2.25" PointY="33.500819498697922" />
+          <ConnectorPoint PointX="2.5" PointY="33.500819498697922" />
           <ConnectorPoint PointX="2.5" PointY="32.150126953124996" />
           <ConnectorPoint PointX="5.0260441666666669" PointY="32.150126953124996" />
           <ConnectorPoint PointX="5.1927108333333329" PointY="32.150126953124996" />
@@ -9590,12 +9466,12 @@ warning 6005: The function 'sp_update_user_permission' has a return data type 't
         </AssociationConnector>
         <AssociationConnector Association="POSModel.FK_base_GuestSchedule_WorkScheduleId_tims_WorkSchedule_Id" ManuallyRouted="false">
           <ConnectorPoint PointX="4.90625" PointY="15.532084960937482" />
-          <ConnectorPoint PointX="4.90625" PointY="24.735853212890632" />
-          <ConnectorPoint PointX="5.0260441666666669" PointY="24.735853212890632" />
-          <ConnectorPoint PointX="5.1927108333333329" PointY="24.735853212890632" />
-          <ConnectorPoint PointX="5.416666666666667" PointY="24.735853212890632" />
-          <ConnectorPoint PointX="5.583333333333333" PointY="24.735853212890632" />
-          <ConnectorPoint PointX="6" PointY="24.735853212890632" />
+          <ConnectorPoint PointX="4.90625" PointY="24.7653637109375" />
+          <ConnectorPoint PointX="5.0260441666666669" PointY="24.7653637109375" />
+          <ConnectorPoint PointX="5.1927108333333329" PointY="24.7653637109375" />
+          <ConnectorPoint PointX="5.416666666666667" PointY="24.7653637109375" />
+          <ConnectorPoint PointX="5.583333333333333" PointY="24.7653637109375" />
+          <ConnectorPoint PointX="6" PointY="24.7653637109375" />
         </AssociationConnector>
         <AssociationConnector Association="POSModel.FK_base_PricingChange_PricingManagerId_base_PricingManager_Id" ManuallyRouted="false">
           <ConnectorPoint PointX="5.25" PointY="47.260056091346151" />
@@ -9643,63 +9519,55 @@ warning 6005: The function 'sp_update_user_permission' has a return data type 't
           <ConnectorPoint PointX="9" PointY="76.082021484374991" />
           <ConnectorPoint PointX="9" PointY="69.464905598958339" />
         </AssociationConnector>
-        <AssociationConnector Association="POSModel.FK_base_PromotionAffect_PromotionId_base_Promotion_Id" ManuallyRouted="false">
-          <ConnectorPoint PointX="20.25" PointY="15.992889811197912" />
-          <ConnectorPoint PointX="21" PointY="15.992889811197912" />
-        </AssociationConnector>
-        <AssociationConnector Association="POSModel.FK_base_PromotionSchedule_PromotionId_base_Promotion_Id" ManuallyRouted="false">
-          <ConnectorPoint PointX="20.25" PointY="19.253326822916662" />
-          <ConnectorPoint PointX="21" PointY="19.253326822916662" />
-        </AssociationConnector>
         <AssociationConnector Association="POSModel.FK_base_PurchaseOrderDetail_PurchaseOrderId_base_PurchaseOrder_" ManuallyRouted="false">
-          <ConnectorPoint PointX="16.25" PointY="10.564626464843755" />
-          <ConnectorPoint PointX="17" PointY="10.564626464843755" />
+          <ConnectorPoint PointX="17.25" PointY="10.689626464843748" />
+          <ConnectorPoint PointX="18" PointY="10.689626464843748" />
         </AssociationConnector>
         <AssociationConnector Association="POSModel.FK_base_PurchaseOrderReceive_PurchaseOrderDetailId_base_Purchas" ManuallyRouted="false">
-          <ConnectorPoint PointX="18.5" PointY="10.575063476562491" />
-          <ConnectorPoint PointX="19.25" PointY="10.575063476562491" />
+          <ConnectorPoint PointX="19.5" PointY="10.700063476562505" />
+          <ConnectorPoint PointX="20.25" PointY="10.700063476562505" />
         </AssociationConnector>
         <AssociationConnector Association="POSModel.FK_base_ResourcePaymentDetail_ResourcePaymentId_base_ResourcePa" ManuallyRouted="false">
-          <ConnectorPoint PointX="15.25" PointY="33.410716145833334" />
-          <ConnectorPoint PointX="16" PointY="33.410716145833334" />
+          <ConnectorPoint PointX="25.25" PointY="16.285716145833334" />
+          <ConnectorPoint PointX="26" PointY="16.285716145833334" />
         </AssociationConnector>
         <AssociationConnector Association="POSModel.FK_base_ResourceReturnDetail_ResourceReturnId_base_ResourceRetu" ManuallyRouted="false">
-          <ConnectorPoint PointX="22.25" PointY="31.403758138020834" />
-          <ConnectorPoint PointX="23" PointY="31.403758138020834" />
+          <ConnectorPoint PointX="22.25" PointY="30.153758138020834" />
+          <ConnectorPoint PointX="23" PointY="30.153758138020834" />
         </AssociationConnector>
         <AssociationConnector Association="POSModel.FK_base_SaleOrderDetail_SaleOrderId_base_SaleOrder_Id" ManuallyRouted="false">
           <ConnectorPoint PointX="15.25" PointY="21.014842122395834" />
           <ConnectorPoint PointX="16" PointY="21.014842122395834" />
         </AssociationConnector>
         <AssociationConnector Association="POSModel.FK_base_SaleOrderShip_SaleOrderId_base_SaleOrder_Id" ManuallyRouted="false">
-          <ConnectorPoint PointX="15.25" PointY="26.660716145833334" />
-          <ConnectorPoint PointX="16" PointY="26.660716145833334" />
+          <ConnectorPoint PointX="15.25" PointY="26.535716145833334" />
+          <ConnectorPoint PointX="16" PointY="26.535716145833334" />
         </AssociationConnector>
         <AssociationConnector Association="POSModel.FK_base_SaleOrderShipDetail_SaleOrderShipId_base_SaleOrderShip_" ManuallyRouted="false">
-          <ConnectorPoint PointX="17.5" PointY="26.660716145833334" />
-          <ConnectorPoint PointX="18.25" PointY="26.660716145833334" />
+          <ConnectorPoint PointX="17.5" PointY="26.535716145833334" />
+          <ConnectorPoint PointX="18.25" PointY="26.535716145833334" />
         </AssociationConnector>
         <AssociationConnector Association="POSModel.base_SaleTaxLocationOption_SaleTaxLocationId_base_SaleTaxLocati" ManuallyRouted="false">
-          <ConnectorPoint PointX="25.25" PointY="16.785716145833334" />
-          <ConnectorPoint PointX="26" PointY="16.785716145833334" />
+          <ConnectorPoint PointX="24.25" PointY="10.660716145833334" />
+          <ConnectorPoint PointX="25" PointY="10.660716145833334" />
         </AssociationConnector>
         <AssociationConnector Association="POSModel.FK_base_TransferStockDetail_TransferStockId_base_TransferStock_" ManuallyRouted="false">
-          <ConnectorPoint PointX="25.25" PointY="11.364410807291677" />
-          <ConnectorPoint PointX="26" PointY="11.364410807291677" />
+          <ConnectorPoint PointX="22.25" PointY="24.114410807291677" />
+          <ConnectorPoint PointX="23" PointY="24.114410807291677" />
         </AssociationConnector>
         <AssociationConnector Association="POSModel.FK_base_UserLogDetail_UserLogId_base_UserLog_Id" ManuallyRouted="false">
-          <ConnectorPoint PointX="23.25" PointY="7.0855004882812409" />
-          <ConnectorPoint PointX="24" PointY="7.0855004882812409" />
+          <ConnectorPoint PointX="22.25" PointY="6.9605004882812409" />
+          <ConnectorPoint PointX="23" PointY="6.9605004882812409" />
         </AssociationConnector>
         <AssociationConnector Association="POSModel.FK_base_VirtualFolder_ParentFolderId_base_VirtualFolderId" ManuallyRouted="false">
+          <ConnectorPoint PointX="8.2819230769230767" PointY="19.946432291666667" />
           <ConnectorPoint PointX="8.2819230769230767" PointY="20.196432291666667" />
-          <ConnectorPoint PointX="8.2819230769230767" PointY="20.446432291666667" />
-          <ConnectorPoint PointX="8.72846153846154" PointY="20.446432291666667" />
           <ConnectorPoint PointX="8.72846153846154" PointY="20.196432291666667" />
+          <ConnectorPoint PointX="8.72846153846154" PointY="19.946432291666667" />
         </AssociationConnector>
         <AssociationConnector Association="POSModel.FK_rpt_Report_GroupId_rpt_Group_Id" ManuallyRouted="false">
-          <ConnectorPoint PointX="22.25" PointY="24.710500488281241" />
-          <ConnectorPoint PointX="23" PointY="24.710500488281241" />
+          <ConnectorPoint PointX="20.25" PointY="17.585500488281241" />
+          <ConnectorPoint PointX="21" PointY="17.585500488281241" />
         </AssociationConnector>
         <AssociationConnector Association="POSModel.FK_tims_TimeLog_WorkScheduleId_tims_WorkSchedule_Id" ManuallyRouted="false">
           <ConnectorPoint PointX="5.1093775" PointY="15.532084960937482" />
@@ -9713,11 +9581,11 @@ warning 6005: The function 'sp_update_user_permission' has a return data type 't
           <ConnectorPoint PointX="9" PointY="32.380605468750005" />
         </AssociationConnector>
         <AssociationConnector Association="POSModel.FK_tims_WorkWeek_WorkScheduleId_tims_WorkSchedule_Id" ManuallyRouted="false">
-          <ConnectorPoint PointX="5.25" PointY="13.21875" />
-          <ConnectorPoint PointX="5.416666666666667" PointY="13.21875" />
-          <ConnectorPoint PointX="5.583333333333333" PointY="13.21875" />
-          <ConnectorPoint PointX="7.40625" PointY="13.21875" />
-          <ConnectorPoint PointX="7.40625" PointY="8.3283902994791674" />
+          <ConnectorPoint PointX="5.25" PointY="13.09375" />
+          <ConnectorPoint PointX="5.416666666666667" PointY="13.09375" />
+          <ConnectorPoint PointX="5.583333333333333" PointY="13.09375" />
+          <ConnectorPoint PointX="7.40625" PointY="13.09375" />
+          <ConnectorPoint PointX="7.40625" PointY="7.3283902994791674" />
         </AssociationConnector>
         <AssociationConnector Association="POSModel.tims_TimeLogPermission" ManuallyRouted="false">
           <ConnectorPoint PointX="10.5" PointY="30.114410807291662" />

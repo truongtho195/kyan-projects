@@ -495,12 +495,12 @@ namespace CPC.TimeClock.Model
             }
         }
 
-        protected string _department;
+        protected int _department;
         /// <summary>
         /// Property Model
         /// <param>Gets or sets the Department</param>
         /// </summary>
-        public string Department
+        public int Department
         {
             get { return this._department; }
             set
@@ -1475,6 +1475,26 @@ namespace CPC.TimeClock.Model
             }
         }
 
+        protected bool _isCOD;
+        /// <summary>
+        /// Property Model
+        /// <param>Gets or sets the IsCOD</param>
+        /// </summary>
+        public bool IsCOD
+        {
+            get { return this._isCOD; }
+            set
+            {
+                if (this._isCOD != value)
+                {
+                    this.IsDirty = true;
+                    this._isCOD = value;
+                    OnPropertyChanged(() => IsCOD);
+                    PropertyChangedCompleted(() => IsCOD);
+                }
+            }
+        }
+
         #endregion
 
         #region Public Methods
@@ -1533,8 +1553,7 @@ namespace CPC.TimeClock.Model
             if (this.GuestNo != null)
                 this.base_Guest.GuestNo = this.GuestNo.Trim();
             this.base_Guest.PositionId = this.PositionId;
-            if (this.Department != null)
-                this.base_Guest.Department = this.Department.Trim();
+            this.base_Guest.Department = this.Department;
             if (this.Mark != null)
                 this.base_Guest.Mark = this.Mark.Trim();
             if (this.AccountNumber != null)
@@ -1600,6 +1619,7 @@ namespace CPC.TimeClock.Model
                 this.base_Guest.ManagerResource = this.ManagerResource.Trim();
             this.base_Guest.IsVIP = this.IsVIP;
             this.base_Guest.Picture = this.Picture;
+            this.base_Guest.IsCOD = this.IsCOD;
         }
 
         /// <summary>
@@ -1679,6 +1699,7 @@ namespace CPC.TimeClock.Model
             this._managerResource = this.base_Guest.ManagerResource;
             this._isVIP = this.base_Guest.IsVIP;
             this._picture = this.base_Guest.Picture;
+            this._isCOD = this.base_Guest.IsCOD;
         }
 
         /// <summary>
@@ -1758,6 +1779,7 @@ namespace CPC.TimeClock.Model
             this.ManagerResource = this.base_Guest.ManagerResource;
             this.IsVIP = this.base_Guest.IsVIP;
             this.Picture = this.base_Guest.Picture;
+            this.IsCOD = this.base_Guest.IsCOD;
         }
 
         #endregion

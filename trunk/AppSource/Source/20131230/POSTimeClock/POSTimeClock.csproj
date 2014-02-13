@@ -246,13 +246,7 @@
     <Compile Include="Model\base_ProductUOMModel.cs">
       <DependentUpon>ModelTemplate.tt</DependentUpon>
     </Compile>
-    <Compile Include="Model\base_PromotionAffectModel.cs">
-      <DependentUpon>ModelTemplate.tt</DependentUpon>
-    </Compile>
     <Compile Include="Model\base_PromotionModel.cs">
-      <DependentUpon>ModelTemplate.tt</DependentUpon>
-    </Compile>
-    <Compile Include="Model\base_PromotionScheduleModel.cs">
       <DependentUpon>ModelTemplate.tt</DependentUpon>
     </Compile>
     <Compile Include="Model\base_PurchaseOrderDetailModel.cs">
@@ -494,13 +488,7 @@
     <Compile Include="Repository\base_ProductUOMRepository.cs">
       <DependentUpon>RepositoryTemplate.tt</DependentUpon>
     </Compile>
-    <Compile Include="Repository\base_PromotionAffectRepository.cs">
-      <DependentUpon>RepositoryTemplate.tt</DependentUpon>
-    </Compile>
     <Compile Include="Repository\base_PromotionRepository.cs">
-      <DependentUpon>RepositoryTemplate.tt</DependentUpon>
-    </Compile>
-    <Compile Include="Repository\base_PromotionScheduleRepository.cs">
       <DependentUpon>RepositoryTemplate.tt</DependentUpon>
     </Compile>
     <Compile Include="Repository\base_PurchaseOrderDetailRepository.cs">

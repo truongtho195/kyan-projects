@@ -1955,6 +1955,26 @@ namespace CPC.TimeClock.Model
             }
         }
 
+        protected bool _isAutoSearch;
+        /// <summary>
+        /// Property Model
+        /// <param>Gets or sets the IsAutoSearch</param>
+        /// </summary>
+        public bool IsAutoSearch
+        {
+            get { return this._isAutoSearch; }
+            set
+            {
+                if (this._isAutoSearch != value)
+                {
+                    this.IsDirty = true;
+                    this._isAutoSearch = value;
+                    OnPropertyChanged(() => IsAutoSearch);
+                    PropertyChangedCompleted(() => IsAutoSearch);
+                }
+            }
+        }
+
         #endregion
 
         #region Public Methods
@@ -2096,6 +2116,7 @@ namespace CPC.TimeClock.Model
             this.base_Configuration.WeekHour = this.WeekHour;
             this.base_Configuration.RefundVoucherThresHold = this.RefundVoucherThresHold;
             this.base_Configuration.SysDate = this.SysDate;
+            this.base_Configuration.IsAutoSearch = this.IsAutoSearch;
         }
 
         /// <summary>
@@ -2199,6 +2220,7 @@ namespace CPC.TimeClock.Model
             this._weekHour = this.base_Configuration.WeekHour;
             this._refundVoucherThresHold = this.base_Configuration.RefundVoucherThresHold;
             this._sysDate = this.base_Configuration.SysDate;
+            this._isAutoSearch = this.base_Configuration.IsAutoSearch;
         }
 
         /// <summary>
@@ -2302,6 +2324,7 @@ namespace CPC.TimeClock.Model
             this.WeekHour = this.base_Configuration.WeekHour;
             this.RefundVoucherThresHold = this.base_Configuration.RefundVoucherThresHold;
             this.SysDate = this.base_Configuration.SysDate;
+            this.IsAutoSearch = this.base_Configuration.IsAutoSearch;
         }
 
         #endregion
