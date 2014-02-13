@@ -280,7 +280,11 @@ namespace CPC.POS.ViewModel
                         result |= jobTitleItemIDList.Contains(employeeModel.PositionId.Value);
 
                     // Get all employee that Department contain keyword
-                    result |= employeeModel.Department.ToLower().Contains(_keyword);
+                    if (Common.Departments.Any())
+                    {
+                        IEnumerable<int> departments = Common.Departments.Where(x => x.Text.ToLower().Contains(_keyword.ToLower())).Select(x => Convert.ToInt32(x.Value));
+                        result |= departments.Contains(employeeModel.Department);
+                    }
 
                     // Get all employee that Phone contain keyword
                     result |= employeeModel.Phone1.ToLower().Contains(_keyword);

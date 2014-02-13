@@ -402,6 +402,31 @@ namespace CPC.POS.Database
             _objectContext.ExecuteStoreCommand(query, null);
         }
 
+        /// <summary>
+        /// Execute Function
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="query"></param>
+        /// <returns></returns>
+        public static IEnumerable<T> ExecuteFunction<T>(string query) where T : class
+        {
+            return _objectContext.ExecuteStoreQuery<T>(query, null);
+        }
+
+        /// <summary>
+        /// Take a few objects in a sequence was sorted on server.
+        /// </summary>
+        /// <typeparam name="T">Type of object in a sequence.<</typeparam>
+        /// <param name="ignoreCount">Number of objects will ignore.</param>
+        /// <param name="takeCount">Number of objects will take.</param>
+        /// <param name="keys">The key columns by which to order the results.</param>
+        /// <param name="expression">A function to test each object for a condition.</param>
+        /// <returns>The new IList<T> instance.</returns>
+        public static IEnumerable<T> GetRangeIEnumerable<T>(int ignoreCount, int takeCount, string keys, Expression<Func<T, bool>> expression) where T : class
+        {
+            return (_objectContext.CreateObjectSet<T>().OrderBy(keys).Where(expression)).Skip(ignoreCount).Take(takeCount);
+        }
+
         #endregion
 
         #region IDisposable Members

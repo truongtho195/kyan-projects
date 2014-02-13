@@ -589,7 +589,13 @@ namespace CPC.POS.ViewModel
                             {
                                 user.UserResource = _guest.Resource.ToString();
                                 user.UserName = string.Format("{0} {1}", _guest.FirstName, _guest.LastName);
-                                user.Department = _guest.Department;
+                                
+                                ComboItem departmentItem=null;
+                                if (Common.Departments.Any())
+                                    departmentItem = Common.Departments.SingleOrDefault(x => Convert.ToInt32(x.ObjValue).Equals(_guest.Department));
+                                
+                                user.Department = departmentItem != null ? departmentItem.Text : string.Empty;
+
                                 user.PositionId = _guest.PositionId;
                                 user.IpAddress = Dns.GetHostName();
                             }

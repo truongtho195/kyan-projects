@@ -6,6 +6,7 @@ using System.Configuration;
 using System.Data;
 using System.Data.EntityClient;
 using System.Diagnostics;
+using System.IO;
 using System.Linq;
 using System.Text.RegularExpressions;
 using System.Windows;
@@ -221,9 +222,9 @@ namespace CPC.POS.ViewModel
         }
 
         /// <summary>
-        /// Gets the Server
+        /// Gets the Client
         /// </summary>
-        public string Server
+        public string Client
         {
             get
             {
@@ -234,9 +235,27 @@ namespace CPC.POS.ViewModel
         }
 
         /// <summary>
+        /// Gets or sets the Server
+        /// </summary>
+        public string Server
+        {
+            get;
+            private set;
+        }
+
+        /// <summary>
         /// Gets or sets the Database
         /// </summary>
         public string Database
+        {
+            get;
+            private set;
+        }
+
+        /// <summary>
+        /// Gets or sets the Version
+        /// </summary>
+        public string Version
         {
             get;
             private set;
@@ -341,7 +360,6 @@ namespace CPC.POS.ViewModel
             get
             {
                 return Database.Contains("train");
-                ;
             }
         }
 
@@ -440,6 +458,16 @@ namespace CPC.POS.ViewModel
 
                     string iconLanguagePath = @"/Image/RibbonImages/";
                     IconLanguagePath = string.Format("{0}RibbonLanguage{1}.png", iconLanguagePath, SelectedLanguage.Code);
+
+                    // Call method change language for view
+                    if (_hostList.Any())
+                    {
+                        foreach (var item in _hostList)
+                        {
+                            (item.Container.DataContext as ViewModelBase).ChangeLanguage();
+                        }
+
+                    }
                 }
             }
         }
@@ -631,6 +659,9 @@ namespace CPC.POS.ViewModel
                 string connectionName = "POSDBEntities";
                 string appConfigPath = AppDomain.CurrentDomain.SetupInformation.ConfigurationFile;
 
+                if (!File.Exists(appConfigPath))
+                    return;
+
                 // Get content app config file
                 XmlDocument xmlDoc = new XmlDocument();
                 xmlDoc.Load(appConfigPath);
@@ -641,7 +672,7 @@ namespace CPC.POS.ViewModel
                 {
                     foreach (XmlNode childNode in connectionStringsNode)
                     {
-                        if (childNode.Attributes["name"].Value.Equals(connectionName))
+                        if (childNode.Attributes != null && childNode.Attributes["name"].Value.Equals(connectionName))
                         {
                             // Get current connection string value
                             string connectionValue = childNode.Attributes["connectionString"].Value;
@@ -1036,9 +1067,10 @@ namespace CPC.POS.ViewModel
                             {
                                 // Turn off BusyIndicator
                                 IsBusy = false;
+
                                 if (BackupRestoreHelper.SuccessfulFlag == 1)
                                 {
-                                    Xceed.Wpf.Toolkit.MessageBox.Show(Language.Text32, Language.Information, System.Windows.MessageBoxButton.OK, MessageBoxImage.Information);
+                                    Xceed.Wpf.Toolkit.MessageBox.Show(Language.Text33, Language.Information, System.Windows.MessageBoxButton.OK, MessageBoxImage.Information);
                                     //LogOut Windows.
                                     App.Messenger.NotifyColleagues(Define.USER_LOGOUT_RESULT);
 
@@ -1046,7 +1078,7 @@ namespace CPC.POS.ViewModel
                                     UnitOfWork.Reload();
                                 }
                                 else
-                                    Xceed.Wpf.Toolkit.MessageBox.Show(Language.Text33, Language.Warning, System.Windows.MessageBoxButton.OK, MessageBoxImage.Error);
+                                    Xceed.Wpf.Toolkit.MessageBox.Show(Language.Text34, Language.Warning, System.Windows.MessageBoxButton.OK, MessageBoxImage.Error);
                             };
                             // Run async background worker
                             bgWorker.RunWorkerAsync();
@@ -1097,11 +1129,13 @@ namespace CPC.POS.ViewModel
                                     if (BackupRestoreHelper.SuccessfulFlag == 1)
                                     {
                                         Xceed.Wpf.Toolkit.MessageBox.Show(Language.Text35, Language.Information, System.Windows.MessageBoxButton.OK, MessageBoxImage.Information);
+
                                         //LogOut Windows.
                                         App.Messenger.NotifyColleagues(Define.USER_LOGOUT_RESULT);
 
                                         //Reload context. cause some object is stored in objectcontext after that.
                                         UnitOfWork.Reload();
+
                                     }
                                     else
                                         Xceed.Wpf.Toolkit.MessageBox.Show(Language.Text36, Language.Warning, System.Windows.MessageBoxButton.OK, MessageBoxImage.Error);
@@ -1117,11 +1151,15 @@ namespace CPC.POS.ViewModel
                         if (resultClearAll == MessageBoxResult.Yes)
                         {
                             BackupRestoreHelper.ClearAllData();
-                            Xceed.Wpf.Toolkit.MessageBox.Show(Language.Text37, Language.Warning);
-                            //LogOut Windows.
-                            App.Messenger.NotifyColleagues(Define.USER_LOGOUT_RESULT);
+
                             //Reload context. cause some object is stored in objectcontext after that.
                             UnitOfWork.Reload();
+
+                            Xceed.Wpf.Toolkit.MessageBox.Show(Language.Text37, Language.Warning);
+
+                            //LogOut Windows.
+                            App.Messenger.NotifyColleagues(Define.USER_LOGOUT_RESULT);
+
                         }
                         break;
                 }
@@ -1444,7 +1482,7 @@ namespace CPC.POS.ViewModel
             //host.SetDataContext(testViewModel);
             //host.DataContext = testViewModel;
             //host.Container.grdContent.Children.Add(view);
-            host.Container.btnTitle.Content = host.DisplayName;
+            //host.Container.btnTitle.Content = host.DisplayName;
             host.Container.btnTitle.PreviewMouseDoubleClick += new MouseButtonEventHandler(btnTitle_MouseDoubleClick);
             host.Container.btnImageIcon.Click += new RoutedEventHandler(btnImageIcon_Click);
             host.Container.btnTitle.Click += new RoutedEventHandler(btnTitle_Click);
@@ -1580,8 +1618,8 @@ namespace CPC.POS.ViewModel
                     viewModel = new ProductViewModel(host.IsOpenList, host.Tag);
                     break;
                 case "ProductManual":
-                    view = new ProductManualView();
-                    viewModel = new ProductManualViewModel(host.IsOpenList, host.Tag);
+                    //view = new ProductManualView();
+                    //viewModel = new ProductManualViewModel(host.IsOpenList, host.Tag);
                     break;
                 case "MovementHistory":
                     view = new ProductMovementHistoryView();
@@ -1636,13 +1674,9 @@ namespace CPC.POS.ViewModel
 
                 #region Report Tab
 
-                case "InventoryReport":
-                    view = new InventoryReportView();
-                    viewModel = new InventoryReportViewModel();
-                    break;
-                case "SalesReport":
-                    break;
-                case "PurchaseReport":
+                case "Report":
+                    view = new ReportManagementView();
+                    viewModel = new ReportManagementViewModel();
                     break;
 
                 #endregion
@@ -1732,6 +1766,10 @@ namespace CPC.POS.ViewModel
                     break;
             }
 
+            if (string.IsNullOrWhiteSpace(viewModel.ContainerTitle))
+            {
+                viewModel.ContainerTitle = host.DisplayName;
+            }
             host.DataContext = viewModel;
             host.Container.grdContent.Children.Add(view);
 
@@ -2158,9 +2196,9 @@ namespace CPC.POS.ViewModel
 
                 switch (m.Groups["name"].ToString())
                 {
-                    //case "Server":
-                    //    Server = m.Groups["val"].ToString();
-                    //    break;
+                    case "Server":
+                        Server = m.Groups["val"].ToString();
+                        break;
                     //case "UserID":
                     //    userID = m.Groups["val"].ToString();
                     //    break;
@@ -2173,6 +2211,39 @@ namespace CPC.POS.ViewModel
                     //case "Port":
                     //    port = m.Groups["val"].ToString();
                     //    break;
+                }
+            }
+        }
+
+        /// <summary>
+        /// Get current version application
+        /// </summary>
+        private void GetVersion()
+        {
+            string connectionName = "CurrentVersion";
+            string fileName = "UpdateProgram.exe.config";
+            string appConfigPath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, fileName);
+
+            if (!File.Exists(appConfigPath))
+                return;
+
+            // Get content app config file
+            XmlDocument xmlDoc = new XmlDocument();
+            xmlDoc.Load(appConfigPath);
+
+            // Get connection string node
+            XmlNode appSettingsNode = xmlDoc.SelectSingleNode("configuration/appSettings");
+            if (appSettingsNode != null)
+            {
+                foreach (XmlNode childNode in appSettingsNode)
+                {
+                    if (childNode.Attributes != null && childNode.Attributes["key"].Value.Equals(connectionName))
+                    {
+                        // Get current version string value
+                        Version = childNode.Attributes["value"].Value;
+
+                        break;
+                    }
                 }
             }
         }
@@ -2216,6 +2287,7 @@ namespace CPC.POS.ViewModel
 
             // Get database name
             GetConnectionStringInfo(ConfigurationManager.ConnectionStrings["POSDBEntities"].ConnectionString);
+            GetVersion();
         }
 
         /// <summary>
@@ -2264,16 +2336,16 @@ namespace CPC.POS.ViewModel
         #endregion
 
         #region Event Methods
+
         /// <summary>
         /// Call Help file
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
-        void btnHelp_Click(object sender, RoutedEventArgs e)
+        private void btnHelp_Click(object sender, RoutedEventArgs e)
         {
             OpenHelpFile();
         }
-
 
         /// <summary>
         /// Set keybinding after form loaded

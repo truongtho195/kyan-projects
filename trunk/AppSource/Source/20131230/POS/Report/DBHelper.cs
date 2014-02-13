@@ -206,6 +206,24 @@ namespace CPC.POS.Report
             return dt;
         }
 
+        // Open connecition
+        private void OpenConnection()
+        {
+            objConn = new NpgsqlConnection(connString);
+            if (objConn != null && objConn.State != ConnectionState.Open)
+            {
+                objConn.Open();
+            }
+        }
+        // Close Connection
+        private void CloseConnection()
+        {
+            if (objConn != null && objConn.State == ConnectionState.Open)
+            {
+                objConn.Close();
+            }
+        }
+
         #endregion
     }
 }

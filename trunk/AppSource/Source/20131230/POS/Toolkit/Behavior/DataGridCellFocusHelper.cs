@@ -1,20 +1,18 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Windows;
-using System.Windows.Input;
 using System.Diagnostics;
+using System.Threading;
+using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Threading;
-using System.Threading;
 
 namespace CPC.Toolkit.Behavior
 {
     public class DataGridCellFocusHelper
     {
         #region CellFocus
+
         public static DependencyProperty CellFocusProperty =
             DependencyProperty.RegisterAttached("CellFocus",
             typeof(bool),
@@ -30,13 +28,16 @@ namespace CPC.Toolkit.Behavior
         {
             obj.SetValue(CellFocusProperty, value);
         }
+
         public static void OnCellFocusChanged(object sender, DependencyPropertyChangedEventArgs e)
         {
 
         }
+
         #endregion
 
         #region ItemSource
+
         public static DependencyProperty ItemSourceProperty =
             DependencyProperty.RegisterAttached("ItemSource",
             typeof(object),
@@ -52,6 +53,7 @@ namespace CPC.Toolkit.Behavior
         {
             obj.SetValue(ItemSourceProperty, value);
         }
+
         public static void OnItemSourceChanged(object sender, DependencyPropertyChangedEventArgs e)
         {
             try
@@ -111,7 +113,9 @@ namespace CPC.Toolkit.Behavior
                 Debug.WriteLine("OnItemSourceChanged" + ex.ToString());
             }
         }
+
         static bool IsFocusComboBox = false;
+
         static void cell_PreviewMouseLeftButtonDown(object sender, MouseButtonEventArgs e)
         {
             try
@@ -166,11 +170,13 @@ namespace CPC.Toolkit.Behavior
             }
 
         }
+
         #endregion
 
         #region Focus Command
 
         #region CommandParameter
+
         //
         // Summary:
         //     Gets or sets the parameter to pass to the System.Windows.Controls.Primitives.ButtonBase.Command
@@ -189,13 +195,16 @@ namespace CPC.Toolkit.Behavior
         {
             return (object)obj.GetValue(CommandParameterProperty);
         }
+
         public static void SetCommandParameter(DependencyObject obj, object value)
         {
             obj.SetValue(CommandParameterProperty, value);
         }
+
         #endregion
 
         #region Command
+
         //
         // Summary:
         //     Gets or sets the command to invoke when users click to control on DataGridCell. This is a
@@ -213,10 +222,12 @@ namespace CPC.Toolkit.Behavior
         {
             return (ICommand)obj.GetValue(CommandProperty);
         }
+
         public static void SetCommand(DependencyObject obj, ICommand value)
         {
             obj.SetValue(CommandProperty, value);
         }
+
         public static void OnCommandChanged(object sender, DependencyPropertyChangedEventArgs e)
         {
             try
@@ -232,6 +243,7 @@ namespace CPC.Toolkit.Behavior
                 Debug.WriteLine("OnCommandChanged DataGridCellFocusHelper" + ex.ToString());
             }
         }
+
         protected static void Control_Loaded(object sender, RoutedEventArgs e)
         {
             try
@@ -246,11 +258,13 @@ namespace CPC.Toolkit.Behavior
                 Debug.WriteLine("Control_Loaded DataGridCellFocusHelper" + ex.ToString());
             }
         }
+
         #endregion
 
         #endregion
 
         #region FindVisualParent
+
         static T FindVisualParent<T>(UIElement element) where T : UIElement
         {
             UIElement parent = element;
@@ -266,6 +280,7 @@ namespace CPC.Toolkit.Behavior
             }
             return null;
         }
+
         #endregion
     }
 }

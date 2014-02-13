@@ -66,7 +66,7 @@ namespace CPC.POS.ViewModel
         #endregion
 
         #region -Defines-
-        DBHelper dbHelper = new DBHelper();
+        CPC.POS.Report.DBHelper dbHelper = new CPC.POS.Report.DBHelper();
         PurchaseOrderDataSet purchaseOrderDataSet;
         rptSalesOrder saleOrderReport;
         rptSODetails sODetailsReport;

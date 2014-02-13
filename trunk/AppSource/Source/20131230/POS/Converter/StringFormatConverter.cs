@@ -95,6 +95,8 @@ namespace CPC.Converter
                 {
                     if (content.Length == 16)
                         return string.Format("{0}-{1}-{2}-{3}", content.Substring(0, 4), isSecure ? "****" : content.Substring(5, 4), isSecure ? "****" : content.Substring(9, 4), content.Substring(12, 4));
+                    else if (content.Length == 15)
+                        return string.Format("{0}-{1}-{2}-{3}", content.Substring(0, 4), isSecure ? "****" : content.Substring(5, 4), isSecure ? "****" : content.Substring(9, 4), content.Substring(12, 3));
                     else
                         return content;
                 }

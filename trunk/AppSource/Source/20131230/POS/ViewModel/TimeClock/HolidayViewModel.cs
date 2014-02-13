@@ -494,6 +494,9 @@ namespace CPC.POS.ViewModel
                     holidayModel.WeekOfMonthItem = Common.WeeksOfMonth.SingleOrDefault(x => Convert.ToInt32(x.ObjValue) == holidayModel.WeekOfMonth);
                     holidayModel.DayOfWeekItem = Common.DaysOfWeek.SingleOrDefault(x => Convert.ToInt32(x.ObjValue) == holidayModel.DayOfWeek);
                     holidayModel.Month1Item = Common.Months.SingleOrDefault(x => Convert.ToInt32(x.ObjValue) == holidayModel.Month1);
+
+                    // Turn off IsDirty
+                    holidayModel.IsDirty = false;
                     break;
             }
 
@@ -523,88 +526,99 @@ namespace CPC.POS.ViewModel
         /// <returns></returns>
         private bool SaveHoliday(tims_HolidayModel holidayModel)
         {
-            switch ((HolidayOption)holidayModel.HolidayOption)
+            try
             {
-                case HolidayOption.SpecificDay:
-                    holidayModel.MonthItem = Common.Months.SingleOrDefault(x => Convert.ToInt32(x.ObjValue) == holidayModel.Month);
+                switch ((HolidayOption)holidayModel.HolidayOption)
+                {
+                    case HolidayOption.SpecificDay:
+                        holidayModel.MonthItem = Common.Months.SingleOrDefault(x => Convert.ToInt32(x.ObjValue) == holidayModel.Month);
 
-                    holidayModel.FromDate = null;
-                    holidayModel.ToDate = null;
-                    holidayModel.DayOfWeek = null;
-                    holidayModel.WeekOfMonth = null;
-                    holidayModel.Month1 = null;
-                    break;
-                case HolidayOption.DynamicDay:
-                    holidayModel.WeekOfMonthItem = Common.WeeksOfMonth.SingleOrDefault(x => Convert.ToInt32(x.ObjValue) == holidayModel.WeekOfMonth);
-                    holidayModel.DayOfWeekItem = Common.DaysOfWeek.SingleOrDefault(x => Convert.ToInt32(x.ObjValue) == holidayModel.DayOfWeek);
-                    holidayModel.Month1Item = Common.Months.SingleOrDefault(x => Convert.ToInt32(x.ObjValue) == holidayModel.Month1);
+                        holidayModel.FromDate = null;
+                        holidayModel.ToDate = null;
+                        holidayModel.DayOfWeek = null;
+                        holidayModel.WeekOfMonth = null;
+                        holidayModel.Month1 = null;
+                        break;
+                    case HolidayOption.DynamicDay:
+                        holidayModel.WeekOfMonthItem = Common.WeeksOfMonth.SingleOrDefault(x => Convert.ToInt32(x.ObjValue) == holidayModel.WeekOfMonth);
+                        holidayModel.DayOfWeekItem = Common.DaysOfWeek.SingleOrDefault(x => Convert.ToInt32(x.ObjValue) == holidayModel.DayOfWeek);
+                        holidayModel.Month1Item = Common.Months.SingleOrDefault(x => Convert.ToInt32(x.ObjValue) == holidayModel.Month1);
 
-                    holidayModel.FromDate = null;
-                    holidayModel.ToDate = null;
-                    holidayModel.Month = holidayModel.Month1;
-                    holidayModel.Day = null;
-                    break;
-                case HolidayOption.Duration:
+                        holidayModel.FromDate = null;
+                        holidayModel.ToDate = null;
+                        holidayModel.Month = holidayModel.Month1;
+                        holidayModel.Day = null;
+                        break;
+                    case HolidayOption.Duration:
+                        holidayModel.Month = null;
+                        holidayModel.Day = null;
+                        holidayModel.DayOfWeek = null;
+                        holidayModel.WeekOfMonth = null;
+                        holidayModel.Month1 = null;
+                        break;
+                }
+
+                if (holidayModel.IsNew)
+                {
+                    // Map data from model to entity
+                    holidayModel.ToEntity();
+
+                    // Add new holiday to database
+                    _holidayRepository.Add(holidayModel.tims_Holiday);
+
+                    // Accept changes
+                    _holidayRepository.Commit();
+
+                    // Update holiday id
+                    holidayModel.Id = holidayModel.tims_Holiday.Id;
+
+                    // Turn off IsDirty & IsNew
+                    holidayModel.EndUpdate();
+
+                    // Push new holiday to collection
+                    HolidayCollection.Add(holidayModel);
+                }
+                else
+                {
+                    tims_HolidayModel holidayItem = HolidayCollection.SingleOrDefault(x => x.Id.Equals(holidayModel.Id));
+                    holidayItem.Title = holidayModel.Title;
+                    //holidayItem.Description = holidayModel.Description;
+                    holidayItem.HolidayOption = holidayModel.HolidayOption;
+                    holidayItem.FromDate = holidayModel.FromDate;
+                    holidayItem.ToDate = holidayModel.ToDate;
+                    holidayItem.Month = holidayModel.Month;
+                    holidayItem.Day = holidayModel.Day;
+                    holidayItem.DayOfWeek = holidayModel.DayOfWeek;
+                    holidayItem.WeekOfMonth = holidayModel.WeekOfMonth;
+                    holidayItem.ActiveFlag = holidayModel.ActiveFlag;
+                    holidayItem.DateUpdated = DateTimeExt.Now;
+                    holidayItem.UserUpdated = Define.USER.LoginName;
+
+                    holidayItem.MonthItem = holidayModel.MonthItem;
+                    holidayItem.WeekOfMonthItem = holidayModel.WeekOfMonthItem;
+                    holidayItem.DayOfWeekItem = holidayModel.DayOfWeekItem;
+                    holidayItem.Month1Item = holidayModel.Month1Item;
+
+                    // Map data from model to entity
+                    holidayItem.ToEntity();
+
+                    // Accept changes
+                    _holidayRepository.Commit();
+                }
+
+                if (holidayModel.HolidayOption.Equals((int)HolidayOption.DynamicDay))
                     holidayModel.Month = null;
-                    holidayModel.Day = null;
-                    holidayModel.DayOfWeek = null;
-                    holidayModel.WeekOfMonth = null;
-                    holidayModel.Month1 = null;
-                    break;
-            }
 
-            if (holidayModel.IsNew)
+                // Turn off IsDirty & IsNew
+                holidayModel.EndUpdate();
+
+                return true;
+            }
+            catch (Exception ex)
             {
-                // Map data from model to entity
-                holidayModel.ToEntity();
-
-                // Add new holiday to database
-                _holidayRepository.Add(holidayModel.tims_Holiday);
-
-                // Accept changes
-                _holidayRepository.Commit();
-
-                // Update holiday id
-                holidayModel.Id = holidayModel.tims_Holiday.Id;
-
-                // Push new holiday to collection
-                HolidayCollection.Add(SelectedHoliday);
+                _log4net.Error(ex);
+                return false;
             }
-            else
-            {
-                tims_HolidayModel holidayItem = HolidayCollection.SingleOrDefault(x => x.Id.Equals(holidayModel.Id));
-                holidayItem.Title = holidayModel.Title;
-                //holidayItem.Description = holidayModel.Description;
-                holidayItem.HolidayOption = holidayModel.HolidayOption;
-                holidayItem.FromDate = holidayModel.FromDate;
-                holidayItem.ToDate = holidayModel.ToDate;
-                holidayItem.Month = holidayModel.Month;
-                holidayItem.Day = holidayModel.Day;
-                holidayItem.DayOfWeek = holidayModel.DayOfWeek;
-                holidayItem.WeekOfMonth = holidayModel.WeekOfMonth;
-                holidayItem.ActiveFlag = holidayModel.ActiveFlag;
-                holidayItem.DateUpdated = DateTimeExt.Now;
-                holidayItem.UserUpdated = Define.USER.LoginName;
-
-                holidayItem.MonthItem = holidayModel.MonthItem;
-                holidayItem.WeekOfMonthItem = holidayModel.WeekOfMonthItem;
-                holidayItem.DayOfWeekItem = holidayModel.DayOfWeekItem;
-                holidayItem.Month1Item = holidayModel.Month1Item;
-
-                // Map data from model to entity
-                holidayItem.ToEntity();
-
-                // Accept changes
-                _holidayRepository.Commit();
-            }
-
-            if (holidayModel.HolidayOption.Equals((int)HolidayOption.DynamicDay))
-                holidayModel.Month = null;
-
-            // Turn off IsDirty & IsNew
-            holidayModel.EndUpdate();
-
-            return true;
         }
 
         /// <summary>

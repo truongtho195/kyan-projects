@@ -644,6 +644,7 @@ namespace CPC.POS.Model
                 {
                     _isDuplicateUPC = value;
                     OnPropertyChanged(() => IsDuplicateUPC);
+                    OnPropertyChanged(() => UPC);
                 }
             }
         }
@@ -661,6 +662,7 @@ namespace CPC.POS.Model
                 {
                     _isDuplicateALU = value;
                     OnPropertyChanged(() => IsDuplicateALU);
+                    OnPropertyChanged(() => ALU);
                 }
             }
         }
@@ -831,6 +833,14 @@ namespace CPC.POS.Model
                     case "BaseUnitNumber":
                         if (UOMId > 0 && BaseUnitNumber == 0)
                             message = "BaseUnitNumber must be greater than zero.";
+                        break;
+                    case "UPC":
+                        if (IsDuplicateUPC)
+                            message = "Scan code is existed";
+                        break;
+                    case "ALU":
+                        if (IsDuplicateALU)
+                            message = "ALU is existed";
                         break;
                 }
 

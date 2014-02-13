@@ -224,7 +224,7 @@ namespace CPC.POS.ViewModel
             // TODO: Handle command logic here
             try
             {
-                MessageBoxResult result = Xceed.Wpf.Toolkit.MessageBox.Show(Language.Text38, Language.Information, MessageBoxButton.YesNo, MessageBoxImage.Question);
+                MessageBoxResult result = Xceed.Wpf.Toolkit.MessageBox.Show(Language.Text38, Language.Information, MessageBoxButton.YesNo, MessageBoxImage.Warning);
                 if (result == MessageBoxResult.Yes)
                 {
                     //Backup data
@@ -243,9 +243,9 @@ namespace CPC.POS.ViewModel
                         // Turn off BusyIndicator
                         IsBusy = false;
                         if (BackupRestoreHelper.SuccessfulFlag == 1)
-                            Xceed.Wpf.Toolkit.MessageBox.Show(Language.Text32, Language.Information, System.Windows.MessageBoxButton.OK, MessageBoxImage.Information);
+                            Xceed.Wpf.Toolkit.MessageBox.Show(Language.Text33, Language.Information, System.Windows.MessageBoxButton.OK, MessageBoxImage.Information);
                         else
-                            Xceed.Wpf.Toolkit.MessageBox.Show(Language.Text33, Language.Warning, System.Windows.MessageBoxButton.OK, MessageBoxImage.Error);
+                            Xceed.Wpf.Toolkit.MessageBox.Show(Language.Text34, Language.Warning, System.Windows.MessageBoxButton.OK, MessageBoxImage.Error);
                     };
                     // Run async background worker
                     bgWorker.RunWorkerAsync();
@@ -421,7 +421,6 @@ namespace CPC.POS.ViewModel
         protected static string ProviderConnectString = ConfigurationManager.ConnectionStrings["POSDBEntities"].ConnectionString;
         protected static string ConnectString = new EntityConnectionStringBuilder(ConfigurationManager.ConnectionStrings["POSDBEntities"].ConnectionString).ProviderConnectionString;
         public static string BackupPath = Define.CONFIGURATION.BackupPath + @"\Backup\";
-        protected static string POSTGRESQL_DIRECTORY = string.Empty;
         protected static string Server = string.Empty;
         protected static string UserID = string.Empty;
         protected static string Password = string.Empty;
@@ -451,7 +450,6 @@ namespace CPC.POS.ViewModel
                 write.WriteLine("set BACKUPDIR={0}\\", datePath);
                 write.WriteLine("set PGHOST={0}", server);
                 write.WriteLine("set PGUSER={0}", userID);
-                write.WriteLine("set PGBIN={0}", POSTGRESQL_DIRECTORY.Replace('/', '\\'));
                 write.WriteLine("set PGDB={0}", database);
                 write.WriteLine("set PGPORT={0}", port);
                 write.WriteLine("for /f \"tokens=1-4 delims=/ \" %%i in (\"%date%\") do (");
@@ -466,8 +464,7 @@ namespace CPC.POS.ViewModel
                 write.WriteLine("\tset ss=%%k");
                 write.WriteLine(")");
                 write.WriteLine("cd %PGBIN%");
-                write.WriteLine("C:");
-                write.WriteLine(@"pg_dump -i -h %PGHOST% -p %PGPORT% -U %PGUSER% -F c -b -v --inserts -f ""%BACKUPDIR%%PGDB%_%year%%month%%day%%hh%%mm%%ss%.backup"" %PGDB%");
+                write.WriteLine(@"pg_dump.exe -i -h %PGHOST% -p %PGPORT% -U %PGUSER% -F c -b -v --inserts -f ""%BACKUPDIR%%PGDB%_%year%%month%%day%%hh%%mm%%ss%.backup"" %PGDB%");
                 write.Close();
             }
             catch (Exception ex)
@@ -493,7 +490,6 @@ namespace CPC.POS.ViewModel
                 write.WriteLine("set PATH_FILE_RESTORE=\"{0}\"", model.Path);
                 write.WriteLine("set PGHOST={0}", server);
                 write.WriteLine("set PGUSER={0}", userID);
-                write.WriteLine("set PGBIN={0}", POSTGRESQL_DIRECTORY.Replace('/', '\\'));
                 write.WriteLine("set PGDB={0}", database);
                 write.WriteLine("set PGPORT={0}", port);
                 write.WriteLine("cd %PGBIN%");
@@ -813,10 +809,8 @@ namespace CPC.POS.ViewModel
                         {
                             if (displayError.IndexOf("cannot") < 0)
                                 SuccessfulFlag = 1;
-                            //Xceed.Wpf.Toolkit.MessageBox.Show("Backup successfuly.", "Backup", System.Windows.MessageBoxButton.OK, MessageBoxImage.Information);
                             else
                                 SuccessfulFlag = 0;
-                            //Xceed.Wpf.Toolkit.MessageBox.Show("Backup cannot created", "Backup", System.Windows.MessageBoxButton.OK, MessageBoxImage.Error);
                         }
                         else if (commandType == "pg_restore")
                         {
@@ -847,7 +841,6 @@ namespace CPC.POS.ViewModel
         public static void BackupDB()
         {
             BackupPath = Define.CONFIGURATION.BackupPath + @"\Backup\";
-            POSTGRESQL_DIRECTORY = GetPostgresqlDirectory();
             if (WriteFilePGPASS("pg_dump"))
             {
                 GenerateBackupBatchFile();
@@ -863,8 +856,7 @@ namespace CPC.POS.ViewModel
             {
                 //Clear Current DB
                 BackupPath = Define.CONFIGURATION.BackupPath + @"\Backup\";
-                POSTGRESQL_DIRECTORY = GetPostgresqlDirectory();
-                DropCurrentDB();
+                DropCurrentDB();    
                 if (WriteFilePGPASS("pg_restore"))
                 {
                     GenerateRestoreBatchFile(model);
@@ -953,7 +945,6 @@ namespace CPC.POS.ViewModel
                 write.WriteLine(@"@echo off");
                 write.WriteLine("set PGHOST={0}", server);
                 write.WriteLine("set PGUSER={0}", userID);
-                write.WriteLine("set PGBIN={0}", POSTGRESQL_DIRECTORY.Replace('/', '\\'));
                 write.WriteLine("set PGDB={0}", "tempdb");
                 write.WriteLine("set PGPORT={0}", port);
                 write.WriteLine("cd %PGBIN%");

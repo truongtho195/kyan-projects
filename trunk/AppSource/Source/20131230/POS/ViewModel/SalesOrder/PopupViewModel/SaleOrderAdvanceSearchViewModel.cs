@@ -441,7 +441,7 @@ namespace CPC.POS.ViewModel
         }
 
         /// <summary>
-        /// Call Load to load require data for search
+        /// Call LoadData to load require data for search
         /// </summary>
 
         public void LoadData(string view)

@@ -175,6 +175,66 @@ namespace CPC.POS.Model
             }
         }
 
+        protected Nullable<short> _state;
+        /// <summary>
+        /// Property Model
+        /// <param>Gets or sets the State</param>
+        /// </summary>
+        public Nullable<short> State
+        {
+            get { return this._state; }
+            set
+            {
+                if (this._state != value)
+                {
+                    this.IsDirty = true;
+                    this._state = value;
+                    OnPropertyChanged(() => State);
+                    PropertyChangedCompleted(() => State);
+                }
+            }
+        }
+
+        protected string _zipCode;
+        /// <summary>
+        /// Property Model
+        /// <param>Gets or sets the ZipCode</param>
+        /// </summary>
+        public string ZipCode
+        {
+            get { return this._zipCode; }
+            set
+            {
+                if (this._zipCode != value)
+                {
+                    this.IsDirty = true;
+                    this._zipCode = value;
+                    OnPropertyChanged(() => ZipCode);
+                    PropertyChangedCompleted(() => ZipCode);
+                }
+            }
+        }
+
+        protected Nullable<short> _countryId;
+        /// <summary>
+        /// Property Model
+        /// <param>Gets or sets the CountryId</param>
+        /// </summary>
+        public Nullable<short> CountryId
+        {
+            get { return this._countryId; }
+            set
+            {
+                if (this._countryId != value)
+                {
+                    this.IsDirty = true;
+                    this._countryId = value;
+                    OnPropertyChanged(() => CountryId);
+                    PropertyChangedCompleted(() => CountryId);
+                }
+            }
+        }
+
         #endregion
 
         #region Public Methods
@@ -207,6 +267,10 @@ namespace CPC.POS.Model
                 this.base_Store.City = this.City.Trim();
             if (this.Password != null)
                 this.base_Store.Password = this.Password.Trim();
+            this.base_Store.State = this.State;
+            if (this.ZipCode != null)
+                this.base_Store.ZipCode = this.ZipCode.Trim();
+            this.base_Store.CountryId = this.CountryId;
         }
 
         /// <summary>
@@ -221,6 +285,9 @@ namespace CPC.POS.Model
             this._street = this.base_Store.Street;
             this._city = this.base_Store.City;
             this._password = this.base_Store.Password;
+            this._state = this.base_Store.State;
+            this._zipCode = this.base_Store.ZipCode;
+            this._countryId = this.base_Store.CountryId;
         }
 
         /// <summary>
@@ -235,6 +302,9 @@ namespace CPC.POS.Model
             this.Street = this.base_Store.Street;
             this.City = this.base_Store.City;
             this.Password = this.base_Store.Password;
+            this.State = this.base_Store.State;
+            this.ZipCode = this.base_Store.ZipCode;
+            this.CountryId = this.base_Store.CountryId;
         }
 
         #endregion
@@ -251,6 +321,38 @@ namespace CPC.POS.Model
         #endregion
 
         #region Properties
+
+        /// <summary>
+        /// Gets the FullAddress.
+        /// </summary>
+        public string FullAddress
+        {
+            get
+            {
+                string countryName = string.Empty;
+                string stateName = string.Empty;
+
+                if (CountryId.HasValue)
+                {
+                    countryName = Common.Countries.SingleOrDefault(x => x.Value.Equals(CountryId)).Text;
+                }
+                if (State.HasValue)
+                {
+                    stateName = Common.States.SingleOrDefault(x => x.Value.Equals(State)).Text;
+                }
+
+                return string.Format("{0} {1} {2} {3} {4}", Street, countryName, City, stateName, ZipCode);
+            }
+        }
+
+        #endregion
+
+        #region Public Methods
+
+        public void RaiseFullAddress()
+        {
+            OnPropertyChanged(() => FullAddress);
+        }
 
         #endregion
 

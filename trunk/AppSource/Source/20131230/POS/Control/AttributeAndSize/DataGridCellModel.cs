@@ -42,6 +42,24 @@ namespace CPC.POS.Model
             }
         }
 
+        private string _code;
+        /// <summary>
+        /// Gets or sets the Code.
+        /// </summary>
+        public string Code
+        {
+            get { return _code; }
+            set
+            {
+                if (_code != value)
+                {
+                    this.IsDirty = true;
+                    _code = value;
+                    OnPropertyChanged(() => Code);
+                }
+            }
+        }
+
         private string _attribute;
         /// <summary>
         /// Gets or sets the Attribute.
@@ -151,6 +169,23 @@ namespace CPC.POS.Model
         }
 
         public List<ComboItem> ValueList { get; set; }
+
+        private bool _isDuplicateCode;
+        /// <summary>
+        /// Gets or sets the IsDuplicateCode.
+        /// </summary>
+        public bool IsDuplicateCode
+        {
+            get { return _isDuplicateCode; }
+            set
+            {
+                if (_isDuplicateCode != value)
+                {
+                    _isDuplicateCode = value;
+                    OnPropertyChanged(() => IsDuplicateCode);
+                }
+            }
+        }
 
         private bool _isDuplicateBarcode;
         /// <summary>

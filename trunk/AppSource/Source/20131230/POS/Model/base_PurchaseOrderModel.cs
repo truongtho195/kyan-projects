@@ -955,6 +955,86 @@ namespace CPC.POS.Model
             }
         }
 
+        protected bool _isCOD;
+        /// <summary>
+        /// Property Model
+        /// <param>Gets or sets the IsCOD</param>
+        /// </summary>
+        public bool IsCOD
+        {
+            get { return this._isCOD; }
+            set
+            {
+                if (this._isCOD != value)
+                {
+                    this.IsDirty = true;
+                    this._isCOD = value;
+                    OnPropertyChanged(() => IsCOD);
+                    PropertyChangedCompleted(() => IsCOD);
+                }
+            }
+        }
+
+        protected decimal _taxPercent;
+        /// <summary>
+        /// Property Model
+        /// <param>Gets or sets the TaxPercent</param>
+        /// </summary>
+        public decimal TaxPercent
+        {
+            get { return this._taxPercent; }
+            set
+            {
+                if (this._taxPercent != value)
+                {
+                    this.IsDirty = true;
+                    this._taxPercent = value;
+                    OnPropertyChanged(() => TaxPercent);
+                    PropertyChangedCompleted(() => TaxPercent);
+                }
+            }
+        }
+
+        protected int _billStore;
+        /// <summary>
+        /// Property Model
+        /// <param>Gets or sets the BillStore</param>
+        /// </summary>
+        public int BillStore
+        {
+            get { return this._billStore; }
+            set
+            {
+                if (this._billStore != value)
+                {
+                    this.IsDirty = true;
+                    this._billStore = value;
+                    OnPropertyChanged(() => BillStore);
+                    PropertyChangedCompleted(() => BillStore);
+                }
+            }
+        }
+
+        protected string _billAddress;
+        /// <summary>
+        /// Property Model
+        /// <param>Gets or sets the BillAddress</param>
+        /// </summary>
+        public string BillAddress
+        {
+            get { return this._billAddress; }
+            set
+            {
+                if (this._billAddress != value)
+                {
+                    this.IsDirty = true;
+                    this._billAddress = value;
+                    OnPropertyChanged(() => BillAddress);
+                    PropertyChangedCompleted(() => BillAddress);
+                }
+            }
+        }
+
         #endregion
 
         #region Public Methods
@@ -1033,6 +1113,11 @@ namespace CPC.POS.Model
             this.base_PurchaseOrder.POCardImg = this.POCardImg;
             this.base_PurchaseOrder.IsReturned = this.IsReturned;
             this.base_PurchaseOrder.TaxAmount = this.TaxAmount;
+            this.base_PurchaseOrder.IsCOD = this.IsCOD;
+            this.base_PurchaseOrder.TaxPercent = this.TaxPercent;
+            this.base_PurchaseOrder.BillStore = this.BillStore;
+            if (this.BillAddress != null)
+                this.base_PurchaseOrder.BillAddress = this.BillAddress.Trim();
         }
 
         /// <summary>
@@ -1086,6 +1171,10 @@ namespace CPC.POS.Model
             this._pOCardImg = this.base_PurchaseOrder.POCardImg;
             this._isReturned = this.base_PurchaseOrder.IsReturned;
             this._taxAmount = this.base_PurchaseOrder.TaxAmount;
+            this._isCOD = this.base_PurchaseOrder.IsCOD;
+            this._taxPercent = this.base_PurchaseOrder.TaxPercent;
+            this._billStore = this.base_PurchaseOrder.BillStore;
+            this._billAddress = this.base_PurchaseOrder.BillAddress;
         }
 
         /// <summary>
@@ -1139,6 +1228,10 @@ namespace CPC.POS.Model
             this.POCardImg = this.base_PurchaseOrder.POCardImg;
             this.IsReturned = this.base_PurchaseOrder.IsReturned;
             this.TaxAmount = this.base_PurchaseOrder.TaxAmount;
+            this.IsCOD = this.base_PurchaseOrder.IsCOD;
+            this.TaxPercent = this.base_PurchaseOrder.TaxPercent;
+            this.BillStore = this.base_PurchaseOrder.BillStore;
+            this.BillAddress = this.base_PurchaseOrder.BillAddress;
         }
 
         #endregion
@@ -1595,6 +1688,96 @@ namespace CPC.POS.Model
 
         #endregion
 
+        //Flag To Skip StakOverFlow when raise changed
+        public bool SkipDisc
+        {
+            get;
+            set;
+        }
+
+        /// <summary>
+        /// Calculate Discount amount when discount percent changed
+        /// </summary>
+        public void CalcDiscountAmount()
+        {
+
+            if (!SkipDisc)
+            {
+                SkipDisc = true;
+                int decimalPlace = Define.CONFIGURATION.DecimalPlaces.HasValue ? Define.CONFIGURATION.DecimalPlaces.Value : 0;
+                decimal discountAmt = Math.Round(Math.Round(SubTotal * DiscountPercent / 100, decimalPlace) - 0.01M, MidpointRounding.AwayFromZero);
+                _discountAmount = discountAmt;
+                OnPropertyChanged(() => DiscountAmount);
+            }
+        }
+
+
+
+        /// <summary>
+        /// Calculate Discount amount when discount Amount changed
+        /// </summary>
+        public void CalcDiscountPercent()
+        {
+            if (!SkipDisc)
+            {
+                SkipDisc = true;
+                if (SubTotal != 0)
+                {
+                    int decimalPlace = Define.CONFIGURATION.DecimalPlaces.HasValue ? Define.CONFIGURATION.DecimalPlaces.Value : 0;
+                    _discountPercent = Math.Round((_discountAmount * 100 / SubTotal), 2);
+                }
+                else
+                    _discountPercent = 0;
+                OnPropertyChanged(() => DiscountPercent);
+            }
+        }
+
+
+        //Flag To Skip StakOverFlow when raise changed
+        public bool SkipTax
+        {
+            get;
+            set;
+        }
+
+        /// <summary>
+        /// Calculate Tax amount when Tax percent changed
+        /// </summary>
+        public void CalcTaxAmount()
+        {
+
+            if (!SkipTax)
+            {
+                SkipTax = true;
+                int decimalPlace = Define.CONFIGURATION.DecimalPlaces.HasValue ? Define.CONFIGURATION.DecimalPlaces.Value : 0;
+                decimal subtotalAfterDiscount = SubTotal - DiscountAmount;
+                decimal taxAmt = Math.Round(subtotalAfterDiscount * _taxPercent / 100, decimalPlace);
+                _taxAmount = taxAmt;
+                OnPropertyChanged(() => TaxAmount);
+            }
+        }
+
+
+
+        /// <summary>
+        /// Calculate Tax amount when Tax Amount changed
+        /// </summary>
+        public void CalcTaxPercent()
+        {
+            if (!SkipTax)
+            {
+                SkipTax = true;
+                if (SubTotal != 0)
+                {
+                    decimal subtotalAfterDiscount = SubTotal - DiscountAmount;
+                    int decimalPlace = Define.CONFIGURATION.DecimalPlaces.HasValue ? Define.CONFIGURATION.DecimalPlaces.Value : 0;
+                    _taxPercent = Math.Round((_taxAmount * 100 / subtotalAfterDiscount), decimalPlace);
+                }
+                else
+                    _taxPercent = 0;
+                OnPropertyChanged(() => TaxPercent);
+            }
+        }
         #endregion
 
         #region Override Methods

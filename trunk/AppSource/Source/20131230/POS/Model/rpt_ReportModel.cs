@@ -662,6 +662,258 @@ namespace CPC.POS.Model
 
         #region Custom Code
 
+        // Default constructor that set entity to field
+        public rpt_ReportModel(rpt_Report rpt_report)
+        {
+            this.rpt_Report = rpt_report;
+            this.ToModel();
+            this.IsDirty = false;
+
+            this.GroupName = this.rpt_Report.rpt_Group.Name;
+            Children = new ObservableCollection<rpt_ReportModel>();
+        }
+
+        public rpt_ReportModel(rpt_Report rpt_report, rpt_ReportModel parent)
+        {
+            this.rpt_Report = rpt_report;
+            this.ToModel();
+            this.IsDirty = false;
+
+            this.GroupName = this.rpt_Report.rpt_Group.Name;
+            Parent = parent;
+            Children = new ObservableCollection<rpt_ReportModel>();
+        }
+
+        #region Parent
+
+        private rpt_ReportModel _parent;
+        public rpt_ReportModel Parent
+        {
+            get { return _parent; }
+            set
+            {
+                _parent = value;
+            }
+        }
+
+        #endregion
+
+        #region -Is Show Open Foler Property-
+        /// <summary>
+        /// Set or get Is Show open foder Property
+        /// </summary>
+        protected string _isShowOpenFolder;
+        public string IsShowOpenFolder
+        {
+            get { return _isShowOpenFolder; }
+            set
+            {
+                if (_isShowOpenFolder != value)
+                {
+                    _isShowOpenFolder = value;
+                    OnPropertyChanged(() => IsShowOpenFolder);
+                }
+            }
+        }
+        #endregion
+
+        #region -Is Show Close Foler Property-
+        /// <summary>
+        /// Set or get Is close open foder Property
+        /// </summary>
+        protected string _isShowCloseFolder;
+        public string IsShowCloseFolder
+        {
+            get { return _isShowCloseFolder; }
+            set
+            {
+                if (_isShowCloseFolder != value)
+                {
+                    _isShowCloseFolder = value;
+                    OnPropertyChanged(() => IsShowCloseFolder);
+                }
+            }
+        }
+        #endregion
+
+        #region -Is Show document Property-
+        /// <summary>
+        /// Set or get Is Show document Property
+        /// </summary>
+        protected string _isShowDocumentr;
+        public string IsShowDocument
+        {
+            get { return _isShowDocumentr; }
+            set
+            {
+                if (_isShowDocumentr != value)
+                {
+                    _isShowDocumentr = value;
+                    OnPropertyChanged(() => IsShowDocument);
+                }
+            }
+        }
+        #endregion
+
+        #region -Is Show Ok Property-
+        /// <summary>
+        /// Set or get Is Show OK Property
+        /// </summary>
+        protected string _isShowOK = "Collapsed";
+        public string IsShowOK
+        {
+            get { return _isShowOK; }
+            set
+            {
+                if (_isShowOK != value)
+                {
+                    _isShowOK = value;
+                    OnPropertyChanged(() => IsShowOK);
+                }
+            }
+        }
+        #endregion
+
+        protected bool _isView;
+        /// <summary>
+        /// Property Model
+        /// <para>Gets or sets the IsView</para>
+        /// </summary>
+        public bool IsView
+        {
+            get { return this._isView; }
+            set
+            {
+                if (this._isView != value)
+                {
+                    this.IsDirty = true;
+                    this._isView = value;
+                    OnPropertyChanged(() => IsView);
+                    PropertyChangedCompleted(() => IsView);
+                }
+            }
+        }
+
+        protected bool _isPrint;
+        /// <summary>
+        /// Property Model
+        /// <para>Gets or sets the IsPrint</para>
+        /// </summary>
+        public bool IsPrint
+        {
+            get { return this._isPrint; }
+            set
+            {
+                if (this._isPrint != value)
+                {
+                    this.IsDirty = true;
+                    this._isPrint = value;
+                    OnPropertyChanged(() => IsPrint);
+                    PropertyChangedCompleted(() => IsPrint);
+                }
+            }
+        }
+
+        protected string _groupName;
+        /// <summary>
+        /// Property Model
+        /// <para>Gets or sets the Name</para>
+        /// </summary>
+        public string GroupName
+        {
+            get { return this._groupName; }
+            set
+            {
+                if (this._groupName != value)
+                {
+                    this.IsDirty = true;
+                    this._groupName = value;
+                    OnPropertyChanged(() => GroupName);
+                    PropertyChangedCompleted(() => GroupName);
+                }
+            }
+        }
+
+        // Default constructor that set entity to field
+        public rpt_ReportModel(rpt_Report rpt_report, int isExtend)
+        {
+            this.rpt_Report = rpt_report;
+            this.ToModel();
+            this.IsDirty = false;
+            this.GroupName = this.rpt_Report.rpt_Group.Name;
+            Children = new ObservableCollection<rpt_ReportModel>();
+        }
+
+        private ObservableCollection<rpt_ReportModel> _children;
+        public ObservableCollection<rpt_ReportModel> Children
+        {
+            get { return _children; }
+            set
+            {
+                if (_children != value)
+                {
+                    _children = value;
+                }
+            }
+        }
+
+        protected string _paperName;
+        /// <summary>
+        /// Property Model
+        /// <para>Gets or sets the Name</para>
+        /// </summary>
+        public string PaperName
+        {
+            get { return this._paperName; }
+            set
+            {
+                if (this._paperName != value)
+                {
+                    this.IsDirty = true;
+                    this._paperName = value;
+                    OnPropertyChanged(() => PaperName);
+                    PropertyChangedCompleted(() => PaperName);
+                }
+            }
+        }
+
+        protected bool _isDefaultPrinter = true;
+        /// <summary>
+        /// Property Model
+        /// <para>Gets or sets the IsDefaultPrinter</para>
+        /// </summary>
+        public bool IsDefaultPrinter
+        {
+            get { return this._isDefaultPrinter; }
+            set
+            {
+                if (this._isDefaultPrinter != value)
+                {
+                    this.IsDirty = true;
+                    this._isDefaultPrinter = value;
+                    OnPropertyChanged(() => IsDefaultPrinter);
+                    PropertyChangedCompleted(() => IsDefaultPrinter);
+                }
+            }
+        }
+
+        protected override void PropertyChangedCompleted(string propertyName)
+        {
+            base.PropertyChangedCompleted(propertyName);
+            if (propertyName == "IsDefaultPrinter")
+            {
+                this.IsDirty = true;
+            }
+        }
+
+        /// <summary>
+        /// Get or set Errors string.
+        /// </summary>
+        protected Dictionary<string, string> _errors = new Dictionary<string, string>();
+        public Dictionary<string, string> Errors
+        {
+            get { return _errors; }
+        }
 
         #endregion
 

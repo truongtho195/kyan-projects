@@ -572,7 +572,7 @@
                                           CommandParameter="{Binding Tag,
                                                                      RelativeSource={RelativeSource AncestorType={x:Type ContextMenu},
                                                                                                     Mode=FindAncestor}}"
-                                          Header="Convert to Sale Order">
+                                          Header="Make a sale">
                                     <MenuItem.Icon>
                                         <Rectangle Width="16"
                                                    Height="16"
@@ -1290,6 +1290,23 @@
                                                             </i:EventTrigger>
                                                         </i:Interaction.Triggers>
                                                     </cpcTextBox:TextBoxNumeric>
+                                                    <DataTemplate.Triggers>
+                                                        <DataTrigger Binding="{Binding ProductModel.IsSerialTracking}"
+                                                                     Value="True">
+                                                            <Setter  Property="NumericStringFormat"
+                                                                     TargetName="txtQuantity"
+                                                                     Value="{}{0:N0}" />
+                                                            <Setter  Property="CurrencyDecimalDigits"
+                                                                     TargetName="txtQuantity"
+                                                                     Value="0" />
+                                                        </DataTrigger>
+                                                        <DataTrigger Binding="{Binding ProductModel.IsSerialTracking}"
+                                                                     Value="False">
+                                                            <Setter  Property="NumericStringFormat"
+                                                                     TargetName="txtQuantity"
+                                                                     Value="{x:Static local:Define.NumericFormat}" />
+                                                        </DataTrigger>
+                                                    </DataTemplate.Triggers>
                                                 </DataTemplate>
                                             </DataGridTemplateColumn.CellEditingTemplate>
                                         </DataGridTemplateColumn>
@@ -1921,6 +1938,7 @@
                                                              CurrencyStringFormat="{x:Static local:Define.CurrencyFormat}"
                                                              IsReadOnly="True"
                                                              Padding="2,0,2,0"
+                                                             cpcBehavior:TextColorControlBehavior.Source="{Binding SelectedSaleOrder.Total, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}"
                                                              Style="{DynamicResource TextBoxTotal}"
                                                              TextWrapping="NoWrap"
                                                              Value="{Binding SelectedSaleOrder.Total,

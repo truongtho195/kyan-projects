@@ -8786,6 +8786,7 @@ namespace CPC.POS.Database
         /// <param name="id">Initial value of the Id property.</param>
         /// <param name="isPurged">Initial value of the IsPurged property.</param>
         /// <param name="isActived">Initial value of the IsActived property.</param>
+        /// <param name="department">Initial value of the Department property.</param>
         /// <param name="isRewardMember">Initial value of the IsRewardMember property.</param>
         /// <param name="checkLimit">Initial value of the CheckLimit property.</param>
         /// <param name="creditLimit">Initial value of the CreditLimit property.</param>
@@ -8810,12 +8811,14 @@ namespace CPC.POS.Database
         /// <param name="title">Initial value of the Title property.</param>
         /// <param name="isLayaway">Initial value of the IsLayaway property.</param>
         /// <param name="isVIP">Initial value of the IsVIP property.</param>
-        public static base_Guest Createbase_Guest(global::System.Int64 id, global::System.Boolean isPurged, global::System.Boolean isActived, global::System.Boolean isRewardMember, global::System.Decimal checkLimit, global::System.Decimal creditLimit, global::System.Decimal balanceDue, global::System.Decimal availCredit, global::System.Decimal pastDue, global::System.Boolean isPrimary, global::System.Decimal commissionPercent, global::System.Decimal totalRewardRedeemed, global::System.Decimal purchaseDuringTrackingPeriod, global::System.Decimal requirePurchaseNextReward, global::System.Boolean isBlockArriveLate, global::System.Boolean isDeductLunchTime, global::System.Boolean isBalanceOvertime, global::System.Int16 lateMinutes, global::System.Int32 overtimeOption, global::System.Int16 oTLeastMinute, global::System.Boolean isTrackingHour, global::System.Decimal termDiscount, global::System.Int16 termNetDue, global::System.Int16 termPaidWithinDay, global::System.Int16 title, global::System.Boolean isLayaway, global::System.Boolean isVIP)
+        /// <param name="isCOD">Initial value of the IsCOD property.</param>
+        public static base_Guest Createbase_Guest(global::System.Int64 id, global::System.Boolean isPurged, global::System.Boolean isActived, global::System.Int32 department, global::System.Boolean isRewardMember, global::System.Decimal checkLimit, global::System.Decimal creditLimit, global::System.Decimal balanceDue, global::System.Decimal availCredit, global::System.Decimal pastDue, global::System.Boolean isPrimary, global::System.Decimal commissionPercent, global::System.Decimal totalRewardRedeemed, global::System.Decimal purchaseDuringTrackingPeriod, global::System.Decimal requirePurchaseNextReward, global::System.Boolean isBlockArriveLate, global::System.Boolean isDeductLunchTime, global::System.Boolean isBalanceOvertime, global::System.Int16 lateMinutes, global::System.Int32 overtimeOption, global::System.Int16 oTLeastMinute, global::System.Boolean isTrackingHour, global::System.Decimal termDiscount, global::System.Int16 termNetDue, global::System.Int16 termPaidWithinDay, global::System.Int16 title, global::System.Boolean isLayaway, global::System.Boolean isVIP, global::System.Boolean isCOD)
         {
             base_Guest base_Guest = new base_Guest();
             base_Guest.Id = id;
             base_Guest.IsPurged = isPurged;
             base_Guest.IsActived = isActived;
+            base_Guest.Department = department;
             base_Guest.IsRewardMember = isRewardMember;
             base_Guest.CheckLimit = checkLimit;
             base_Guest.CreditLimit = creditLimit;
@@ -8840,6 +8843,7 @@ namespace CPC.POS.Database
             base_Guest.Title = title;
             base_Guest.IsLayaway = isLayaway;
             base_Guest.IsVIP = isVIP;
+            base_Guest.IsCOD = isCOD;
             return base_Guest;
         }
 
@@ -9380,9 +9384,9 @@ namespace CPC.POS.Database
         /// <summary>
         /// No Metadata Documentation available.
         /// </summary>
-        [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=true)]
+        [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=false)]
         [DataMemberAttribute()]
-        public global::System.String Department
+        public global::System.Int32 Department
         {
             get
             {
@@ -9392,13 +9396,13 @@ namespace CPC.POS.Database
             {
                 OnDepartmentChanging(value);
                 ReportPropertyChanging("Department");
-                _Department = StructuralObject.SetValidValue(value, true);
+                _Department = StructuralObject.SetValidValue(value);
                 ReportPropertyChanged("Department");
                 OnDepartmentChanged();
             }
         }
-        private global::System.String _Department;
-        partial void OnDepartmentChanging(global::System.String value);
+        private global::System.Int32 _Department;
+        partial void OnDepartmentChanging(global::System.Int32 value);
         partial void OnDepartmentChanged();
     
         /// <summary>
@@ -10552,6 +10556,30 @@ namespace CPC.POS.Database
         private global::System.Byte[] _Picture;
         partial void OnPictureChanging(global::System.Byte[] value);
         partial void OnPictureChanged();
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=false)]
+        [DataMemberAttribute()]
+        public global::System.Boolean IsCOD
+        {
+            get
+            {
+                return _IsCOD;
+            }
+            set
+            {
+                OnIsCODChanging(value);
+                ReportPropertyChanging("IsCOD");
+                _IsCOD = StructuralObject.SetValidValue(value);
+                ReportPropertyChanged("IsCOD");
+                OnIsCODChanged();
+            }
+        }
+        private global::System.Boolean _IsCOD;
+        partial void OnIsCODChanging(global::System.Boolean value);
+        partial void OnIsCODChanged();
 
         #endregion
     
@@ -12144,6 +12172,30 @@ namespace CPC.POS.Database
         private global::System.Guid _Resource;
         partial void OnResourceChanging(global::System.Guid value);
         partial void OnResourceChanged();
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=true)]
+        [DataMemberAttribute()]
+        public global::System.String Mark
+        {
+            get
+            {
+                return _Mark;
+            }
+            set
+            {
+                OnMarkChanging(value);
+                ReportPropertyChanging("Mark");
+                _Mark = StructuralObject.SetValidValue(value, true);
+                ReportPropertyChanged("Mark");
+                OnMarkChanged();
+            }
+        }
+        private global::System.String _Mark;
+        partial void OnMarkChanging(global::System.String value);
+        partial void OnMarkChanged();
 
         #endregion
     
@@ -21844,7 +21896,10 @@ namespace CPC.POS.Database
         /// <param name="vendorResource">Initial value of the VendorResource property.</param>
         /// <param name="isReturned">Initial value of the IsReturned property.</param>
         /// <param name="taxAmount">Initial value of the TaxAmount property.</param>
-        public static base_PurchaseOrder Createbase_PurchaseOrder(global::System.Int64 id, global::System.String purchaseOrderNo, global::System.String vendorCode, global::System.Int16 status, global::System.DateTime purchasedDate, global::System.Decimal termDiscountPercent, global::System.Int16 termNetDue, global::System.Int16 termPaidWithinDay, global::System.Int32 paymentMethodId, global::System.Decimal subTotal, global::System.Decimal discountPercent, global::System.Decimal discountAmount, global::System.Decimal freight, global::System.Decimal fee, global::System.Decimal total, global::System.Decimal paid, global::System.Decimal balance, global::System.Int32 itemCount, global::System.Decimal qtyOrdered, global::System.Decimal qtyDue, global::System.Decimal qtyReceived, global::System.Decimal unFilled, global::System.DateTime dateCreated, global::System.Guid resource, global::System.Boolean isFullWorkflow, global::System.Int32 storeCode, global::System.Boolean isPurge, global::System.Boolean isLocked, global::System.String vendorResource, global::System.Boolean isReturned, global::System.Decimal taxAmount)
+        /// <param name="isCOD">Initial value of the IsCOD property.</param>
+        /// <param name="taxPercent">Initial value of the TaxPercent property.</param>
+        /// <param name="billStore">Initial value of the BillStore property.</param>
+        public static base_PurchaseOrder Createbase_PurchaseOrder(global::System.Int64 id, global::System.String purchaseOrderNo, global::System.String vendorCode, global::System.Int16 status, global::System.DateTime purchasedDate, global::System.Decimal termDiscountPercent, global::System.Int16 termNetDue, global::System.Int16 termPaidWithinDay, global::System.Int32 paymentMethodId, global::System.Decimal subTotal, global::System.Decimal discountPercent, global::System.Decimal discountAmount, global::System.Decimal freight, global::System.Decimal fee, global::System.Decimal total, global::System.Decimal paid, global::System.Decimal balance, global::System.Int32 itemCount, global::System.Decimal qtyOrdered, global::System.Decimal qtyDue, global::System.Decimal qtyReceived, global::System.Decimal unFilled, global::System.DateTime dateCreated, global::System.Guid resource, global::System.Boolean isFullWorkflow, global::System.Int32 storeCode, global::System.Boolean isPurge, global::System.Boolean isLocked, global::System.String vendorResource, global::System.Boolean isReturned, global::System.Decimal taxAmount, global::System.Boolean isCOD, global::System.Decimal taxPercent, global::System.Int32 billStore)
         {
             base_PurchaseOrder base_PurchaseOrder = new base_PurchaseOrder();
             base_PurchaseOrder.Id = id;
@@ -21878,6 +21933,9 @@ namespace CPC.POS.Database
             base_PurchaseOrder.VendorResource = vendorResource;
             base_PurchaseOrder.IsReturned = isReturned;
             base_PurchaseOrder.TaxAmount = taxAmount;
+            base_PurchaseOrder.IsCOD = isCOD;
+            base_PurchaseOrder.TaxPercent = taxPercent;
+            base_PurchaseOrder.BillStore = billStore;
             return base_PurchaseOrder;
         }
 
@@ -22966,6 +23024,102 @@ namespace CPC.POS.Database
         private global::System.Decimal _TaxAmount;
         partial void OnTaxAmountChanging(global::System.Decimal value);
         partial void OnTaxAmountChanged();
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=false)]
+        [DataMemberAttribute()]
+        public global::System.Boolean IsCOD
+        {
+            get
+            {
+                return _IsCOD;
+            }
+            set
+            {
+                OnIsCODChanging(value);
+                ReportPropertyChanging("IsCOD");
+                _IsCOD = StructuralObject.SetValidValue(value);
+                ReportPropertyChanged("IsCOD");
+                OnIsCODChanged();
+            }
+        }
+        private global::System.Boolean _IsCOD;
+        partial void OnIsCODChanging(global::System.Boolean value);
+        partial void OnIsCODChanged();
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=false)]
+        [DataMemberAttribute()]
+        public global::System.Decimal TaxPercent
+        {
+            get
+            {
+                return _TaxPercent;
+            }
+            set
+            {
+                OnTaxPercentChanging(value);
+                ReportPropertyChanging("TaxPercent");
+                _TaxPercent = StructuralObject.SetValidValue(value);
+                ReportPropertyChanged("TaxPercent");
+                OnTaxPercentChanged();
+            }
+        }
+        private global::System.Decimal _TaxPercent;
+        partial void OnTaxPercentChanging(global::System.Decimal value);
+        partial void OnTaxPercentChanged();
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=false)]
+        [DataMemberAttribute()]
+        public global::System.Int32 BillStore
+        {
+            get
+            {
+                return _BillStore;
+            }
+            set
+            {
+                OnBillStoreChanging(value);
+                ReportPropertyChanging("BillStore");
+                _BillStore = StructuralObject.SetValidValue(value);
+                ReportPropertyChanged("BillStore");
+                OnBillStoreChanged();
+            }
+        }
+        private global::System.Int32 _BillStore;
+        partial void OnBillStoreChanging(global::System.Int32 value);
+        partial void OnBillStoreChanged();
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=true)]
+        [DataMemberAttribute()]
+        public global::System.String BillAddress
+        {
+            get
+            {
+                return _BillAddress;
+            }
+            set
+            {
+                OnBillAddressChanging(value);
+                ReportPropertyChanging("BillAddress");
+                _BillAddress = StructuralObject.SetValidValue(value, true);
+                ReportPropertyChanged("BillAddress");
+                OnBillAddressChanged();
+            }
+        }
+        private global::System.String _BillAddress;
+        partial void OnBillAddressChanging(global::System.String value);
+        partial void OnBillAddressChanged();
 
         #endregion
     
@@ -29726,7 +29880,8 @@ namespace CPC.POS.Database
         /// <param name="lOtherFee">Initial value of the LOtherFee property.</param>
         /// <param name="layawayFee">Initial value of the LayawayFee property.</param>
         /// <param name="lTotalFee">Initial value of the LTotalFee property.</param>
-        public static base_SaleOrder Createbase_SaleOrder(global::System.Int64 id, global::System.Int16 orderStatus, global::System.String customerResource, global::System.Int16 priceSchemaId, global::System.DateTime requestShipDate, global::System.Decimal subTotal, global::System.Int32 taxLocation, global::System.String taxCode, global::System.Decimal discountAmount, global::System.Decimal taxAmount, global::System.Decimal discountPercent, global::System.Decimal taxPercent, global::System.Decimal shipping, global::System.Decimal total, global::System.Decimal paid, global::System.Decimal balance, global::System.Decimal refundedAmount, global::System.Boolean isMultiPayment, global::System.Boolean isFullWorkflow, global::System.Decimal qtyOrdered, global::System.Decimal qtyDue, global::System.Decimal qtyReceived, global::System.Decimal unFilled, global::System.DateTime dateCreated, global::System.DateTime dateUpdated, global::System.Guid resource, global::System.Int16 bookingChanel, global::System.Int16 shippedCount, global::System.Decimal termDiscountPercent, global::System.Int16 termNetDue, global::System.Int16 termPaidWithinDay, global::System.Boolean isTaxExemption, global::System.Int16 shippedBox, global::System.Int16 packedQty, global::System.Decimal totalWeight, global::System.Int16 weightUnit, global::System.Int32 storeCode, global::System.Boolean isRedeeem, global::System.Boolean isPurge, global::System.Boolean isLocked, global::System.Decimal rewardAmount, global::System.Boolean isConverted, global::System.Boolean isVoided, global::System.Decimal openACFee, global::System.Decimal cancellationFee, global::System.Boolean isReturned, global::System.Decimal lOtherFee, global::System.Decimal layawayFee, global::System.Decimal lTotalFee)
+        /// <param name="isCOD">Initial value of the IsCOD property.</param>
+        public static base_SaleOrder Createbase_SaleOrder(global::System.Int64 id, global::System.Int16 orderStatus, global::System.String customerResource, global::System.Int16 priceSchemaId, global::System.DateTime requestShipDate, global::System.Decimal subTotal, global::System.Int32 taxLocation, global::System.String taxCode, global::System.Decimal discountAmount, global::System.Decimal taxAmount, global::System.Decimal discountPercent, global::System.Decimal taxPercent, global::System.Decimal shipping, global::System.Decimal total, global::System.Decimal paid, global::System.Decimal balance, global::System.Decimal refundedAmount, global::System.Boolean isMultiPayment, global::System.Boolean isFullWorkflow, global::System.Decimal qtyOrdered, global::System.Decimal qtyDue, global::System.Decimal qtyReceived, global::System.Decimal unFilled, global::System.DateTime dateCreated, global::System.DateTime dateUpdated, global::System.Guid resource, global::System.Int16 bookingChanel, global::System.Int16 shippedCount, global::System.Decimal termDiscountPercent, global::System.Int16 termNetDue, global::System.Int16 termPaidWithinDay, global::System.Boolean isTaxExemption, global::System.Int16 shippedBox, global::System.Int16 packedQty, global::System.Decimal totalWeight, global::System.Int16 weightUnit, global::System.Int32 storeCode, global::System.Boolean isRedeeem, global::System.Boolean isPurge, global::System.Boolean isLocked, global::System.Decimal rewardAmount, global::System.Boolean isConverted, global::System.Boolean isVoided, global::System.Decimal openACFee, global::System.Decimal cancellationFee, global::System.Boolean isReturned, global::System.Decimal lOtherFee, global::System.Decimal layawayFee, global::System.Decimal lTotalFee, global::System.Boolean isCOD)
         {
             base_SaleOrder base_SaleOrder = new base_SaleOrder();
             base_SaleOrder.Id = id;
@@ -29778,6 +29933,7 @@ namespace CPC.POS.Database
             base_SaleOrder.LOtherFee = lOtherFee;
             base_SaleOrder.LayawayFee = layawayFee;
             base_SaleOrder.LTotalFee = lTotalFee;
+            base_SaleOrder.IsCOD = isCOD;
             return base_SaleOrder;
         }
 
@@ -31538,6 +31694,30 @@ namespace CPC.POS.Database
         private global::System.Decimal _LTotalFee;
         partial void OnLTotalFeeChanging(global::System.Decimal value);
         partial void OnLTotalFeeChanged();
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=false)]
+        [DataMemberAttribute()]
+        public global::System.Boolean IsCOD
+        {
+            get
+            {
+                return _IsCOD;
+            }
+            set
+            {
+                OnIsCODChanging(value);
+                ReportPropertyChanging("IsCOD");
+                _IsCOD = StructuralObject.SetValidValue(value);
+                ReportPropertyChanged("IsCOD");
+                OnIsCODChanged();
+            }
+        }
+        private global::System.Boolean _IsCOD;
+        partial void OnIsCODChanging(global::System.Boolean value);
+        partial void OnIsCODChanged();
 
         #endregion
     
@@ -34184,6 +34364,78 @@ namespace CPC.POS.Database
         private global::System.String _Password;
         partial void OnPasswordChanging(global::System.String value);
         partial void OnPasswordChanged();
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=true)]
+        [DataMemberAttribute()]
+        public Nullable<global::System.Int16> State
+        {
+            get
+            {
+                return _State;
+            }
+            set
+            {
+                OnStateChanging(value);
+                ReportPropertyChanging("State");
+                _State = StructuralObject.SetValidValue(value);
+                ReportPropertyChanged("State");
+                OnStateChanged();
+            }
+        }
+        private Nullable<global::System.Int16> _State;
+        partial void OnStateChanging(Nullable<global::System.Int16> value);
+        partial void OnStateChanged();
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=true)]
+        [DataMemberAttribute()]
+        public global::System.String ZipCode
+        {
+            get
+            {
+                return _ZipCode;
+            }
+            set
+            {
+                OnZipCodeChanging(value);
+                ReportPropertyChanging("ZipCode");
+                _ZipCode = StructuralObject.SetValidValue(value, true);
+                ReportPropertyChanged("ZipCode");
+                OnZipCodeChanged();
+            }
+        }
+        private global::System.String _ZipCode;
+        partial void OnZipCodeChanging(global::System.String value);
+        partial void OnZipCodeChanged();
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=true)]
+        [DataMemberAttribute()]
+        public Nullable<global::System.Int16> CountryId
+        {
+            get
+            {
+                return _CountryId;
+            }
+            set
+            {
+                OnCountryIdChanging(value);
+                ReportPropertyChanging("CountryId");
+                _CountryId = StructuralObject.SetValidValue(value);
+                ReportPropertyChanged("CountryId");
+                OnCountryIdChanged();
+            }
+        }
+        private Nullable<global::System.Int16> _CountryId;
+        partial void OnCountryIdChanging(Nullable<global::System.Int16> value);
+        partial void OnCountryIdChanged();
 
         #endregion
     

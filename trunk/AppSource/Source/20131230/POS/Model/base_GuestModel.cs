@@ -496,12 +496,12 @@ namespace CPC.POS.Model
             }
         }
 
-        protected string _department;
+        protected int _department;
         /// <summary>
         /// Property Model
         /// <param>Gets or sets the Department</param>
         /// </summary>
-        public string Department
+        public int Department
         {
             get { return this._department; }
             set
@@ -1476,6 +1476,26 @@ namespace CPC.POS.Model
             }
         }
 
+        protected bool _isCOD;
+        /// <summary>
+        /// Property Model
+        /// <param>Gets or sets the IsCOD</param>
+        /// </summary>
+        public bool IsCOD
+        {
+            get { return this._isCOD; }
+            set
+            {
+                if (this._isCOD != value)
+                {
+                    this.IsDirty = true;
+                    this._isCOD = value;
+                    OnPropertyChanged(() => IsCOD);
+                    PropertyChangedCompleted(() => IsCOD);
+                }
+            }
+        }
+
         #endregion
 
         #region Public Methods
@@ -1534,8 +1554,7 @@ namespace CPC.POS.Model
             if (this.GuestNo != null)
                 this.base_Guest.GuestNo = this.GuestNo.Trim();
             this.base_Guest.PositionId = this.PositionId;
-            if (this.Department != null)
-                this.base_Guest.Department = this.Department.Trim();
+            this.base_Guest.Department = this.Department;
             if (this.Mark != null)
                 this.base_Guest.Mark = this.Mark.Trim();
             if (this.AccountNumber != null)
@@ -1601,6 +1620,7 @@ namespace CPC.POS.Model
                 this.base_Guest.ManagerResource = this.ManagerResource.Trim();
             this.base_Guest.IsVIP = this.IsVIP;
             this.base_Guest.Picture = this.Picture;
+            this.base_Guest.IsCOD = this.IsCOD;
         }
 
         /// <summary>
@@ -1680,6 +1700,7 @@ namespace CPC.POS.Model
             this._managerResource = this.base_Guest.ManagerResource;
             this._isVIP = this.base_Guest.IsVIP;
             this._picture = this.base_Guest.Picture;
+            this._isCOD = this.base_Guest.IsCOD;
         }
 
         /// <summary>
@@ -1759,6 +1780,7 @@ namespace CPC.POS.Model
             this.ManagerResource = this.base_Guest.ManagerResource;
             this.IsVIP = this.base_Guest.IsVIP;
             this.Picture = this.base_Guest.Picture;
+            this.IsCOD = this.base_Guest.IsCOD;
         }
 
         #endregion
@@ -2677,6 +2699,28 @@ namespace CPC.POS.Model
             }
         }
 
+
+        #region DepartmentItem
+        [NonSerialized]
+        private ComboItem _departmentItem;
+        /// <summary>
+        /// Gets or sets the DepartmentItem.
+        /// </summary>
+        public ComboItem DepartmentItem
+        {
+            get { return _departmentItem; }
+            set
+            {
+                if (_departmentItem != value)
+                {
+                    _departmentItem = value;
+                    OnPropertyChanged(() => DepartmentItem);
+                }
+            }
+        }
+        #endregion
+
+
         #endregion
 
         #region Override Methods
@@ -2913,6 +2957,109 @@ namespace CPC.POS.Model
         }
         #endregion
 
+        // Default constructor that set entity to field
+        public base_GuestModel(bool isPicture, base_Guest base_guest)
+        {
+            this.base_Guest = base_guest;
+            this.ToModelCustom();
+            this.IsDirty = false;
+        }
+        public void ToModelCustom()
+        {
+            this._id = this.base_Guest.Id;
+            this._firstName = this.base_Guest.FirstName;
+            this._middleName = this.base_Guest.MiddleName;
+            this._lastName = this.base_Guest.LastName;
+            this._company = this.base_Guest.Company;
+            this._phone1 = this.base_Guest.Phone1;
+            this._ext1 = this.base_Guest.Ext1;
+            this._phone2 = this.base_Guest.Phone2;
+            this._ext2 = this.base_Guest.Ext2;
+            this._fax = this.base_Guest.Fax;
+            this._cellPhone = this.base_Guest.CellPhone;
+            this._email = this.base_Guest.Email;
+            this._website = this.base_Guest.Website;
+            this._userCreated = this.base_Guest.UserCreated;
+            this._userUpdated = this.base_Guest.UserUpdated;
+            this._dateCreated = this.base_Guest.DateCreated;
+            this._dateUpdated = this.base_Guest.DateUpdated;
+            this._isPurged = this.base_Guest.IsPurged;
+            this._guestTypeId = this.base_Guest.GuestTypeId;
+            this._isActived = this.base_Guest.IsActived;
+            this._guestNo = this.base_Guest.GuestNo;
+            this._positionId = this.base_Guest.PositionId;
+            this._department = this.base_Guest.Department;
+            this._mark = this.base_Guest.Mark;
+            this._accountNumber = this.base_Guest.AccountNumber;
+            this._parentId = this.base_Guest.ParentId;
+            this._isRewardMember = this.base_Guest.IsRewardMember;
+            this._checkLimit = this.base_Guest.CheckLimit;
+            this._creditLimit = this.base_Guest.CreditLimit;
+            this._balanceDue = this.base_Guest.BalanceDue;
+            this._availCredit = this.base_Guest.AvailCredit;
+            this._pastDue = this.base_Guest.PastDue;
+            this._isPrimary = this.base_Guest.IsPrimary;
+            this._commissionPercent = this.base_Guest.CommissionPercent;
+            this._resource = this.base_Guest.Resource;
+            this._totalRewardRedeemed = this.base_Guest.TotalRewardRedeemed;
+            this._purchaseDuringTrackingPeriod = this.base_Guest.PurchaseDuringTrackingPeriod;
+            this._requirePurchaseNextReward = this.base_Guest.RequirePurchaseNextReward;
+            this._hireDate = this.base_Guest.HireDate;
+            this._isBlockArriveLate = this.base_Guest.IsBlockArriveLate;
+            this._isDeductLunchTime = this.base_Guest.IsDeductLunchTime;
+            this._isBalanceOvertime = this.base_Guest.IsBalanceOvertime;
+            this._lateMinutes = this.base_Guest.LateMinutes;
+            this._overtimeOption = this.base_Guest.OvertimeOption;
+            this._oTLeastMinute = this.base_Guest.OTLeastMinute;
+            this._isTrackingHour = this.base_Guest.IsTrackingHour;
+            this._termDiscount = this.base_Guest.TermDiscount;
+            this._termNetDue = this.base_Guest.TermNetDue;
+            this._termPaidWithinDay = this.base_Guest.TermPaidWithinDay;
+            this._paymentTermDescription = this.base_Guest.PaymentTermDescription;
+            this._saleRepId = this.base_Guest.SaleRepId;
+            this._shift = this.base_Guest.Shift;
+            this._idCard = this.base_Guest.IdCard;
+            this._idCardImg = this.base_Guest.IdCardImg;
+            this._remark = this.base_Guest.Remark;
+            this._groupResource = this.base_Guest.GroupResource;
+            this._iM = this.base_Guest.IM;
+            this._custom1 = this.base_Guest.Custom1;
+            this._custom2 = this.base_Guest.Custom2;
+            this._custom3 = this.base_Guest.Custom3;
+            this._custom4 = this.base_Guest.Custom4;
+            this._custom5 = this.base_Guest.Custom5;
+            this._custom6 = this.base_Guest.Custom6;
+            this._custom7 = this.base_Guest.Custom7;
+            this._custom8 = this.base_Guest.Custom8;
+            this._title = this.base_Guest.Title;
+            this._isLayaway = this.base_Guest.IsLayaway;
+            this._creditLine = this.base_Guest.CreditLine;
+            this._managerResource = this.base_Guest.ManagerResource;
+            this._isVIP = this.base_Guest.IsVIP;
+        }
+
+        #region ManagerCommission
+        protected decimal _managerCommission;
+        /// <summary>
+        /// Property Model
+        /// <param>Gets or sets the ManagerCommission</param>
+        /// </summary>
+        public decimal ManagerCommission
+        {
+            get { return this._managerCommission; }
+            set
+            {
+                if (this._managerCommission != value)
+                {
+                    this._managerCommission = value;
+                    OnPropertyChanged(() => ManagerCommission);
+                    PropertyChangedCompleted(() => ManagerCommission);
+                    this.OnPropertyChanged(() => CommissionPercent);
+                }
+            }
+        }
+        #endregion
+
         #endregion
 
         #region IDataErrorInfo Members
@@ -3021,6 +3168,11 @@ namespace CPC.POS.Model
                     case "IsDuplicateGuestNo":
                         if (IsDuplicateGuestNo)
                             message = "Account number is duplicated";
+                        break;
+
+                    case "CommissionPercent":
+                        if (this.ManagerCommission > 0 && 100 - this.ManagerCommission < this.CommissionPercent)
+                            message = string.Format("Commision must be smaller {0}", 100 - this.ManagerCommission);
                         break;
                 }
 

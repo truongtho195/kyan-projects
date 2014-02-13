@@ -52,6 +52,8 @@ namespace CPC.POS.ViewModel
 
         private short _oldItemTypeID;
 
+        private base_Product _existedProduct;
+
         /// <summary>
         /// Timer for searching
         /// </summary>
@@ -82,13 +84,11 @@ namespace CPC.POS.ViewModel
                 {
                     isSearchMode = value;
                     OnPropertyChanged(() => IsSearchMode);
+                    UpdateContainerTitle();
                 }
             }
         }
 
-
-
-        #region Keyword
         private string _keyword;
         /// <summary>
         /// Gets or sets the Keyword.
@@ -106,9 +106,6 @@ namespace CPC.POS.ViewModel
                 }
             }
         }
-        #endregion
-
-
 
         private ObservableCollection<string> _columnCollection;
         /// <summary>
@@ -541,6 +538,32 @@ namespace CPC.POS.ViewModel
             }
         }
 
+        /// <summary>
+        /// Gets the ShowCategoryAddItemButton.
+        /// </summary>
+        public bool ShowCategoryAddItemButton
+        {
+            get
+            {
+                if (SelectedProduct == null)
+                    return false;
+                return SelectedProduct.ProductDepartmentId != 0 && UserPermissions.AllowAddDepartment;
+            }
+        }
+
+        /// <summary>
+        /// Gets the ShowBrandAddItemButton.
+        /// </summary>
+        public bool ShowBrandAddItemButton
+        {
+            get
+            {
+                if (SelectedProduct == null)
+                    return false;
+                return SelectedProduct.ProductCategoryId != 0 && UserPermissions.AllowAccessProductPermission;
+            }
+        }
+
         #endregion
 
         #region Constructors
@@ -563,7 +586,7 @@ namespace CPC.POS.ViewModel
             if (Define.CONFIGURATION.IsAutoSearch)
             {
                 _waitingTimer = new DispatcherTimer();
-                _waitingTimer.Interval = TimeSpan.FromSeconds(1);
+                _waitingTimer.Interval = new TimeSpan(0, 0, 0, 0, 100);
                 _waitingTimer.Tick += new EventHandler(_waitingTimer_Tick);
             }
         }
@@ -1015,17 +1038,20 @@ namespace CPC.POS.ViewModel
 
             // Get parentID
             int? parentID = null;
+            string popupTitle = Language.GetMsg("PD_Title_CreateNewDepartment");
             switch (departmentType)
             {
                 case ProductDeparmentLevel.Category:
                     if (SelectedProduct.ProductDepartmentId == 0)
                         return;
                     parentID = SelectedProduct.ProductDepartmentId;
+                    popupTitle = Language.GetMsg("PD_Title_CreateNewCategory");
                     break;
                 case ProductDeparmentLevel.Brand:
                     if (SelectedProduct.ProductCategoryId == 0)
                         return;
                     parentID = SelectedProduct.ProductCategoryId;
+                    popupTitle = Language.GetMsg("PD_Title_CreateNewBrand");
                     break;
             }
 
@@ -1033,7 +1059,7 @@ namespace CPC.POS.ViewModel
             PopupDepartmentCategoryBrandViewModel viewModel = new PopupDepartmentCategoryBrandViewModel(departmentType, parentID);
 
             // Show dialog and get result when close popup
-            bool? result = _dialogService.ShowDialog<PopupDepartmentCategoryBrandView>(_ownerViewModel, viewModel, string.Format("Create new {0}", departmentType));
+            bool? result = _dialogService.ShowDialog<PopupDepartmentCategoryBrandView>(_ownerViewModel, viewModel, popupTitle);
 
             // Check result if ok button is clicked
             if (result.HasValue && result.Value && viewModel.NewItem != null)
@@ -1089,7 +1115,7 @@ namespace CPC.POS.ViewModel
         private void OnPopupVendorCommandExecute(object param)
         {
             PopupGuestViewModel viewModel = new PopupGuestViewModel();
-            bool? result = _dialogService.ShowDialog<PopupGuestView>(_ownerViewModel, viewModel, "Create new vendor");
+            bool? result = _dialogService.ShowDialog<PopupGuestView>(_ownerViewModel, viewModel, Language.GetMsg("PD_Title_CreateNewVendor"));
             if (result.HasValue && result.Value && viewModel.NewItem != null)
             {
                 // Add new vendor to list
@@ -1149,7 +1175,7 @@ namespace CPC.POS.ViewModel
         private void OnPopupUOMCommandExecute(object param)
         {
             PopupUOMViewModel viewModel = new PopupUOMViewModel();
-            bool? result = _dialogService.ShowDialog<PopupUOMView>(_ownerViewModel, viewModel, "Create new UOM");
+            bool? result = _dialogService.ShowDialog<PopupUOMView>(_ownerViewModel, viewModel, Language.GetMsg("PD_Title_CreateNewUOM"));
             if (result.HasValue && result.Value && viewModel.UOMModel != null)
             {
                 // Add new UOM to list
@@ -1210,7 +1236,8 @@ namespace CPC.POS.ViewModel
                     return;
 
                 PopupAttributeAndSizeViewModel viewModel = new PopupAttributeAndSizeViewModel(SelectedProduct);
-                bool? result = _dialogService.ShowDialog<PopupAttributeAndSizeView>(_ownerViewModel, viewModel, "Attribute and Size");
+                viewModel.IsManualGenerate = IsManualGenerate;
+                bool? result = _dialogService.ShowDialog<PopupAttributeAndSizeView>(_ownerViewModel, viewModel, Language.GetMsg("PD_Title_AttributeAndSize"));
             }
         }
 
@@ -1238,7 +1265,7 @@ namespace CPC.POS.ViewModel
         private void OnPopupReorderPointCommandExecute()
         {
             PopupReorderPointViewModel viewModel = new PopupReorderPointViewModel(SelectedProduct);
-            bool? result = _dialogService.ShowDialog<PopupReorderPointView>(_ownerViewModel, viewModel, "Reorder Point");
+            bool? result = _dialogService.ShowDialog<PopupReorderPointView>(_ownerViewModel, viewModel, Language.GetMsg("PD_Title_ReorderPoint"));
             if (result.HasValue && result.Value)
             {
                 foreach (base_ProductStoreModel productStoreItem in viewModel.ProductStoreCollection)
@@ -1291,7 +1318,7 @@ namespace CPC.POS.ViewModel
         private void OnPopupAvailableCommandExecute()
         {
             PopupAvailableQuantitiesViewModel viewModel = new PopupAvailableQuantitiesViewModel(SelectedProduct);
-            bool? result = _dialogService.ShowDialog<PopupAvailableQuantitiesView>(_ownerViewModel, viewModel, "Available Quantities");
+            bool? result = _dialogService.ShowDialog<PopupAvailableQuantitiesView>(_ownerViewModel, viewModel, Language.GetMsg("PD_Title_AvailableQuantities"));
             if (result.HasValue && result.Value)
             {
                 foreach (base_ProductStoreModel productStoreItem in viewModel.ProductStoreCollection)
@@ -1370,7 +1397,12 @@ namespace CPC.POS.ViewModel
             LoadPriceSchemas();
 
             PopupManagementUOMViewModel viewModel = new PopupManagementUOMViewModel(UOMList, SelectedProduct, PriceSchemaList);
-            bool? result = _dialogService.ShowDialog<PopupManagementUOMView>(_ownerViewModel, viewModel, "Management UOM");
+            viewModel.ItemTypeList = ItemTypeList;
+            viewModel.DepartmentCollection = DepartmentCollection;
+            viewModel.CategoryCollection = new ObservableCollection<base_DepartmentModel>(CategoryCollection);
+            viewModel.BrandCollection = new ObservableCollection<base_DepartmentModel>(BrandCollection);
+            viewModel.VendorCollection = VendorCollection;
+            bool? result = _dialogService.ShowDialog<PopupManagementUOMView>(_ownerViewModel, viewModel, Language.GetMsg("PD_Title_ManagementUOM"));
             if (result.HasValue && result.Value)
             {
                 viewModel.CopyUOM(SelectedProduct, viewModel.ResultProductModel);
@@ -1379,6 +1411,10 @@ namespace CPC.POS.ViewModel
                     base_ProductUOMModel uomModel = viewModel.ResultProductModel.ProductUOMCollection[i];
                     SelectedProduct.ProductUOMCollection[i].ToModel(uomModel);
                 }
+
+                SelectedProduct.IsDuplicateCode = false;
+                SelectedProduct.IsDuplicateUPC = false;
+                SelectedProduct.IsDuplicateALU = false;
             }
         }
 
@@ -1412,7 +1448,7 @@ namespace CPC.POS.ViewModel
             LoadPriceSchemas();
 
             PopupPricingViewModel viewModel = new PopupPricingViewModel(SelectedProduct, UOMList, PriceSchemaList);
-            bool? result = _dialogService.ShowDialog<PopupPricingView>(_ownerViewModel, viewModel, "Pricing");
+            bool? result = _dialogService.ShowDialog<PopupPricingView>(_ownerViewModel, viewModel, Language.GetMsg("PD_Title_Pricing"));
             if (result.HasValue && result.Value)
             {
                 base_ProductUOMModel baseProductUOM = viewModel.ProductUOMList.FirstOrDefault(x => x.UOMId.Equals(SelectedProduct.BaseUOMId));
@@ -1517,7 +1553,7 @@ namespace CPC.POS.ViewModel
                 LoadVendorProductCollection(SelectedProduct);
 
                 PopupDuplicateItemViewModel viewModel = new PopupDuplicateItemViewModel(SelectedProduct, DepartmentCollection, CategoryCollection);
-                bool? result = _dialogService.ShowDialog<PopupDuplicateItemView>(_ownerViewModel, viewModel, "Duplicate Item");
+                bool? result = _dialogService.ShowDialog<PopupDuplicateItemView>(_ownerViewModel, viewModel, Language.GetMsg("PD_Title_DuplicateItem"));
 
                 SelectedProduct = null;
 
@@ -1759,7 +1795,7 @@ namespace CPC.POS.ViewModel
                 SelectedProduct.ProductGroupCollection = new CollectionBase<base_ProductGroupModel>();
 
             PopupBuildItemGroupViewModel viewModel = new PopupBuildItemGroupViewModel(SelectedProduct, VendorCollection);
-            bool? result = _dialogService.ShowDialog<PopupBuildItemGroupView>(_ownerViewModel, viewModel, "Build Item Group");
+            bool? result = _dialogService.ShowDialog<PopupBuildItemGroupView>(_ownerViewModel, viewModel, Language.GetMsg("PD_Title_BuildItemGroup"));
             if (result.HasValue && result.Value)
             {
                 try
@@ -1838,11 +1874,116 @@ namespace CPC.POS.ViewModel
         private void OnPopupAddNewWarrantyCommandExecute()
         {
             PopupAddNewWarrantyViewModel viewModel = new PopupAddNewWarrantyViewModel();
-            bool? result = _dialogService.ShowDialog<PopupAddNewWarrantyView>(_ownerViewModel, viewModel, "Add new Warranty");
+            bool? result = _dialogService.ShowDialog<PopupAddNewWarrantyView>(_ownerViewModel, viewModel, Language.GetMsg("PD_Title_AddNewWarranty"));
             if (result.HasValue && result.Value)
             {
                 WarrantyTypeAll.Add(viewModel.WarrantyItem);
                 SelectedProduct.WarrantyType = viewModel.WarrantyItem.Value;
+            }
+        }
+
+        #endregion
+
+        #region CheckCodeCommand
+
+        /// <summary>
+        /// Gets the CheckCodeCommand command.
+        /// </summary>
+        public ICommand CheckCodeCommand { get; private set; }
+
+        /// <summary>
+        /// Method to check whether the CheckCodeCommand command can be executed.
+        /// </summary>
+        /// <returns><c>true</c> if the command can be executed; otherwise <c>false</c></returns>
+        private bool OnCheckCodeCommandCanExecute()
+        {
+            return IsManualGenerate;
+        }
+
+        /// <summary>
+        /// Method to invoke when the CheckCodeCommand command is executed.
+        /// </summary>
+        private void OnCheckCodeCommandExecute()
+        {
+            if (SelectedProduct != null)
+            {
+                bool isDuplicate = IsDuplicateCode(SelectedProduct);
+                SelectedProduct.IsDuplicateCode = isDuplicate;
+
+                // Check duplicate code
+                if (isDuplicate)
+                {
+                    string message = string.Format("Item Number: {0} of this product is existed.\nDo you wan to view existed product?", SelectedProduct.Code);
+                    MessageBoxResult msgResult = Xceed.Wpf.Toolkit.MessageBox.Show(message, "POS", MessageBoxButton.YesNo, MessageBoxImage.Warning);
+                    if (msgResult.Is(MessageBoxResult.Yes))
+                    {
+                        ShowPopupViewExistedProduct();
+                    }
+                }
+            }
+        }
+
+        #endregion
+
+        #region CheckBarcodeCommand
+
+        /// <summary>
+        /// Gets the CheckBarcodeCommand command.
+        /// </summary>
+        public ICommand CheckBarcodeCommand { get; private set; }
+
+        /// <summary>
+        /// Method to invoke when the CheckBarcodeCommand command is executed.
+        /// </summary>
+        private void OnCheckBarcodeCommandExecute(object param)
+        {
+            if (SelectedProduct != null)
+            {
+                bool isDuplicate = IsDuplicateBarcode(SelectedProduct);
+                SelectedProduct.IsDuplicateUPC = isDuplicate;
+
+                // Check duplicate barcode
+                if (isDuplicate)
+                {
+                    string message = string.Format("Scan code: {0} of this product is existed.\nDo you wan to view existed product?", SelectedProduct.Barcode);
+                    MessageBoxResult msgResult = Xceed.Wpf.Toolkit.MessageBox.Show(message, "POS", MessageBoxButton.YesNo, MessageBoxImage.Warning);
+                    if (msgResult.Is(MessageBoxResult.Yes))
+                    {
+                        ShowPopupViewExistedProduct();
+                    }
+                }
+            }
+        }
+
+        #endregion
+
+        #region CheckALUCommand
+
+        /// <summary>
+        /// Gets the CheckALUCommand command.
+        /// </summary>
+        public ICommand CheckALUCommand { get; private set; }
+
+        /// <summary>
+        /// Method to invoke when the CheckALUCommand command is executed.
+        /// </summary>
+        private void OnCheckALUCommandExecute(object param)
+        {
+            if (SelectedProduct != null)
+            {
+                bool isDuplicate = IsDuplicateALU(SelectedProduct);
+                SelectedProduct.IsDuplicateALU = isDuplicate;
+
+                // Check duplicate alternate barcode
+                if (isDuplicate)
+                {
+                    string message = string.Format("ALU: {0} of this product is existed.\nDo you wan to view existed product?", SelectedProduct.ALU);
+                    MessageBoxResult msgResult = Xceed.Wpf.Toolkit.MessageBox.Show(message, "POS", MessageBoxButton.YesNo, MessageBoxImage.Warning);
+                    if (msgResult.Is(MessageBoxResult.Yes))
+                    {
+                        ShowPopupViewExistedProduct();
+                    }
+                }
             }
         }
 
@@ -1887,6 +2028,7 @@ namespace CPC.POS.ViewModel
 
                     // Load product vendor collection
                     ProductVendorCollection = new ObservableCollection<base_GuestModel>(VendorCollection.CloneList());
+                    ProductVendorCollection.Insert(0, new base_GuestModel { Resource = Guid.NewGuid() });
                 }
 
                 // Load UOM list
@@ -1956,6 +2098,9 @@ namespace CPC.POS.ViewModel
             DeleteVendorCommand = new RelayCommand<object>(OnDeleteVendorCommandExecute, OnDeleteVendorCommandCanExecute);
             BuildItemsGroupCommand = new RelayCommand(OnBuildItemsGroupCommandExecute, OnBuildItemsGroupCommandCanExecute);
             PopupAddNewWarrantyCommand = new RelayCommand(OnPopupAddNewWarrantyCommandExecute, OnPopupAddNewWarrantyCommandCanExecute);
+            CheckCodeCommand = new RelayCommand(OnCheckCodeCommandExecute, OnCheckCodeCommandCanExecute);
+            CheckBarcodeCommand = new RelayCommand<object>(OnCheckBarcodeCommandExecute);
+            CheckALUCommand = new RelayCommand<object>(OnCheckALUCommandExecute);
         }
 
         /// <summary>
@@ -2143,11 +2288,11 @@ namespace CPC.POS.ViewModel
                         // Get all products that ProductName contain keyword
                         predicate = predicate.Or(x => x.ProductName.ToLower().Contains(keyword));
                     }
-                    if (ColumnCollection.Contains(SearchOptions.Description.ToString()))
-                    {
-                        // Get all products that Description contain keyword
-                        predicate = predicate.Or(x => x.Description.ToLower().Contains(keyword));
-                    }
+                    //if (ColumnCollection.Contains(SearchOptions.Description.ToString()))
+                    //{
+                    //    // Get all products that Description contain keyword
+                    //    predicate = predicate.Or(x => x.Description.ToLower().Contains(keyword));
+                    //}
                     if (ColumnCollection.Contains(SearchOptions.Attribute.ToString()))
                     {
                         // Get all products that Attribute contain keyword
@@ -2187,6 +2332,11 @@ namespace CPC.POS.ViewModel
                     decimal decimalKeyword = 0;
                     if (decimal.TryParse(keyword, NumberStyles.Number, Define.ConverterCulture.NumberFormat, out decimalKeyword) && decimalKeyword != 0)
                     {
+                        if (ColumnCollection.Contains(SearchOptions.CompanyReOrderPoint.ToString()))
+                        {
+                            // Get all products that CompanyReOrderPoint contain keyword
+                            predicate = predicate.Or(x => x.CompanyReOrderPoint.Equals(decimalKeyword));
+                        }
                         if (ColumnCollection.Contains(SearchOptions.RegularPrice.ToString()))
                         {
                             // Get all products that RegularPrice contain keyword
@@ -2453,7 +2603,10 @@ namespace CPC.POS.ViewModel
                         }));
 
                     // Set default photo
-                    productModel.PhotoDefault = productModel.PhotoCollection.FirstOrDefault();
+                    if (productModel.PhotoCollection.Any())
+                        productModel.PhotoDefault = productModel.PhotoCollection.FirstOrDefault();
+                    else
+                        productModel.PhotoDefault = new base_ResourcePhotoModel();
                 }
             }
             catch (Exception ex)
@@ -2909,33 +3062,33 @@ namespace CPC.POS.ViewModel
         /// <returns></returns>
         private bool SaveProduct(base_ProductModel productModel)
         {
-            // Check duplicate code
-            if (IsDuplicateCode(productModel))
-            {
-                Xceed.Wpf.Toolkit.MessageBox.Show("Code of this product is existed", "POS", MessageBoxButton.OK, MessageBoxImage.Warning);
-                return false;
-            }
+            //// Check duplicate code
+            //if (IsDuplicateCode(productModel))
+            //{
+            //    Xceed.Wpf.Toolkit.MessageBox.Show("Code of this product is existed", "POS", MessageBoxButton.OK, MessageBoxImage.Warning);
+            //    return false;
+            //}
 
-            // Check duplicate product
-            if (IsDuplicateProduct(productModel))
-            {
-                Xceed.Wpf.Toolkit.MessageBox.Show("This product is duplicated", "POS", MessageBoxButton.OK, MessageBoxImage.Warning);
-                return false;
-            }
+            //// Check duplicate product
+            //if (IsDuplicateProduct(productModel))
+            //{
+            //    Xceed.Wpf.Toolkit.MessageBox.Show("This product is duplicated", "POS", MessageBoxButton.OK, MessageBoxImage.Warning);
+            //    return false;
+            //}
 
-            // Check duplicate barcode
-            if (IsDuplicateBarcode(productModel))
-            {
-                Xceed.Wpf.Toolkit.MessageBox.Show("Barcode of this product is existed", "POS", MessageBoxButton.OK, MessageBoxImage.Warning);
-                return false;
-            }
+            //// Check duplicate barcode
+            //if (IsDuplicateBarcode(productModel))
+            //{
+            //    Xceed.Wpf.Toolkit.MessageBox.Show("Barcode of this product is existed", "POS", MessageBoxButton.OK, MessageBoxImage.Warning);
+            //    return false;
+            //}
 
-            // Check duplicate alternate barcode
-            if (IsDuplicateALU(productModel))
-            {
-                Xceed.Wpf.Toolkit.MessageBox.Show("ALU of this product is existed", "POS", MessageBoxButton.OK, MessageBoxImage.Warning);
-                return false;
-            }
+            //// Check duplicate alternate barcode
+            //if (IsDuplicateALU(productModel))
+            //{
+            //    Xceed.Wpf.Toolkit.MessageBox.Show("ALU of this product is existed", "POS", MessageBoxButton.OK, MessageBoxImage.Warning);
+            //    return false;
+            //}
 
             if (productModel.IsNew)
             {
@@ -2956,9 +3109,6 @@ namespace CPC.POS.ViewModel
 
             // Update old cost
             productModel.OldCost = productModel.AverageUnitCost;
-
-            // Update default photo
-            productModel.PhotoDefault = productModel.PhotoCollection.FirstOrDefault();
 
             base_ProductModel productItem = ProductCollection.SingleOrDefault(x => x.Resource.Equals(productModel.Resource));
             if (productItem != null)
@@ -3137,6 +3287,12 @@ namespace CPC.POS.ViewModel
                         // Turn off IsDirty & IsNew
                         photoModel.EndUpdate();
                     }
+
+                    // Update default photo
+                    if (productModel.PhotoCollection.Any())
+                        productModel.PhotoDefault = productModel.PhotoCollection.FirstOrDefault();
+                    else
+                        productModel.PhotoDefault = new base_ResourcePhotoModel();
                 }
             }
             catch (Exception ex)
@@ -3174,7 +3330,14 @@ namespace CPC.POS.ViewModel
                             productItem.Shift = Define.ShiftCode;
                             productItem.IsPurge = false;
 
+                            // Copy photo collection
+                            CopyPhotoCollection(productModel, productItem);
+
+                            // Copy product store default
                             CopyProductStoreDefault(productModel, productItem);
+
+                            // Copy vendor product collection
+                            CopyVendorProductCollection(productModel, productItem);
                         }
                         else
                         {
@@ -3194,8 +3357,14 @@ namespace CPC.POS.ViewModel
                         // Update total available quantity on product
                         productModel.UpdateAvailableQuantity();
 
+                        // Save photo collection
+                        SavePhotoCollection(productItem);
+
                         // Save product store collection
                         SaveProductStoreCollection(productItem);
+
+                        // Save vendor product collection
+                        SaveVendorProductCollection(productItem);
 
                         // Map data from model to entity
                         productItem.ToEntity();
@@ -3458,7 +3627,8 @@ namespace CPC.POS.ViewModel
                         if (vendorProductItem.IsNew)
                         {
                             // Add new vendor product to database
-                            _vendorProductRepository.Add(vendorProductItem.base_VendorProduct);
+                            productModel.base_Product.base_VendorProduct.Add(vendorProductItem.base_VendorProduct);
+                            //_vendorProductRepository.Add(vendorProductItem.base_VendorProduct);
                         }
                         else
                         {
@@ -3540,9 +3710,9 @@ namespace CPC.POS.ViewModel
                 // Clear deleted products
                 productModel.ProductCollection.DeletedItems.Clear();
 
-                foreach (base_ProductModel productItem in productModel.ProductCollection.Where(x => !x.Code.Equals(productModel.Code)))
+                foreach (base_ProductModel productItem in productModel.ProductCollection)
                 {
-                    if (productItem.IsNew)
+                    if (!productItem.Code.Equals(productModel.Code) && productItem.IsNew)
                     {
                         productItem.Id = productItem.base_Product.Id;
 
@@ -3560,10 +3730,10 @@ namespace CPC.POS.ViewModel
 
                         // Update total products
                         TotalProducts++;
-
-                        // Turn off IsDirty & IsNew
-                        productModel.EndUpdate();
                     }
+
+                    // Turn off IsDirty & IsNew
+                    productModel.EndUpdate();
                 }
 
                 // Reupdate all product that same attibute group
@@ -3576,6 +3746,9 @@ namespace CPC.POS.ViewModel
 
                     // Clear product collection to reload group attribute
                     productItem.ProductCollection = null;
+
+                    if (!productItem.Code.Equals(productModel.Code))
+                        productItem.VendorProductCollection = null;
 
                     // Load relation data
                     LoadRelationData(productItem);
@@ -3699,6 +3872,33 @@ namespace CPC.POS.ViewModel
         }
 
         /// <summary>
+        /// Copy photo of selected product to target product
+        /// </summary>
+        /// <param name="targetProductModel"></param>
+        private void CopyPhotoCollection(base_ProductModel sourceProductModel, base_ProductModel targetProductModel)
+        {
+            if (sourceProductModel.PhotoCollection != null)
+            {
+                // Initial photo collection
+                targetProductModel.PhotoCollection = new CollectionBase<base_ResourcePhotoModel>();
+
+                foreach (base_ResourcePhotoModel photoItem in sourceProductModel.PhotoCollection)
+                {
+                    // Create new photo model
+                    base_ResourcePhotoModel photoModel = new base_ResourcePhotoModel();
+
+                    // Copy photo of selected product to target product
+                    photoModel.ToModel(photoItem);
+                    photoModel.ImagePath = photoItem.ImagePath;
+                    photoModel.Resource = targetProductModel.Resource.ToString();
+
+                    // Add product UOM to collection
+                    targetProductModel.PhotoCollection.Add(photoModel);
+                }
+            }
+        }
+
+        /// <summary>
         /// Copy UOM of selected product to other product
         /// </summary>
         /// <param name="targetProductModel"></param>
@@ -3719,6 +3919,37 @@ namespace CPC.POS.ViewModel
 
                     // Add product UOM to collection
                     targetProductModel.ProductUOMCollection.Add(productUOMModel);
+                }
+            }
+        }
+
+        /// <summary>
+        /// Copy vendor product collection
+        /// </summary>
+        /// <param name="sourceProductModel">Source product</param>
+        /// <param name="targetProductModel">Target product</param>
+        private void CopyVendorProductCollection(base_ProductModel sourceProductModel, base_ProductModel targetProductModel)
+        {
+            if (sourceProductModel.VendorProductCollection != null)
+            {
+                // Initial vendor product collection
+                targetProductModel.VendorProductCollection = new CollectionBase<base_VendorProductModel>();
+
+                foreach (base_VendorProductModel vendorProductItem in sourceProductModel.VendorProductCollection)
+                {
+                    // Create new vendor product model
+                    base_VendorProductModel vendorProductModel = new base_VendorProductModel();
+
+                    // Copy vendor product from source to target
+                    vendorProductModel.ToModel(vendorProductItem);
+                    vendorProductModel.ProductResource = targetProductModel.Resource.ToString();
+                    vendorProductModel.VendorCode = vendorProductItem.VendorCode;
+                    vendorProductModel.Company = vendorProductItem.Company;
+                    vendorProductModel.Phone = vendorProductItem.Phone;
+                    vendorProductModel.Email = vendorProductItem.Email;
+
+                    // Add vendor product to collection
+                    targetProductModel.VendorProductCollection.Add(vendorProductModel);
                 }
             }
         }
@@ -3777,6 +4008,7 @@ namespace CPC.POS.ViewModel
                 if (string.IsNullOrWhiteSpace(productModel.Barcode))
                     return false;
 
+                _existedProduct = null;
                 string barcode = productModel.Barcode.Trim().ToLower();
 
                 // Check duplicate in collection
@@ -3796,12 +4028,14 @@ namespace CPC.POS.ViewModel
                 // Get all products that duplicate barcode
                 predicate = predicate.And(x => x.Barcode.ToLower().Equals(barcode));
 
-                return _productRepository.GetIQueryable(predicate).Count() > 0;
+                _existedProduct = _productRepository.Get(predicate);
+
+                return _existedProduct != null;
             }
             catch (Exception ex)
             {
                 _log4net.Error(ex);
-                return true;
+                return false;
             }
         }
 
@@ -3817,6 +4051,7 @@ namespace CPC.POS.ViewModel
                 if (string.IsNullOrWhiteSpace(productModel.ALU))
                     return false;
 
+                _existedProduct = null;
                 string barcode = productModel.ALU.Trim().ToLower();
 
                 // Check duplicate in collection
@@ -3836,12 +4071,14 @@ namespace CPC.POS.ViewModel
                 // Get all products that duplicate barcode
                 predicate = predicate.And(x => x.ALU.ToLower().Equals(barcode));
 
-                return _productRepository.GetIQueryable(predicate).Count() > 0;
+                _existedProduct = _productRepository.Get(predicate);
+
+                return _existedProduct != null;
             }
             catch (Exception ex)
             {
                 _log4net.Error(ex);
-                return true;
+                return false;
             }
         }
 
@@ -3857,6 +4094,8 @@ namespace CPC.POS.ViewModel
                 if (string.IsNullOrWhiteSpace(productModel.Code))
                     return false;
 
+                _existedProduct = null;
+
                 // Create predicate
                 Expression<Func<base_Product, bool>> predicate = PredicateBuilder.True<base_Product>();
 
@@ -3866,12 +4105,14 @@ namespace CPC.POS.ViewModel
                 // Get all products that duplicate barcode
                 predicate = predicate.And(x => x.Code.ToLower().Equals(productModel.Code.ToLower()));
 
-                return _productRepository.GetIQueryable(predicate).Count() > 0;
+                _existedProduct = _productRepository.Get(predicate);
+
+                return _existedProduct != null;
             }
             catch (Exception ex)
             {
                 _log4net.Error(ex);
-                return true;
+                return false;
             }
         }
 
@@ -4010,7 +4251,7 @@ namespace CPC.POS.ViewModel
 
         private void RefreshProductDatas()
         {
-            SelectedProduct.PhotoCollection = null;
+            //SelectedProduct.PhotoCollection = null;
             SelectedProduct.ProductCollection = null;
             SelectedProduct.ProductStoreDefault = null;
             SelectedProduct.ProductStoreCollection = null;
@@ -4101,6 +4342,34 @@ namespace CPC.POS.ViewModel
                 // Load product uom collection
                 LoadProductUOMCollection(productModel, Define.StoreCode);
             }
+        }
+
+        /// <summary>
+        /// View detail existed product
+        /// </summary>
+        private void ShowPopupViewExistedProduct()
+        {
+            // Get existed product model
+            base_ProductModel existedProductModel = new base_ProductModel(_existedProduct);
+
+            // Load photo collection
+            LoadPhotoCollection(existedProductModel);
+
+            PopupViewExistedProductViewModel viewModel = new PopupViewExistedProductViewModel(existedProductModel);
+            viewModel.ItemTypeList = ItemTypeList;
+            viewModel.DepartmentCollection = DepartmentCollection;
+            viewModel.CategoryCollection = new ObservableCollection<base_DepartmentModel>(CategoryCollection);
+            viewModel.BrandCollection = new ObservableCollection<base_DepartmentModel>(BrandCollection);
+            viewModel.VendorCollection = VendorCollection;
+            bool? result = _dialogService.ShowDialog<PopupViewExistedProductView>(_ownerViewModel, viewModel, "View Existed Product");
+        }
+
+        /// <summary>
+        /// Update container title
+        /// </summary>
+        private void UpdateContainerTitle()
+        {
+            ContainerTitle = IsSearchMode ? Language.GetMsg("PD_Title_ProductList") : Language.GetMsg("PD_Title_Product");
         }
 
         #region ProductVendorTab
@@ -4211,6 +4480,15 @@ namespace CPC.POS.ViewModel
 
                 // Push new vendor product to collection
                 productModel.VendorProductCollection.Add(vendorProductModel);
+            }
+
+            if (vendorModel.Id > 0)
+            {
+                App.Current.MainWindow.Dispatcher.BeginInvoke((Action)delegate
+                {
+                    _selectedVendorProduct = ProductVendorCollection.FirstOrDefault();
+                    OnPropertyChanged(() => SelectedVendorProduct);
+                });
             }
         }
 
@@ -4432,13 +4710,17 @@ namespace CPC.POS.ViewModel
 
                 // Turn off IsDirty & IsNew
                 SelectedProduct.EndUpdate();
-
-                // Reload IsManualGenerate value from configuration
-                OnPropertyChanged(() => IsManualGenerate);
-
-                // Reload CurrencySymbol value from configuration
-                OnPropertyChanged(() => CurrencySymbol);
             }
+            else if (SelectedProduct == null && !IsSearchMode)
+            {
+                NewProduct();
+            }
+
+            // Reload IsManualGenerate value from configuration
+            OnPropertyChanged(() => IsManualGenerate);
+
+            // Reload CurrencySymbol value from configuration
+            OnPropertyChanged(() => CurrencySymbol);
 
             // Load data by predicate
             LoadDataByPredicate(true);
@@ -4450,6 +4732,7 @@ namespace CPC.POS.ViewModel
         /// <param name="isList"></param>
         public override void ChangeSearchMode(bool isList, object param = null)
         {
+            base.ChangeSearchMode(isList, param);
             if (param == null)
             {
                 if (ShowNotification(null))
@@ -4508,6 +4791,14 @@ namespace CPC.POS.ViewModel
             return ShowNotification(isClosing);
         }
 
+        /// <summary>
+        /// Process when user change language
+        /// </summary>
+        public override void ChangeLanguage()
+        {
+            UpdateContainerTitle();
+        }
+
         #endregion
 
         #region Event Methods
@@ -4542,6 +4833,8 @@ namespace CPC.POS.ViewModel
                     if (productModel.base_Product.ProductDepartmentId != productModel.ProductDepartmentId)
                         productModel.ProductCategoryId = 0;
 
+                    // Raise show category add item button
+                    OnPropertyChanged(() => ShowCategoryAddItemButton);
                     #endregion
                     break;
                 case "ProductCategoryId":
@@ -4586,6 +4879,8 @@ namespace CPC.POS.ViewModel
                     if (productModel.base_Product.ProductCategoryId != productModel.ProductCategoryId)
                         productModel.ProductBrandId = null;
 
+                    // Raise show brand add item button
+                    OnPropertyChanged(() => ShowBrandAddItemButton);
                     #endregion
                     break;
                 case "VendorId":

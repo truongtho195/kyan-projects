@@ -1796,6 +1796,19 @@ namespace CPC.POS.ViewModel
                 CreateSaleOrderDetailWithProducts(productSearchViewModel.SelectedProducts);
             }
         }
+
+        /// <summary>
+        /// ChangeLanguage
+        /// </summary>
+        public override void ChangeLanguage()
+        {
+            base.ChangeLanguage();
+
+            //Change Static Collection
+            base.ChangLanguageExtension();
+
+            ContainerTitle = IsSearchMode ? Language.GetMsg("SO_Title_SaleOrderList") : Language.GetMsg("SO_Title_SaleOrder");
+        }
         #endregion
     }
 }

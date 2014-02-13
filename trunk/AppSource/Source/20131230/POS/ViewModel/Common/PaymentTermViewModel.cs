@@ -18,10 +18,10 @@ namespace CPC.POS.ViewModel
 
         #region Contructors
 
-        public PaymentTermViewModel(short dueDays, decimal discount, short discountDays)
+        public PaymentTermViewModel(bool isCOD, short dueDays, decimal discount, short discountDays)
         {
             _ownerViewModel = this;
-
+            _isCOD = isCOD;
             _dueDays = dueDays;
             _discount = discount;
             _discountDays = discountDays;
@@ -30,6 +30,28 @@ namespace CPC.POS.ViewModel
         #endregion
 
         #region Properties
+
+
+        #region IsCOD
+        private bool _isCOD;
+        /// <summary>
+        /// Gets or sets the IsCOD.
+        /// </summary>
+        public bool IsCOD
+        {
+            get { return _isCOD; }
+            set
+            {
+                if (_isCOD != value)
+                {
+                    _isCOD = value;
+                    _isDirty = true;
+                    OnPropertyChanged(() => IsCOD);
+                }
+            }
+        }
+        #endregion
+
 
         #region DueDays
 
@@ -228,29 +250,45 @@ namespace CPC.POS.ViewModel
         {
             try
             {
-                if (_discountDays >= _dueDays)
+
+                if (_isCOD)
                 {
-                    Xceed.Wpf.Toolkit.MessageBox.Show("The Number of day to pay away for discount must less than the number of due day.", "Warning", System.Windows.MessageBoxButton.OK, System.Windows.MessageBoxImage.Warning);
+
+                    _description = "COD";
+
+                    //Reset value of Is Not COD
+                    _discount = 0;
+                    _discountDays = 0;
+                    _dueDays = 0;
+                    
+                    FindOwnerWindow(this).DialogResult = true;
                 }
                 else
                 {
-                    if (_dueDays > 0)
+                    if (_discountDays >= _dueDays)
                     {
-                        if (_discount > 0 && _discountDays > 0)
-                        {
-                            _description = string.Format(_descriptionFormat1, _discount, _discountDays, _dueDays);
-                        }
-                        else
-                        {
-                            _description = string.Format(_descriptionFormat2, _dueDays);
-                        }
+                        Xceed.Wpf.Toolkit.MessageBox.Show("The Number of day to pay away for discount must less than the number of due day.", "Warning", System.Windows.MessageBoxButton.OK, System.Windows.MessageBoxImage.Warning);
                     }
                     else
                     {
-                        _description = _descriptionFormat3;
-                    }
+                        if (_dueDays > 0)
+                        {
+                            if (_discount > 0 && _discountDays > 0)
+                            {
+                                _description = string.Format(_descriptionFormat1, _discount, _discountDays, _dueDays);
+                            }
+                            else
+                            {
+                                _description = string.Format(_descriptionFormat2, _dueDays);
+                            }
+                        }
+                        else
+                        {
+                            _description = _descriptionFormat3;
+                        }
 
-                    FindOwnerWindow(this).DialogResult = true;
+                        FindOwnerWindow(this).DialogResult = true;
+                    }
                 }
             }
             catch (Exception exception)

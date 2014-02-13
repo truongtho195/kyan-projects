@@ -2,6 +2,7 @@
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:behavior="clr-namespace:CPC.Toolkit.Behavior"
+             xmlns:cmd="clr-namespace:CPC.Toolkit.Command"
              xmlns:comboBoxControl="clr-namespace:CPCToolkitExt.ComboBoxControl;assembly=CPCToolkitExt"
              xmlns:control="clr-namespace:Xceed.Wpf.Toolkit;assembly=WPFToolkit.Extended"
              xmlns:converter="clr-namespace:CPC.Converter"
@@ -31,6 +32,7 @@
         <converter:EnumToCollapsedConverter x:Key="enumToCollapsedConverter" />
         <converter:StringFormatConverter x:Key="stringFormatConverter" />
         <converter:PermissionConverter x:Key="permissionConverter" />
+        <converter:StringToImageSourceConverter x:Key="stringToImageSourceConverter" />
         <!--  endregion Converter  -->
         <!--  region HeaderTemplate  -->
         <DataTemplate x:Key="DataTemplate_PD_Header_Code">
@@ -123,6 +125,12 @@
         <DataTemplate x:Key="DataTemplate_PD_Header_Balance">
             <TextBlock Text="{DynamicResource C108}" />
         </DataTemplate>
+        <DataTemplate x:Key="DataTemplate_PD_Header_ReorderPoint">
+            <TextBlock Text="{DynamicResource RO103}" />
+        </DataTemplate>
+        <DataTemplate x:Key="DataTemplate_PD_Header_Picture">
+            <TextBlock Text="{DynamicResource PD_Picture}" />
+        </DataTemplate>
         <!--  endregion HeaderTemplate  -->
         <Style x:Key="DataGridCellFocusStyle"
                BasedOn="{StaticResource {x:Type DataGridCell}}"
@@ -161,11 +169,11 @@
     <Grid x:Name="GridLayout">
         <Rectangle x:Name="UserControl_Background_Image"
                    Fill="{DynamicResource UserControl_Background_Image}" />
-        <control:BusyIndicator IsBusy="{Binding IsBusy}">
-            <Grid x:Name="grdProduct"
-                  Width="Auto"
-                  Height="Auto">
-                <Grid x:Name="grdSearch">
+        <control:BusyIndicator IsBusy="{Binding IsBusy}"
+                               d:IsHidden="True">
+            <Grid x:Name="grdProduct">
+                <Grid x:Name="grdSearch"
+                      d:IsHidden="True">
                     <Grid.Visibility>
                         <Binding Path="IsSearchMode"
                                  Mode="OneWay"
@@ -361,10 +369,21 @@
                                                 Width="150"
                                                 dataGridControl:DataGridColumnExtensions.Name="{x:Static local:SearchOptions.ItemName}"
                                                 HeaderTemplate="{StaticResource DataTemplate_PD_Header_ItemName}" />
-                            <DataGridTextColumn Binding="{Binding Description, Mode=OneWay}"
+                            <!--<DataGridTextColumn Binding="{Binding Description, Mode=OneWay}"
                                                 Width="250"
                                                 dataGridControl:DataGridColumnExtensions.Name="{x:Static local:SearchOptions.Description}"
-                                                HeaderTemplate="{StaticResource DataTemplate_PD_Header_Description}" />
+                                                HeaderTemplate="{StaticResource DataTemplate_PD_Header_Description}" />-->
+                            <DataGridTemplateColumn Width="80"
+                                                    dataGridControl:DataGridColumnExtensions.Name="{x:Static local:SearchOptions.CompanyReOrderPoint}"
+                                                    HeaderTemplate="{StaticResource DataTemplate_PD_Header_ReorderPoint}"
+                                                    SortMemberPath="CompanyReOrderPoint">
+                                <DataGridTemplateColumn.CellTemplate>
+                                    <DataTemplate>
+                                        <TextBlock HorizontalAlignment="Right"
+                                                   Text="{Binding CompanyReOrderPoint, ConverterCulture={x:Static local:Define.ConverterCulture}, Mode=OneWay, StringFormat={x:Static local:Define.NumericFormat}}" />
+                                    </DataTemplate>
+                                </DataGridTemplateColumn.CellTemplate>
+                            </DataGridTemplateColumn>
                             <DataGridTextColumn Binding="{Binding Attribute, Mode=OneWay}"
                                                 Width="80"
                                                 dataGridControl:DataGridColumnExtensions.Name="{x:Static local:SearchOptions.Attribute}"
@@ -433,6 +452,31 @@
                                     </DataTemplate>
                                 </DataGridTemplateColumn.CellTemplate>
                             </DataGridTemplateColumn>
+                            <DataGridTemplateColumn Width="50"
+                                                    dataGridControl:DataGridColumnExtensions.Name="{x:Static local:SearchOptions.Picture}"
+                                                    HeaderTemplate="{StaticResource DataTemplate_PD_Header_Picture}"
+                                                    SortMemberPath="PhotoDefault.ImagePath">
+                                <DataGridTemplateColumn.CellTemplate>
+                                    <DataTemplate>
+                                        <Grid x:Name="grdProductPhotoDefault">
+                                            <!--  Visibility IsNew = False => has image in database, show this image  -->
+                                            <Rectangle Width="16"
+                                                       Height="16"
+                                                       Fill="{DynamicResource OK}">
+                                                <Rectangle.Visibility>
+                                                    <Binding Path="PhotoDefault.IsNew"
+                                                             Mode="OneWay"
+                                                             UpdateSourceTrigger="PropertyChanged">
+                                                        <Binding.Converter>
+                                                            <converter:BoolToVisibilityConverter FalseToVisibility="Visible" />
+                                                        </Binding.Converter>
+                                                    </Binding>
+                                                </Rectangle.Visibility>
+                                            </Rectangle>
+                                        </Grid>
+                                    </DataTemplate>
+                                </DataGridTemplateColumn.CellTemplate>
+                            </DataGridTemplateColumn>
                         </dataGridControl:DataGridControl.Columns>
                     </dataGridControl:DataGridControl>
                 </Grid>
@@ -463,14 +507,14 @@
                                    Style="{DynamicResource ButtonBarSearchTextBlock}"
                                    Text="{DynamicResource C113}"
                                    TextWrapping="NoWrap">
-                            <TextBlock.LayoutTransform>
-                                <TransformGroup>
-                                    <ScaleTransform />
-                                    <SkewTransform />
-                                    <RotateTransform Angle="-90" />
-                                    <TranslateTransform />
-                                </TransformGroup>
-                            </TextBlock.LayoutTransform>
+        					<TextBlock.LayoutTransform>
+        						<TransformGroup>
+        							<ScaleTransform />
+        							<SkewTransform />
+        							<RotateTransform Angle="-90" />
+        							<TranslateTransform />
+        						</TransformGroup>
+        					</TextBlock.LayoutTransform>
                         </TextBlock>
                     </Button>
                     <Rectangle x:Name="grdSpliter"
@@ -589,7 +633,8 @@
                                 <ComboBox x:Name="cmbStick"
                                           Grid.ColumnSpan="2"
                                           SelectedIndex="0"
-                                          Style="{DynamicResource RemarkComboboxStyle}">
+                                          Style="{DynamicResource RemarkComboboxStyle}"
+                                          Focusable="False">
                                     <ComboBoxItem>
                                         <Button Command="{Binding StickyManagementViewModel.NewCommand}"
                                                 Width="75"
@@ -689,7 +734,13 @@
                                                     IsEnabled="{Binding IsManualGenerate, Mode=OneWay}"
                                                     MaxLength="{StaticResource AccountNumberMaxLength}"
                                                     Text="{Binding SelectedProduct.Code, Mode=TwoWay, NotifyOnValidationError=True, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True}"
-                                                    TextWrapping="NoWrap" />
+                                                    TextWrapping="NoWrap">
+                                <i:Interaction.Triggers>
+                                    <i:EventTrigger EventName="LostFocus">
+                                        <cmd:EventToCommand Command="{Binding CheckCodeCommand}" />
+                                    </i:EventTrigger>
+                                </i:Interaction.Triggers>
+                            </textBoxControl:TextBox>
                             <TextBlock x:Name="txtblItemType"
                                        Grid.Column="3"
                                        Margin="0"
@@ -772,7 +823,7 @@
                                                              SelectedValue="{Binding SelectedProduct.ProductCategoryId, NotifyOnValidationError=True, ValidatesOnDataErrors=True}"
                                                              SelectedValuePath="Id"
                                                              Style="{DynamicResource ComboBoxControlStyle}"
-                                                             VisibilityAddItem="{Binding UserPermissions.AllowAddDepartment, Converter={StaticResource boolToVisibilityConverter}, Mode=OneWay}" />
+                                                             VisibilityAddItem="{Binding ShowCategoryAddItemButton, Converter={StaticResource boolToVisibilityConverter}, Mode=OneWay}" />
                         </Grid>
                         <Grid x:Name="grdContentProduct"
                               Grid.Row="2"
@@ -787,7 +838,6 @@
                                                                  IsCheckError="True">
                                     <Grid x:Name="grdProductInfo">
                                         <cpcControl:ImageList Width="160"
-                                                              Height="140"
                                                               Margin="546,20,0,0"
                                                               HorizontalAlignment="Left"
                                                               VerticalAlignment="Top"
@@ -796,7 +846,8 @@
                                                               DisplayMemberPath="ImagePath"
                                                               IsEnabled="{Binding UserPermissions.AllowAddProductImage, Mode=OneWay}"
                                                               ItemsSource="{Binding SelectedProduct.PhotoCollection}"
-                                                              MaxNumberOfImages="{Binding MaxNumberOfImages}" />
+                                                              MaxNumberOfImages="{Binding MaxNumberOfImages}"
+                                                              Height="194" />
                                         <Grid x:Name="grdOther">
                                             <Grid.Visibility>
                                                 <Binding Path="IsInsuranceItemType"
@@ -832,7 +883,7 @@
                                                         <RowDefinition Height="25" />
                                                         <RowDefinition Height="25" />
                                                         <RowDefinition Height="25" />
-                                                        <RowDefinition Height="25" />
+                                                        <RowDefinition Height="78" />
                                                         <RowDefinition Height="*" />
                                                     </Grid.RowDefinitions>
                                                     <TextBlock x:Name="txtblItemName1"
@@ -899,8 +950,14 @@
                                                                             IsEnabled="{Binding UserPermissions.AllowAccessProductPermission, Mode=OneWay}"
                                                                             MaxLength="{StaticResource BarcodeMaxLength}"
                                                                             Padding="2,0,2,0"
-                                                                            Text="{Binding SelectedProduct.Barcode, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                                                                            TextWrapping="NoWrap" />
+                                                                            Text="{Binding SelectedProduct.Barcode, Mode=TwoWay, NotifyOnValidationError=True, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True}"
+                                                                            TextWrapping="NoWrap">
+                                                        <i:Interaction.Triggers>
+                                                            <i:EventTrigger EventName="LostFocus">
+                                                                <cmd:EventToCommand Command="{Binding CheckBarcodeCommand}" />
+                                                            </i:EventTrigger>
+                                                        </i:Interaction.Triggers>
+                                                    </textBoxControl:TextBox>
                                                     <TextBlock x:Name="txtblPartNo1"
                                                                Grid.Row="1"
                                                                Grid.Column="1"
@@ -943,8 +1000,14 @@
                                                                             IsEnabled="{Binding UserPermissions.AllowAccessProductPermission, Mode=OneWay}"
                                                                             MaxLength="{StaticResource BarcodeMaxLength}"
                                                                             Padding="2,0,2,0"
-                                                                            Text="{Binding SelectedProduct.ALU, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                                                                            TextWrapping="NoWrap" />
+                                                                            Text="{Binding SelectedProduct.ALU, Mode=TwoWay, NotifyOnValidationError=True, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True}"
+                                                                            TextWrapping="NoWrap">
+                                                        <i:Interaction.Triggers>
+                                                            <i:EventTrigger EventName="LostFocus">
+                                                                <cmd:EventToCommand Command="{Binding CheckALUCommand}" />
+                                                            </i:EventTrigger>
+                                                        </i:Interaction.Triggers>
+                                                    </textBoxControl:TextBox>
                                                     <TextBlock x:Name="txtblBrand1"
                                                                Grid.Row="2"
                                                                Margin="10,0,0,0"
@@ -968,7 +1031,7 @@
                                                                                      SelectedValue="{Binding SelectedProduct.ProductBrandId}"
                                                                                      SelectedValuePath="Id"
                                                                                      Style="{DynamicResource ComboBoxControlStyle}"
-                                                                                     VisibilityAddItem="{Binding UserPermissions.AllowAccessProductPermission, Converter={StaticResource boolToVisibilityConverter}, Mode=OneWay}" />
+                                                                                     VisibilityAddItem="{Binding ShowBrandAddItemButton, Converter={StaticResource boolToVisibilityConverter}, Mode=OneWay}" />
                                                     <TextBlock x:Name="txtblStyleModel1"
                                                                Grid.Row="2"
                                                                Grid.Column="1"
@@ -1041,9 +1104,9 @@
                                                     </Button>
                                                     <TextBlock x:Name="txtblItemDescription1"
                                                                Grid.Row="4"
-                                                               Margin="10,0,0,0"
+                                                               Margin="10,5.861,0,0"
                                                                HorizontalAlignment="Left"
-                                                               VerticalAlignment="Center"
+                                                               VerticalAlignment="Top"
                                                                Style="{DynamicResource TextBlockNormal}"
                                                                Text="{DynamicResource C138}"
                                                                TextWrapping="NoWrap" />
@@ -1689,8 +1752,14 @@
                                                                             IsEnabled="{Binding UserPermissions.AllowAccessProductPermission, Mode=OneWay}"
                                                                             MaxLength="{StaticResource BarcodeMaxLength}"
                                                                             Padding="2,0,2,0"
-                                                                            Text="{Binding SelectedProduct.Barcode, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                                                                            TextWrapping="NoWrap" />
+                                                                            Text="{Binding SelectedProduct.Barcode, Mode=TwoWay, NotifyOnValidationError=True, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True}"
+                                                                            TextWrapping="NoWrap">
+                                                        <i:Interaction.Triggers>
+                                                            <i:EventTrigger EventName="LostFocus">
+                                                                <cmd:EventToCommand Command="{Binding CheckBarcodeCommand}" />
+                                                            </i:EventTrigger>
+                                                        </i:Interaction.Triggers>
+                                                    </textBoxControl:TextBox>
                                                     <TextBlock x:Name="txtblALU2"
                                                                Grid.Row="1"
                                                                Grid.Column="1"
@@ -1709,8 +1778,14 @@
                                                                             IsEnabled="{Binding UserPermissions.AllowAccessProductPermission, Mode=OneWay}"
                                                                             MaxLength="{StaticResource BarcodeMaxLength}"
                                                                             Padding="2,0,2,0"
-                                                                            Text="{Binding SelectedProduct.ALU, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                                                                            TextWrapping="NoWrap" />
+                                                                            Text="{Binding SelectedProduct.ALU, Mode=TwoWay, NotifyOnValidationError=True, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True}"
+                                                                            TextWrapping="NoWrap">
+                                                        <i:Interaction.Triggers>
+                                                            <i:EventTrigger EventName="LostFocus">
+                                                                <cmd:EventToCommand Command="{Binding CheckALUCommand}" />
+                                                            </i:EventTrigger>
+                                                        </i:Interaction.Triggers>
+                                                    </textBoxControl:TextBox>
                                                     <TextBlock x:Name="txtblItemDescription"
                                                                Grid.Row="4"
                                                                Margin="10,0,0,0"
@@ -2133,16 +2208,16 @@
                                                         <behavior:AutoFocusBehavior />
                                                     </i:Interaction.Behaviors>
                                                 </textBoxControl:TextBox>
-                                                <TextBlock x:Name="txtblShell"
+                                                <TextBlock x:Name="txtblShelf"
                                                            Grid.Row="0"
                                                            Grid.Column="1"
                                                            Margin="361,0,0,0"
                                                            HorizontalAlignment="Left"
                                                            VerticalAlignment="Center"
                                                            Style="{DynamicResource TextBlockNormal}"
-                                                           Text="{DynamicResource PD_Shell}"
+                                                           Text="{DynamicResource PD_Shefl}"
                                                            TextWrapping="NoWrap" />
-                                                <textBoxControl:TextBox x:Name="txtShell"
+                                                <textBoxControl:TextBox x:Name="txtShelf"
                                                                         Grid.Column="1"
                                                                         Width="240"
                                                                         Height="21"

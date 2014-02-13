@@ -1062,7 +1062,7 @@ namespace CPC.POS.ViewModel
             short dueDays = SelectedSaleOrder.TermNetDue;
             decimal discount = SelectedSaleOrder.TermDiscountPercent;
             short discountDays = SelectedSaleOrder.TermPaidWithinDay;
-            PaymentTermViewModel paymentTermViewModel = new PaymentTermViewModel(dueDays, discount, discountDays);
+            PaymentTermViewModel paymentTermViewModel = new PaymentTermViewModel(SelectedSaleOrder.IsCOD, dueDays, discount, discountDays);
             bool? dialogResult = _dialogService.ShowDialog<PaymentTermView>(_ownerViewModel, paymentTermViewModel, Language.GetMsg("SO_Title_AddTerm"));
             if (dialogResult == true)
             {
@@ -1070,6 +1070,7 @@ namespace CPC.POS.ViewModel
                 SelectedSaleOrder.TermDiscountPercent = paymentTermViewModel.Discount;
                 SelectedSaleOrder.TermPaidWithinDay = paymentTermViewModel.DiscountDays;
                 SelectedSaleOrder.PaymentTermDescription = paymentTermViewModel.Description;
+                SelectedSaleOrder.IsCOD = paymentTermViewModel.IsCOD;
             }
         }
         #endregion
@@ -1187,9 +1188,6 @@ namespace CPC.POS.ViewModel
             //Load DiscountCollection with program
             LoadDiscountProgram();
 
-            //Load Product Collection
-            LoadProducts();
-
             //Load Customer
             LoadCustomer();
 
@@ -1291,58 +1289,6 @@ namespace CPC.POS.ViewModel
                 }
                 //}
             }
-        }
-
-        /// <summary>
-        /// Load Product From Database
-        /// </summary>
-        protected virtual void LoadProducts()
-        {
-            //IList<base_Product> products;
-
-            //if (ProductCollection != null && ProductCollection.Any())
-            //    return;
-
-            //short productGroupType = (short)ItemTypes.Group;
-            //Expression<Func<base_Product, bool>> productCondition = PredicateBuilder.True<base_Product>();
-            //productCondition = productCondition.And(x => !x.IsPurge.Value && (!x.ItemTypeId.Equals(productGroupType) || (x.ItemTypeId.Equals(productGroupType) && x.base_ProductGroup1.Any())));
-            //if (Define.StoreCode == 0)
-            //    products = _productRepository.GetAll(productCondition);
-            //else
-            //{
-            //    productCondition = productCondition.And(x => x.base_ProductStore.Any(y => y.StoreCode.Equals(Define.StoreCode)));
-            //    products = _productRepository.GetAll(productCondition);
-            //}
-
-            //if (ProductCollection == null)
-            //    ProductCollection = new ObservableCollection<base_ProductModel>(products.Select(x => new base_ProductModel(x)).OrderBy(x => x.Id));
-            //else
-            //{
-            //    foreach (base_Product product in products.OrderBy(x => x.Id))
-            //    {
-            //        //_productRepository.Refresh(product);
-            //        if (ProductCollection.Any(x => x.Resource.Equals(product.Resource)))
-            //        {
-            //            base_ProductModel productModel = ProductCollection.SingleOrDefault(x => x.Resource.Equals(product.Resource));
-            //            productModel.UpdateModel(product, true);
-            //        }
-            //        else
-            //        {
-            //            ProductCollection.Add(new base_ProductModel(product));
-            //        }
-            //    }
-
-            //    //Remove Item From Local collection if in db collection is not existed
-            //    IList<Guid> itemReomoveList = ProductCollection.Where(x => !x.IsCoupon).Select(x => x.Resource).Except(products.Select(x => x.Resource)).ToList();
-            //    if (itemReomoveList != null)
-            //    {
-            //        foreach (Guid resource in itemReomoveList)
-            //        {
-            //            base_ProductModel itemRemoved = ProductCollection.SingleOrDefault(x => x.Resource.Equals(resource));
-            //            ProductCollection.Remove(itemRemoved);
-            //        }
-            //    }
-            //}
         }
 
         /// <summary>
@@ -3006,7 +2952,7 @@ namespace CPC.POS.ViewModel
         /// Create sale order detail with multi Product
         /// </summary>
         /// <param name="productCollection"></param>
-        protected void CreateSaleOrderDetailWithProducts(IEnumerable<base_ProductModel> productCollection)
+        protected void CreateSaleOrderDetailWithProducts(List<base_ProductModel> productCollection)
         {
             try
             {
@@ -3015,29 +2961,30 @@ namespace CPC.POS.ViewModel
                     SaleProductHandle(productModel, false);
                 }
                 //Open MultiSerialTracking with item has serial tracking
-                App.Current.Dispatcher.BeginInvoke(new Action(() =>
+                //App.Current.Dispatcher.BeginInvoke(new Action(() =>
+                //{
+
+                IEnumerable<base_SaleOrderDetailModel> saleDetailSerialCollection = SelectedSaleOrder.SaleOrderDetailCollection.Where(x => x.ProductModel.IsSerialTracking && string.IsNullOrWhiteSpace(x.SerialTracking));
+                if (saleDetailSerialCollection != null && saleDetailSerialCollection.Any())
                 {
-
-                    IEnumerable<base_SaleOrderDetailModel> saleDetailSerialCollection = SelectedSaleOrder.SaleOrderDetailCollection.Where(x => x.ProductModel.IsSerialTracking && string.IsNullOrWhiteSpace(x.SerialTracking));
-                    if (saleDetailSerialCollection != null && saleDetailSerialCollection.Any())
+                    //Show Popup Update Serial Tracking for which item has quantity =1
+                    IEnumerable<base_SaleOrderDetailModel> saleOrderCollectionWithOneItem = saleDetailSerialCollection.Where(x =>x.IsNew && x.Quantity == 1);
+                    if (saleOrderCollectionWithOneItem.Any())
                     {
-                        //Show Popup Update Serial Tracking for which item has quantity =1
-                        IEnumerable<base_SaleOrderDetailModel> saleOrderCollectionWithOneItem = saleDetailSerialCollection.Where(x => x.Quantity == 1);
-                        if (saleOrderCollectionWithOneItem.Any())
-                        {
-                            MultiTrackingNumberViewModel multiTrackingNumber = new MultiTrackingNumberViewModel(saleOrderCollectionWithOneItem);
-                            bool? dialogResult = _dialogService.ShowDialog<MultiTrackingNumberView>(_ownerViewModel, multiTrackingNumber, Language.GetMsg("SO_Title_MultiTrackingSerial"));
-                        }
-
-                        //Show popup update serial tracking for which item has quantity >1
-                        IEnumerable<base_SaleOrderDetailModel> saleOrderCollectionWithMultiItem = saleDetailSerialCollection.Where(x => x.Quantity > 1);
-                        foreach (base_SaleOrderDetailModel saleOrderDetailModel in saleOrderCollectionWithMultiItem)
-                        {
-                            OpenTrackingSerialNumber(saleOrderDetailModel, true, true);
-                        }
-
+                        MultiTrackingNumberViewModel multiTrackingNumber = new MultiTrackingNumberViewModel(saleOrderCollectionWithOneItem);
+                        bool? dialogResult = _dialogService.ShowDialog<MultiTrackingNumberView>(_ownerViewModel, multiTrackingNumber, Language.GetMsg("SO_Title_MultiTrackingSerial"));
                     }
-                }), System.Windows.Threading.DispatcherPriority.Background);
+
+                    //Show popup update serial tracking for which item has quantity >1
+                    IEnumerable<base_SaleOrderDetailModel> saleOrderCollectionWithMultiItem = saleDetailSerialCollection.Where(x => x.IsNew && x.Quantity > 1);
+                    foreach (base_SaleOrderDetailModel saleOrderDetailModel in saleOrderCollectionWithMultiItem)
+                    {
+                        OpenTrackingSerialNumber(saleOrderDetailModel, true, true);
+                    }
+
+                }
+                productCollection.Clear();
+                //}), System.Windows.Threading.DispatcherPriority.Normal);
             }
             catch (Exception ex)
             {
@@ -3293,6 +3240,7 @@ namespace CPC.POS.ViewModel
                     saleOrderModel.GuestModel.TermDiscount = saleOrderModel.TermDiscountPercent;
                     saleOrderModel.GuestModel.TermNetDue = saleOrderModel.TermNetDue;
                     saleOrderModel.GuestModel.TermPaidWithinDay = saleOrderModel.TermPaidWithinDay;
+                    saleOrderModel.GuestModel.IsCOD = saleOrderModel.IsCOD;
 
                     //Update Customer Reward 
                     saleOrderModel.GuestModel.ToEntity();
@@ -3638,7 +3586,6 @@ namespace CPC.POS.ViewModel
         protected virtual void _waitingTimer_Tick(object sender, EventArgs e)
         {
             _timerCounter++;
-            Console.WriteLine(_timerCounter);
             if (_timerCounter == Define.DelaySearching)
             {
                 OnSearchCommandExecute(null);
@@ -3658,6 +3605,68 @@ namespace CPC.POS.ViewModel
                 _timerCounter = 0;
             }
         }
+
+        /// <summary>
+        /// Change language for inheritance class
+        /// </summary>
+        protected virtual void ChangLanguageExtension()
+        {
+            //Update BillAddressTypeCollection
+            foreach (AddressTypeModel item in BillAddressTypeCollection)
+            {
+                if (item.ID.Equals(2))
+                {
+                    item.Name = Language.GetMsg("SO_TextBlock_Billing");
+                }
+            }
+
+            //Update ShipAddressTypeCollection
+            foreach (AddressTypeModel item in ShipAddressTypeCollection)
+            {
+                if (item.ID.Equals(3))
+                {
+                    item.Name = Language.GetMsg("SO_TextBlock_Shipping");
+                }
+            }
+
+            //Update CustomerFieldCollection
+            foreach (DataSearchModel item in CustomerFieldCollection)
+            {
+                switch (item.ID)
+                {
+                    case 1:
+                        item.DisplayName = Language.GetMsg("CUS_Text_CustomerNumber");
+                        break;
+                    case 2:
+                        item.DisplayName = Language.GetMsg("CUS_Text_Name");
+                        break;
+                }
+            }
+
+            //Update for ProductFieldCollection
+            foreach (DataSearchModel item in ProductFieldCollection)
+            {
+                switch (item.ID)
+                {
+                    case 1:
+                        item.DisplayName = Language.GetMsg("C174");
+                        break;
+                    case 2:
+                        item.DisplayName = Language.GetMsg("C176");
+                        break;
+                    case 3:
+                        item.DisplayName = Language.GetMsg("C175");
+                        break;
+                    case 4:
+                        item.DisplayName = Language.GetMsg("C116");
+                        break;
+                    case 6:
+                        item.DisplayName = Language.GetMsg("C117");
+                        break;
+                }
+            }
+        }
+
         #endregion
 
         #region Permissions

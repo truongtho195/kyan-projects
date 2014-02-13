@@ -3444,12 +3444,16 @@
                                     LargeImageSource="{Binding RibbonImageFolder, Converter={StaticResource ribbonImageConverter}, ConverterParameter=RibbonQuantityAdjustmentHistory.png}" />
                 </r:RibbonGroup>
             </r:RibbonTab>
-            <r:RibbonTab Header="Restaurant"
+            <r:RibbonTab Header="Report"
                          BorderBrush="Black"
                          BorderThickness="1">
-                <r:RibbonGroup Header="Restaurant"
+                <r:RibbonGroup Header="Report"
                                BorderThickness="1">
                     <r:RibbonButton Command="{Binding OpenViewCommand}"
+                                    CommandParameter="Report"
+                                    Label="View Report"
+                                    LargeImageSource="{Binding RibbonImageFolder, Converter={StaticResource ribbonImageConverter}, ConverterParameter=RibbonReport.png}" />
+                    <!--<r:RibbonButton Command="{Binding OpenViewCommand}"
                                     CommandParameter="Product Manual"
                                     IsEnabled="{Binding UserPermissions.AllowAddProduct, Mode=OneWay}"
                                     Label="Create New"
@@ -3458,7 +3462,7 @@
                                     CommandParameter="Product Manual List"
                                     IsEnabled="{Binding UserPermissions.AllowAccessProduct, Mode=OneWay}"
                                     Label="Manual List"
-                                    LargeImageSource="{Binding RibbonImageFolder, Converter={StaticResource ribbonImageConverter}, ConverterParameter=RibbonManualList.png}" />
+                                    LargeImageSource="{Binding RibbonImageFolder, Converter={StaticResource ribbonImageConverter}, ConverterParameter=RibbonManualList.png}" />-->
                 </r:RibbonGroup>
             </r:RibbonTab>
             <r:RibbonTab Header="Configuration"
@@ -3636,7 +3640,7 @@
                                        Margin="0,0,2,0"
                                        VerticalAlignment="Center"
                                        Style="{DynamicResource StatusBarItemTextBlock}"
-                                       Text="{Binding Server}" />
+                                       Text="{Binding Client, Mode=OneWay}" />
                         </StackPanel>
                     </StatusBarItem>
                     <StatusBarItem Margin="2,3,0,2"
@@ -3651,8 +3655,11 @@
                             <TextBlock x:Name="txtblDatabse"
                                        Margin="0,0,2,0"
                                        VerticalAlignment="Center"
-                                       Style="{DynamicResource StatusBarItemTextBlock}"
-                                       Text="{Binding Database}" />
+                                       Style="{DynamicResource StatusBarItemTextBlock}">
+                                <Run Text="{Binding Server, Mode=OneWay}" />
+                                <Run Text="/" />
+                                <Run Text="{Binding Database, Mode=OneWay}" />
+                            </TextBlock>
                         </StackPanel>
                     </StatusBarItem>
                     <StatusBarItem Margin="2,3,0,2"
@@ -3724,6 +3731,17 @@
                                        VerticalAlignment="Center"
                                        Style="{DynamicResource StatusBarItemTextBlock}"
                                        Text="{Binding RewardCustomerList.Count, Mode=OneWay}" />
+                        </StackPanel>
+                    </StatusBarItem>
+                    <StatusBarItem Margin="2,3,0,2"
+                                   Style="{DynamicResource StatusBarItem}">
+                        <StackPanel Margin="3,0"
+                                    Orientation="Horizontal">
+                            <TextBlock x:Name="txtblVersion"
+                                       Margin="0,0,2,0"
+                                       VerticalAlignment="Center"
+                                       Style="{DynamicResource StatusBarItemTextBlock}"
+                                       Text="{Binding Version, Mode=OneWay}" />
                         </StackPanel>
                     </StatusBarItem>
                     <StatusBarItem DockPanel.Dock="Right">

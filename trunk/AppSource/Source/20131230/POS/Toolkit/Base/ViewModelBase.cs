@@ -113,6 +113,23 @@ namespace CPC.Toolkit.Base
 
         }
 
+        private string _containerTitle;
+        /// <summary>
+        /// Gets or sets the ContainerTitle.
+        /// </summary>
+        public string ContainerTitle
+        {
+            get { return _containerTitle; }
+            set
+            {
+                if (_containerTitle != value)
+                {
+                    _containerTitle = value;
+                    OnPropertyChanged(() => ContainerTitle);
+                }
+            }
+        }
+
         #endregion
 
         #region Constructors
@@ -196,6 +213,11 @@ namespace CPC.Toolkit.Base
         }
 
         public virtual void ChangeSearchMode(bool isList, object param = null)
+        {
+            ChangeLanguage();
+        }
+
+        public virtual void ChangeLanguage()
         {
             // TODO: Handle command logic here
         }

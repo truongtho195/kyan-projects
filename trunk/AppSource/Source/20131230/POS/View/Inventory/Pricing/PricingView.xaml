@@ -672,7 +672,7 @@
                                           Grid.ColumnSpan="2"
                                           SelectedIndex="0"
                                           Style="{DynamicResource RemarkComboboxStyle}"
-                                          ToolTip="Stickies">
+                                          ToolTip="Stickies" Focusable="False">
                                     <ComboBoxItem>
                                         <Button Command="{Binding StickyManagementViewModel.NewCommand}"
                                                 Width="75"

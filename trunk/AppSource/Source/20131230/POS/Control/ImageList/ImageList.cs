@@ -12,6 +12,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using CPC.Converter;
 using Microsoft.Win32;
+using CPC.POS;
 
 namespace CPC.Control
 {
@@ -1233,6 +1234,7 @@ namespace CPC.Control
                 this._currentItem = item;
             }
         }
+
         #region ByteToImageSource
         /// <summary>
         /// Convert from Byte To ImageSource
@@ -1288,6 +1290,15 @@ namespace CPC.Control
                 return false;
             }
         }
+
+        #region ImageResizer
+        private static BitmapFrame FastResize(BitmapFrame bfPhoto, double nWidth, double nHeight)
+        {
+            TransformedBitmap tbBitmap = new TransformedBitmap(bfPhoto, new ScaleTransform(nWidth / bfPhoto.Width, nHeight / bfPhoto.Height, 0, 0));
+            return BitmapFrame.Create(tbBitmap);
+        }
+        #endregion
+
         #endregion
 
         #region Events
@@ -1352,58 +1363,57 @@ namespace CPC.Control
 
         private void ButtonAddClick(object sender, RoutedEventArgs e)
         {
-            if (this._listBox != null && this._listBox.ItemsSource != null
-                && this.CheckNumberOfImage())
+            try
             {
-                Type itemSourceType = _listBox.ItemsSource.GetType();
-                if (!itemSourceType.IsArray
-                    && itemSourceType.FullName != "System.Collections.ArrayList")
+                if (this._listBox != null && this._listBox.ItemsSource != null
+                && this.CheckNumberOfImage())
                 {
-                    OpenFileDialog openFileDialog = new OpenFileDialog();
-                    openFileDialog.Filter = "Supported images|*.jpg;*.jpeg;*.gif;*.png;*.bmp";
-                    openFileDialog.Multiselect = true;
-                    openFileDialog.FileOk += delegate
+                    Type itemSourceType = _listBox.ItemsSource.GetType();
+                    if (!itemSourceType.IsArray
+                        && itemSourceType.FullName != "System.Collections.ArrayList")
                     {
-                        Type elementType = TypeHelper.GetElementType(itemSourceType);
-                        if (elementType == null)
+                        OpenFileDialog openFileDialog = new OpenFileDialog();
+                        openFileDialog.Filter = "Supported images|*.jpg;*.jpeg;*.gif;*.png;*.bmp";
+                        openFileDialog.Multiselect = false;
+                        openFileDialog.FileOk += delegate
                         {
-                            throw new NullReferenceException("Object reference not set to an instance of an object.");
-                        }
-                        if (elementType.GetConstructor(Type.EmptyTypes) != null)
-                        {
-                            //To remove items in openFileDialog.FileNames if number of files is larger than number of image in MaxNumberOfImage.
-                            int numberOfItems = 0;
-                            if (this._listBox != null && this._listBox.HasItems)
-                                numberOfItems = this._listBox.Items.Count;
-                            int numberOfFileNames = openFileDialog.FileNames.Count();
-                            if ((numberOfItems + numberOfFileNames) > this.MaxNumberOfImages)
-                                numberOfFileNames = this.MaxNumberOfImages - this._listBox.Items.Count;
-                            for (int i = 0; i < numberOfFileNames; i++)
+                            Type elementType = TypeHelper.GetElementType(itemSourceType);
+                            if (elementType == null)
                             {
-                                if (this.CheckValidImage(openFileDialog.FileNames[i]))
+                                throw new NullReferenceException("Object reference not set to an instance of an object.");
+                            }
+                            if (elementType.GetConstructor(Type.EmptyTypes) != null)
+                            {
+                                //To remove items in openFileDialog.FileNames if number of files is larger than number of image in MaxNumberOfImage.
+                                if (this.CheckValidImage(openFileDialog.FileName))
                                 {
                                     object newElement = Activator.CreateInstance(elementType);
-                                    this.SetPropertyValue(newElement, _displayMemberPath, File.ReadAllBytes(openFileDialog.FileNames[i]));
+                                    byte[] newSource = this.ResizeImage(File.ReadAllBytes(openFileDialog.FileName), Define.ImageSize);
+                                    this.SetPropertyValue(newElement, _displayMemberPath, newSource);
                                     (this._listBox.ItemsSource as IList).Add(newElement);
                                 }
+                                if (this._listBox.SelectedItem == null && this._image != null)
+                                {
+                                    _image.Source = new BitmapImage(new Uri(openFileDialog.FileName));
+                                    this._currentItem = this._listBox.ItemsSource.Cast<object>().FirstOrDefault();
+                                }
                             }
-                            if (this._listBox.SelectedItem == null && this._image != null)
+                            else
                             {
-                                _image.Source = new BitmapImage(new Uri(openFileDialog.FileName));
-                                this._currentItem = this._listBox.ItemsSource.Cast<object>().FirstOrDefault();
+                                throw new MissingMethodException("No parameterless constructor defined for this object.");
                             }
-                        }
-                        else
-                        {
-                            throw new MissingMethodException("No parameterless constructor defined for this object.");
-                        }
-                    };
-                    openFileDialog.ShowDialog();
+                        };
+                        openFileDialog.ShowDialog();
+                    }
+                    else
+                    {
+                        throw new NotSupportedException("ItemsSource's type is not supported.");
+                    }
                 }
-                else
-                {
-                    throw new NotSupportedException("ItemsSource's type is not supported.");
-                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("Add image in ImageControl" + ex.ToString());
             }
         }
 
@@ -1457,7 +1467,8 @@ namespace CPC.Control
                     {
                         if (this.CheckValidImage(openFileDialog.FileName))
                         {
-                            this.SetPropertyValue(_currentItem, _displayMemberPath, File.ReadAllBytes(openFileDialog.FileNames[0]));
+                            byte[] newSource = this.ResizeImage(File.ReadAllBytes(openFileDialog.FileName), Define.ImageSize);
+                            this.SetPropertyValue(_currentItem, _displayMemberPath, newSource);
                             if (_image != null)
                                 _image.Source = new BitmapImage(new Uri(openFileDialog.FileName));
                         }
@@ -1467,7 +1478,7 @@ namespace CPC.Control
             }
             catch (Exception ex)
             {
-                Debug.WriteLine(ex.ToString());
+                MessageBox.Show("Update image in ImageControl " + ex.ToString());
             }
 
         }
@@ -1488,6 +1499,47 @@ namespace CPC.Control
                 else
                     this._gridContentImage.Visibility = Visibility.Visible;
             }
+        }
+
+        private static byte[] ToByteArray(BitmapFrame bfResize)
+        {
+            using (MemoryStream msStream = new MemoryStream())
+            {
+                PngBitmapEncoder pbdDecoder = new PngBitmapEncoder();
+                pbdDecoder.Frames.Add(bfResize);
+                pbdDecoder.Save(msStream);
+                return msStream.ToArray();
+            }
+        }
+
+        private static BitmapFrame ReadBitmapFrame(Stream streamPhoto)
+        {
+            BitmapDecoder bdDecoder = BitmapDecoder.Create(streamPhoto, BitmapCreateOptions.PreservePixelFormat, BitmapCacheOption.None);
+            return bdDecoder.Frames[0];
+        }
+
+        private byte[] ResizeImage(byte[] byteSource, Size newsize)
+        {
+            byte[] newResize;
+            using (Stream streamPhoto = new MemoryStream(byteSource))
+            {
+                BitmapFrame bfPhoto = ReadBitmapFrame(streamPhoto);
+
+                double nThumbnailSize = newsize.Width, nWidth, nHeight;
+                if (bfPhoto.Width > bfPhoto.Height)
+                {
+                    nWidth = newsize.Width;
+                    nHeight = (int)(bfPhoto.Height * nThumbnailSize / bfPhoto.Width);
+                }
+                else
+                {
+                    nHeight = nThumbnailSize;
+                    nWidth = (int)(bfPhoto.Width * nThumbnailSize / bfPhoto.Height);
+                }
+                BitmapFrame bfResize = FastResize(bfPhoto, nWidth, nHeight);
+                newResize = ToByteArray(bfResize);
+            }
+            return newResize;
         }
         #endregion
     }

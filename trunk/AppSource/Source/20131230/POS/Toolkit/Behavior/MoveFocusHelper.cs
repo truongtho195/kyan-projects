@@ -1,19 +1,17 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Windows;
-using System.Windows.Input;
 using System.Diagnostics;
-using System.Windows.Threading;
 using System.Threading;
+using System.Windows;
 using System.Windows.Controls;
-using Xceed.Wpf.Toolkit.Obselete;
+using System.Windows.Input;
+using System.Windows.Threading;
 
 namespace CPC.Toolkit.Behavior
 {
     public class MoveFocusHelper
     {
+        #region MoveFocus
+
         public static DependencyProperty MoveFocusProperty =
              DependencyProperty.RegisterAttached("MoveFocus",
              typeof(bool),
@@ -63,6 +61,7 @@ namespace CPC.Toolkit.Behavior
                 Debug.WriteLine("-----------ComboBoxMoveFocusControl--- OnPreviewKeyDown ------------ \n" + ex.Message);
             }
         }
+
         private static void MoveFocusHelper_PreviewKeyDown(object sender, System.Windows.Input.KeyEventArgs e)
         {
             try
@@ -109,6 +108,9 @@ namespace CPC.Toolkit.Behavior
             }
         }
 
+        #endregion
+
+        #region Focused
 
         public static DependencyProperty FocusedProperty =
               DependencyProperty.RegisterAttached("Focused",
@@ -156,5 +158,6 @@ namespace CPC.Toolkit.Behavior
             }
         }
 
+        #endregion
     }
 }
