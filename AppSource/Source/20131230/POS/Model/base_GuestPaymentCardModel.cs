@@ -503,17 +503,20 @@ namespace CPC.POS.Model
                     case "CardNumber":
                         if (string.IsNullOrWhiteSpace(CardNumber))
                             message = "Card Number is required";
+                        else if(CardNumber.Length < 15)
+                            message = "Card Number is not match format";
+
                         break;
                     case "ExpDate":
                         if (!ExpMonth.HasValue || ExpYear == 0)
                             message = "Expired Date is required";
-                        else if (ExpMonth.Value < 1 || ExpMonth > 12 || ExpYear.ToString().Length != 4)
-                            message = "Expired Date not match format";
-                        break;
-
-                    case "ExpMonth":
-                        break;
-                    case "ExpYear":
+                        else
+                        {
+                            if ((ExpYear == DateTime.Now.Year && ExpMonth <= DateTime.Now.Month) || ExpYear < DateTime.Now.Year)
+                            {
+                                message = "Expired Date is more than current";
+                            }
+                        }
                         break;
                     case "CCID":
                         if (string.IsNullOrWhiteSpace(CCID))

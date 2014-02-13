@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
+using System.IO;
 using System.Linq;
 using System.Linq.Expressions;
 using System.Windows;
@@ -19,10 +20,20 @@ namespace CPC.POS.ViewModel
     {
         #region Defines
 
+        /// <summary>
+        /// Get product image folder
+        /// </summary>
+        private string IMG_PRODUCT_DIRECTORY = Path.Combine(Define.CONFIGURATION.DefautlImagePath, "Product");
+
         private base_ProductRepository _productRepository = new base_ProductRepository();
         private base_ProductUOMRepository _productUOMRepository = new base_ProductUOMRepository();
+        private base_ResourcePhotoRepository _photoRepository = new base_ResourcePhotoRepository();
 
         private int? _oldOrderUOMID;
+
+        private base_Product _existedProduct;
+        private base_ProductUOM _existedProductUOM;
+        private base_ProductModel _existedProductModel;
 
         #endregion
 
@@ -104,6 +115,31 @@ namespace CPC.POS.ViewModel
             }
         }
 
+        /// <summary>
+        /// Gets or sets the ItemTypeList.
+        /// </summary>
+        public ObservableCollection<ComboItem> ItemTypeList { get; set; }
+
+        /// <summary>
+        /// Gets or sets the DepartmentCollection.
+        /// </summary>
+        public ObservableCollection<base_DepartmentModel> DepartmentCollection { get; set; }
+
+        /// <summary>
+        /// Gets or sets the CategoryCollection.
+        /// </summary>
+        public ObservableCollection<base_DepartmentModel> CategoryCollection { get; set; }
+
+        /// <summary>
+        /// Gets or sets the BrandCollection.
+        /// </summary>
+        public ObservableCollection<base_DepartmentModel> BrandCollection { get; set; }
+
+        /// <summary>
+        /// Gets or sets the VendorCollection.
+        /// </summary>
+        public ObservableCollection<base_GuestModel> VendorCollection { get; set; }
+
         #endregion
 
         #region Constructors
@@ -113,6 +149,8 @@ namespace CPC.POS.ViewModel
         /// </summary>
         public PopupManagementUOMViewModel()
         {
+            _ownerViewModel = this;
+
             InitialCommand();
             OnPropertyChanged(() => IsStockableItemType);
         }
@@ -305,7 +343,12 @@ namespace CPC.POS.ViewModel
             // Check duplicate barcode
             if (isDuplicate)
             {
-                Xceed.Wpf.Toolkit.MessageBox.Show("Barcode of this product is existed", "POS", MessageBoxButton.OK, MessageBoxImage.Warning);
+                string message = string.Format("Scan code: {0} of this product is existed.\nDo you wan to view existed product?", barcode);
+                MessageBoxResult msgResult = Xceed.Wpf.Toolkit.MessageBox.Show(message, "POS", MessageBoxButton.YesNo, MessageBoxImage.Warning);
+                if (msgResult.Is(MessageBoxResult.Yes))
+                {
+                    ShowPopupViewExistedProduct();
+                }
             }
         }
 
@@ -350,7 +393,12 @@ namespace CPC.POS.ViewModel
             // Check duplicate alternate barcode
             if (isDuplicate)
             {
-                Xceed.Wpf.Toolkit.MessageBox.Show("Alternate lookup of this product is existed", "POS", MessageBoxButton.OK, MessageBoxImage.Warning);
+                string message = string.Format("ALU: {0} of this product is existed.\nDo you wan to view existed product?", barcode);
+                MessageBoxResult msgResult = Xceed.Wpf.Toolkit.MessageBox.Show(message, "POS", MessageBoxButton.YesNo, MessageBoxImage.Warning);
+                if (msgResult.Is(MessageBoxResult.Yes))
+                {
+                    ShowPopupViewExistedProduct();
+                }
             }
         }
 
@@ -392,6 +440,17 @@ namespace CPC.POS.ViewModel
         /// <param name="source"></param>
         public void CopyUOM(base_ProductModel target, base_ProductModel source)
         {
+            target.Code = source.Code;
+            target.ItemTypeId = source.ItemTypeId;
+            target.ProductName = source.ProductName;
+            target.ProductDepartmentId = source.ProductDepartmentId;
+            target.ProductCategoryId = source.ProductCategoryId;
+            target.ProductBrandId = source.ProductBrandId;
+            target.VendorId = source.VendorId;
+            target.StyleModel = source.StyleModel;
+            target.Attribute = source.Attribute;
+            target.Size = source.Size;
+            target.Description = source.Description;
             target.OnHandStore = source.OnHandStore;
             target.RegularPrice = source.RegularPrice;
             target.OrderCost = source.OrderCost;
@@ -409,11 +468,14 @@ namespace CPC.POS.ViewModel
             target.MarkdownPercent2 = source.MarkdownPercent2;
             target.MarkdownPercent3 = source.MarkdownPercent3;
             target.MarkdownPercent4 = source.MarkdownPercent4;
+            target.IsDuplicateUPC = source.IsDuplicateUPC;
+            target.IsDuplicateALU = source.IsDuplicateALU;
             if (!string.IsNullOrWhiteSpace(source.Barcode))
                 target.Barcode = source.Barcode.Trim();
             if (!string.IsNullOrWhiteSpace(source.ALU))
                 target.ALU = source.ALU.Trim();
             target.Resource = source.Resource;
+            target.PhotoCollection = new CollectionBase<base_ResourcePhotoModel>(source.PhotoCollection);
         }
 
         /// <summary>
@@ -448,12 +510,29 @@ namespace CPC.POS.ViewModel
                 if (string.IsNullOrWhiteSpace(barcode))
                     return false;
 
+                _existedProduct = null;
+
                 // Check duplicate in collection
                 List<string> barcodes = productModel.ProductUOMCollection.Where(x => !string.IsNullOrWhiteSpace(x.UPC)).Select(x => x.UPC).ToList();
                 if (!string.IsNullOrWhiteSpace(productModel.Barcode))
                     barcodes.Add(productModel.Barcode);
                 if (barcodes.Count(x => x.Equals(barcode)) > 1)
+                {
+                    _existedProductModel = productModel;
                     return true;
+                }
+                else
+                {
+                    // Clear duplicate error
+                    if (productModel.Barcode.Equals(barcode))
+                    {
+                        productModel.IsDuplicateUPC = false;
+                    }
+                    foreach (base_ProductUOMModel productUOMItem in productModel.ProductUOMCollection.Where(x => !string.IsNullOrWhiteSpace(x.UPC) && x.UPC.Equals(barcode)))
+                    {
+                        productUOMItem.IsDuplicateUPC = false;
+                    }
+                }
 
                 // Create predicate
                 Expression<Func<base_Product, bool>> predicate = PredicateBuilder.True<base_Product>();
@@ -473,12 +552,15 @@ namespace CPC.POS.ViewModel
                 // Get all ProductUOM that duplicate barcode
                 predicateUOM = predicateUOM.And(x => x.UPC.ToLower().Equals(barcode));
 
-                return _productRepository.GetIQueryable(predicate).Count() > 0 || _productUOMRepository.GetIQueryable(predicateUOM).Count() > 0;
+                _existedProduct = _productRepository.Get(predicate);
+                _existedProductUOM = _productUOMRepository.Get(predicateUOM);
+
+                return _existedProduct != null || _existedProductUOM != null;
             }
             catch (Exception ex)
             {
                 _log4net.Error(ex);
-                return true;
+                return false;
             }
         }
 
@@ -494,12 +576,30 @@ namespace CPC.POS.ViewModel
                 if (string.IsNullOrWhiteSpace(barcode))
                     return false;
 
+                _existedProduct = null;
+                _existedProductUOM = null;
+
                 // Check duplicate in collection
                 List<string> barcodes = productModel.ProductUOMCollection.Where(x => !string.IsNullOrWhiteSpace(x.ALU)).Select(x => x.ALU).ToList();
                 if (!string.IsNullOrWhiteSpace(productModel.ALU))
                     barcodes.Add(productModel.ALU);
                 if (barcodes.Count(x => x.Equals(barcode)) > 1)
+                {
+                    _existedProductModel = productModel;
                     return true;
+                }
+                else
+                {
+                    // Clear duplicate error
+                    if (productModel.Barcode.Equals(barcode))
+                    {
+                        productModel.IsDuplicateALU = false;
+                    }
+                    foreach (base_ProductUOMModel productUOMItem in productModel.ProductUOMCollection.Where(x => !string.IsNullOrWhiteSpace(x.ALU) && x.ALU.Equals(barcode)))
+                    {
+                        productUOMItem.IsDuplicateALU = false;
+                    }
+                }
 
                 // Create predicate
                 Expression<Func<base_Product, bool>> predicate = PredicateBuilder.True<base_Product>();
@@ -519,13 +619,75 @@ namespace CPC.POS.ViewModel
                 // Get all ProductUOM that duplicate barcode
                 predicateUOM = predicateUOM.And(x => x.ALU.ToLower().Equals(barcode));
 
-                return _productRepository.GetIQueryable(predicate).Count() > 0 || _productUOMRepository.GetIQueryable(predicateUOM).Count() > 0;
+                _existedProduct = _productRepository.Get(predicate);
+                _existedProductUOM = _productUOMRepository.Get(predicateUOM);
+
+                return _existedProduct != null || _existedProductUOM != null;
             }
             catch (Exception ex)
             {
                 _log4net.Error(ex);
-                return true;
+                return false;
             }
+        }
+
+        /// <summary>
+        /// Load photo collection
+        /// </summary>
+        /// <param name="productModel"></param>
+        private void LoadPhotoCollection(base_ProductModel productModel)
+        {
+            try
+            {
+                if (productModel.PhotoCollection == null)
+                {
+                    // Get product resource
+                    string resource = productModel.Resource.ToString();
+
+                    // Get all photo from database
+                    productModel.PhotoCollection = new CollectionBase<base_ResourcePhotoModel>(
+                        _photoRepository.GetAll(x => x.Resource.Equals(resource)).
+                        Select(x => new base_ResourcePhotoModel(x)
+                        {
+                            ImagePath = Path.Combine(IMG_PRODUCT_DIRECTORY, productModel.Code, x.LargePhotoFilename),
+                            IsDirty = false
+                        }));
+
+                    // Set default photo
+                    productModel.PhotoDefault = productModel.PhotoCollection.FirstOrDefault();
+                }
+            }
+            catch (Exception ex)
+            {
+                _log4net.Error(ex);
+            }
+        }
+
+        /// <summary>
+        /// View detail existed product
+        /// </summary>
+        private void ShowPopupViewExistedProduct()
+        {
+            // Get existed product model
+            if (_existedProduct != null)
+            {
+                _existedProductModel = new base_ProductModel(_existedProduct);
+            }
+            else if (_existedProductUOM != null)
+            {
+                _existedProductModel = new base_ProductModel(_existedProductUOM.base_ProductStore.base_Product);
+            }
+
+            // Load photo collection
+            LoadPhotoCollection(_existedProductModel);
+
+            PopupViewExistedProductViewModel viewModel = new PopupViewExistedProductViewModel(_existedProductModel);
+            viewModel.ItemTypeList = ItemTypeList;
+            viewModel.DepartmentCollection = DepartmentCollection;
+            viewModel.CategoryCollection = CategoryCollection;
+            viewModel.BrandCollection = BrandCollection;
+            viewModel.VendorCollection = VendorCollection;
+            bool? result = _dialogService.ShowDialog<PopupViewExistedProductView>(_ownerViewModel, viewModel, "View Existed Product");
         }
 
         #endregion

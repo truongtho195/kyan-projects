@@ -153,6 +153,7 @@ namespace CPC.POS.ViewModel
                 {
                     isSearchMode = value;
                     OnPropertyChanged(() => IsSearchMode);
+                    ContainerTitle = IsSearchMode ? Language.GetMsg("SO_Title_WorkOrderList") : Language.GetMsg("SO_Title_WorkOrder");
                 }
             }
         }
@@ -1991,6 +1992,16 @@ namespace CPC.POS.ViewModel
             {
                 CreateSaleOrderDetailWithProducts(productSearchViewModel.SelectedProducts);
             }
+        }
+
+        public override void ChangeLanguage()
+        {
+            base.ChangeLanguage();
+
+            //Change Static Collection
+            base.ChangLanguageExtension();
+
+            ContainerTitle = IsSearchMode ? Language.GetMsg("SO_Title_WorkOrderList") : Language.GetMsg("SO_Title_WorkOrder");
         }
         #endregion
 

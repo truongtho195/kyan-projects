@@ -70,7 +70,7 @@ namespace CPC.POS.ViewModel
             if (Define.CONFIGURATION.IsAutoSearch)
             {
                 _waitingTimer = new DispatcherTimer();
-                _waitingTimer.Interval = new TimeSpan(0, 0, 0, 1);
+                _waitingTimer.Interval = new TimeSpan(0, 0, 0, 0, 100);
                 _waitingTimer.Tick += new EventHandler(_waitingTimer_Tick);
             }
         }
@@ -461,6 +461,27 @@ namespace CPC.POS.ViewModel
         }
         #endregion
 
+
+        #region DeparmentCollection
+        private ObservableCollection<ComboItem> _departmentCollection;
+        /// <summary>
+        /// Gets or sets the DeparmentCollection.
+        /// </summary>
+        public ObservableCollection<ComboItem> DepartmentCollection
+        {
+            get { return _departmentCollection; }
+            set
+            {
+                if (_departmentCollection != value)
+                {
+                    _departmentCollection = value;
+                    OnPropertyChanged(() => DepartmentCollection);
+                }
+            }
+        }
+        #endregion
+
+
         #region IsForceFocused
         private bool _isForceFocused;
         /// <summary>
@@ -662,26 +683,36 @@ namespace CPC.POS.ViewModel
         /// <returns><c>true</c> if the command can be executed; otherwise <c>false</c></returns>
         private bool OnDoubleClickViewCommandCanExecute(object param)
         {
-            return (param == null) ? false : true;
+            if (IsSearchMode && param == null)
+                return false;
+            return true;
         }
 
         private void OnDoubleClickViewCommandExecute(object param)
         {
-            if (param != null && this.IsSearchMode)
+            try
             {
-                this.SelectedItemEmployee = param as base_GuestModel;
-                this.LoadManagerResource(this.SelectedItemEmployee.Resource.Value);
-                this.SelectedItemEmployee.ManagerResource = this.SelectedItemEmployee.base_Guest.ManagerResource;
-                this.LoadDataWhenSelected();
-                this.IsSearchMode = false;
+                if (param != null && this.IsSearchMode)
+                {
+                    this.SelectedItemEmployee = param as base_GuestModel;
+                    this.LoadManagerResource(this.SelectedItemEmployee.Resource.Value);
+                    if (this.SelectedItemEmployee.base_Guest.ManagerResource != string.Empty)
+                        this.SelectedItemEmployee.ManagerResource = this.SelectedItemEmployee.base_Guest.ManagerResource;
+                    this.LoadDataWhenSelected();
+                    this.IsSearchMode = false;
+                }
+                else if (!IsSearchMode)//Change from Edit form to Search Gird check view has dirty
+                {
+                    if (this.ChangeViewExecute(null))
+                        this.IsSearchMode = true;
+                }
+                else
+                    this.IsSearchMode = !this.IsSearchMode;//Change View To
             }
-            else if (!IsSearchMode)//Change from Edit form to Search Gird check view has dirty
+            catch (Exception ex)
             {
-                if (this.ChangeViewExecute(null))
-                    this.IsSearchMode = true;
+                _log4net.Error(ex);
             }
-            else
-                this.IsSearchMode = !this.IsSearchMode;//Change View To
         }
 
         #endregion
@@ -741,7 +772,7 @@ namespace CPC.POS.ViewModel
             bool? result = _dialogService.ShowDialog<RecordFingerprintView>(_ownerViewModel, viewModel, "Register right fingerprint");
             if (result.HasValue && result.Value)
             {
-                base_GuestFingerPrintModel employeeFingerPrintModel = this.SelectedItemEmployee.EmployeeFingerprintCollection.SingleOrDefault(x => x.FingerIndex == viewModel.FingerID && x.HandFlag == rightHand);
+                base_GuestFingerPrintModel employeeFingerPrintModel = this.SelectedItemEmployee.EmployeeFingerprintCollection.SingleOrDefault(x => x.HandFlag == rightHand);
                 if (employeeFingerPrintModel != null)
                 {
                     employeeFingerPrintModel.DateUpdated = DateTime.Now;
@@ -1159,6 +1190,39 @@ namespace CPC.POS.ViewModel
 
         #endregion
 
+        #region AddNewDepartmentCommand
+        /// <summary>
+        /// Gets the AddNewDepartment Command.
+        /// <summary>
+
+        public RelayCommand<object> AddNewDepartmentCommand { get; private set; }
+
+
+
+        /// <summary>
+        /// Method to check whether the AddNewDepartment command can be executed.
+        /// </summary>
+        /// <returns><c>true</c> if the command can be executed; otherwise <c>false</c></returns>
+        private bool OnAddNewDepartmentCommandCanExecute(object param)
+        {
+            return true;
+        }
+
+
+        /// <summary>
+        /// Method to invoke when the AddNewDepartment command is executed.
+        /// </summary>
+        private void OnAddNewDepartmentCommandExecute(object param)
+        {
+            AddNewDepartmentViewModel viewModel = new AddNewDepartmentViewModel();
+            bool? result = _dialogService.ShowDialog<AddNewDepartmentView>(_ownerViewModel, viewModel, "Add Department");
+            if (result == true)
+            {
+                this.DepartmentCollection.Insert(DepartmentCollection.Count, viewModel.DepartmentItem);
+                this.SelectedItemEmployee.Department = Convert.ToInt32(viewModel.DepartmentItem.Value);
+            }
+        }
+        #endregion
         #endregion
 
         #region Private Methods
@@ -1182,6 +1246,10 @@ namespace CPC.POS.ViewModel
             this.EditCommand = new RelayCommand<object>(OnEditCommandExecute, OnEditCommandCanExecute);
             this.PrintCommand = new RelayCommand(OnPrintCommandExecute, OnPrintCommandCanExecute);
             this.PopupAdvanceSearchCommand = new RelayCommand<object>(OnPopupAdvanceSearchCommandExecute, OnPopupAdvanceSearchCommandCanExecute);
+            this.InsertDateStampCommand = new RelayCommand<object>(OnInsertDateStampCommandExecute, OnInsertDateStampCommandCanExecute);
+            this.AddNewStateCommand = new RelayCommand<object>(OnAddNewStateCommandExecute, OnAddNewStateCommandCanExecute);
+            this.AddNewJobTitleCommand = new RelayCommand<object>(this.OnAddNewJobTitleCommandExecute, this.OnAddNewJobTitleCommandCanExecute);
+            this.AddNewDepartmentCommand = new RelayCommand<object>(OnAddNewDepartmentCommandExecute, OnAddNewDepartmentCommandCanExecute);
             ///To load AddressTypeCollection
             this.AddressTypeCollection = new CPCToolkitExtLibraries.AddressTypeCollection();
             this.AddressTypeCollection.Add(new AddressTypeModel { ID = 0, Name = "Home" });
@@ -1195,9 +1263,14 @@ namespace CPC.POS.ViewModel
             else
                 this.JobTitleCollection = new ObservableCollection<ComboItem>();
             this.NotePopupCollection.CollectionChanged += (sender, e) => { OnPropertyChanged(() => ShowOrHiddenNote); };
-            this.InsertDateStampCommand = new RelayCommand<object>(OnInsertDateStampCommandExecute, OnInsertDateStampCommandCanExecute);
-            this.AddNewStateCommand = new RelayCommand<object>(OnAddNewStateCommandExecute, OnAddNewStateCommandCanExecute);
-            this.AddNewJobTitleCommand = new RelayCommand<object>(this.OnAddNewJobTitleCommandExecute, this.OnAddNewJobTitleCommandCanExecute);
+
+            if (Common.Departments.Any())
+                this.DepartmentCollection = new ObservableCollection<ComboItem>(Common.Departments);
+            else
+                this.DepartmentCollection = new ObservableCollection<ComboItem>();
+
+
+
         }
         #endregion
 
@@ -1214,7 +1287,7 @@ namespace CPC.POS.ViewModel
             this.SelectedItemEmployee.GuestTypeId = 1;
             this.SelectedItemEmployee.IsPrimary = false;
             this.SelectedItemEmployee.Company = string.Empty;
-            this.SelectedItemEmployee.Department = string.Empty;
+            this.SelectedItemEmployee.Department = 0;
             this.SelectedItemEmployee.DateCreated = DateTime.Now;
             this.SelectedItemEmployee.UserCreated = Define.USER != null ? Define.USER.LoginName : string.Empty;
             this.SelectedItemEmployee.GuestNo = DateTime.Now.ToString(Define.GuestNoFormat);
@@ -1278,6 +1351,9 @@ namespace CPC.POS.ViewModel
                 //To update item when it is edited.
                 else
                     this.Update();
+
+                SetDepartmentComboboxItem(this.SelectedItemEmployee);
+
                 this.SelectedItemEmployee.PersonalInfoModel.ToModelAndRaise();
                 this.SelectedItemEmployee.PersonalInfoModel.EndUpdate();
                 this.SelectedItemEmployee.ToModelAndRaise();
@@ -1366,6 +1442,27 @@ namespace CPC.POS.ViewModel
         /// </summary>
         private void Update()
         {
+            //Update commission when change commission of manager.
+            if (this.SelectedItemEmployee.CommissionPercent != this.SelectedItemEmployee.base_Guest.CommissionPercent)
+            {
+                string managerResource = this.SelectedItemEmployee.Resource.ToString();
+                var guestCommmission = _guestRepository.GetAll(x => !x.IsPurged && x.Mark.Equals(_employeeMark) && x.ManagerResource == managerResource);
+                if (guestCommmission.Count() > 0)
+                {
+                    foreach (var item in guestCommmission.Where(x => x.CommissionPercent > 100 - this.SelectedItemEmployee.CommissionPercent))
+                    {
+                        item.CommissionPercent = 100 - this.SelectedItemEmployee.CommissionPercent;
+                        this._guestRepository.Commit();
+                        var employeecommission = this.EmployeeCollection.SingleOrDefault(x => x.Resource == item.Resource);
+                        if (employeecommission != null)
+                        {
+                            employeecommission.CommissionPercent = item.CommissionPercent;
+                            employeecommission.base_Guest.CommissionPercent = item.CommissionPercent;
+                            employeecommission.EndUpdate();
+                        }
+                    }
+                }
+            }
             this.SelectedItemEmployee.DateUpdated = DateTime.Now;
             this.SelectedItemEmployee.UserUpdated = Define.USER != null ? Define.USER.LoginName : string.Empty;
             // To map data from model to entity
@@ -1379,43 +1476,30 @@ namespace CPC.POS.ViewModel
                     SelectedItemEmployee.base_Guest.base_GuestProfile.Add(SelectedItemEmployee.PersonalInfoModel.base_GuestProfile);
                 SelectedItemEmployee.PersonalInfoModel.EndUpdate();
             }
+            //Clear old value of address.
+            this._guestAddressRepository.Delete(this.SelectedItemEmployee.base_Guest.base_GuestAddress);
+            this.SelectedItemEmployee.base_Guest.base_GuestAddress.Clear();
+            base_GuestAddressModel addressModel;
+            bool firstAddress = true;
             // Insert or update address
-            // Created by Thaipn
-            foreach (AddressControlModel addressControlModel in this.SelectedItemEmployee.AddressControlCollection.Where(x => x.IsDirty))
+            foreach (AddressControlModel addressControlModel in this.SelectedItemEmployee.AddressControlCollection)
             {
-                base_GuestAddressModel addressModel = new base_GuestAddressModel();
-                // Insert new address
-                if (addressControlModel.IsNew)
-                {
-                    addressModel.DateCreated = DateTimeExt.Now;
-                    addressModel.UserCreated = Define.USER.LoginName;
-                    // Map date from AddressControlModel to AddressModel
-                    addressModel.ToModel(addressControlModel);
-                    // Map data from model to entity
-                    addressModel.ToEntity();
-                    SelectedItemEmployee.base_Guest.base_GuestAddress.Add(addressModel.base_GuestAddress);
-                    addressModel.EndUpdate();
-                }
-                // Update address
-                else
-                {
-                    base_GuestAddress address = SelectedItemEmployee.base_Guest.base_GuestAddress.SingleOrDefault(x => x.AddressTypeId == addressControlModel.AddressTypeID);
-                    addressModel.GuestResource = this.SelectedItemEmployee.Resource.ToString();
-                    addressModel = new base_GuestAddressModel(address);
-                    addressModel.DateUpdated = DateTimeExt.Now;
-                    addressModel.UserUpdated = Define.USER.LoginName;
-                    //Map date from AddressControlModel to AddressModel
-                    addressModel.ToModel(addressControlModel);
-                    addressModel.ToEntity();
-                }
-
+                addressModel = new base_GuestAddressModel();
+                addressModel.ToModel(addressControlModel);
+                addressModel.IsDefault = firstAddress;
+                addressModel.DateUpdated = DateTimeExt.Now;
+                addressModel.UserUpdated = Define.USER.LoginName;
+                addressModel.GuestResource = this.SelectedItemEmployee.Resource.ToString();
+                addressModel.EndUpdate();
+                //To convert data from model to entity
+                addressModel.ToEntity();
+                this.SelectedItemEmployee.base_Guest.base_GuestAddress.Add(addressModel.base_GuestAddress);
+                firstAddress = false;
                 // Update default address
                 if (addressModel.IsDefault)
                     SelectedItemEmployee.AddressModel = addressModel;
-
                 // Turn off IsDirty & IsNew
                 addressModel.EndUpdate();
-
                 addressControlModel.IsNew = false;
                 addressControlModel.IsDirty = false;
             }
@@ -1475,6 +1559,7 @@ namespace CPC.POS.ViewModel
                         // Close all popup sticky
                         this.StickyManagementViewModel.CloseAllPopupSticky();
                         this.SelectedItemEmployee.ToModelAndRaise();
+                        this.SetToEmployeeModel(SelectedItemEmployee);
                         this.SetDataDefaultToModel(SelectedItemEmployee);
                         this.SetDataRelationToModel(SelectedItemEmployee);
                     }
@@ -1652,8 +1737,11 @@ namespace CPC.POS.ViewModel
                 if (this.ColumnCollection.Contains(SearchOptions.Company.ToString()))
                     predicate = predicate.Or(x => x.Company.ToLower().Contains(keyword.ToLower()));
                 //To search data with Department.
-                if (this.ColumnCollection.Contains(SearchOptions.Department.ToString()))
-                    predicate = predicate.Or(x => x.Department.ToLower().Contains(keyword.ToLower()));
+                if (this.ColumnCollection.Contains(SearchOptions.Department.ToString()) && Common.Departments.Any())
+                {
+                    IEnumerable<int> departments = Common.Departments.Where(x => x.Text.ToLower().Contains(keyword.ToLower())).Select(x => Convert.ToInt32(x.Value));
+                    predicate = predicate.Or(x => departments.Contains(x.Department));
+                }
                 //To search data with Phone.
                 if (this.ColumnCollection.Contains(SearchOptions.Phone.ToString()))
                     predicate = predicate.Or(x => x.Phone1.ToLower().Contains(keyword.ToLower()) || x.Phone2.ToLower().Contains(keyword.ToLower()));
@@ -1692,6 +1780,7 @@ namespace CPC.POS.ViewModel
             bgWorker.ProgressChanged += (sender, e) =>
             {
                 base_GuestModel employeeModel = new base_GuestModel((base_Guest)e.UserState);
+                SetToEmployeeModel(employeeModel);
                 this.EmployeeCollection.Add(employeeModel);
             };
             bgWorker.RunWorkerCompleted += (sender, e) =>
@@ -1703,6 +1792,38 @@ namespace CPC.POS.ViewModel
             bgWorker.RunWorkerAsync();
         }
 
+        #endregion
+
+        #region SetToEmployeeModel
+        /// <summary>
+        /// Set Data to Employee model when load to datagrid
+        /// </summary>
+        /// <param name="employeeModel"></param>
+        private void SetToEmployeeModel(base_GuestModel employeeModel)
+        {
+            SetDepartmentComboboxItem(employeeModel);
+        }
+
+        /// <summary>
+        /// Set Department for combobox Item
+        /// </summary>
+        /// <param name="employeeModel"></param>
+        private void SetDepartmentComboboxItem(base_GuestModel employeeModel)
+        {
+            ComboItem departmentItem = null;
+            if (Common.Departments.Any())
+            {
+                departmentItem = Common.Departments.SingleOrDefault(x => Convert.ToInt32(x.ObjValue).Equals(employeeModel.Department));
+            }
+            if (departmentItem != null)
+            {
+                employeeModel.DepartmentItem = departmentItem;
+            }
+            else
+            {
+                employeeModel.DepartmentItem = new ComboItem() { Text = string.Empty };
+            }
+        }
         #endregion
 
         #region SetDataDefaultToModel
@@ -1780,6 +1901,7 @@ namespace CPC.POS.ViewModel
                 {
                     AddressControlModel addressControlModel = guestAddressModel.ToAddressControlModel();
                     addressControlModel.IsDirty = false;
+                    addressControlModel.IsChangeData = false;
                     employeeModel.AddressControlCollection.Add(addressControlModel);
                 }
                 //Load PhotoCollection
@@ -1845,13 +1967,38 @@ namespace CPC.POS.ViewModel
         void SelectedItemEmployee_PropertyChanged(object sender, PropertyChangedEventArgs e)
         {
             base_GuestModel employeeModel = sender as base_GuestModel;
-
             switch (e.PropertyName)
             {
                 case "GuestNo":
                     this.CheckDuplicateGuestNo(employeeModel);
-
                     break;
+                case "Department":
+                    LoadManagerResource(employeeModel.Resource.Value);
+                    break;
+                case "ManagerResource":
+                    //Check percent of commission of this employee.
+                    if (!string.IsNullOrEmpty(this.SelectedItemEmployee.ManagerResource))
+                    {
+                        Guid managerresource = Guid.Parse(this.SelectedItemEmployee.ManagerResource);
+                        var managerCommssion = this._guestRepository.Get(x => x.Resource != null && x.Resource == managerresource);
+                        if (managerCommssion != null)
+                            this.SelectedItemEmployee.ManagerCommission = managerCommssion.CommissionPercent;
+                    }
+                    else
+                        this.SelectedItemEmployee.ManagerCommission = 0;
+                    break;
+
+                case "CommissionPercent":
+                    //Check percent of commission of this employee.
+                    if (!string.IsNullOrEmpty(this.SelectedItemEmployee.ManagerResource))
+                    {
+                        Guid managerresource = Guid.Parse(this.SelectedItemEmployee.ManagerResource);
+                        var managerCommssion = this._guestRepository.Get(x => x.Resource != null && x.Resource == managerresource);
+                        if (managerCommssion != null)
+                            this.SelectedItemEmployee.ManagerCommission = managerCommssion.CommissionPercent;
+                    }
+                    break;
+
                 default:
                     break;
             }
@@ -1882,8 +2029,12 @@ namespace CPC.POS.ViewModel
         #region LoadManagerResource
         private void LoadManagerResource(Guid resource)
         {
-            this.SelectedItemEmployee.ManagerResourceCollection = new ObservableCollection<ItemModel>();
-            var list = _guestRepository.GetIQueryable(x => x.Resource != resource && x.Mark.Equals(_employeeMark));
+            if (this.SelectedItemEmployee.ManagerResourceCollection == null)
+                this.SelectedItemEmployee.ManagerResourceCollection = new ObservableCollection<ItemModel>();
+            else
+                this.SelectedItemEmployee.ManagerResourceCollection.Clear();
+
+            var list = _guestRepository.GetIQueryable(x => x.Resource != resource && x.Mark.Equals(_employeeMark) && x.Department == this.SelectedItemEmployee.Department);
             ItemModel model;
             if (list != null)
             {

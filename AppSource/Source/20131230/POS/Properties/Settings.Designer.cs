@@ -127,18 +127,6 @@ namespace CPC.POS.Properties {
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("1")]
-        public int MaxNumberOfImages {
-            get {
-                return ((int)(this["MaxNumberOfImages"]));
-            }
-            set {
-                this["MaxNumberOfImages"] = value;
-            }
-        }
-        
-        [global::System.Configuration.UserScopedSettingAttribute()]
-        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.Configuration.DefaultSettingValueAttribute("3")]
         public int MultiTaxMaxLength {
             get {
@@ -295,7 +283,7 @@ namespace CPC.POS.Properties {
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("1")]
+        [global::System.Configuration.DefaultSettingValueAttribute("7")]
         public int DelaySearching {
             get {
                 return ((int)(this["DelaySearching"]));
@@ -314,6 +302,42 @@ namespace CPC.POS.Properties {
             }
             set {
                 this["ContactUsURL"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("testreport@newsmartpos.com")]
+        public string EmailAccount {
+            get {
+                return ((string)(this["EmailAccount"]));
+            }
+            set {
+                this["EmailAccount"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("+dH0mbhJybkdhMJu4S0sxQ==")]
+        public string EmailPwd {
+            get {
+                return ((string)(this["EmailPwd"]));
+            }
+            set {
+                this["EmailPwd"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("6")]
+        public int MaxNumberOfImages {
+            get {
+                return ((int)(this["MaxNumberOfImages"]));
+            }
+            set {
+                this["MaxNumberOfImages"] = value;
             }
         }
     }

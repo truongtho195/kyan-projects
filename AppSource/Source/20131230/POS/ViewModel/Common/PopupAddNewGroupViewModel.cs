@@ -17,6 +17,7 @@ namespace CPC.POS.ViewModel
         #region Defines
 
         private base_GuestGroupRepository _guestGroupRepository = new base_GuestGroupRepository();
+        private string _guetsMark;
 
         #endregion
 
@@ -46,19 +47,20 @@ namespace CPC.POS.ViewModel
         /// <summary>
         /// Default constructor
         /// </summary>
-        public PopupAddNewGroupViewModel()
+        public PopupAddNewGroupViewModel(string mark)
             : base()
         {
             InitialCommand();
 
             // Create new guest group
             SelectedGuestGroup = new base_GuestGroupModel();
+            SelectedGuestGroup.Mark = mark;
             SelectedGuestGroup.DateCreated = DateTimeExt.Now;
             SelectedGuestGroup.UserCreated = Define.USER.LoginName;
             Guid guid = Guid.NewGuid();
             SelectedGuestGroup.Resource = guid;
             SelectedGuestGroup.GuestGroupResource = guid.ToString();
-
+            _guetsMark = mark;
             // Turn off IsDirty
             SelectedGuestGroup.IsDirty = false;
         }
@@ -168,7 +170,7 @@ namespace CPC.POS.ViewModel
         /// <returns></returns>
         private bool IsExistedName(base_GuestGroupModel guestGroupModel)
         {
-            IEnumerable<base_GuestGroup> guestGroups = _guestGroupRepository.GetAll(x => x.Name.Equals(guestGroupModel.Name));
+            IEnumerable<base_GuestGroup> guestGroups = _guestGroupRepository.GetAll(x => x.Mark.Equals(_guetsMark) && x.Name.Equals(guestGroupModel.Name));
             if (guestGroups == null)
                 return false;
             return guestGroups.Count() > 0;

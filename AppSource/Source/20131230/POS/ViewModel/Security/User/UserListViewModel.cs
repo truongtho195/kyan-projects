@@ -659,7 +659,10 @@ namespace CPC.POS.ViewModel
                 //To get information of user from base_Guest table. 
                 resourceAccountModel.UserResource = _guest.Resource.ToString();
                 resourceAccountModel.UserName = string.Format("{0} {1}", _guest.FirstName, _guest.LastName);
-                resourceAccountModel.Department = _guest.Department;
+                
+                ComboItem departmentItem = Common.Departments.SingleOrDefault(x => Convert.ToInt32(x.ObjValue).Equals(_guest.Department));
+                resourceAccountModel.Department = departmentItem!=null? departmentItem.Text :string.Empty;
+                
                 resourceAccountModel.PositionId = _guest.PositionId;
                 resourceAccountModel.IsDirty = false;
                 //To add item.

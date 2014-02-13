@@ -487,7 +487,9 @@ namespace CPC.POS
         BasePrice,
         PriceLevel,
         Adjustment,
-        ItemCount
+        ItemCount,
+        CompanyReOrderPoint,
+        Picture
     }
 
     public enum SalesTaxOption
@@ -883,7 +885,9 @@ namespace CPC.POS
     public enum GenericCode
     {
         [Description("Job Title")]
-        JT = 0
+        JT = 0,
+        [Description("Department")]
+        DP = 1
     }
 
     public enum RewardAmountType
@@ -959,6 +963,18 @@ namespace CPC.POS
         Category = 1,
         Vendor = 2,
         Custom = 3
+    }
+
+    #endregion
+
+    #region FilterWindow
+
+    public enum FilterWindow
+    {
+        Optional = 1,
+        ReportOptional = 2,
+        PurchaseOPtional = 3,
+        CustomerPaymentOptional = 4
     }
 
     #endregion

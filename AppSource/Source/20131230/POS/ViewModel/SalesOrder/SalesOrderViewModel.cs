@@ -52,8 +52,11 @@ namespace CPC.POS.ViewModel
 
 
         private bool IsAdvanced { get; set; }
-
-
+        
+        /// <summary>
+        /// Collection using for sale from Product List
+        /// </summary>
+        private List<base_ProductModel> _productCollectionForSell = new List<base_ProductModel>();
         #endregion
 
         #region Constructors
@@ -136,6 +139,7 @@ namespace CPC.POS.ViewModel
                 {
                     isSearchMode = value;
                     OnPropertyChanged(() => IsSearchMode);
+                    ContainerTitle = IsSearchMode ? Language.GetMsg("SO_Title_SaleOrderList") : Language.GetMsg("SO_Title_SaleOrder");
                 }
             }
         }
@@ -2007,17 +2011,48 @@ namespace CPC.POS.ViewModel
 
             bgWorker.RunWorkerCompleted += (sender, e) =>
             {
-                if (SaleOrderId > 0)
+                if (SaleOrderId > 0)//This method using for convert from another(Quotation,workorder,..)
                 {
                     SetSelectedSaleOrderFromAnother();
                 }
                 else
                 {
+
                     //Sale Order View is Open & in Edit View
-                    if (_viewExisted && !IsSearchMode && SelectedSaleOrder != null && SaleOrderCollection.Any() && !SelectedSaleOrder.IsNew) //Item is selected
+                    if (_viewExisted)
                     {
-                        SetSelectedSaleOrderFromDbOrCollection();
+
+                        if (IsSearchMode)//InList
+                        {
+                            if (_productCollectionForSell.Any())
+                            {
+                                CreateNewSaleOrder();
+                                this.IsSearchMode = false;
+                                CreateSaleOrderDetailWithProducts(_productCollectionForSell);
+                            }
+                        }
+                        else //in Edit Mode
+                        {
+                            if (SelectedSaleOrder != null && !SelectedSaleOrder.IsNew)
+                            {
+                                SetSelectedSaleOrderFromDbOrCollection();
+                                //Not Create new Order when current SaleOrder is difference with Open
+                                if (SelectedSaleOrder.OrderStatus != (short)SaleOrderStatus.Open)
+                                {
+                                    CreateNewSaleOrder();
+                                }
+
+                                if (_productCollectionForSell.Any())
+                                    CreateSaleOrderDetailWithProducts(_productCollectionForSell);
+                            }
+                        }
                     }
+
+                    //if (_viewExisted && !IsSearchMode && SelectedSaleOrder != null && !SelectedSaleOrder.IsNew) //Item is selected //&& SaleOrderCollection.Any()
+                    //{
+                    //    SetSelectedSaleOrderFromDbOrCollection();
+
+                    //}
                 }
 
                 IsBusy = false;
@@ -5178,10 +5213,11 @@ namespace CPC.POS.ViewModel
                 }
                 else //Create saleOrder with ProductCollection
                 {
-                    CreateNewSaleOrder();
-                    this.IsSearchMode = false;
-                    IEnumerable<base_ProductModel> productCollection = param as IEnumerable<base_ProductModel>;
-                    CreateSaleOrderDetailWithProducts(productCollection);
+
+                    //CreateNewSaleOrder();
+                    //this.IsSearchMode = false;
+                    _productCollectionForSell = param as List<base_ProductModel>;
+
 
                 }
             }
@@ -5197,6 +5233,18 @@ namespace CPC.POS.ViewModel
             }
         }
 
+        /// <summary>
+        /// ChangeLanguage
+        /// </summary>
+        public override void ChangeLanguage()
+        {
+            base.ChangeLanguage();
+
+            //Change Static Collection
+            base.ChangLanguageExtension();
+
+            ContainerTitle = IsSearchMode ? Language.GetMsg("SO_Title_SaleOrderList") : Language.GetMsg("SO_Title_SaleOrder");
+        }
 
         #endregion
 

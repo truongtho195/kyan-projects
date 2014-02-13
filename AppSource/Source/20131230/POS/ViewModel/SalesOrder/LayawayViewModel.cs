@@ -108,6 +108,7 @@ namespace CPC.POS.ViewModel
                 {
                     isSearchMode = value;
                     OnPropertyChanged(() => IsSearchMode);
+                    ContainerTitle = IsSearchMode ? Language.GetMsg("SO_Title_LayawayList") : Language.GetMsg("SO_Title_Layaway");
                 }
             }
         }
@@ -753,7 +754,7 @@ namespace CPC.POS.ViewModel
                 return false;
             //SaleOrder Is Saved, has product in order & has paid or deposit and need to full payment
             return !SelectedSaleOrder.IsNew
-                && SelectedSaleOrder.SaleOrderDetailCollection.Any()
+                && (SelectedSaleOrder.SaleOrderDetailCollection!=null && SelectedSaleOrder.SaleOrderDetailCollection.Any())
                 && SelectedSaleOrder.Balance <= 0
                 && (SelectedSaleOrder.SaleOrderShipCollection == null ||
                     (SelectedSaleOrder.SaleOrderShipCollection != null && !SelectedSaleOrder.SaleOrderShipCollection.Any())) // Not Any Ship
@@ -1752,7 +1753,7 @@ namespace CPC.POS.ViewModel
                     break;
                 case "ProductTaxAmount":
                 case "ShipTaxAmount":
-                    if (saleOrderModel.TaxLocationModel.TaxCodeModel.IsTaxAfterDiscount)
+                    if (saleOrderModel.TaxLocationModel != null && saleOrderModel.TaxLocationModel.TaxCodeModel != null && saleOrderModel.TaxLocationModel.TaxCodeModel.IsTaxAfterDiscount)
                         saleOrderModel.TaxAmount = saleOrderModel.ProductTaxAmount + saleOrderModel.ShipTaxAmount - saleOrderModel.DiscountAmount;
                     else
                         saleOrderModel.TaxAmount = saleOrderModel.ShipTaxAmount + saleOrderModel.ProductTaxAmount;
@@ -2059,6 +2060,17 @@ namespace CPC.POS.ViewModel
             {
                 CreateSaleOrderDetailWithProducts(productSearchViewModel.SelectedProducts);
             }
+        }
+
+        public override void ChangeLanguage()
+        {
+            base.ChangeLanguage();
+            
+            //Change Static Collection
+            base.ChangLanguageExtension();
+
+            //Change Language for View Title
+            ContainerTitle = IsSearchMode ? Language.GetMsg("SO_Title_LayawayList") : Language.GetMsg("SO_Title_Layaway");
         }
 
         #endregion

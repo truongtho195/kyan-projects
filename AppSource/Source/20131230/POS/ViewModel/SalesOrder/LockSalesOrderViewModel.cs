@@ -76,7 +76,7 @@ namespace CPC.POS.ViewModel
             if (Define.CONFIGURATION.IsAutoSearch)
             {
                 _waitingTimer = new DispatcherTimer();
-                _waitingTimer.Interval = new TimeSpan(0, 0, 0, 1);
+                _waitingTimer.Interval = new TimeSpan(0, 0, 0, 0, 100);
                 _waitingTimer.Tick += new EventHandler(_waitingTimer_Tick);
             }
 
@@ -111,6 +111,7 @@ namespace CPC.POS.ViewModel
                 {
                     isSearchMode = value;
                     OnPropertyChanged(() => IsSearchMode);
+                    ContainerTitle = IsSearchMode ? Language.GetMsg("SO_Title_SaleOrderLockedList") : Language.GetMsg("SO_Title_SaleOrderLocked");
                 }
             }
         }
@@ -1338,6 +1339,13 @@ namespace CPC.POS.ViewModel
             {
                 IsSearchMode = true;
             }
+        }
+
+        public override void ChangeLanguage()
+        {
+            base.ChangeLanguage();
+            //Change Title
+            ContainerTitle = IsSearchMode ? Language.GetMsg("SO_Title_SaleOrderLockedList") : Language.GetMsg("SO_Title_SaleOrderLocked");
         }
 
         #endregion

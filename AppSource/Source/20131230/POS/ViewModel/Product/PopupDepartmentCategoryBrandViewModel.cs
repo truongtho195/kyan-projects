@@ -7,6 +7,8 @@ using CPC.POS.Model;
 using CPC.POS.Repository;
 using CPC.Toolkit.Base;
 using CPC.Toolkit.Command;
+using System.Linq.Expressions;
+using System.Collections.Generic;
 
 namespace CPC.POS.ViewModel
 {
@@ -18,6 +20,8 @@ namespace CPC.POS.ViewModel
         /// Indicates current location is department, category, or brand.
         /// </summary>
         ProductDeparmentLevel _currentLocation = ProductDeparmentLevel.Department;
+
+        private base_DepartmentRepository _departmentRepository = new base_DepartmentRepository();
 
         #endregion
 
@@ -261,14 +265,13 @@ namespace CPC.POS.ViewModel
         {
             try
             {
-                base_DepartmentRepository departmentRepository = new base_DepartmentRepository();
 
                 DateTime now = DateTime.Now;
                 _newItem.DateCreated = now;
                 _newItem.UserCreated = Define.USER.LoginName;
                 _newItem.ToEntity();
-                departmentRepository.Add(_newItem.base_Department);
-                departmentRepository.Commit();
+                _departmentRepository.Add(_newItem.base_Department);
+                _departmentRepository.Commit();
                 _newItem.Id = _newItem.base_Department.Id;
                 _newItem.IsNew = false;
                 _newItem.IsDirty = false;
@@ -415,6 +418,33 @@ namespace CPC.POS.ViewModel
         }
 
         #endregion
+
+        private bool IsDuplicate()
+        {
+
+            try
+            {
+                string name = NewItem.Name.Trim().Replace(" ", "").ToLower();
+
+                //IQueryable<base_Department> departments = _departmentRepository.GetIQueryable(x => x.IsActived == true && !x.Id.Equals(NewItem.Id));
+
+                // Create predicate
+                Expression<Func<base_Department, bool>> predicate = PredicateBuilder.True<base_Department>();
+
+                // Get all products that IsPurge is false
+                predicate = predicate.And(x => x.IsActived == true && !x.Id.Equals(NewItem.Id));
+
+                // Get all products that duplicate name
+                predicate = predicate.And(x => x.Name.Replace(" ", "").ToLower().Equals(name));
+
+                return _departmentRepository.GetIQueryable(predicate).Count() > 0;
+            }
+            catch (Exception ex)
+            {
+                _log4net.Error(ex);
+                return true;
+            }
+        }
 
         #endregion
     }

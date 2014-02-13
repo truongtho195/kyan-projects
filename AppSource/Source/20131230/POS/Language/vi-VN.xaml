@@ -169,7 +169,7 @@
     <sys:String x:Key="C150">Ngày Hủy</sys:String>
     <sys:String x:Key="C151">Trạng Thái</sys:String>
     <sys:String x:Key="C152">SL tồn kho</sys:String>
-    <sys:String x:Key="C153">On Order </sys:String>
+    <sys:String x:Key="C153">On Order</sys:String>
     <sys:String x:Key="C154">Hiện Có</sys:String>
     <sys:String x:Key="C155">Kho hàng</sys:String>
     <sys:String x:Key="C156">Số lượng sản phẩm</sys:String>
@@ -377,15 +377,15 @@
     <sys:String x:Key="PR114">Thay đổi giá</sys:String>
     <sys:String x:Key="PR_Popup_108">Lợi nhuận %</sys:String>
     <sys:String x:Key="PR_Popup_109">Markup %</sys:String>
-    <sys:String x:Key="PR_Message_SelectProductByCategory">Select products to apply to this pricing </sys:String>
-    <sys:String x:Key="PR_Message_SelectProductByVendor">Select products to apply to this pricing </sys:String>
-    <sys:String x:Key="PR_Message_SelectProductByCustom">Select products to apply to this pricing </sys:String>
+    <sys:String x:Key="PR_Message_SelectProductByCategory">Select products to apply to this pricing</sys:String>
+    <sys:String x:Key="PR_Message_SelectProductByVendor">Select products to apply to this pricing</sys:String>
+    <sys:String x:Key="PR_Message_SelectProductByCustom">Select products to apply to this pricing</sys:String>
     <!--  endregion PricingView  -->
     <!--  ReOrderStock  -->
     <sys:String x:Key="RO100">Đặt hàng lại</sys:String>
     <sys:String x:Key="RO101">Kho</sys:String>
     <sys:String x:Key="RO102">Số lượng đặt lại</sys:String>
-    <sys:String x:Key="RO103">Reorder Point </sys:String>
+    <sys:String x:Key="RO103">Reorder Point</sys:String>
     <!--  End ReOrderStock  -->
     <!--  Count Sheet  -->
     <sys:String x:Key="CS_DataGrid_Header_Location">Nơi</sys:String>
@@ -523,13 +523,29 @@
     <sys:String x:Key="EM_Header_EmployeeNo">Mã nhân viên</sys:String>
     <sys:String x:Key="EM_Header_EmployeeType">Loại nhân viên</sys:String>
     <sys:String x:Key="EM_Header_JobTitle">Chức vụ</sys:String>
-    <sys:String x:Key="DataGrid_Text_Total">Tổng cộng: </sys:String>
+    <sys:String x:Key="DataGrid_Text_Total">Tổng cộng:</sys:String>
     <sys:String x:Key="DataGrid_Text_Item">dòng.</sys:String>
     <sys:String x:Key="DataGrid_Text_CurrentIndex">Dòng hiện tai:</sys:String>
 
     <!--  End EmployeeView  -->
 
     <!--  region ProductView  -->
+    <!--  Title  -->
+    <sys:String x:Key="PD_Title_Product">Product vi</sys:String>
+    <sys:String x:Key="PD_Title_ProductList">Product List vi</sys:String>
+    <sys:String x:Key="PD_Title_CreateNewDepartment">Create new Department vi</sys:String>
+    <sys:String x:Key="PD_Title_CreateNewCategory">Create new Category vi</sys:String>
+    <sys:String x:Key="PD_Title_CreateNewBrand">Create new Brand vi</sys:String>
+    <sys:String x:Key="PD_Title_CreateNewVendor">Create new Vendor vi</sys:String>
+    <sys:String x:Key="PD_Title_AttributeAndSize">Attribute and Size vi</sys:String>
+    <sys:String x:Key="PD_Title_ReorderPoint">Reorder Point vi</sys:String>
+    <sys:String x:Key="PD_Title_AvailableQuantities">Available Quantities vi</sys:String>
+    <sys:String x:Key="PD_Title_ManagementUOM">Management UOM vi</sys:String>
+    <sys:String x:Key="PD_Title_Pricing">Pricing vi</sys:String>
+    <sys:String x:Key="PD_Title_CreateNewUOM">Create new UOM vi</sys:String>
+    <sys:String x:Key="PD_Title_DuplicateItem">Duplicate Item vi</sys:String>
+    <sys:String x:Key="PD_Title_BuildItemGroup">Build Item Group vi</sys:String>
+    <sys:String x:Key="PD_Title_AddNewWarranty">Add new Warranty vi</sys:String>
     <!--  CheckBox  -->
     <sys:String x:Key="PD_CategoryBrand">Loại Hàng/Nhánh Hàng</sys:String>
     <sys:String x:Key="PD_DescriptionStyleModel">Mô Tả/Kiểu Dáng</sys:String>
@@ -541,16 +557,17 @@
     <sys:String x:Key="PD_ItemType">Dạng SP</sys:String>
     <sys:String x:Key="PD_Category">Loại SP</sys:String>
     <sys:String x:Key="PD_PartNo">Số Phần</sys:String>
-    <sys:String x:Key="PD_ALU">ALU </sys:String>
+    <sys:String x:Key="PD_ALU">ALU</sys:String>
     <sys:String x:Key="PD_BaseUnit">Đơn Vị</sys:String>
     <sys:String x:Key="PD_CreationDate">Ngày Tạo</sys:String>
     <sys:String x:Key="PD_VendorCode">Mã NCC</sys:String>
-    <sys:String x:Key="PD_RegPrice">Reg.Price </sys:String>
+    <sys:String x:Key="PD_RegPrice">Reg.Price vi</sys:String>
+    <sys:String x:Key="PD_Picture">Picture vi</sys:String>
     <!--  TabHeader  -->
     <sys:String x:Key="PD_ProductInfo">Thông Tin SP</sys:String>
     <sys:String x:Key="PD_Additional">Thông tin khác</sys:String>
     <sys:String x:Key="PD_VendorProduct">Nhà cung cấp</sys:String>
-    <sys:String x:Key="PD_PurchaseHistory">Purchase History </sys:String>
+    <sys:String x:Key="PD_PurchaseHistory">Purchase History</sys:String>
     <!--  GroupHeader  -->
     <sys:String x:Key="PD_ItemInformation">Thông Tin Sản Phẩm</sys:String>
     <sys:String x:Key="PD_UnitOfMeasure">Đơn Vị</sys:String>
@@ -559,9 +576,9 @@
     <sys:String x:Key="PD_Location">Địa Điểm</sys:String>
     <sys:String x:Key="PD_OtherOptionsSetting">Thiết Lập Khác</sys:String>
     <!--  Button  -->
-    <sys:String x:Key="PD_Detail">Detail </sys:String>
+    <sys:String x:Key="PD_Detail">Detail</sys:String>
     <sys:String x:Key="PD_ManageUOM">Quản Lý Đơn Vị</sys:String>
-    <sys:String x:Key="PD_BuildItemsGroup">Build Items Group </sys:String>
+    <sys:String x:Key="PD_BuildItemsGroup">Build Items Group</sys:String>
     <sys:String x:Key="PD_Pricing">Quản Lý Giá</sys:String>
     <!--  TextBlock  -->
     <sys:String x:Key="PD_Keyword">Từ khóa/Quét sản phẩm</sys:String>
@@ -571,37 +588,37 @@
     <sys:String x:Key="PD_StyleModel">Kiểu Dáng</sys:String>
     <sys:String x:Key="PD_OnHand">Số Lượng</sys:String>
     <sys:String x:Key="PD_AvailableQty">Số Lượng Có Sẵn</sys:String>
-    <sys:String x:Key="PD_TypeOfUOM">Type of UOM </sys:String>
+    <sys:String x:Key="PD_TypeOfUOM">Type of UOM</sys:String>
     <sys:String x:Key="PD_BaseUnitNumber">Giá Trị Quy Đổi</sys:String>
     <sys:String x:Key="PD_OrderCost">Giá Mua</sys:String>
     <sys:String x:Key="PD_AvgUnitCost">Giá Trung Bình</sys:String>
     <sys:String x:Key="PD_TypeOfWarranty">Loại Bảo Hành</sys:String>
     <sys:String x:Key="PD_WarrantyPeriod">Thời Gian Bảo Hành</sys:String>
     <sys:String x:Key="PD_YourLocation">Địa điểm của bạn?</sys:String>
-    <sys:String x:Key="PD_TrackingSerialNo">Tracking Serial No. </sys:String>
-    <sys:String x:Key="PD_OpenItem">Open Item </sys:String>
-    <sys:String x:Key="PD_Unorderable">Unorderable </sys:String>
-    <sys:String x:Key="PD_EligibleForRewards">Eligible for Rewards </sys:String>
-    <sys:String x:Key="PD_LayawayItem">Layaway Item </sys:String>
-    <sys:String x:Key="PD_SalesCommission">Sales Commission </sys:String>
-    <sys:String x:Key="PD_TrackingSerialNo_Description">Prompt for serial number </sys:String>
-    <sys:String x:Key="PD_OpenItem_Description">Can change item price after putting this item on order </sys:String>
-    <sys:String x:Key="PD_Unorderable_Description">Temporaily ignore the reorder point for this item and warn when putting it on a PO </sys:String>
-    <sys:String x:Key="PD_EligibleForRewards_Description">Reward Customer will earn reward when purchase this item </sys:String>
-    <sys:String x:Key="PD_LayawayItem_Description">This item is eligible for Layaway </sys:String>
-    <sys:String x:Key="PD_SalesCommission_Description">Commission Rate </sys:String>
+    <sys:String x:Key="PD_TrackingSerialNo">Tracking Serial No.</sys:String>
+    <sys:String x:Key="PD_OpenItem">Open Item</sys:String>
+    <sys:String x:Key="PD_Unorderable">Unorderable</sys:String>
+    <sys:String x:Key="PD_EligibleForRewards">Eligible for Rewards</sys:String>
+    <sys:String x:Key="PD_LayawayItem">Layaway Item</sys:String>
+    <sys:String x:Key="PD_SalesCommission">Sales Commission</sys:String>
+    <sys:String x:Key="PD_TrackingSerialNo_Description">Prompt for serial number</sys:String>
+    <sys:String x:Key="PD_OpenItem_Description">Can change item price after putting this item on order</sys:String>
+    <sys:String x:Key="PD_Unorderable_Description">Temporaily ignore the reorder point for this item and warn when putting it on a PO</sys:String>
+    <sys:String x:Key="PD_EligibleForRewards_Description">Reward Customer will earn reward when purchase this item</sys:String>
+    <sys:String x:Key="PD_LayawayItem_Description">This item is eligible for Layaway</sys:String>
+    <sys:String x:Key="PD_SalesCommission_Description">Commission Rate</sys:String>
     <sys:String x:Key="PD_SelectVendor">Chọn NCC</sys:String>
-    <sys:String x:Key="PD_CoverPriceRange">Cover Price Range </sys:String>
-    <sys:String x:Key="PD_Aisle">Aisle </sys:String>
-    <sys:String x:Key="PD_Shell">Shell </sys:String>
-    <sys:String x:Key="PD_Note">Note </sys:String>
+    <sys:String x:Key="PD_CoverPriceRange">Cover Price Range</sys:String>
+    <sys:String x:Key="PD_Aisle">Aisle</sys:String>
+    <sys:String x:Key="PD_Shell">Shell</sys:String>
+    <sys:String x:Key="PD_Note">Note</sys:String>
     <!--  PopupAttributeAndSize  -->
     <sys:String x:Key="PD_AttributeAndSize">Thuộc Tính &amp; Kích Thước</sys:String>
     <sys:String x:Key="PD_DeleteAttribute">Xóa thuộc tính</sys:String>
     <sys:String x:Key="PD_ClickToAdd">&lt;Thêm mới&gt;</sys:String>
     <sys:String x:Key="PD_DeleteSize">Xóa kích thước</sys:String>
     <!--  PopupReorderPoint  -->
-    <sys:String x:Key="PD_StoreReorderPoint">Store Reorder Point </sys:String>
+    <sys:String x:Key="PD_StoreReorderPoint">Store Reorder Point</sys:String>
     <!--  PopupAvailableQuantity  -->
     <sys:String x:Key="PD_QuantityForThisItem">Số lượng của sản phẩm này</sys:String>
     <sys:String x:Key="PD_StoreQuantities">Số lượng các kho (Đơn vị chuẩn)</sys:String>
@@ -613,8 +630,8 @@
     <sys:String x:Key="PD_QuantityOnOrder">Số lượng bán</sys:String>
     <sys:String x:Key="PD_QuantityAvailable">Số lượng có sẵn</sys:String>
     <sys:String x:Key="PD_Show">Hiển thị</sys:String>
-    <sys:String x:Key="PD_ViewStatus">View Status </sys:String>
-    <sys:String x:Key="PD_QuantityByStore">Quantity by Store </sys:String>
+    <sys:String x:Key="PD_ViewStatus">View Status</sys:String>
+    <sys:String x:Key="PD_QuantityByStore">Quantity by Store</sys:String>
     <sys:String x:Key="PD_TotalQuantity">Tổng số lượng</sys:String>
     <!--  PopupGuest  -->
     <sys:String x:Key="PD_FirstName">Họ</sys:String>
@@ -622,15 +639,15 @@
     <sys:String x:Key="PD_LastName">Tên</sys:String>
     <sys:String x:Key="PD_Company">Công ty</sys:String>
     <sys:String x:Key="PD_JobTitle">Chức danh</sys:String>
-    <sys:String x:Key="PD_Email">Email </sys:String>
-    <sys:String x:Key="PD_Website">Website </sys:String>
-    <sys:String x:Key="PD_PhoneNumbers">Phone Numbers </sys:String>
-    <sys:String x:Key="PD_Phone1">Phone 1 </sys:String>
-    <sys:String x:Key="PD_Phone2">Phone 2 </sys:String>
-    <sys:String x:Key="PD_Cellphone">Cellphone </sys:String>
-    <sys:String x:Key="PD_Fax">Fax </sys:String>
-    <sys:String x:Key="PD_Commission">Commission </sys:String>
-    <sys:String x:Key="PD_SaleRep">Sale Rep </sys:String>
+    <sys:String x:Key="PD_Email">Email</sys:String>
+    <sys:String x:Key="PD_Website">Website</sys:String>
+    <sys:String x:Key="PD_PhoneNumbers">Phone Numbers</sys:String>
+    <sys:String x:Key="PD_Phone1">Phone 1</sys:String>
+    <sys:String x:Key="PD_Phone2">Phone 2</sys:String>
+    <sys:String x:Key="PD_Cellphone">Cellphone</sys:String>
+    <sys:String x:Key="PD_Fax">Fax</sys:String>
+    <sys:String x:Key="PD_Commission">Commission</sys:String>
+    <sys:String x:Key="PD_SaleRep">Sale Rep</sys:String>
     <!--  PopupManagemenUOM  -->
     <sys:String x:Key="PD_DefauftSellingUOM">Đơn vị bán mặc định</sys:String>
     <sys:String x:Key="PD_UnitOfMeasure1">Đơn vị 1</sys:String>
@@ -638,22 +655,22 @@
     <sys:String x:Key="PD_UnitOfMeasure3">Đơn vị 3</sys:String>
     <sys:String x:Key="PD_AverageUnitCost">Giá trung bình</sys:String>
     <sys:String x:Key="PD_Sell">Bán</sys:String>
-    <sys:String x:Key="PD_UPC">UPC </sys:String>
-    <sys:String x:Key="PD_AlternateLookup">Alternate Lookup </sys:String>
+    <sys:String x:Key="PD_UPC">UPC</sys:String>
+    <sys:String x:Key="PD_AlternateLookup">Alternate Lookup</sys:String>
     <!--  PopupPricing  -->
-    <sys:String x:Key="PD_PriceCalculation">Price Calculation </sys:String>
-    <sys:String x:Key="PD_ShowPriceLevelFor">Show price level for </sys:String>
-    <sys:String x:Key="PD_PriceCalculation_Description">You can change any of values below to calculate the price and the cost for this item. </sys:String>
-    <sys:String x:Key="PD_Margin_Description">(Price - Cost) / Price </sys:String>
-    <sys:String x:Key="PD_Markup_Description">(Price - Cost) / Cost </sys:String>
-    <sys:String x:Key="PD_Markdown">Markdown % </sys:String>
+    <sys:String x:Key="PD_PriceCalculation">Price Calculation</sys:String>
+    <sys:String x:Key="PD_ShowPriceLevelFor">Show price level for</sys:String>
+    <sys:String x:Key="PD_PriceCalculation_Description">You can change any of values below to calculate the price and the cost for this item.</sys:String>
+    <sys:String x:Key="PD_Margin_Description">(Price - Cost) / Price</sys:String>
+    <sys:String x:Key="PD_Markup_Description">(Price - Cost) / Cost</sys:String>
+    <sys:String x:Key="PD_Markdown">Markdown %</sys:String>
     <!--  PopupUpdateOrderCost  -->
-    <sys:String x:Key="PD_NewAnOrderCost">New an order cost </sys:String>
-    <sys:String x:Key="PD_ClearAllOrderCost">Clear all order cost and change later </sys:String>
-    <sys:String x:Key="PD_KeepCurrentOrderCost">Keep current order cost </sys:String>
+    <sys:String x:Key="PD_NewAnOrderCost">New an order cost</sys:String>
+    <sys:String x:Key="PD_ClearAllOrderCost">Clear all order cost and change later</sys:String>
+    <sys:String x:Key="PD_KeepCurrentOrderCost">Keep current order cost</sys:String>
     <!--  PopupDuplicateItem  -->
-    <sys:String x:Key="PD_ChangeTheInformation">Change the information match to unique </sys:String>
-    <sys:String x:Key="PD_Discard">Discard and to the existing item(s) </sys:String>
+    <sys:String x:Key="PD_ChangeTheInformation">Change the information match to unique</sys:String>
+    <sys:String x:Key="PD_Discard">Discard and to the existing item(s)</sys:String>
     <!--  endregion ProductView  -->
 
     <!--  #Region SaleOrderView  -->
@@ -811,6 +828,17 @@
     <sys:String x:Key="SO_Title_MultiTrackingSerial">Multi Tracking Serial</sys:String>
     <sys:String x:Key="SO_Title_VoidBill">Void Bill</sys:String>
     <sys:String x:Key="SO_Title_ServiceFeeDetail">Service Fee Detail</sys:String>
+    <sys:String x:Key="SO_Title_SaleOrder">Sale Order Vi</sys:String>
+    <sys:String x:Key="SO_Title_SaleOrderList">Sale Order List Vi</sys:String>
+    <sys:String x:Key="SO_Title_WorkOrder">Work Order Vi</sys:String>
+    <sys:String x:Key="SO_Title_WorkOrderList">Work Order List Vi</sys:String>
+    <sys:String x:Key="SO_Title_Layaway">Layaway Vi</sys:String>
+    <sys:String x:Key="SO_Title_LayawayList">Layaway List Vi</sys:String>
+    <sys:String x:Key="SO_Title_Quotation">Quotation Vi</sys:String>
+    <sys:String x:Key="SO_Title_QuotationList">Quotation List Vi</sys:String>
+    <sys:String x:Key="SO_Title_SaleOrderLocked">Sale Order Locked Vi</sys:String>
+    <sys:String x:Key="SO_Title_SaleOrderLockedList">Sale Order Locked List Vi</sys:String>
+
     <!--  #EndRegion SaleOrderView  -->
 
     <!--Begin SaleOrderSearchAdvance-->
@@ -826,30 +854,30 @@
 
     <!--  region Promotion  -->
     <!--  ColumnHeader  -->
-    <sys:String x:Key="PM_DiscountName">Discount Name </sys:String>
-    <sys:String x:Key="PM_StartDate">Start Date </sys:String>
-    <sys:String x:Key="PM_EndDate">End Date </sys:String>
-    <sys:String x:Key="PM_CouponCode">Coupon Code </sys:String>
+    <sys:String x:Key="PM_DiscountName">Discount Name</sys:String>
+    <sys:String x:Key="PM_StartDate">Start Date</sys:String>
+    <sys:String x:Key="PM_EndDate">End Date</sys:String>
+    <sys:String x:Key="PM_CouponCode">Coupon Code</sys:String>
     <!--  GroupHeader  -->
-    <sys:String x:Key="PM_BarcodeImage">Scan Code Image </sys:String>
+    <sys:String x:Key="PM_BarcodeImage">Scan Code Image</sys:String>
     <!--  TextBlock  -->
-    <sys:String x:Key="PM_Take">Take </sys:String>
-    <sys:String x:Key="PM_PercentOff">% off </sys:String>
-    <sys:String x:Key="PM_Off">off </sys:String>
-    <sys:String x:Key="PM_QuantityX">Quantity (X) </sys:String>
-    <sys:String x:Key="PM_TotalPriceY">Total Price (Y) </sys:String>
-    <sys:String x:Key="PM_DiscountPrice">Discount Price </sys:String>
-    <sys:String x:Key="PM_Buy">Buy </sys:String>
-    <sys:String x:Key="PM_For">for </sys:String>
-    <sys:String x:Key="PM_Each">each </sys:String>
-    <sys:String x:Key="PM_ApplyToAboveQuantities">Apply the discount price to quantities above the specified amount </sys:String>
-    <sys:String x:Key="PM_QtyX">Qty (X) </sys:String>
-    <sys:String x:Key="PM_Percentage">Percentage (%) </sys:String>
-    <sys:String x:Key="PM_AndGet">and get </sys:String>
-    <sys:String x:Key="PM_PercentOffTheseItem">% off These Item </sys:String>
-    <sys:String x:Key="PM_CouponExpiresOn">Coupon Expires on </sys:String>
-    <sys:String x:Key="PM_ExpirationNoEndDate">Discount is only available during the specified time period </sys:String>
-    <sys:String x:Key="PM_ProductAffect">Product Affect </sys:String>
+    <sys:String x:Key="PM_Take">Take</sys:String>
+    <sys:String x:Key="PM_PercentOff">% off</sys:String>
+    <sys:String x:Key="PM_Off">off</sys:String>
+    <sys:String x:Key="PM_QuantityX">Quantity (X)</sys:String>
+    <sys:String x:Key="PM_TotalPriceY">Total Price (Y)</sys:String>
+    <sys:String x:Key="PM_DiscountPrice">Discount Price</sys:String>
+    <sys:String x:Key="PM_Buy">Buy</sys:String>
+    <sys:String x:Key="PM_For">for</sys:String>
+    <sys:String x:Key="PM_Each">each</sys:String>
+    <sys:String x:Key="PM_ApplyToAboveQuantities">Apply the discount price to quantities above the specified amount</sys:String>
+    <sys:String x:Key="PM_QtyX">Qty (X)</sys:String>
+    <sys:String x:Key="PM_Percentage">Percentage (%)</sys:String>
+    <sys:String x:Key="PM_AndGet">and get</sys:String>
+    <sys:String x:Key="PM_PercentOffTheseItem">% off These Item</sys:String>
+    <sys:String x:Key="PM_CouponExpiresOn">Coupon Expires on</sys:String>
+    <sys:String x:Key="PM_ExpirationNoEndDate">Discount is only available during the specified time period</sys:String>
+    <sys:String x:Key="PM_ProductAffect">Product Affect</sys:String>
     <!--  endregion Promotion  -->
 
     <!--  TransferStock  -->
@@ -988,9 +1016,9 @@
     <sys:String x:Key="CUS_Text_EmergencyContact">Emergency Contact</sys:String>
     <sys:String x:Key="CUS_Text_Point">pt</sys:String>
 
-    <sys:String x:Key="Text_FirstName">First Name </sys:String>
-    <sys:String x:Key="Text_Initial">Title </sys:String>
-    <sys:String x:Key="Text_LastName">Last Name </sys:String>
+    <sys:String x:Key="Text_FirstName">First Name</sys:String>
+    <sys:String x:Key="Text_Initial">Title</sys:String>
+    <sys:String x:Key="Text_LastName">Last Name</sys:String>
     <sys:String x:Key="Text_JobTitle">Job Title</sys:String>
     <sys:String x:Key="Text_Phone1">Phone 1</sys:String>
     <sys:String x:Key="Text_Phone2">Phone 2</sys:String>
@@ -1008,8 +1036,8 @@
     <sys:String x:Key="Text_SpouseInformation">Spouse Information</sys:String>
     <sys:String x:Key="Text_Nationality">Nationality</sys:String>
     <sys:String x:Key="Text_Relationship">Relationship</sys:String>
-    <sys:String x:Key="Text_TaxInformation">Tax Information </sys:String>
-    <sys:String x:Key="Text_FedTaxID">Fed Tax ID </sys:String>
+    <sys:String x:Key="Text_TaxInformation">Tax Information</sys:String>
+    <sys:String x:Key="Text_FedTaxID">Fed Tax ID</sys:String>
     <sys:String x:Key="Text_TaxLocation">Tax Location</sys:String>
     <sys:String x:Key="Text_TaxExemption">Tax Exemption</sys:String>
     <sys:String x:Key="Text_PricingLevel">Pricing Level</sys:String>
@@ -1037,8 +1065,8 @@
     <sys:String x:Key="Text_RewardsProgramHistory">Rewards Program History</sys:String>
     <sys:String x:Key="Text_From">Từ</sys:String>
     <sys:String x:Key="Text_To">Đến</sys:String>
-    <sys:String x:Key="Text_OrderNum">Order # </sys:String>
-    <sys:String x:Key="Text_OrderTotal">Total </sys:String>
+    <sys:String x:Key="Text_OrderNum">Order #</sys:String>
+    <sys:String x:Key="Text_OrderTotal">Total</sys:String>
     <sys:String x:Key="Text_MergeFrom">Merge From</sys:String>
     <sys:String x:Key="Text_MergeTo">Merge To</sys:String>
     <sys:String x:Key="Text_IssueNewReward">Issue New Reward</sys:String>
@@ -1095,23 +1123,23 @@
 
     <!--  region VendorView  -->
     <!--  TextBlock  -->
-    <sys:String x:Key="VD_Group">Group </sys:String>
-    <sys:String x:Key="VD_CreditLine">Credit Line </sys:String>
-    <sys:String x:Key="VD_Item">Item </sys:String>
+    <sys:String x:Key="VD_Group">Group</sys:String>
+    <sys:String x:Key="VD_CreditLine">Credit Line</sys:String>
+    <sys:String x:Key="VD_Item">Item</sys:String>
     <!--  TabHeader  -->
-    <sys:String x:Key="VD_VendorInfo">Vendor Info </sys:String>
-    <sys:String x:Key="VD_ProductList">Product List </sys:String>
+    <sys:String x:Key="VD_VendorInfo">Vendor Info</sys:String>
+    <sys:String x:Key="VD_ProductList">Product List</sys:String>
     <!--  GroupHeader  -->
-    <sys:String x:Key="VD_VendorInformation">Vendor Information </sys:String>
-    <sys:String x:Key="VD_CustomField">Custom Field </sys:String>
+    <sys:String x:Key="VD_VendorInformation">Vendor Information</sys:String>
+    <sys:String x:Key="VD_CustomField">Custom Field</sys:String>
     <!--  Button  -->
-    <sys:String x:Key="VD_DateStamp">Date Stamp </sys:String>
+    <sys:String x:Key="VD_DateStamp">Date Stamp</sys:String>
     <!--  endregion VendorView  -->
 
     <!--  region WorkScheduleView  -->
     <!--  TextBlock  -->
-    <sys:String x:Key="WS_WorkHourToolTip">Work time is not equal to </sys:String>
-    <sys:String x:Key="WS_Hours">hours </sys:String>
-    <sys:String x:Key="WS_WeekHourToolTip">Total hours is not equal to </sys:String>
+    <sys:String x:Key="WS_WorkHourToolTip">Work time is not equal to</sys:String>
+    <sys:String x:Key="WS_Hours">hours</sys:String>
+    <sys:String x:Key="WS_WeekHourToolTip">Total hours is not equal to</sys:String>
     <!--  endregion WorkScheduleView  -->
 </ResourceDictionary>

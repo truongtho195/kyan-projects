@@ -14,6 +14,7 @@ using CPC.Helper;
 using CPC.POS.Database;
 using CPC.POS.Model;
 using CPC.POS.Repository;
+using CPC.POS.View;
 using CPC.Service.FrameworkDialogs.FolderBrowse;
 using CPC.Service.FrameworkDialogs.OpenFile;
 using CPC.Toolkit.Base;
@@ -128,6 +129,8 @@ namespace CPC.POS.ViewModel
             _negativeTypes = new Dictionary<short, string>();
             _negativeTypes.Add(0, "(1234)");
             _negativeTypes.Add(1, "-1234");
+
+            PopupEditStoreAddressCommand = new RelayCommand<object>(OnPopupEditStoreAddressCommandExecute, OnPopupEditStoreAddressCommandCanExecute);
         }
 
         #endregion
@@ -1789,6 +1792,53 @@ namespace CPC.POS.ViewModel
 
         #endregion
 
+        #region PopupEditStoreAddressCommand
+
+        /// <summary>
+        /// Gets the PopupEditStoreAddressCommand command.
+        /// </summary>
+        public ICommand PopupEditStoreAddressCommand { get; private set; }
+
+        /// <summary>
+        /// Method to check whether the PopupEditStoreAddressCommand command can be executed.
+        /// </summary>
+        /// <returns><c>true</c> if the command can be executed; otherwise <c>false</c></returns>
+        private bool OnPopupEditStoreAddressCommandCanExecute(object param)
+        {
+            return param != null;
+        }
+
+        /// <summary>
+        /// Method to invoke when the PopupEditStoreAddressCommand command is executed.
+        /// </summary>
+        private void OnPopupEditStoreAddressCommandExecute(object param)
+        {
+            base_StoreModel storeModel = param as base_StoreModel;
+            PopupEditStoreAddressViewModel viewModel = new PopupEditStoreAddressViewModel(storeModel);
+            bool? result = _dialogService.ShowDialog<PopupEditStoreAddressView>(_ownerViewModel, viewModel, "Edit Store Address");
+            if (result.HasValue && result.Value)
+            {
+                // Synchronize store information with store 1
+                storeModel.Street = viewModel.SelectedStore.Street;
+                storeModel.CountryId = viewModel.SelectedStore.CountryId;
+                storeModel.City = viewModel.SelectedStore.City;
+                storeModel.State = viewModel.SelectedStore.State;
+                storeModel.ZipCode = viewModel.SelectedStore.ZipCode;
+                storeModel.RaiseFullAddress();
+
+                if (storeModel.Code.Equals(StoreCollection[0].Code))
+                {
+                    ConfigurationModel.Address = viewModel.SelectedStore.Street;
+                    ConfigurationModel.CountryId = viewModel.SelectedStore.CountryId;
+                    ConfigurationModel.City = viewModel.SelectedStore.City;
+                    ConfigurationModel.State = viewModel.SelectedStore.State;
+                    ConfigurationModel.ZipCode = viewModel.SelectedStore.ZipCode;
+                }
+            }
+        }
+
+        #endregion
+
         #endregion
 
         #region Property Changed Methods
@@ -2212,7 +2262,14 @@ namespace CPC.POS.ViewModel
 
                     storeRepository.CommitTransaction();
 
-                    StoreCollection = new CollectionBase<base_StoreModel>(stores.Select(x => new base_StoreModel(x)).OrderBy(x => x.Id));
+                    StoreCollection = new CollectionBase<base_StoreModel>();
+                    foreach (base_Store store in stores.OrderBy(x => x.Id))
+                    {
+                        base_StoreModel storeModel = new base_StoreModel(store);
+                        storeModel.RaiseFullAddress();
+                        StoreCollection.Add(storeModel);
+                    }
+
                     _selectedNumber = _storeCollection.Count;
                     OnPropertyChanged(() => SelectedNumber);
                 }
@@ -2631,6 +2688,7 @@ namespace CPC.POS.ViewModel
                 case SettingParts.StoreInfo:
 
                     SaveStoreInfoConfiguration();
+                    SaveStoreCodesConfiguration();
 
                     break;
 
@@ -2648,6 +2706,7 @@ namespace CPC.POS.ViewModel
 
                 case SettingParts.StoreCodes:
 
+                    SaveStoreInfoConfiguration();
                     SaveStoreCodesConfiguration();
 
                     break;
@@ -2866,6 +2925,7 @@ namespace CPC.POS.ViewModel
                 case SettingParts.StoreInfo:
 
                     RestoreStoreInfoConfiguration();
+                    RestoreStoreCodesConfiguration();
 
                     break;
 
@@ -2883,6 +2943,7 @@ namespace CPC.POS.ViewModel
 
                 case SettingParts.StoreCodes:
 
+                    RestoreStoreInfoConfiguration();
                     RestoreStoreCodesConfiguration();
 
                     break;
@@ -3189,6 +3250,14 @@ namespace CPC.POS.ViewModel
         /// </summary>
         private void SaveStoreInfoConfiguration()
         {
+            // Synchronize store 1 with store information
+            StoreCollection[0].Street = ConfigurationModel.Address;
+            StoreCollection[0].CountryId = ConfigurationModel.CountryId;
+            StoreCollection[0].City = ConfigurationModel.City;
+            StoreCollection[0].State = ConfigurationModel.State;
+            StoreCollection[0].ZipCode = ConfigurationModel.ZipCode;
+            StoreCollection[0].RaiseFullAddress();
+
             SaveConfiguration();
         }
 
@@ -3215,12 +3284,14 @@ namespace CPC.POS.ViewModel
                     {
                         // Save.
                         SaveStoreInfoConfiguration();
+                        SaveStoreCodesConfiguration();
                         isUnactive = true;
                     }
                     else if (result == MessageBoxResult.No)
                     {
                         // Not Save.
                         RestoreStoreInfoConfiguration();
+                        RestoreStoreCodesConfiguration();
                         isUnactive = true;
                     }
                     else
@@ -3624,12 +3695,14 @@ namespace CPC.POS.ViewModel
                     if (result == MessageBoxResult.Yes)
                     {
                         // Save.
+                        SaveStoreInfoConfiguration();
                         SaveStoreCodesConfiguration();
                         isUnactive = true;
                     }
                     else if (result == MessageBoxResult.No)
                     {
                         // Not Save.
+                        RestoreStoreInfoConfiguration();
                         RestoreStoreCodesConfiguration();
                         isUnactive = true;
                     }

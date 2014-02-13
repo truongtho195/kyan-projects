@@ -1014,7 +1014,7 @@ namespace CPC.POS.ViewModel
             short dueDays = SelectedCustomer.TermNetDue;
             decimal discount = SelectedCustomer.TermDiscount;
             short discountDays = SelectedCustomer.TermPaidWithinDay;
-            PaymentTermViewModel paymentTermViewModel = new PaymentTermViewModel(dueDays, discount, discountDays);
+            PaymentTermViewModel paymentTermViewModel = new PaymentTermViewModel(SelectedCustomer.IsCOD, dueDays, discount, discountDays);
             bool? dialogResult = _dialogService.ShowDialog<PaymentTermView>(_ownerViewModel, paymentTermViewModel, "Add Term");
             if (dialogResult == true)
             {
@@ -1022,6 +1022,7 @@ namespace CPC.POS.ViewModel
                 SelectedCustomer.TermDiscount = paymentTermViewModel.Discount;
                 SelectedCustomer.TermPaidWithinDay = paymentTermViewModel.DiscountDays;
                 SelectedCustomer.PaymentTermDescription = paymentTermViewModel.Description;
+                SelectedCustomer.IsCOD = paymentTermViewModel.IsCOD;
             }
         }
         #endregion
@@ -1292,7 +1293,7 @@ namespace CPC.POS.ViewModel
         /// </summary>
         private void OnAddNewGuestGroupCommandExecute(object param)
         {
-            PopupAddNewGroupViewModel viewModel = new PopupAddNewGroupViewModel();
+            PopupAddNewGroupViewModel viewModel = new PopupAddNewGroupViewModel(CUSTOMER_MARK);
             bool? result = _dialogService.ShowDialog<PopupAddNewGroupView>(_ownerViewModel, viewModel, Language.GetMsg("CUS_Text_AddNewGroup"));
             if (result.HasValue && result.Value)
             {
@@ -1490,7 +1491,7 @@ namespace CPC.POS.ViewModel
         /// <returns><c>true</c> if the command can be executed; otherwise <c>false</c></returns>
         private bool OnLayawayCommandCanExecute(object param)
         {
-            return true;
+            return param != null && (param as ObservableCollection<object>).Count == 1;
         }
 
 
@@ -1524,7 +1525,7 @@ namespace CPC.POS.ViewModel
         /// <returns><c>true</c> if the command can be executed; otherwise <c>false</c></returns>
         private bool OnWorkOrderCommandCanExecute(object param)
         {
-            return true;
+            return param != null && (param as ObservableCollection<object>).Count == 1;
         }
 
 
@@ -1642,7 +1643,7 @@ namespace CPC.POS.ViewModel
             EmployeeCollection.Insert(0, defaultEmployee);
 
             // Load guest group collection
-            GuestGroupCollection = new ObservableCollection<base_GuestGroupModel>(_guestGroupRepository.GetAll().
+            GuestGroupCollection = new ObservableCollection<base_GuestGroupModel>(_guestGroupRepository.GetAll(x => x.Mark.Equals(CUSTOMER_MARK)).
                 Select(x => new base_GuestGroupModel(x) { GuestGroupResource = x.Resource.ToString() }));
 
             //Get All Sale Tax
@@ -2084,6 +2085,8 @@ namespace CPC.POS.ViewModel
              {
                  CardTypeId = 1,
                  DateCreated = DateTime.Now,
+                 ExpMonth = Convert.ToInt16(DateTime.Now.Month),
+                 ExpYear = Convert.ToInt16(DateTime.Now.Year),
                  IsNew = true,
                  IsDirty = false
              };
@@ -2535,9 +2538,13 @@ namespace CPC.POS.ViewModel
         /// <param name="RaisePropertyChanged"></param>
         private void LoadPersonalInfoModel(base_GuestModel customerModel, bool RaisePropertyChanged)
         {
-            _guestProfileRepository.Refresh(customerModel.base_Guest.base_GuestProfile);
+
             if (customerModel.base_Guest.base_GuestProfile.Count > 0)
-                customerModel.PersonalInfoModel = new base_GuestProfileModel(customerModel.base_Guest.base_GuestProfile.First(), RaisePropertyChanged);
+            {
+                base_GuestProfile guestProfile = customerModel.base_Guest.base_GuestProfile.First();
+                _guestProfileRepository.Refresh(guestProfile);
+                customerModel.PersonalInfoModel = new base_GuestProfileModel(guestProfile, RaisePropertyChanged);
+            }
             else
             {
                 customerModel.PersonalInfoModel = new base_GuestProfileModel();
@@ -2559,10 +2566,11 @@ namespace CPC.POS.ViewModel
         /// <param name="RaisePropertyChanged"></param>
         private void LoadGuestAdditional(base_GuestModel customerModel, bool RaisePropertyChanged)
         {
-            _guestAdditionalRepository.Refresh(customerModel.base_Guest.base_GuestAdditional);
+           
             if (customerModel.base_Guest.base_GuestAdditional.Count > 0)
             {
                 base_GuestAdditional customerAdditional = customerModel.base_Guest.base_GuestAdditional.First();
+                _guestAdditionalRepository.Refresh(customerAdditional);
                 customerModel.AdditionalModel = new base_GuestAdditionalModel(customerAdditional, RaisePropertyChanged);
 
                 //Set value for radiobutton "Pricing Level" (No discount / Fixed Discount / Markdown Price Level)
@@ -2646,11 +2654,12 @@ namespace CPC.POS.ViewModel
         private void LoadPayment(base_GuestModel customerModel, bool RaisePropertyChanged)
         {
             customerModel.PaymentCardCollection = new CollectionBase<base_GuestPaymentCardModel>();
-            _guestPaymentCardRepository.Refresh(customerModel.base_Guest.base_GuestPaymentCard);
+            
             foreach (base_GuestPaymentCard guestPaymentCard in customerModel.base_Guest.base_GuestPaymentCard)
             {
+                _guestPaymentCardRepository.Refresh(guestPaymentCard);
                 base_GuestPaymentCardModel paymentCardModel = new base_GuestPaymentCardModel(guestPaymentCard, RaisePropertyChanged);
-                paymentCardModel.ExpDate = string.Format("{0}/{1}", guestPaymentCard.ExpMonth, guestPaymentCard.ExpYear);
+                paymentCardModel.ExpDate = string.Format("{0}/{1}", guestPaymentCard.ExpMonth.Value.ToString("0#"), guestPaymentCard.ExpYear);
                 paymentCardModel.IsTemporary = false;
                 paymentCardModel.IsDirty = false;
                 customerModel.PaymentCardCollection.Add(paymentCardModel);
@@ -2682,6 +2691,7 @@ namespace CPC.POS.ViewModel
                 //Add to Address For Control
                 AddressControlModel addressControlModel = guestAddressModel.ToAddressControlModel();
                 addressControlModel.IsDirty = false;
+                addressControlModel.IsChangeData = false;
                 customerModel.AddressControlCollection.Add(addressControlModel);
             }
         }

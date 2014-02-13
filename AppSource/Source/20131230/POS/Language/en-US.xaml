@@ -79,13 +79,13 @@
     <sys:String x:Key="M129">Attribute is existed</sys:String>
     <sys:String x:Key="M130">Size is required</sys:String>
     <sys:String x:Key="M131">Attribute is required</sys:String>
-    <sys:String x:Key="M132">Backup database successfully processed.System will execute logout.</sys:String>
+    <sys:String x:Key="M132">Backup terminated successfully.</sys:String>
     <sys:String x:Key="M133">Database could not be backed up.</sys:String>
     <sys:String x:Key="M134">Restore database successfully processed.System will execute logout.</sys:String>
     <sys:String x:Key="M135">Database could not be restored.</sys:String>
     <sys:String x:Key="M136">Clearing data is successful.System will execute logout.</sys:String>
-    <sys:String x:Key="M137">Do you want to backup this database ?</sys:String>
-    <sys:String x:Key="M138">Do you want to restore this database ?</sys:String>
+    <sys:String x:Key="M137">Do you want to backup right now ?</sys:String>
+    <sys:String x:Key="M138">Do you want to restore right now ?</sys:String>
     <sys:String x:Key="M139">Do you want to clear all data in the database ?</sys:String>
     <!--  TaskListReminder  -->
     <sys:String x:Key="M140">Are you sure you want to complete item(s)?</sys:String>
@@ -125,7 +125,7 @@
     <sys:String x:Key="C106">Payment Method</sys:String>
     <sys:String x:Key="C107">Paid</sys:String>
     <sys:String x:Key="C108">Balance</sys:String>
-    <sys:String x:Key="C109">Return All</sys:String>
+    <sys:String x:Key="C109">Show All</sys:String>
     <sys:String x:Key="C110">Refund</sys:String>
     <sys:String x:Key="C111">Return Fee</sys:String>
     <sys:String x:Key="C112">Sub-Total</sys:String>
@@ -219,15 +219,15 @@
     <sys:String x:Key="Text_NewCustomer">New Customer</sys:String>
     <sys:String x:Key="Text_GoToVendorList">Go To Vendor List</sys:String>
     <sys:String x:Key="Text_GoToCustomerList">Go To Customer List</sys:String>
-    
+
     <!--EndRegion Title -->
 
     <!--  End Common Language  -->
 
     <!--  Datagrid Language  -->
-    <sys:String x:Key="DG100">Total </sys:String>
+    <sys:String x:Key="DG100">Total</sys:String>
     <sys:String x:Key="DG101">item(s).</sys:String>
-    <sys:String x:Key="DG102">Current Index </sys:String>
+    <sys:String x:Key="DG102">Current Index</sys:String>
     <sys:String x:Key="DG103">Total : {0} items . Current Index : {1}</sys:String>
     <!--  End Datagrid Language  -->
 
@@ -235,7 +235,7 @@
     <sys:String x:Key="PO100">Purchase Order</sys:String>
     <sys:String x:Key="PO101">PO #</sys:String>
     <sys:String x:Key="PO111">Payment Due Date</sys:String>
-    <sys:String x:Key="PO112">Receive All</sys:String>
+    <sys:String x:Key="PO112">Show All</sys:String>
     <sys:String x:Key="PO113">Total Ordered</sys:String>
     <sys:String x:Key="PO114">Total Received</sys:String>
     <sys:String x:Key="PO115">Received</sys:String>
@@ -313,22 +313,22 @@
     <sys:String x:Key="CS130">Outgoing Email Setup</sys:String>
     <sys:String x:Key="CS131">Connect to e-mail account at your Internet service provide ( ISP) or your organization mail server.</sys:String>
     <sys:String x:Key="CS132">ISP Server &amp; Port</sys:String>
-    <sys:String x:Key="CS133">Mail Server</sys:String>
+    <sys:String x:Key="CS133">Mail server</sys:String>
     <sys:String x:Key="CS134">Examle: Mail.mailserver.com</sys:String>
-    <sys:String x:Key="CS135">Mail Port</sys:String>
-    <sys:String x:Key="CS136">Port No. provide by ISP Service Provider.</sys:String>
-    <sys:String x:Key="CS137">Email &amp; Password</sys:String>
-    <sys:String x:Key="CS138">Example: Barbara@gmail.com</sys:String>
-    <sys:String x:Key="CS139">Retype Password</sys:String>
-    <sys:String x:Key="CS140">Type the Password your Internet service provider has given you.</sys:String>
-    <sys:String x:Key="CS141">Allow Negative Store</sys:String>
+    <sys:String x:Key="CS135">Mail port</sys:String>
+    <sys:String x:Key="CS136">Port No. provide by ISP service provider.</sys:String>
+    <sys:String x:Key="CS137">Email &amp; password</sys:String>
+    <sys:String x:Key="CS138">Example:barbara@gmail.com</sys:String>
+    <sys:String x:Key="CS139">Confirm password</sys:String>
+    <sys:String x:Key="CS140">Type the password your Internet service provider has given you.</sys:String>
+    <sys:String x:Key="CS141">Allow negative store</sys:String>
     <sys:String x:Key="CS142">Calculate reward included tax</sys:String>
     <sys:String x:Key="CS143">Allow reward redeem less than discount</sys:String>
     <sys:String x:Key="CS144">Allow return fee</sys:String>
     <sys:String x:Key="CS145">Return fee percent</sys:String>
-    <sys:String x:Key="CS146">Discount Type</sys:String>
-    <sys:String x:Key="CS147">Discount Status</sys:String>
-    <sys:String x:Key="CS148">Work Hours</sys:String>
+    <sys:String x:Key="CS146">Discount type</sys:String>
+    <sys:String x:Key="CS147">Discount status</sys:String>
+    <sys:String x:Key="CS148">Work hours</sys:String>
     <sys:String x:Key="CS149">Timeclock</sys:String>
     <sys:String x:Key="CS150">Return</sys:String>
     <sys:String x:Key="CS151">Reward</sys:String>
@@ -337,28 +337,28 @@
     <sys:String x:Key="CS154">Currency</sys:String>
     <sys:String x:Key="CS155">Backup</sys:String>
     <sys:String x:Key="CS156">Option</sys:String>
-    <sys:String x:Key="CS157">Maximum Sticky Note</sys:String>
-    <sys:String x:Key="CS158">Ship Unit</sys:String>
-    <sys:String x:Key="CS159">Image Path</sys:String>
+    <sys:String x:Key="CS157">Maximum sticky note</sys:String>
+    <sys:String x:Key="CS158">Ship unit</sys:String>
+    <sys:String x:Key="CS159">Image path</sys:String>
     <sys:String x:Key="CS160">Language</sys:String>
-    <sys:String x:Key="CS161">Shift Management</sys:String>
+    <sys:String x:Key="CS161">Shift management</sys:String>
     <sys:String x:Key="CS162">Default cashier by user login</sys:String>
     <sys:String x:Key="CS163">Authorize member code</sys:String>
-    <sys:String x:Key="CS164">Keep Log</sys:String>
+    <sys:String x:Key="CS164">Keep log</sys:String>
     <sys:String x:Key="CS165">Days</sys:String>
     <sys:String x:Key="CS166">AAAAAAAAAAA</sys:String>
     <sys:String x:Key="CS167">Symbol</sys:String>
-    <sys:String x:Key="CS168">Decimal Place</sys:String>
-    <sys:String x:Key="CS169">Password Format</sys:String>
+    <sys:String x:Key="CS168">Decimal place</sys:String>
+    <sys:String x:Key="CS169">Password format</sys:String>
     <sys:String x:Key="CS170">Log cashier automatically out</sys:String>
     <sys:String x:Key="CS171">After an idle period of</sys:String>
-    <sys:String x:Key="CS172">Minutes</sys:String>
+    <sys:String x:Key="CS172">minutes</sys:String>
     <sys:String x:Key="CS173">AAAAAAAAAAA</sys:String>
-    <sys:String x:Key="CS174">Backup When Exit</sys:String>
-    <sys:String x:Key="CS175">Backup Every</sys:String>
+    <sys:String x:Key="CS174">Backup when wxit</sys:String>
+    <sys:String x:Key="CS175">Backup wvery</sys:String>
     <sys:String x:Key="CS176">Days</sys:String>
-    <sys:String x:Key="CS177">Keep Backup Up to</sys:String>
-    <sys:String x:Key="CS178">Save Directory</sys:String>
+    <sys:String x:Key="CS177">Keep backup up to</sys:String>
+    <sys:String x:Key="CS178">Save directory</sys:String>
     <!--  End CompanySettingView  -->
 
     <!--  region PricingView  -->
@@ -521,19 +521,35 @@
     <sys:String x:Key="EM_TextBlock_DOB">DOB</sys:String>
     <sys:String x:Key="EM_TextBlock_State">State</sys:String>
     <sys:String x:Key="EM_TextBlock_EmergencyContact">Emergency Contact</sys:String>
-    
-    
+
+
     <sys:String x:Key="EM_TextBlock_Account">Account #</sys:String>
     <sys:String x:Key="EM_Header_EmployeeNo">Employee #</sys:String>
     <sys:String x:Key="EM_Header_EmployeeType">Employee Type</sys:String>
     <sys:String x:Key="EM_Header_JobTitle">Job Title</sys:String>
-    <sys:String x:Key="DataGrid_Text_Total">Total </sys:String>
+    <sys:String x:Key="DataGrid_Text_Total">Total</sys:String>
     <sys:String x:Key="DataGrid_Text_Item">item(s) .</sys:String>
-    <sys:String x:Key="DataGrid_Text_CurrentIndex">Current Index </sys:String>
+    <sys:String x:Key="DataGrid_Text_CurrentIndex">Current Index</sys:String>
 
     <!--  End EmployeeView  -->
 
     <!--  region ProductView  -->
+    <!--  Title  -->
+    <sys:String x:Key="PD_Title_Product">Product</sys:String>
+    <sys:String x:Key="PD_Title_ProductList">Product List</sys:String>
+    <sys:String x:Key="PD_Title_CreateNewDepartment">Create new Department</sys:String>
+    <sys:String x:Key="PD_Title_CreateNewCategory">Create new Category</sys:String>
+    <sys:String x:Key="PD_Title_CreateNewBrand">Create new Brand</sys:String>
+    <sys:String x:Key="PD_Title_CreateNewVendor">Create new Vendor</sys:String>
+    <sys:String x:Key="PD_Title_AttributeAndSize">Attribute and Size</sys:String>
+    <sys:String x:Key="PD_Title_ReorderPoint">Reorder Point</sys:String>
+    <sys:String x:Key="PD_Title_AvailableQuantities">Available Quantities</sys:String>
+    <sys:String x:Key="PD_Title_ManagementUOM">Management UOM</sys:String>
+    <sys:String x:Key="PD_Title_Pricing">Pricing</sys:String>
+    <sys:String x:Key="PD_Title_CreateNewUOM">Create new UOM</sys:String>
+    <sys:String x:Key="PD_Title_DuplicateItem">Duplicate Item</sys:String>
+    <sys:String x:Key="PD_Title_BuildItemGroup">Build Item Group</sys:String>
+    <sys:String x:Key="PD_Title_AddNewWarranty">Add new Warranty</sys:String>
     <!--  CheckBox  -->
     <sys:String x:Key="PD_CategoryBrand">Category/Brand</sys:String>
     <sys:String x:Key="PD_DescriptionStyleModel">Description/StyleModel</sys:String>
@@ -550,6 +566,7 @@
     <sys:String x:Key="PD_CreationDate">Creation Date</sys:String>
     <sys:String x:Key="PD_VendorCode">Vendor Code</sys:String>
     <sys:String x:Key="PD_RegPrice">Reg.Price</sys:String>
+    <sys:String x:Key="PD_Picture">Picture</sys:String>
     <!--  TabHeader  -->
     <sys:String x:Key="PD_ProductInfo">Product Info</sys:String>
     <sys:String x:Key="PD_Additional">Additional</sys:String>
@@ -597,7 +614,7 @@
     <sys:String x:Key="PD_SelectVendor">Select Vendor</sys:String>
     <sys:String x:Key="PD_CoverPriceRange">Cover Price Range</sys:String>
     <sys:String x:Key="PD_Aisle">Aisle</sys:String>
-    <sys:String x:Key="PD_Shell">Shell</sys:String>
+    <sys:String x:Key="PD_Shelf">Shelf</sys:String>
     <sys:String x:Key="PD_Note">Note</sys:String>
     <!--  PopupAttributeAndSize  -->
     <sys:String x:Key="PD_AttributeAndSize">Attribute &amp; Size</sys:String>
@@ -663,7 +680,7 @@
     <!--  #Region SaleOrderView  -->
     <sys:String x:Key="SO_TextBlock_Customer">Customer</sys:String>
     <sys:String x:Key="SO_TextBlock_BillAddress">Bill Address</sys:String>
-    <sys:String x:Key="SO_TextBlock_BookingChannel">Booking Chanel</sys:String>
+    <sys:String x:Key="SO_TextBlock_BookingChannel">Booking Channel</sys:String>
     <sys:String x:Key="SO_TextBlock_SONum">SO #</sys:String>
     <sys:String x:Key="SO_TextBlock_SODate">SO Date</sys:String>
     <sys:String x:Key="SO_TextBlock_Order">Order</sys:String>
@@ -736,8 +753,6 @@
     <sys:String x:Key="SO_TextBlock_LayawayNumber">LW #</sys:String>
     <sys:String x:Key="SO_TextBlock_WorkOrderDate">WO Date</sys:String>
     <sys:String x:Key="SO_TextBlock_WorkOrderNum">WO #</sys:String>
-    
-    
 
     <sys:String x:Key="SO_Reward_EnterIDCard">Please Enter ID Card Member</sys:String>
     <sys:String x:Key="SO_Reward_EnterRewardCode">Please Enter Reward Code</sys:String>
@@ -819,11 +834,20 @@
     <sys:String x:Key="SO_Title_VoidBill">Void Bill</sys:String>
     <sys:String x:Key="SO_Title_ServiceFeeDetail">Service Fee Detail</sys:String>
     <sys:String x:Key="SO_Title_PaymentHistoryDetail">Payment history detail</sys:String>
+    <sys:String x:Key="SO_Title_SaleOrder">Sale Order</sys:String>
+    <sys:String x:Key="SO_Title_SaleOrderList">Sale Order List</sys:String>
+    <sys:String x:Key="SO_Title_WorkOrder">Work Order</sys:String>
+    <sys:String x:Key="SO_Title_WorkOrderList">Work Order List</sys:String>
+    <sys:String x:Key="SO_Title_Layaway">Layaway</sys:String>
+    <sys:String x:Key="SO_Title_LayawayList">Layaway List</sys:String>
+    <sys:String x:Key="SO_Title_Quotation">Quotation</sys:String>
+    <sys:String x:Key="SO_Title_QuotationList">Quotation List</sys:String>
+    <sys:String x:Key="SO_Title_SaleOrderLocked">Sale Order Locked</sys:String>
+    <sys:String x:Key="SO_Title_SaleOrderLockedList">Sale Order Locked List</sys:String>
 
-    
 
     <!--  #EndRegion SaleOrderView  -->
-    
+
     <!--#Region SaleOrderSearchAdvance-->
     <sys:String x:Key="SO_Text_Scancode">Scan Code</sys:String>
     <sys:String x:Key="SO_Text_DocumentNo">Document #</sys:String>
@@ -883,7 +907,7 @@
     <sys:String x:Key="TS_TextBox_Freight">Freight</sys:String>
     <sys:String x:Key="TS_Header_AvailableQty">Available Qty</sys:String>
     <sys:String x:Key="TS_TextBox_TransferStock">Transfer Stock</sys:String>
-    <sys:String x:Key="TS_TextBox_ApplyTransferStock">Apply TransferStock</sys:String>
+    <sys:String x:Key="TS_TextBox_ApplyTransferStock">Apply Transfer Stock</sys:String>
     <sys:String x:Key="TS_TextBox_ApplyPricing">Apply Pricing</sys:String>
     <sys:String x:Key="TS_TextBox_AdjustStock">Adjust Stock</sys:String>
     <!--  End  -->
@@ -1070,9 +1094,9 @@
     <sys:String x:Key="CUS_Title_CreateCreditCard">Create credit card</sys:String>
     <sys:String x:Key="CUS_Title_UpdateCreditCard">Update credit card</sys:String>
     <sys:String x:Key="CUS_Title_CustomerTitle">Customer</sys:String>
-	<sys:String x:Key="CUS_Save_Current_Item">Save Current Item</sys:String>
-	<sys:String x:Key="CUS_Delete_Current_Item">Delete Current Item</sys:String>
-	<sys:String x:Key="CUS_Print_Current_Item">Print Current Item</sys:String>
+    <sys:String x:Key="CUS_Save_Current_Item">Save Current Item</sys:String>
+    <sys:String x:Key="CUS_Delete_Current_Item">Delete Current Item</sys:String>
+    <sys:String x:Key="CUS_Print_Current_Item">Print Current Item</sys:String>
     <!--  #Endregion Customer  -->
 
     <!--  Backup Data  -->
@@ -1104,7 +1128,7 @@
     <sys:String x:Key="LayawaySetup_Text_ScheduleHistory">Schedule History</sys:String>
     <sys:String x:Key="LayawaySetup_Text_Status">Status</sys:String>
     <sys:String x:Key="LayawaySetup_Text_OtherFee">Other Fee</sys:String>
-   
+
 
     <!--  endregion LayawaySetup  -->
 

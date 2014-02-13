@@ -299,6 +299,9 @@ namespace CPC.Control
 
             #region Insert value for row
 
+            // Avoid product code is duplicate
+            int productCode = 0;
+
             foreach (DataGridModel dataGridModel in DataRowList)
             {
                 // Create a new cell
@@ -309,6 +312,8 @@ namespace CPC.Control
                     Size = ColumnHeaderNameList[columnIndex],
                     ValueList = new List<ComboItem>()
                 };
+                dataGridCellModel.Code = DateTimeExt.Now.AddMilliseconds(productCode++).ToString(Define.ProductCodeFormat);
+                dataGridCellModel.RegularPrice = ItemsSource.FirstOrDefault().RegularPrice;
 
                 // Add new cell to datagrid
                 dataGridModel.ValueList.Add(dataGridCellModel);
@@ -363,6 +368,9 @@ namespace CPC.Control
             // Set row header name
             dataGridModel.RowHeaderName = rowHeaderName;
 
+            // Avoid product code is duplicate
+            int productCode = 0;
+
             // Set default value by number of columns
             for (int i = 0; i < ColumnHeaderNameList.Count; i++)
             {
@@ -374,6 +382,8 @@ namespace CPC.Control
                     Size = ColumnHeaderNameList[i],
                     ValueList = new List<ComboItem>()
                 };
+                dataGridCellModel.Code = DateTimeExt.Now.AddMilliseconds(productCode++).ToString(Define.ProductCodeFormat);
+                dataGridCellModel.RegularPrice = ItemsSource.FirstOrDefault().RegularPrice;
 
                 // Add new cell to datagrid
                 dataGridModel.ValueList.Add(dataGridCellModel);
@@ -395,7 +405,7 @@ namespace CPC.Control
         private void OnCellValueChanged()
         {
             // Commit datagrid row
-            dataGrid.CommitEdit();
+            //dataGrid.CommitEdit();
 
             // Get datagrid model object
             DataGridModel dataGridModel = dataGrid.CurrentItem as DataGridModel;
@@ -863,29 +873,32 @@ namespace CPC.Control
             // Get datagrid model object
             DataGridModel dataGridModel = txtHeader.Tag as DataGridModel;
 
-            if (string.IsNullOrWhiteSpace(txtHeader.Text))
+            if (dataGridModel != null)
             {
-                if (DataRowList.Count > 3)
+                if (string.IsNullOrWhiteSpace(txtHeader.Text))
                 {
-                    Xceed.Wpf.Toolkit.MessageBox.Show(CPC.Helper.Language.Text31, "POS", MessageBoxButton.OK, MessageBoxImage.Warning);
+                    if (DataRowList.Count > 3)
+                    {
+                        Xceed.Wpf.Toolkit.MessageBox.Show(CPC.Helper.Language.Text31, "POS", MessageBoxButton.OK, MessageBoxImage.Warning);
 
+                        // If row header name is exist, rollback value
+                        txtHeader.Text = dataGridModel.RowHeaderName;
+                    }
+                }
+                else if (IsRowHeaderNameExist(txtHeader.Text, dataGridModel.RowHeaderName))
+                {
                     // If row header name is exist, rollback value
                     txtHeader.Text = dataGridModel.RowHeaderName;
                 }
-            }
-            else if (IsRowHeaderNameExist(txtHeader.Text, dataGridModel.RowHeaderName))
-            {
-                // If row header name is exist, rollback value
-                txtHeader.Text = dataGridModel.RowHeaderName;
-            }
-            else
-            {
-                BindingExpression bindingExpression = txtHeader.GetBindingExpression(CPCToolkitExt.TextBoxControl.TextBox.TextProperty);
-                bindingExpression.UpdateSource();
+                else
+                {
+                    BindingExpression bindingExpression = txtHeader.GetBindingExpression(CPCToolkitExt.TextBoxControl.TextBox.TextProperty);
+                    bindingExpression.UpdateSource();
 
-                // Update product attribute
-                foreach (DataGridCellModel dataGridCellModel in dataGridModel.ValueList)
-                    dataGridCellModel.Attribute = txtHeader.Text;
+                    // Update product attribute
+                    foreach (DataGridCellModel dataGridCellModel in dataGridModel.ValueList)
+                        dataGridCellModel.Attribute = txtHeader.Text;
+                }
             }
         }
 

@@ -16,13 +16,8 @@
 			 		Background="{DynamicResource UserControlBackground}" Width="150">
 			 		<Grid x:Name="grdToolTip" Margin="5">
 			 			<Grid.RowDefinitions>
-			 				<RowDefinition Height="18"/>
 			 				<RowDefinition Height="Auto"/>
 			 			</Grid.RowDefinitions>
-			 			<TextBlock x:Name="txtblHeader"
-			 				Text="Smart POS"
-			 				TextWrapping="NoWrap"
-			 				VerticalAlignment="Top" HorizontalAlignment="Left" Style="{DynamicResource TextBlockNormal}" FontWeight="Bold" Margin="0,0,0,0" />
 			 			<ContentPresenter TextBlock.Foreground="White"  x:Name="contentPresenter" HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}" VerticalAlignment="{TemplateBinding VerticalContentAlignment}" Grid.Row="1" RenderTransformOrigin="0.5,0.5" Content="{TemplateBinding Content}" Margin="5,0,0,0" />
 			 		</Grid>
 			 	</Border>

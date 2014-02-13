@@ -1546,7 +1546,6 @@ namespace CPC.Helper
         }
         #endregion
 
-
         #region ScanMethods
         private static IList<ComboItem> _scanMethods;
         /// <summary>
@@ -1565,6 +1564,27 @@ namespace CPC.Helper
                 _scanMethods = value;
             }
         }
+        #endregion
+
+        #region JobTitles
+        private static IList<ComboItem> _deparments;
+        /// <summary>
+        /// Gets the JobTitles
+        /// </summary>
+        public static IList<ComboItem> Departments
+        {
+            get
+            {
+                
+                return _deparments;
+            }
+            //private set
+            set
+            {
+                _deparments = value;
+            }
+        }
+
         #endregion
 
         #endregion

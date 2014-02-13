@@ -281,6 +281,7 @@ namespace CPC.POS.Model
                 }
             }
         }
+
         protected byte[] _imageBinary;
         /// <summary>
         /// Property Model
@@ -300,6 +301,7 @@ namespace CPC.POS.Model
                 }
             }
         }
+
         /// <summary>
         /// Copy values 
         /// </summary>

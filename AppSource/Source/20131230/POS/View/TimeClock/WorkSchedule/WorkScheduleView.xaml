@@ -1065,394 +1065,395 @@
     <Grid x:Name="GridLayout">
         <Rectangle x:Name="UserControl_Background_Image"
                    Fill="{DynamicResource UserControl_Background_Image}" />
-        <control:BusyIndicator IsBusy="{Binding IsBusy}">
-            <Grid x:Name="grdWorkSchedule">
-                <Grid x:Name="grdSearch"
-                      d:IsHidden="True">
-                    <Grid.Visibility>
-                        <Binding Path="IsSearchMode"
-                                 Mode="OneWay"
-                                 UpdateSourceTrigger="PropertyChanged">
-                            <Binding.Converter>
-                                <converter:BoolToVisibilityConverter FalseToVisibility="Collapsed" />
-                            </Binding.Converter>
-                        </Binding>
-                    </Grid.Visibility>
-                    <Grid.RowDefinitions>
-                        <RowDefinition Height="60" />
-                        <RowDefinition Height="Auto"
-                                       MinHeight="10" />
-                        <RowDefinition />
-                    </Grid.RowDefinitions>
-                    <Grid.ColumnDefinitions>
-                        <ColumnDefinition />
-                        <ColumnDefinition Width="Auto" />
-                    </Grid.ColumnDefinitions>
-                    <StackPanel x:Name="stkpButtonWorkScheduleSearch"
-                                Height="Auto"
-                                Margin="20,0,0,5"
-                                HorizontalAlignment="Left"
-                                VerticalAlignment="Bottom"
-                                Orientation="Horizontal">
-                        <Button x:Name="btnNew"
-                                Command="{Binding NewCommand}"
-                                Width="40"
-                                Height="40"
-                                Style="{DynamicResource ButtonSystem}"
-                                ToolTip="New Item">
-                            <StackPanel x:Name="stkpBtnNew"
-                                        HorizontalAlignment="Center"
-                                        VerticalAlignment="Center">
-                                <Rectangle x:Name="imgNew"
-                                           Width="30"
-                                           Height="30"
-                                           Fill="{DynamicResource New}" />
-                                <TextBlock x:Name="txtblNew"
-                                           VerticalAlignment="Center"
-                                           Style="{DynamicResource ButtonSystemTextBlock}"
-                                           Text="New"
-                                           TextWrapping="NoWrap"
-                                           Visibility="Collapsed" />
-                            </StackPanel>
-                        </Button>
-                        <Button x:Name="btnChangeWorkSchedule"
-                                Command="{Binding PopupChangeWorkScheduleCommand}"
-                                CommandParameter="{Binding SelectedItem, ElementName=dtgrdScheduleHistory}"
-                                Width="40"
-                                Height="40"
-                                Style="{DynamicResource ButtonSystem}"
-                                ToolTip="Change Work Schedule [Ctrl + W]">
-                            <StackPanel x:Name="stkpBtnChangeSchedule"
-                                        HorizontalAlignment="Center"
-                                        VerticalAlignment="Center"
-                                        Orientation="Horizontal">
-                                <Rectangle x:Name="imgChangeSchedule"
-                                           Width="30"
-                                           Height="30"
-                                           Fill="{DynamicResource ChangeEmployeeSchedule}" />
-                                <TextBlock x:Name="txtblSaveCloseCreateWorkScheduleViewList"
-                                           Margin="5,0,0,0"
-                                           VerticalAlignment="Center"
-                                           Style="{DynamicResource ButtonSystemTextBlock}"
-                                           Text="ChangeSchedule"
-                                           TextWrapping="NoWrap"
-                                           Visibility="Collapsed" />
-                            </StackPanel>
-                        </Button>
-                        <Button x:Name="btnDelete"
-                                Command="{Binding DeleteCommand}"
-                                CommandParameter="{Binding SelectedItem, ElementName=dtgrdScheduleHistory}"
-                                Width="40"
-                                Height="40"
-                                Style="{DynamicResource ButtonSystem}">
-                            <StackPanel x:Name="stkpBtnDelete"
-                                        HorizontalAlignment="Center"
-                                        VerticalAlignment="Center">
-                                <Rectangle x:Name="imgDelete"
-                                           Width="30"
-                                           Height="30"
-                                           Fill="{DynamicResource Delete}" />
-                                <TextBlock x:Name="txtblDelete"
-                                           Margin="5,0,0,0"
-                                           VerticalAlignment="Center"
-                                           Style="{DynamicResource ButtonSystemTextBlock}"
-                                           Text="Close"
-                                           TextWrapping="NoWrap"
-                                           Visibility="Collapsed" />
-                            </StackPanel>
-                        </Button>
-                    </StackPanel>
-                    <Rectangle x:Name="lineWorkSchedule"
-                               Height="1"
-                               VerticalAlignment="Bottom"
-                               Fill="{DynamicResource Spilter_Line_Background}"
-                               d:LayoutOverrides="GridBox" />
-                    <TextBlock x:Name="txtblBindingWorkScheduleList"
-                               Margin="0,0,20,7"
-                               HorizontalAlignment="Right"
-                               VerticalAlignment="Bottom"
-                               Style="{DynamicResource TextBlockTitleFormView}"
-                               Text="Work Schedule List"
-                               d:LayoutOverrides="GridBox" />
-                    <dataGridControl:DataGridControl x:Name="dtgrdScheduleHistory"
-                                                     Grid.Row="2"
-                                                     Margin="10,0.2,10,10"
-                                                     HorizontalAlignment="Stretch"
-                                                     VerticalAlignment="Stretch"
-                                                     AutoGenerateColumns="False"
-                                                     behavior:DoubleClickCommandBehavior.DoubleClickCommand="{Binding DoubleClickViewCommand}"
-                                                     behavior:DoubleClickCommandBehavior.DoubleClickCommandParameter="{Binding SelectedItem, ElementName=dtgrdScheduleHistory}"
-                                                     CanUserAddRows="False"
-                                                     DisplayItems="{Binding NumberOfDisplayItems}"
-                                                     IsPaging="False"
-                                                     IsReadOnly="True"
-                                                     IsRollBackData="False"
-                                                     ItemsSource="{Binding WorkScheduleCollection}"
-                                                     NumberOfItems="{Binding WorkScheduleCollection.Count}"
-                                                     SelectionMode="Single"
-                                                     Style="{DynamicResource DatagridWithRowHeader}">
-                        <dataGridControl:DataGridControl.Columns>
-                            <DataGridTextColumn Header="Schedule Name"
-                                                Binding="{Binding WorkScheduleName}"
-                                                Width="*" />
-                            <DataGridTextColumn Header="Type"
-                                                Binding="{Binding WorkScheduleTypeName, UpdateSourceTrigger=PropertyChanged}"
-                                                Width="150" />
-                            <DataGridTextColumn Header="# of Employees"
-                                                Binding="{Binding NumberOfEmployees}"
-                                                Width="90" />
-                            <DataGridTextColumn Header="Status"
-                                                Binding="{Binding StatusName}"
-                                                Width="70" />
-                        </dataGridControl:DataGridControl.Columns>
-                    </dataGridControl:DataGridControl>
-                </Grid>
-                <Grid x:Name="grdSubWorkSchedule"
-                      Grid.Column="1">
-                    <Grid.Visibility>
-                        <Binding Path="IsSearchMode"
-                                 Mode="OneWay"
-                                 UpdateSourceTrigger="PropertyChanged">
-                            <Binding.Converter>
-                                <converter:BoolToVisibilityConverter FalseToVisibility="Visible" />
-                            </Binding.Converter>
-                        </Binding>
-                    </Grid.Visibility>
-                    <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="22" />
-                        <ColumnDefinition />
-                    </Grid.ColumnDefinitions>
-                    <Button x:Name="btnBarSearch"
-                            Command="{Binding DoubleClickViewCommand}"
-                            SnapsToDevicePixels="True"
-                            Style="{DynamicResource ButtonBarSearchStyle}">
-                        <TextBlock x:Name="txtblShowSearch"
-                                   HorizontalAlignment="Center"
-                                   VerticalAlignment="Center"
-                                   FontSize="12"
-                                   FontWeight="Bold"
-                                   Style="{DynamicResource ButtonBarSearchTextBlock}"
-                                   Text="{DynamicResource C113}"
-                                   TextWrapping="NoWrap">
-                            <TextBlock.LayoutTransform>
-                                <TransformGroup>
-                                    <ScaleTransform />
-                                    <SkewTransform />
-                                    <RotateTransform Angle="-90" />
-                                    <TranslateTransform />
-                                </TransformGroup>
-                            </TextBlock.LayoutTransform>
-                        </TextBlock>
-                    </Button>
-                    <Rectangle x:Name="grdSpliter"
-                               Grid.Column="1"
-                               Width="1"
-                               HorizontalAlignment="Left"
-                               Fill="{DynamicResource Spilter_Line_Background}"
-                               Visibility="Collapsed" />
-                    <Grid x:Name="grdContentWorkSchedule"
-                          Grid.Column="1">
-                        <Grid.RowDefinitions>
-                            <RowDefinition Height="60" />
-                            <RowDefinition />
-                        </Grid.RowDefinitions>
-                        <StackPanel x:Name="stkpBtn"
-                                    Height="Auto"
-                                    Margin="20,0,0,5"
-                                    HorizontalAlignment="Left"
-                                    VerticalAlignment="Bottom"
-                                    Orientation="Horizontal">
-                            <Button x:Name="btnNew1"
-                                    Command="{Binding NewCommand}"
-                                    Width="40"
-                                    Height="40"
-                                    Style="{DynamicResource ButtonSystem}" ToolTip="New Item">
-                                <StackPanel x:Name="stkpBtnNew1"
-                                            HorizontalAlignment="Center"
-                                            VerticalAlignment="Center">
-                                    <Rectangle x:Name="imgNew1"
-                                               Width="30"
-                                               Height="30"
-                                               Fill="{DynamicResource New}" />
-                                    <TextBlock x:Name="txtblNew1"
-                                               VerticalAlignment="Center"
-                                               Style="{DynamicResource ButtonSystemTextBlock}"
-                                               Text="New"
-                                               TextWrapping="NoWrap"
-                                               Visibility="Collapsed" />
-                                </StackPanel>
-                            </Button>
-                            <Button x:Name="btnSave"
-                                    Command="{Binding SaveCommand}"
-                                    Width="40"
-                                    Height="40"
-                                    Style="{DynamicResource ButtonSystem}" ToolTip="Save Current Item">
-                                <StackPanel x:Name="stkpBtnSave"
-                                            HorizontalAlignment="Center"
-                                            VerticalAlignment="Center"
-                                            Orientation="Horizontal">
-                                    <Rectangle x:Name="imgSave"
-                                               Width="30"
-                                               Height="30"
-                                               Fill="{DynamicResource Save}" />
-                                    <TextBlock x:Name="txtblSave"
-                                               Margin="5,0,0,0"
-                                               VerticalAlignment="Center"
-                                               Style="{DynamicResource ButtonSystemTextBlock}"
-                                               Text="Save"
-                                               TextWrapping="NoWrap"
-                                               Visibility="Collapsed" />
-                                </StackPanel>
-                            </Button>
-                        </StackPanel>
-                        <TextBlock x:Name="txtblBindingCreateWorkSchedule"
-                                   Grid.Column="1"
-                                   Margin="0,0,20,7"
-                                   HorizontalAlignment="Right"
-                                   VerticalAlignment="Bottom"
-                                   Style="{DynamicResource TextBlockTitleFormView}"
-                                   Text="Work Schedule" />
-                        <Rectangle x:Name="Line"
-                                   Grid.Column="1"
-                                   Height="1"
-                                   Margin="2,0"
-                                   VerticalAlignment="Bottom"
-                                   Fill="{DynamicResource Spilter_Line_Background}" />
-                        <Grid x:Name="grdSubContentWorkSchedule"
-                              Grid.Row="1"
-                              Grid.Column="1"
-                              Margin="0,10">
-                            <Grid.RowDefinitions>
-                                <RowDefinition Height="25" />
-                                <RowDefinition Height="Auto" />
-                                <RowDefinition />
-                            </Grid.RowDefinitions>
-                            <AdornerDecorator x:Name="adoBasic">
-                                <cpcControl:GridReadOnlyControl x:Name="grdBasic"
-                                                                Margin="10,0"
-                                                                ColumnReadOnly="2"
-                                                                IsReadOnly="{Binding SelectedWorkSchedule.Status, ConverterParameter=1, Converter={StaticResource radioButtonToBoolConverter}}">
-                                    <cpcControl:GridReadOnlyControl.ColumnDefinitions>
-                                        <ColumnDefinition Width="86" />
-                                        <ColumnDefinition />
-                                    </cpcControl:GridReadOnlyControl.ColumnDefinitions>
-                                    <TextBlock x:Name="txtblWorkScheduleName"
-                                               HorizontalAlignment="Left"
-                                               VerticalAlignment="Center"
-                                               Style="{DynamicResource TextBlockNormal}"
-                                               Text="Schedule Name"
-                                               TextWrapping="NoWrap" />
-                                    <textBoxControl:TextBox x:Name="txtWorkScheduleName"
-                                                            Grid.Column="1"
-                                                            Width="400"
-                                                            Margin="0,2"
-                                                            HorizontalAlignment="Left"
-                                                            behavior:AutoFocusBehavior.IsFocused="{Binding FocusDefault, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                                                            IsEnabled="{Binding AllowAccessPermission, Mode=OneWay}"
-                                                            MaxLength="{StaticResource NameMaxLength}"
-                                                            Padding="2,0"
-                                                            Text="{Binding SelectedWorkSchedule.WorkScheduleName, NotifyOnValidationError=True, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True}"
-                                                            TextWrapping="NoWrap">
-                                        <i:Interaction.Behaviors>
-                                            <behavior:AutoFocusBehavior />
-                                        </i:Interaction.Behaviors>
-                                    </textBoxControl:TextBox>
-                                    <TextBlock x:Name="txtblStatus"
-                                               Grid.Column="1"
-                                               Margin="472,0,0,0"
-                                               HorizontalAlignment="Left"
-                                               VerticalAlignment="Center"
-                                               Style="{DynamicResource TextBlockNormal}"
-                                               Text="Status"
-                                               TextWrapping="NoWrap" />
-                                    <ComboBox x:Name="cboStatus"
-                                              Grid.Column="1"
-                                              Width="110"
-                                              Height="21"
-                                              Margin="513,2,0,2"
-                                              HorizontalAlignment="Left"
-                                              Background="{Binding SelectedItem.BackColor, ElementName=cboStatus}"
-                                              DisplayMemberPath="Text"
-                                              Foreground="{Binding SelectedItem.ForeColor, ElementName=cboStatus}"
-                                              IsEnabled="False"
-                                              ItemsSource="{x:Static helper:Common.ScheduleStatuses}"
-                                              SelectedValue="{Binding SelectedWorkSchedule.Status}"
-                                              SelectedValuePath="Value" />
-                                </cpcControl:GridReadOnlyControl>
-                            </AdornerDecorator>
-                            <!--  region The fake tab work schedule  -->
-                            <cpcControl:ListBoxCustom x:Name="lstBoxWorkSchedule"
-                                                      Grid.Row="2"
-                                                      Margin="10,0"
-                                                      Background="{DynamicResource TabControlBackground}"
-                                                      BorderBrush="{DynamicResource TabControlBorder}"
-                                                      BorderThickness="1"
-                                                      ItemContainerStyle="{StaticResource ListBoxItemIsDeleteCollapsedStyle}"
-                                                      ScrollViewer.HorizontalScrollBarVisibility="Disabled"
-                                                      ScrollViewer.VerticalScrollBarVisibility="Disabled"
-                                                      SelectedIndex="{Binding SelectedIndex, ElementName=tabControlWorkSchedule, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}">
-                                <cpcControl:ListBoxCustom.ItemsPanel>
-                                    <ItemsPanelTemplate>
-                                        <Grid IsItemsHost="True" />
-                                    </ItemsPanelTemplate>
-                                </cpcControl:ListBoxCustom.ItemsPanel>
-                                <ListBoxItem x:Name="lstBoxItemContentScheduleDetail">
-                                    <Grid x:Name="grdContentScheduleDetail">
-                                        <Grid.RowDefinitions>
-                                            <RowDefinition Height="100" />
-                                            <RowDefinition Height="Auto" />
-                                            <RowDefinition />
-                                        </Grid.RowDefinitions>
-                                        <GroupBox x:Name="grpWorkScheduleType"
-                                                  Margin="10,5,10,0">
-                                            <GroupBox.Header>
-                                                <TextBlock x:Name="txtblWorkScheduleType"
-                                                           Foreground="{DynamicResource GroupboxHeaderForeground}"
-                                                           Style="{DynamicResource GroupboxTextBlock}"
-                                                           Text="Schedule Type"
-                                                           TextWrapping="NoWrap" />
-                                            </GroupBox.Header>
-                                            <cpcControl:GridReadOnlyControl x:Name="grdContentScheduleType"
-                                                                            Width="Auto"
-                                                                            Margin="0,4,0,0"
-                                                                            IsReadOnly="{Binding SelectedWorkSchedule.Status, ConverterParameter=1, Converter={StaticResource radioButtonToBoolConverter}}">
-                                                <cpcControl:GridReadOnlyControl.RowDefinitions>
-                                                    <RowDefinition Height="24" />
-                                                    <RowDefinition Height="24" />
-                                                    <RowDefinition Height="24" />
-                                                </cpcControl:GridReadOnlyControl.RowDefinitions>
-                                                <RadioButton x:Name="radFixed"
-                                                             Margin="10,0,0,0"
-                                                             HorizontalAlignment="Left"
-                                                             VerticalAlignment="Center"
-                                                             Content="Fixed: The Employee must complete a Clock-In and Out schedule"
-                                                             GroupName="grpFixed"
-                                                             IsChecked="{Binding SelectedWorkSchedule.WorkScheduleType, ConverterParameter=1, Converter={StaticResource radioButtonToBoolConverter}}" />
-                                                <RadioButton x:Name="radVariable"
-                                                             Grid.Row="1"
-                                                             Margin="10,0,0,0"
-                                                             HorizontalAlignment="Left"
-                                                             VerticalAlignment="Center"
-                                                             Content="Variable: The Employee must complete a specified number of daily hours"
-                                                             GroupName="grpVariable"
-                                                             IsChecked="{Binding SelectedWorkSchedule.WorkScheduleType, ConverterParameter=2, Converter={StaticResource radioButtonToBoolConverter}}" />
-                                                <RadioButton x:Name="radRotation"
-                                                             Grid.Row="3"
-                                                             Margin="10,0,0,0"
-                                                             HorizontalAlignment="Left"
-                                                             VerticalAlignment="Center"
-                                                             Content="Rotation ( the schedule changes automatically each week )"
-                                                             GroupName="grpRotation"
-                                                             IsChecked="{Binding SelectedWorkSchedule.WorkScheduleType, ConverterParameter=3, Converter={StaticResource radioButtonToBoolConverter}}" />
-                                                <TextBlock x:Name="txtblRotate"
-                                                           Grid.Row="2"
-                                                           Margin="383,0,0,0"
-                                                           HorizontalAlignment="Left"
-                                                           VerticalAlignment="Center"
-                                                           IsEnabled="{Binding IsChecked, ElementName=radRotation}"
-                                                           Style="{DynamicResource TextBlockNormal}"
-                                                           Text="Schedules to rotate"
-                                                           TextWrapping="NoWrap" />
+        <control:BusyIndicator IsBusy="{Binding IsBusy}" d:IsHidden="True">
+        	<Grid x:Name="grdWorkSchedule">
+        		<Grid x:Name="grdSearch"
+        			d:IsHidden="True">
+        			<Grid.Visibility>
+        				<Binding Path="IsSearchMode"
+        					Mode="OneWay"
+        					UpdateSourceTrigger="PropertyChanged">
+        					<Binding.Converter>
+        						<converter:BoolToVisibilityConverter FalseToVisibility="Collapsed" />
+        					</Binding.Converter>
+        				</Binding>
+        			</Grid.Visibility>
+        			<Grid.RowDefinitions>
+        				<RowDefinition Height="60" />
+        				<RowDefinition Height="Auto"
+        					MinHeight="10" />
+        				<RowDefinition />
+        			</Grid.RowDefinitions>
+        			<Grid.ColumnDefinitions>
+        				<ColumnDefinition />
+        				<ColumnDefinition Width="Auto" />
+        			</Grid.ColumnDefinitions>
+        			<StackPanel x:Name="stkpButtonWorkScheduleSearch"
+        				Height="Auto"
+        				Margin="20,0,0,5"
+        				HorizontalAlignment="Left"
+        				VerticalAlignment="Bottom"
+        				Orientation="Horizontal">
+        				<Button x:Name="btnNew"
+        					Command="{Binding NewCommand}"
+        					Width="40"
+        					Height="40"
+        					Style="{DynamicResource ButtonSystem}"
+        					ToolTip="New Item">
+        					<StackPanel x:Name="stkpBtnNew"
+        						HorizontalAlignment="Center"
+        						VerticalAlignment="Center">
+        						<Rectangle x:Name="imgNew"
+        							Width="30"
+        							Height="30"
+        							Fill="{DynamicResource New}" />
+        						<TextBlock x:Name="txtblNew"
+        							VerticalAlignment="Center"
+        							Style="{DynamicResource ButtonSystemTextBlock}"
+        							Text="New"
+        							TextWrapping="NoWrap"
+        							Visibility="Collapsed" />
+        					</StackPanel>
+        				</Button>
+        				<Button x:Name="btnChangeWorkSchedule"
+        					Command="{Binding PopupChangeWorkScheduleCommand}"
+        					CommandParameter="{Binding SelectedItem, ElementName=dtgrdScheduleHistory}"
+        					Width="40"
+        					Height="40"
+        					Style="{DynamicResource ButtonSystem}"
+        					ToolTip="Change Work Schedule [Ctrl + W]">
+        					<StackPanel x:Name="stkpBtnChangeSchedule"
+        						HorizontalAlignment="Center"
+        						VerticalAlignment="Center"
+        						Orientation="Horizontal">
+        						<Rectangle x:Name="imgChangeSchedule"
+        							Width="30"
+        							Height="30"
+        							Fill="{DynamicResource ChangeEmployeeSchedule}" />
+        						<TextBlock x:Name="txtblSaveCloseCreateWorkScheduleViewList"
+        							Margin="5,0,0,0"
+        							VerticalAlignment="Center"
+        							Style="{DynamicResource ButtonSystemTextBlock}"
+        							Text="ChangeSchedule"
+        							TextWrapping="NoWrap"
+        							Visibility="Collapsed" />
+        					</StackPanel>
+        				</Button>
+        				<Button x:Name="btnDelete"
+        					Command="{Binding DeleteCommand}"
+        					CommandParameter="{Binding SelectedItem, ElementName=dtgrdScheduleHistory}"
+        					Width="40"
+        					Height="40"
+        					Style="{DynamicResource ButtonSystem}">
+        					<StackPanel x:Name="stkpBtnDelete"
+        						HorizontalAlignment="Center"
+        						VerticalAlignment="Center">
+        						<Rectangle x:Name="imgDelete"
+        							Width="30"
+        							Height="30"
+        							Fill="{DynamicResource Delete}" />
+        						<TextBlock x:Name="txtblDelete"
+        							Margin="5,0,0,0"
+        							VerticalAlignment="Center"
+        							Style="{DynamicResource ButtonSystemTextBlock}"
+        							Text="Close"
+        							TextWrapping="NoWrap"
+        							Visibility="Collapsed" />
+        					</StackPanel>
+        				</Button>
+        			</StackPanel>
+        			<Rectangle x:Name="lineWorkSchedule"
+        				Height="1"
+        				VerticalAlignment="Bottom"
+        				Fill="{DynamicResource Spilter_Line_Background}"
+        				d:LayoutOverrides="GridBox" />
+        			<TextBlock x:Name="txtblBindingWorkScheduleList"
+        				Margin="0,0,20,7"
+        				HorizontalAlignment="Right"
+        				VerticalAlignment="Bottom"
+        				Style="{DynamicResource TextBlockTitleFormView}"
+        				Text="Work Schedule List"
+        				d:LayoutOverrides="GridBox" />
+        			<dataGridControl:DataGridControl x:Name="dtgrdScheduleHistory"
+        				Grid.Row="2"
+        				Margin="10,0.2,10,10"
+        				HorizontalAlignment="Stretch"
+        				VerticalAlignment="Stretch"
+        				AutoGenerateColumns="False"
+        				behavior:DoubleClickCommandBehavior.DoubleClickCommand="{Binding DoubleClickViewCommand}"
+        				behavior:DoubleClickCommandBehavior.DoubleClickCommandParameter="{Binding SelectedItem, ElementName=dtgrdScheduleHistory}"
+        				CanUserAddRows="False"
+        				DisplayItems="{Binding NumberOfDisplayItems}"
+        				IsPaging="False"
+        				IsReadOnly="True"
+        				IsRollBackData="False"
+        				ItemsSource="{Binding WorkScheduleCollection}"
+        				NumberOfItems="{Binding WorkScheduleCollection.Count}"
+        				SelectionMode="Single"
+        				Style="{DynamicResource DatagridWithRowHeader}">
+        				<dataGridControl:DataGridControl.Columns>
+        					<DataGridTextColumn Header="Schedule Name"
+        						Binding="{Binding WorkScheduleName}"
+        						Width="*" />
+        					<DataGridTextColumn Header="Type"
+        						Binding="{Binding WorkScheduleTypeName, UpdateSourceTrigger=PropertyChanged}"
+        						Width="150" />
+        					<DataGridTextColumn Header="# of Employees"
+        						Binding="{Binding NumberOfEmployees}"
+        						Width="90" />
+        					<DataGridTextColumn Header="Status"
+        						Binding="{Binding StatusName}"
+        						Width="70" />
+        				</dataGridControl:DataGridControl.Columns>
+        			</dataGridControl:DataGridControl>
+        		</Grid>
+        		<Grid x:Name="grdSubWorkSchedule"
+        			Grid.Column="1">
+        			<Grid.Visibility>
+        				<Binding Path="IsSearchMode"
+        					Mode="OneWay"
+        					UpdateSourceTrigger="PropertyChanged">
+        					<Binding.Converter>
+        						<converter:BoolToVisibilityConverter FalseToVisibility="Visible" />
+        					</Binding.Converter>
+        				</Binding>
+        			</Grid.Visibility>
+        			<Grid.ColumnDefinitions>
+        				<ColumnDefinition Width="22" />
+        				<ColumnDefinition />
+        			</Grid.ColumnDefinitions>
+        			<Button x:Name="btnBarSearch"
+        				Command="{Binding DoubleClickViewCommand}"
+        				SnapsToDevicePixels="True"
+        				Style="{DynamicResource ButtonBarSearchStyle}">
+        				<TextBlock x:Name="txtblShowSearch"
+        					HorizontalAlignment="Center"
+        					VerticalAlignment="Center"
+        					FontSize="12"
+        					FontWeight="Bold"
+        					Style="{DynamicResource ButtonBarSearchTextBlock}"
+        					Text="{DynamicResource C113}"
+        					TextWrapping="NoWrap">
+        					<TextBlock.LayoutTransform>
+        						<TransformGroup>
+        							<ScaleTransform />
+        							<SkewTransform />
+        							<RotateTransform Angle="-90" />
+        							<TranslateTransform />
+        						</TransformGroup>
+        					</TextBlock.LayoutTransform>
+        				</TextBlock>
+        			</Button>
+        			<Rectangle x:Name="grdSpliter"
+        				Grid.Column="1"
+        				Width="1"
+        				HorizontalAlignment="Left"
+        				Fill="{DynamicResource Spilter_Line_Background}"
+        				Visibility="Collapsed" />
+        			<Grid x:Name="grdContentWorkSchedule"
+        				Grid.Column="1">
+        				<Grid.RowDefinitions>
+        					<RowDefinition Height="60" />
+        					<RowDefinition />
+        				</Grid.RowDefinitions>
+        				<StackPanel x:Name="stkpBtn"
+        					Height="Auto"
+        					Margin="20,0,0,5"
+        					HorizontalAlignment="Left"
+        					VerticalAlignment="Bottom"
+        					Orientation="Horizontal">
+        					<Button x:Name="btnNew1"
+        						Command="{Binding NewCommand}"
+        						Width="40"
+        						Height="40"
+        						Style="{DynamicResource ButtonSystem}" ToolTip="New Item">
+        						<StackPanel x:Name="stkpBtnNew1"
+        							HorizontalAlignment="Center"
+        							VerticalAlignment="Center">
+        							<Rectangle x:Name="imgNew1"
+        								Width="30"
+        								Height="30"
+        								Fill="{DynamicResource New}" />
+        							<TextBlock x:Name="txtblNew1"
+        								VerticalAlignment="Center"
+        								Style="{DynamicResource ButtonSystemTextBlock}"
+        								Text="New"
+        								TextWrapping="NoWrap"
+        								Visibility="Collapsed" />
+        						</StackPanel>
+        					</Button>
+        					<Button x:Name="btnSave"
+        						Command="{Binding SaveCommand}"
+        						Width="40"
+        						Height="40"
+        						Style="{DynamicResource ButtonSystem}" ToolTip="Save Current Item">
+        						<StackPanel x:Name="stkpBtnSave"
+        							HorizontalAlignment="Center"
+        							VerticalAlignment="Center"
+        							Orientation="Horizontal">
+        							<Rectangle x:Name="imgSave"
+        								Width="30"
+        								Height="30"
+        								Fill="{DynamicResource Save}" />
+        							<TextBlock x:Name="txtblSave"
+        								Margin="5,0,0,0"
+        								VerticalAlignment="Center"
+        								Style="{DynamicResource ButtonSystemTextBlock}"
+        								Text="Save"
+        								TextWrapping="NoWrap"
+        								Visibility="Collapsed" />
+        						</StackPanel>
+        					</Button>
+        				</StackPanel>
+        				<TextBlock x:Name="txtblBindingCreateWorkSchedule"
+        					Grid.Column="1"
+        					Margin="0,0,20,7"
+        					HorizontalAlignment="Right"
+        					VerticalAlignment="Bottom"
+        					Style="{DynamicResource TextBlockTitleFormView}"
+        					Text="Work Schedule" />
+        				<Rectangle x:Name="Line"
+        					Grid.Column="1"
+        					Height="1"
+        					Margin="2,0"
+        					VerticalAlignment="Bottom"
+        					Fill="{DynamicResource Spilter_Line_Background}" />
+        				<Grid x:Name="grdSubContentWorkSchedule"
+        					Grid.Row="1"
+        					Grid.Column="1"
+        					Margin="0,10">
+        					<Grid.RowDefinitions>
+        						<RowDefinition Height="25" />
+        						<RowDefinition Height="Auto" />
+        						<RowDefinition />
+        					</Grid.RowDefinitions>
+        					<AdornerDecorator x:Name="adoBasic">
+        						<cpcControl:GridReadOnlyControl x:Name="grdBasic"
+        							Margin="10,0"
+        							ColumnReadOnly="2"
+        							IsReadOnly="{Binding SelectedWorkSchedule.Status, ConverterParameter=1, Converter={StaticResource radioButtonToBoolConverter}}">
+        							<cpcControl:GridReadOnlyControl.ColumnDefinitions>
+        								<ColumnDefinition Width="86" />
+        								<ColumnDefinition />
+        							</cpcControl:GridReadOnlyControl.ColumnDefinitions>
+        							<TextBlock x:Name="txtblWorkScheduleName"
+        								HorizontalAlignment="Left"
+        								VerticalAlignment="Center"
+        								Style="{DynamicResource TextBlockNormal}"
+        								Text="Schedule Name"
+        								TextWrapping="NoWrap" />
+        							<textBoxControl:TextBox x:Name="txtWorkScheduleName"
+        								Grid.Column="1"
+        								Width="400"
+        								Margin="0,2"
+        								HorizontalAlignment="Left"
+        								behavior:AutoFocusBehavior.IsFocused="{Binding FocusDefault, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+        								IsEnabled="{Binding AllowAccessPermission, Mode=OneWay}"
+        								MaxLength="{StaticResource NameMaxLength}"
+        								Padding="2,0"
+        								Text="{Binding SelectedWorkSchedule.WorkScheduleName, NotifyOnValidationError=True, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True}"
+        								TextWrapping="NoWrap">
+        								<i:Interaction.Behaviors>
+        									<behavior:AutoFocusBehavior />
+        								</i:Interaction.Behaviors>
+        							</textBoxControl:TextBox>
+        							<TextBlock x:Name="txtblStatus"
+        								Grid.Column="1"
+        								Margin="472,0,0,0"
+        								HorizontalAlignment="Left"
+        								VerticalAlignment="Center"
+        								Style="{DynamicResource TextBlockNormal}"
+        								Text="Status"
+        								TextWrapping="NoWrap" />
+        							<ComboBox x:Name="cboStatus"
+        								Grid.Column="1"
+        								Width="110"
+        								Height="21"
+        								Margin="513,2,0,2"
+        								HorizontalAlignment="Left"
+        								Background="{Binding SelectedItem.BackColor, ElementName=cboStatus}"
+        								DisplayMemberPath="Text"
+        								Foreground="{Binding SelectedItem.ForeColor, ElementName=cboStatus}"
+        								IsEnabled="False"
+        								ItemsSource="{x:Static helper:Common.ScheduleStatuses}"
+        								SelectedValue="{Binding SelectedWorkSchedule.Status}"
+        								SelectedValuePath="Value" />
+        						</cpcControl:GridReadOnlyControl>
+        					</AdornerDecorator>
+        					<!--  endregion The fake tab work schedule  -->
+    <!--  region The fake tab work schedule  -->
+        					<cpcControl:ListBoxCustom x:Name="lstBoxWorkSchedule"
+        						Grid.Row="2"
+        						Margin="10,0"
+        						Background="{DynamicResource TabControlBackground}"
+        						BorderBrush="{DynamicResource TabControlBorder}"
+        						BorderThickness="1"
+        						ItemContainerStyle="{StaticResource ListBoxItemIsDeleteCollapsedStyle}"
+        						ScrollViewer.HorizontalScrollBarVisibility="Disabled"
+        						ScrollViewer.VerticalScrollBarVisibility="Disabled"
+        						SelectedIndex="{Binding SelectedIndex, ElementName=tabControlWorkSchedule, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}">
+        						<cpcControl:ListBoxCustom.ItemsPanel>
+        							<ItemsPanelTemplate>
+        								<Grid IsItemsHost="True" />
+        							</ItemsPanelTemplate>
+        						</cpcControl:ListBoxCustom.ItemsPanel>
+        						<ListBoxItem x:Name="lstBoxItemContentScheduleDetail">
+        							<Grid x:Name="grdContentScheduleDetail">
+        								<Grid.RowDefinitions>
+        									<RowDefinition Height="100" />
+        									<RowDefinition Height="Auto" />
+        									<RowDefinition />
+        								</Grid.RowDefinitions>
+        								<GroupBox x:Name="grpWorkScheduleType"
+        									Margin="10,5,10,0">
+        									<GroupBox.Header>
+        										<TextBlock x:Name="txtblWorkScheduleType"
+        											Foreground="{DynamicResource GroupboxHeaderForeground}"
+        											Style="{DynamicResource GroupboxTextBlock}"
+        											Text="Schedule Type"
+        											TextWrapping="NoWrap" />
+        									</GroupBox.Header>
+        									<cpcControl:GridReadOnlyControl x:Name="grdContentScheduleType"
+        										Width="Auto"
+        										Margin="0,4,0,0"
+        										IsReadOnly="{Binding SelectedWorkSchedule.Status, ConverterParameter=1, Converter={StaticResource radioButtonToBoolConverter}}">
+        										<cpcControl:GridReadOnlyControl.RowDefinitions>
+        											<RowDefinition Height="24" />
+        											<RowDefinition Height="24" />
+        											<RowDefinition Height="24" />
+        										</cpcControl:GridReadOnlyControl.RowDefinitions>
+        										<RadioButton x:Name="radFixed"
+        											Margin="10,0,0,0"
+        											HorizontalAlignment="Left"
+        											VerticalAlignment="Center"
+        											Content="Fixed: The Employee must complete a Clock-In and Out schedule"
+        											GroupName="grpFixed"
+        											IsChecked="{Binding SelectedWorkSchedule.WorkScheduleType, ConverterParameter=1, Converter={StaticResource radioButtonToBoolConverter}}" />
+        										<RadioButton x:Name="radVariable"
+        											Grid.Row="1"
+        											Margin="10,0,0,0"
+        											HorizontalAlignment="Left"
+        											VerticalAlignment="Center"
+        											Content="Variable: The Employee must complete a specified number of daily hours"
+        											GroupName="grpVariable"
+        											IsChecked="{Binding SelectedWorkSchedule.WorkScheduleType, ConverterParameter=2, Converter={StaticResource radioButtonToBoolConverter}}" />
+        										<RadioButton x:Name="radRotation"
+        											Grid.Row="3"
+        											Margin="10,0,0,0"
+        											HorizontalAlignment="Left"
+        											VerticalAlignment="Center"
+        											Content="Rotation ( the schedule changes automatically each week )"
+        											GroupName="grpRotation"
+        											IsChecked="{Binding SelectedWorkSchedule.WorkScheduleType, ConverterParameter=3, Converter={StaticResource radioButtonToBoolConverter}}" />
+        										<TextBlock x:Name="txtblRotate"
+        											Grid.Row="2"
+        											Margin="383,0,0,0"
+        											HorizontalAlignment="Left"
+        											VerticalAlignment="Center"
+        											IsEnabled="{Binding IsChecked, ElementName=radRotation}"
+        											Style="{DynamicResource TextBlockNormal}"
+        											Text="Schedules to rotate"
+        											TextWrapping="NoWrap" />
                                                 <!--
                                                     <control:IntegerUpDown x:Name="udRotate"
                                                     Grid.Row="2"
@@ -1467,270 +1468,254 @@
                                                     Minimum="{Binding SelectedWorkSchedule.MinRotation, Mode=OneWay}"
                                                     Value="{Binding SelectedWorkSchedule.Rotate, Mode=TwoWay, NotifyOnValidationError=True, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True}" />
                                                 -->
-                                                <ComboBox x:Name="cmbSelectVendor"
-                                                          Grid.Row="2"
-                                                          Width="50"
-                                                          Height="21"
-                                                          Margin="490,0,0,2"
-                                                          HorizontalAlignment="Left"
-                                                          VerticalAlignment="Center"
-                                                          IsEnabled="{Binding IsChecked, ElementName=radRotation}"
-                                                          SelectedValue="{Binding SelectedWorkSchedule.Rotate}"
-                                                          SelectedValuePath="Content">
-                                                    <ComboBoxItem Content="1"
-                                                                  IsEnabled="{Binding IsChecked, ElementName=radRotation, Converter={StaticResource reserseBoolConverter}}"
-                                                                  Visibility="{Binding IsChecked, ElementName=radRotation, Converter={StaticResource reserseBoolToVisibilityConverter}}" />
-                                                    <ComboBoxItem Content="2" />
-                                                    <ComboBoxItem Content="3" />
-                                                    <ComboBoxItem Content="4" />
-                                                </ComboBox>
-                                            </cpcControl:GridReadOnlyControl>
-                                        </GroupBox>
-                                        <!--  region The fake tab work week  -->
-                                        <cpcControl:ListBoxCustom x:Name="lstBoxWorkWeek"
-                                                                  Grid.Row="2"
-                                                                  Margin="10,0,10,5"
-                                                                  Background="{x:Null}"
-                                                                  BorderBrush="{DynamicResource TabControlBorder}"
-                                                                  BorderThickness="1"
-                                                                  IsSynchronizedWithCurrentItem="True"
-                                                                  ItemContainerStyle="{StaticResource ListBoxItemIsDeleteCollapsedStyle}"
-                                                                  ItemsSource="{Binding SelectedWorkSchedule.WorkWeekCollection, Mode=OneWay}"
-                                                                  VirtualizingStackPanel.IsVirtualizing="True"
-                                                                  VirtualizingStackPanel.VirtualizationMode="Standard">
-                                            <cpcControl:ListBoxCustom.ItemsPanel>
-                                                <ItemsPanelTemplate>
-                                                    <Grid IsItemsHost="True" />
-                                                </ItemsPanelTemplate>
-                                            </cpcControl:ListBoxCustom.ItemsPanel>
-                                        </cpcControl:ListBoxCustom>
-                                        <TabControl x:Name="tabWorkWeek"
-                                                    Grid.Row="1"
-                                                    Margin="12,10,10,0"
-                                                    IsSynchronizedWithCurrentItem="True"
-                                                    ItemContainerStyle="{StaticResource TabItemIsDeleteCollapsedStyle}"
-                                                    ItemsSource="{Binding SelectedWorkSchedule.WorkWeekCollection, Mode=OneWay}"
-                                                    SelectedItem="{Binding SelectedWorkSchedule.SelectedWorkWeek, Mode=TwoWay}"
-                                                    VirtualizingStackPanel.IsVirtualizing="True"
-                                                    VirtualizingStackPanel.VirtualizationMode="Standard">
-                                            <TabControl.Template>
-                                                <ControlTemplate TargetType="{x:Type TabControl}">
-                                                    <TabPanel IsItemsHost="True" />
-                                                    <!--  no content presenter  -->
-                                                </ControlTemplate>
-                                            </TabControl.Template>
-                                            <TabControl.ItemTemplate>
-                                                <DataTemplate>
-                                                    <Grid x:Name="grdTabItemWeek">
-                                                        <Grid.ColumnDefinitions>
-                                                            <ColumnDefinition Width="Auto" />
-                                                            <ColumnDefinition Width="110" />
-                                                            <ColumnDefinition />
-                                                            <ColumnDefinition Width="Auto" />
-                                                        </Grid.ColumnDefinitions>
-                                                        <Rectangle x:Name="imgWeekHourAlert"
-                                                                   Width="15"
-                                                                   Height="15"
-                                                                   HorizontalAlignment="Center"
-                                                                   VerticalAlignment="Center"
-                                                                   Fill="{DynamicResource Alert}"
-                                                                   StrokeThickness="0"
-                                                                   Tag="{Binding DataContext.WeekHour, Mode=OneWay, RelativeSource={RelativeSource AncestorType=UserControl}}"
-                                                                   Visibility="{Binding HasAlertWeekHour, Converter={StaticResource boolToVisibilityConverter}}">
-                                                            <Rectangle.ToolTip>
-                                                                <ToolTip Background="Transparent"
-                                                                         BorderBrush="Transparent"
-                                                                         Tag="{Binding PlacementTarget.Tag, RelativeSource={RelativeSource Mode=Self}}">
-                                                                    <Border Width="250"
-                                                                            HorizontalAlignment="Stretch"
-                                                                            Background="{DynamicResource UserControlBackground}"
-                                                                            BorderBrush="{DynamicResource TitleBarBorder}"
-                                                                            BorderThickness="1"
-                                                                            CornerRadius="5">
-                                                                        <Grid Margin="5">
-                                                                            <TextBlock Grid.Row="1"
-                                                                                       VerticalAlignment="Center"
-                                                                                       Style="{DynamicResource TextBlockNormal}"
-                                                                                       TextWrapping="Wrap">
-                                                                                <Run Text="{DynamicResource WS_WorkHourToolTip}" />
-                                                                                <Run Text="{Binding Tag, RelativeSource={RelativeSource AncestorType=ToolTip}}" />
-                                                                                <Run Text="{DynamicResource WS_Hours}" />
-                                                                            </TextBlock>
-                                                                        </Grid>
-                                                                    </Border>
-                                                                </ToolTip>
-                                                            </Rectangle.ToolTip>
-                                                        </Rectangle>
-                                                        <TextBlock x:Name="txtblTabWeek"
-                                                                   Grid.Column="1"
-                                                                   HorizontalAlignment="Center"
-                                                                   VerticalAlignment="Center"
-                                                                   Style="{DynamicResource TabItemTextBlock}"
-                                                                   TextWrapping="NoWrap">
-                                                            <Run Text="Total Hours Week" />
-                                                            <Run Text=" " />
-                                                            <Run Text="{Binding Week, Mode=OneWay}" />
-                                                            <Run Text=":" />
-                                                        </TextBlock>
-                                                        <Rectangle x:Name="bgTabWeekTime"
-                                                                   Grid.Column="2"
-                                                                   Stroke="White" />
-                                                        <TextBlock x:Name="txtblTabWeekTime"
-                                                                   Grid.Column="2"
-                                                                   Margin="5,0"
-                                                                   HorizontalAlignment="Center"
-                                                                   VerticalAlignment="Center"
-                                                                   FontSize="13.333"
-                                                                   FontWeight="Bold"
-                                                                   Foreground="#FFFFF500"
-                                                                   Style="{DynamicResource TabItemTextBlock}"
-                                                                   Text="{Binding TotalHours, Mode=OneWay}"
-                                                                   TextWrapping="NoWrap" />
-                                                        <TextBlock Grid.Column="3"
-                                                                   Style="{DynamicResource TextBlockNormal}"
-                                                                   Tag="{Binding IsNotHasWorkDay, NotifyOnValidationError=True, ValidatesOnDataErrors=True}" />
-                                                    </Grid>
-                                                </DataTemplate>
-                                            </TabControl.ItemTemplate>
-                                        </TabControl>
-                                        <!--  endregion The fake tab work week  -->
-                                    </Grid>
-                                </ListBoxItem>
-                                <ListBoxItem x:Name="lstBoxItemEmployees"
-                                             ScrollViewer.HorizontalScrollBarVisibility="Disabled"
-                                             ScrollViewer.VerticalScrollBarVisibility="Disabled">
-                                    <Grid x:Name="grdEmployees">
-                                        <Grid x:Name="grdList"
-                                              Margin="0,5,0,0">
-                                            <Grid.RowDefinitions>
-                                                <RowDefinition Height="25.5" />
-                                                <RowDefinition Height="Auto"
-                                                               MinHeight="5.2" />
-                                                <RowDefinition />
-                                            </Grid.RowDefinitions>
-                                            <StackPanel x:Name="stkpBtnAddRemoveWorkSchedule"
-                                                        Height="Auto"
-                                                        Margin="10,0,0,0"
-                                                        HorizontalAlignment="Left"
-                                                        VerticalAlignment="Center"
-                                                        Orientation="Horizontal">
-                                                <Button x:Name="btnAssignEmployee"
-                                                        Command="{Binding AssignEmployeeCommand}"
-                                                        Width="115"
-                                                        Height="21"
-                                                        HorizontalAlignment="Center"
-                                                        VerticalAlignment="Center">
-                                                    <StackPanel x:Name="stkpBtnAssignEmployee"
-                                                                HorizontalAlignment="Center"
-                                                                VerticalAlignment="Center"
-                                                                Orientation="Horizontal">
-                                                        <Rectangle x:Name="imgAssignEmployee"
-                                                                   Width="14"
-                                                                   Height="14"
-                                                                   Fill="{DynamicResource AssignEmployee}" />
-                                                        <TextBlock x:Name="txtblAssignEmployee"
-                                                                   Margin="5,0,0,0"
-                                                                   VerticalAlignment="Center"
-                                                                   Style="{DynamicResource ButtonTextBlock}"
-                                                                   Text="Assign Employee"
-                                                                   TextWrapping="NoWrap" />
-                                                    </StackPanel>
-                                                </Button>
-                                                <Button x:Name="btnUnassignEmployee"
-                                                        Command="{Binding UnassignEmployeeCommand}"
-                                                        CommandParameter="{Binding SelectedItems, ElementName=dtgrdEmployeeList}"
-                                                        Width="115"
-                                                        Height="21"
-                                                        Margin="10,0,0,0"
-                                                        HorizontalAlignment="Center"
-                                                        VerticalAlignment="Center">
-                                                    <StackPanel x:Name="stkpBtnRemoveEmployee"
-                                                                HorizontalAlignment="Center"
-                                                                VerticalAlignment="Center"
-                                                                Orientation="Horizontal">
-                                                        <Rectangle x:Name="imgRemoveEmployee"
-                                                                   Width="14"
-                                                                   Height="14"
-                                                                   Fill="{DynamicResource RemoveEmployee}" />
-                                                        <TextBlock x:Name="txtblRemoveEmployee"
-                                                                   Margin="5,0,0,0"
-                                                                   VerticalAlignment="Center"
-                                                                   Style="{DynamicResource ButtonTextBlock}"
-                                                                   Text="Remove Employee"
-                                                                   TextWrapping="NoWrap" />
-                                                    </StackPanel>
-                                                </Button>
-                                            </StackPanel>
-                                            <dataGridControl:DataGridControl x:Name="dtgrdEmployeeList"
-                                                                             Grid.Row="2"
-                                                                             Margin="10,0.2,10,10"
-                                                                             AutoGenerateColumns="False"
-                                                                             behavior:DoubleClickCommandBehavior.DoubleClickCommand="{Binding PopupEmployeeInformationDetailCommand}"
-                                                                             behavior:DoubleClickCommandBehavior.DoubleClickCommandParameter="{Binding SelectedItem, ElementName=dtgrdEmployeeList}"
-                                                                             CanUserAddRows="False"
-                                                                             IsPaging="False"
-                                                                             IsReadOnly="True"
-                                                                             IsRollBackData="False"
-                                                                             ItemsSource="{Binding SelectedWorkSchedule.EmployeeCollection}"
-                                                                             NumberOfItems="{Binding SelectedWorkSchedule.EmployeeCollection.Count, Mode=OneWay}"
-                                                                             Style="{DynamicResource DatagridWithRowHeader}">
-                                                <dataGridControl:DataGridControl.Columns>
-                                                    <DataGridTextColumn Header="Employee #"
-                                                                        Binding="{Binding GuestNo}"
-                                                                        Width="90" />
-                                                    <DataGridTextColumn Header="First Name"
-                                                                        Binding="{Binding FirstName}"
-                                                                        Width="*"
-                                                                        MaxWidth="512" />
-                                                    <DataGridTextColumn Header="Last Name"
-                                                                        Binding="{Binding LastName}"
-                                                                        Width="*"
-                                                                        MaxWidth="512" />
-                                                    <DataGridTextColumn Header="Start Date"
-                                                                        Binding="{Binding EmployeeScheduleModel.StartDate, StringFormat=d}"
-                                                                        Width="110" />
-                                                    <DataGridTextColumn Header="Status"
-                                                                        Binding="{Binding EmployeeScheduleModel.StatusName}"
-                                                                        Width="70" />
-                                                    <DataGridTemplateColumn Width="25">
-                                                        <DataGridTemplateColumn.HeaderTemplate>
-                                                            <DataTemplate>
-                                                                <CheckBox IsChecked="{Binding DataContext.IsCheckedAll, ElementName=workScheduleView}" />
-                                                            </DataTemplate>
-                                                        </DataGridTemplateColumn.HeaderTemplate>
-                                                        <DataGridTemplateColumn.CellTemplate>
-                                                            <DataTemplate>
-                                                                <CheckBox IsChecked="{Binding IsChecked, UpdateSourceTrigger=PropertyChanged}" />
-                                                            </DataTemplate>
-                                                        </DataGridTemplateColumn.CellTemplate>
-                                                    </DataGridTemplateColumn>
-                                                </dataGridControl:DataGridControl.Columns>
-                                            </dataGridControl:DataGridControl>
-                                        </Grid>
-                                    </Grid>
-                                </ListBoxItem>
-                            </cpcControl:ListBoxCustom>
-                            <TabControl x:Name="tabControlWorkSchedule"
-                                        Grid.Row="1"
-                                        Margin="12,10,10,0"
-                                        Background="{DynamicResource TabControlBackground}"
-                                        BorderBrush="{DynamicResource TabControlBorder}">
-                                <TabControl.Template>
-                                    <ControlTemplate TargetType="{x:Type TabControl}">
-                                        <TabPanel IsItemsHost="True" />
-                                        <!--  no content presenter  -->
-                                    </ControlTemplate>
-                                </TabControl.Template>
-                                <TabItem x:Name="tabItemScheduleDetail"
-                                         Header="Schedule Detail" />
-                                <TabItem x:Name="tabItemEmployees"
-                                         Header="Employees" />
-                            </TabControl>
-                            <!--  endregion The fake tab work schedule  -->
-                        </Grid>
-                    </Grid>
-                </Grid>
-            </Grid>
+        										<ComboBox x:Name="cmbSelectVendor"
+        											Grid.Row="2"
+        											Width="50"
+        											Height="21"
+        											Margin="490,0,0,2"
+        											HorizontalAlignment="Left"
+        											VerticalAlignment="Center"
+        											IsEnabled="{Binding IsChecked, ElementName=radRotation}"
+        											SelectedValue="{Binding SelectedWorkSchedule.Rotate}"
+        											SelectedValuePath="Content">
+        											<ComboBoxItem Content="1"
+        												IsEnabled="{Binding IsChecked, Converter={StaticResource reserseBoolConverter}, ElementName=radRotation}"
+        												Visibility="{Binding IsChecked, Converter={StaticResource reserseBoolToVisibilityConverter}, ElementName=radRotation}" />
+        											<ComboBoxItem Content="2" />
+        											<ComboBoxItem Content="3" />
+        											<ComboBoxItem Content="4" />
+        										</ComboBox>
+        									</cpcControl:GridReadOnlyControl>
+        								</GroupBox>
+        								<!--  endregion The fake tab work week  -->
+    <!--  region The fake tab work week  -->
+        								<cpcControl:ListBoxCustom x:Name="lstBoxWorkWeek"
+        									Grid.Row="2"
+        									Margin="10,0,10,5"
+        									Background="{x:Null}"
+        									BorderBrush="{DynamicResource TabControlBorder}"
+        									BorderThickness="1"
+        									IsSynchronizedWithCurrentItem="True"
+        									ItemContainerStyle="{StaticResource ListBoxItemIsDeleteCollapsedStyle}"
+        									ItemsSource="{Binding SelectedWorkSchedule.WorkWeekCollection, Mode=OneWay}"
+        									VirtualizingStackPanel.IsVirtualizing="True"
+        									VirtualizingStackPanel.VirtualizationMode="Standard">
+        									<cpcControl:ListBoxCustom.ItemsPanel>
+        										<ItemsPanelTemplate>
+        											<Grid IsItemsHost="True" />
+        										</ItemsPanelTemplate>
+        									</cpcControl:ListBoxCustom.ItemsPanel>
+        								</cpcControl:ListBoxCustom>
+        								<TabControl x:Name="tabWorkWeek"
+        									Grid.Row="1"
+        									Margin="12,10,10,0"
+        									IsSynchronizedWithCurrentItem="True"
+        									ItemContainerStyle="{StaticResource TabItemIsDeleteCollapsedStyle}"
+        									ItemsSource="{Binding SelectedWorkSchedule.WorkWeekCollection, Mode=OneWay}"
+        									SelectedItem="{Binding SelectedWorkSchedule.SelectedWorkWeek, Mode=TwoWay}"
+        									VirtualizingStackPanel.IsVirtualizing="True"
+        									VirtualizingStackPanel.VirtualizationMode="Standard">
+        									<TabControl.Template>
+        										<ControlTemplate TargetType="{x:Type TabControl}">
+        											<TabPanel IsItemsHost="True" />
+        											<!--  no content presenter  -->
+        										</ControlTemplate>
+        									</TabControl.Template>
+        									<TabControl.ItemTemplate>
+        										<DataTemplate>
+        											<Grid x:Name="grdTabItemWeek">
+        												<Grid.ColumnDefinitions>
+        													<ColumnDefinition Width="Auto" />
+        													<ColumnDefinition Width="110" />
+        													<ColumnDefinition />
+        													<ColumnDefinition Width="Auto" />
+        												</Grid.ColumnDefinitions>
+        												<Rectangle x:Name="imgWeekHourAlert"
+        													Width="15"
+        													Height="15"
+        													HorizontalAlignment="Center"
+        													VerticalAlignment="Center"
+        													Fill="{DynamicResource Alert}"
+        													StrokeThickness="0"
+        													Tag="{Binding DataContext.WeekHour, Mode=OneWay, RelativeSource={RelativeSource AncestorType={x:Type UserControl}}}"
+        													Visibility="{Binding HasAlertWeekHour, Converter={StaticResource boolToVisibilityConverter}}">
+        													<Rectangle.ToolTip>
+        														<ToolTip Background="Transparent"
+        															BorderBrush="Transparent"
+        															Tag="{Binding PlacementTarget.Tag, RelativeSource={RelativeSource Mode=Self}}">
+        														
+        															<TextBlock Grid.Row="1"
+        																VerticalAlignment="Center"
+        																Style="{DynamicResource TextBlockNormal}"
+        																TextWrapping="Wrap"><Run Text="{DynamicResource WS_WorkHourToolTip}" /><Run Text=" "/><Run Text="{Binding Tag, RelativeSource={RelativeSource AncestorType={x:Type ToolTip}}}" /><Run Text=" "/><Run Text="{DynamicResource WS_Hours}" /></TextBlock>
+        															
+        														
+        														</ToolTip>
+        													</Rectangle.ToolTip>
+        												</Rectangle>
+        												<TextBlock x:Name="txtblTabWeek"
+        													Grid.Column="1"
+        													HorizontalAlignment="Center"
+        													VerticalAlignment="Center"
+        													Style="{DynamicResource TabItemTextBlock}"
+        													TextWrapping="NoWrap"><Run Text="Total Hours Week" /><Run Text=" "/><Run Text=" " /><Run Text=" "/><Run Text="{Binding Week, Mode=OneWay}" /><Run Text=" "/><Run Text=":" /></TextBlock>
+        												<Rectangle x:Name="bgTabWeekTime"
+        													Grid.Column="2"
+        													Stroke="White" />
+        												<TextBlock x:Name="txtblTabWeekTime"
+        													Grid.Column="2"
+        													Margin="5,0"
+        													HorizontalAlignment="Center"
+        													VerticalAlignment="Center"
+        													FontSize="13.333"
+        													FontWeight="Bold"
+        													Foreground="#FFFFF500"
+        													Style="{DynamicResource TabItemTextBlock}"
+        													Text="{Binding TotalHours, Mode=OneWay}"
+        													TextWrapping="NoWrap" />
+        												<TextBlock Grid.Column="3"
+        													Style="{DynamicResource TextBlockNormal}"
+        													Tag="{Binding IsNotHasWorkDay, NotifyOnValidationError=True, ValidatesOnDataErrors=True}" />
+        											</Grid>
+        										</DataTemplate>
+        									</TabControl.ItemTemplate>
+        								</TabControl>
+        							</Grid>
+        						</ListBoxItem>
+        						<ListBoxItem x:Name="lstBoxItemEmployees"
+        							ScrollViewer.HorizontalScrollBarVisibility="Disabled"
+        							ScrollViewer.VerticalScrollBarVisibility="Disabled">
+        							<Grid x:Name="grdEmployees">
+        								<Grid x:Name="grdList"
+        									Margin="0,5,0,0">
+        									<Grid.RowDefinitions>
+        										<RowDefinition Height="25.5" />
+        										<RowDefinition Height="Auto"
+        											MinHeight="5.2" />
+        										<RowDefinition />
+        									</Grid.RowDefinitions>
+        									<StackPanel x:Name="stkpBtnAddRemoveWorkSchedule"
+        										Height="Auto"
+        										Margin="10,0,0,0"
+        										HorizontalAlignment="Left"
+        										VerticalAlignment="Center"
+        										Orientation="Horizontal">
+        										<Button x:Name="btnAssignEmployee"
+        											Command="{Binding AssignEmployeeCommand}"
+        											Width="115"
+        											Height="21"
+        											HorizontalAlignment="Center"
+        											VerticalAlignment="Center">
+        											<StackPanel x:Name="stkpBtnAssignEmployee"
+        												HorizontalAlignment="Center"
+        												VerticalAlignment="Center"
+        												Orientation="Horizontal">
+        												<Rectangle x:Name="imgAssignEmployee"
+        													Width="14"
+        													Height="14"
+        													Fill="{DynamicResource AssignEmployee}" />
+        												<TextBlock x:Name="txtblAssignEmployee"
+        													Margin="5,0,0,0"
+        													VerticalAlignment="Center"
+        													Style="{DynamicResource ButtonTextBlock}"
+        													Text="Assign Employee"
+        													TextWrapping="NoWrap" />
+        											</StackPanel>
+        										</Button>
+        										<Button x:Name="btnUnassignEmployee"
+        											Command="{Binding UnassignEmployeeCommand}"
+        											CommandParameter="{Binding SelectedItems, ElementName=dtgrdEmployeeList}"
+        											Width="115"
+        											Height="21"
+        											Margin="10,0,0,0"
+        											HorizontalAlignment="Center"
+        											VerticalAlignment="Center">
+        											<StackPanel x:Name="stkpBtnRemoveEmployee"
+        												HorizontalAlignment="Center"
+        												VerticalAlignment="Center"
+        												Orientation="Horizontal">
+        												<Rectangle x:Name="imgRemoveEmployee"
+        													Width="14"
+        													Height="14"
+        													Fill="{DynamicResource RemoveEmployee}" />
+        												<TextBlock x:Name="txtblRemoveEmployee"
+        													Margin="5,0,0,0"
+        													VerticalAlignment="Center"
+        													Style="{DynamicResource ButtonTextBlock}"
+        													Text="Remove Employee"
+        													TextWrapping="NoWrap" />
+        											</StackPanel>
+        										</Button>
+        									</StackPanel>
+        									<dataGridControl:DataGridControl x:Name="dtgrdEmployeeList"
+        										Grid.Row="2"
+        										Margin="10,0.2,10,10"
+        										AutoGenerateColumns="False"
+        										behavior:DoubleClickCommandBehavior.DoubleClickCommand="{Binding PopupEmployeeInformationDetailCommand}"
+        										behavior:DoubleClickCommandBehavior.DoubleClickCommandParameter="{Binding SelectedItem, ElementName=dtgrdEmployeeList}"
+        										CanUserAddRows="False"
+        										IsPaging="False"
+        										IsReadOnly="True"
+        										IsRollBackData="False"
+        										ItemsSource="{Binding SelectedWorkSchedule.EmployeeCollection}"
+        										NumberOfItems="{Binding SelectedWorkSchedule.EmployeeCollection.Count, Mode=OneWay}"
+        										Style="{DynamicResource DatagridWithRowHeader}">
+        										<dataGridControl:DataGridControl.Columns>
+        											<DataGridTextColumn Header="Employee #"
+        												Binding="{Binding GuestNo}"
+        												Width="90" />
+        											<DataGridTextColumn Header="First Name"
+        												Binding="{Binding FirstName}"
+        												Width="*"
+        												MaxWidth="512" />
+        											<DataGridTextColumn Header="Last Name"
+        												Binding="{Binding LastName}"
+        												Width="*"
+        												MaxWidth="512" />
+        											<DataGridTextColumn Header="Start Date"
+        												Binding="{Binding EmployeeScheduleModel.StartDate, StringFormat=d}"
+        												Width="110" />
+        											<DataGridTextColumn Header="Status"
+        												Binding="{Binding EmployeeScheduleModel.StatusName}"
+        												Width="70" />
+        											<DataGridTemplateColumn Width="25">
+        												<DataGridTemplateColumn.HeaderTemplate>
+        													<DataTemplate>
+        														<CheckBox IsChecked="{Binding DataContext.IsCheckedAll, ElementName=workScheduleView}" />
+        													</DataTemplate>
+        												</DataGridTemplateColumn.HeaderTemplate>
+        												<DataGridTemplateColumn.CellTemplate>
+        													<DataTemplate>
+        														<CheckBox IsChecked="{Binding IsChecked, UpdateSourceTrigger=PropertyChanged}" />
+        													</DataTemplate>
+        												</DataGridTemplateColumn.CellTemplate>
+        											</DataGridTemplateColumn>
+        										</dataGridControl:DataGridControl.Columns>
+        									</dataGridControl:DataGridControl>
+        								</Grid>
+        							</Grid>
+        						</ListBoxItem>
+        					</cpcControl:ListBoxCustom>
+        					<TabControl x:Name="tabControlWorkSchedule"
+        						Grid.Row="1"
+        						Margin="12,10,10,0"
+        						Background="{DynamicResource TabControlBackground}"
+        						BorderBrush="{DynamicResource TabControlBorder}">
+        						<TabControl.Template>
+        							<ControlTemplate TargetType="{x:Type TabControl}">
+        								<TabPanel IsItemsHost="True" />
+        								<!--  no content presenter  -->
+        							</ControlTemplate>
+        						</TabControl.Template>
+        						<TabItem x:Name="tabItemScheduleDetail"
+        							Header="Schedule Detail" />
+        						<TabItem x:Name="tabItemEmployees"
+        							Header="Employees" />
+        					</TabControl>
+        				</Grid>
+        			</Grid>
+        		</Grid>
+        	</Grid>
         </control:BusyIndicator>
     </Grid>
 </UserControl>

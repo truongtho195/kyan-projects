@@ -215,7 +215,53 @@ namespace CPC.POS.Model
         #endregion
 
         #region Custom Code
+        // Default constructor that set entity to field
+        public rpt_GroupModel(rpt_Group rpt_group)
+        {
+            this.rpt_Group = rpt_group;
+            this.ToModel();
+            this.Right = false;
+            this.IsDirty = false;
+        }
 
+        protected bool _right;
+        /// <summary>
+        /// Property Model
+        /// <para>Gets or sets the Right</para>
+        /// </summary>
+        public bool Right
+        {
+            get { return this._right; }
+            set
+            {
+                if (this._right != value)
+                {
+                    this.IsDirty = true;
+                    this._right = value;
+                    OnPropertyChanged(() => Right);
+                    PropertyChangedCompleted(() => Right);
+                }
+            }
+        }
+
+        #region -RootReportColection-
+        /// <summary>
+        /// Set or get RptReportColection
+        /// </summary>
+        private ObservableCollection<rpt_ReportModel> _rootReportColection;
+        public ObservableCollection<rpt_ReportModel> RootReportColection
+        {
+            get { return _rootReportColection; }
+            set
+            {
+                if (_rootReportColection != value)
+                {
+                    _rootReportColection = value;
+                    OnPropertyChanged(() => RootReportColection);
+                }
+            }
+        }
+        #endregion
 
         #endregion
 

@@ -13,6 +13,21 @@ namespace CPC.POS.Model
     [Serializable]
     public class ComboItem : ModelBase, IDataErrorInfo
     {
+        #region Constructors
+
+        public ComboItem(short value, string text)
+        {
+            Value = value;
+            Text = text;
+        }
+
+        public ComboItem()
+        {
+
+        }
+
+        #endregion
+
         private short _value;
         public short Value
         {

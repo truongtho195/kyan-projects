@@ -1686,6 +1686,7 @@
                                                              CurrencyStringFormat="{x:Static local:Define.CurrencyFormat}"
                                                              Padding="2,0,2,0"
                                                              TextWrapping="NoWrap"
+                                                             IsReadOnly="True"
                                                              Value="{Binding SelectedSaleOrder.LTotalFee, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
                                     <!--  Style="{DynamicResource TextBlockNormal}"  -->
                                     <TextBlock x:Name="txtblOrderTabShippingHandling"
@@ -1734,6 +1735,7 @@
                                              IsReadOnly="True"
                                              Padding="2,0,2,0"
                                              Style="{DynamicResource TextBoxTotalStyle}"
+                                             cpcBehavior:TextColorControlBehavior.Source="{Binding SelectedSaleOrder.Total, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}"
                                              Text="{Binding SelectedSaleOrder.Total, ConverterCulture={x:Static local:Define.ConverterCulture}, Mode=OneWay, StringFormat={x:Static local:Define.CurrencyFormat}}"
                                              TextWrapping="NoWrap" />
 

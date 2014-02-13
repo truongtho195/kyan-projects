@@ -28,6 +28,9 @@
                     Value="{Binding ., RelativeSource={RelativeSource Self}}" />
         </Style>
         <!--  region HeaderTemplate  -->
+        <DataTemplate x:Key="DataTemplate_PD_Header_Code">
+            <TextBlock Text="{DynamicResource C174}" />
+        </DataTemplate>
         <DataTemplate x:Key="DataTemplate_PD_Header_Attribute">
             <TextBlock Text="{DynamicResource C116}" />
         </DataTemplate>
@@ -47,6 +50,7 @@
             <TextBlock Text="{DynamicResource C139}" />
         </DataTemplate>
         <!--  endregion HeaderTemplate  -->
+        <s:Int32 x:Key="AccountNumberMaxLength">15</s:Int32>
         <s:Int32 x:Key="BarcodeMaxLength">20</s:Int32>
         <s:Int32 x:Key="PartNoMaxLength">20</s:Int32>
     </UserControl.Resources>
@@ -152,6 +156,31 @@
                                                              Style="{DynamicResource DatagridWithoutRowHeader}"
                                                              VisibilityNavigationBar="Collapsed">
                                 <dataGridControl:DataGridControl.Columns>
+                                    <DataGridTemplateColumn Width="*"
+                                                            CellStyle="{StaticResource DataGridCellFocusStyle}"
+                                                            HeaderTemplate="{StaticResource DataTemplate_PD_Header_Code}"
+                                                            SortMemberPath="Code">
+                                        <DataGridTemplateColumn.CellTemplate>
+                                            <DataTemplate>
+                                                <TextBlock Text="{Binding Code, Mode=OneWay}" />
+                                            </DataTemplate>
+                                        </DataGridTemplateColumn.CellTemplate>
+                                        <DataGridTemplateColumn.CellEditingTemplate>
+                                            <DataTemplate>
+                                                <textBoxControl:TextBox IsEnabled="{Binding DataContext.IsManualGenerate, Mode=OneWay, RelativeSource={RelativeSource AncestorType=UserControl, Mode=FindAncestor}}"
+                                                                        MaxLength="{StaticResource AccountNumberMaxLength}"
+                                                                        Style="{DynamicResource TextBoxInsideDataGridStyle}"
+                                                                        Text="{Binding Code, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}">
+                                                    <i:Interaction.Triggers>
+                                                        <i:EventTrigger EventName="LostFocus">
+                                                            <cmd:EventToCommand Command="{Binding DataContext.CheckCodeCommand, RelativeSource={RelativeSource AncestorType=UserControl, Mode=FindAncestor}}"
+                                                                                CommandParameter="{Binding}" />
+                                                        </i:EventTrigger>
+                                                    </i:Interaction.Triggers>
+                                                </textBoxControl:TextBox>
+                                            </DataTemplate>
+                                        </DataGridTemplateColumn.CellEditingTemplate>
+                                    </DataGridTemplateColumn>
                                     <DataGridTextColumn Binding="{Binding Size, Mode=OneWay}"
                                                         Width="*"
                                                         HeaderTemplate="{StaticResource DataTemplate_PD_Header_Attribute}" />

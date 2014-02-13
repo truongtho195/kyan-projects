@@ -15,8 +15,8 @@
              xmlns:Microsoft_Windows_Themes="clr-namespace:Microsoft.Windows.Themes;assembly=PresentationFramework.Luna"
              xmlns:sys="clr-namespace:System;assembly=mscorlib"
              x:Name="UserControl"
-             Width="478"
-             Height="472"
+             Width="407"
+             Height="360"
              helper:ValidationHelper.IsEnabled="True"
              helper:ValidationHelper.IsValid="{Binding IsValid,
                                                        Mode=OneWayToSource}"
@@ -39,174 +39,76 @@
                 BorderThickness="1">
             <Grid x:Name="grdContentSelectTrackingNumber" Margin="10">
                 <Grid.RowDefinitions>
-                    <RowDefinition Height="173.4" />
-                    <RowDefinition Height="Auto" MinHeight="10.6" />
+                    <RowDefinition Height="25" />
+                    <RowDefinition Height="Auto" MinHeight="5" />
                     <RowDefinition />
                 </Grid.RowDefinitions>
-                <GroupBox x:Name="gbItemInformation">
-                    <GroupBox.Header>
-                        <TextBlock x:Name="txtblgbItemInformation"
-                                   Style="{DynamicResource GroupboxTextBlock}"
-                                   Text="{DynamicResource PD_ItemInformation}"
-                                   TextWrapping="NoWrap" />
-                    </GroupBox.Header>
-                    <Grid x:Name="grdgbItemInformation" Margin="0,4,0,0">
-                        <Grid.ColumnDefinitions>
-                            <ColumnDefinition Width="80" />
-                            <ColumnDefinition />
-                            <ColumnDefinition Width="80" />
-                            <ColumnDefinition Width="100" />
-                        </Grid.ColumnDefinitions>
-                        <Grid.RowDefinitions>
-                            <RowDefinition Height="25" />
-                            <RowDefinition Height="25" />
-                            <RowDefinition Height="69.107" />
-                            <RowDefinition Height="Auto" MinHeight="25.013" />
-                        </Grid.RowDefinitions>
+                <TextBlock x:Name="txtblItemNo"
+                           Margin="0"
+                           HorizontalAlignment="Left"
+                           VerticalAlignment="Center"
+                           Style="{DynamicResource TextBlockNormal}"
+                           Text="Item #"
+                           TextWrapping="NoWrap"
+                           d:LayoutOverrides="Width" />
+                <TextBlock x:Name="txtblBindingItemNo"
+                           Margin="44,0,0,0"
+                           HorizontalAlignment="Left"
+                           VerticalAlignment="Center"
+                           FontWeight="Bold"
+                           Style="{DynamicResource TextBlockNormal}"
+                           Text="{Binding ProductModel.Code,Mode=OneWay}"
+                           TextWrapping="NoWrap"
+                           d:LayoutOverrides="Width" />
+                <TextBlock x:Name="txtblQuantity"
+                           Margin="207,0,0,0"
+                           HorizontalAlignment="Left"
+                           VerticalAlignment="Center"
+                           FontWeight="Bold"
+                           Style="{DynamicResource TextBlockNormal}"
+                           Text="{DynamicResource C120}"
+                           TextWrapping="NoWrap"
+                           d:LayoutOverrides="HorizontalAlignment">
+                    <TextBlock.Visibility>
+                        <Binding Mode="OneWay" Path="IsShowQuantity">
+                            <Binding.Converter>
+                                <converter:BoolToVisibilityConverter FalseToVisibility="Collapsed" />
+                            </Binding.Converter>
+                        </Binding>
+                    </TextBlock.Visibility>
+                </TextBlock>
+                <!--  CPCToolkitExt_TextBoxControl:TextBoxNumberic  -->
+                <cpcControl:NumericTextBox Width="88"
+                                           Margin="0,2"
+                                           HorizontalAlignment="Right"
+                                           cpcBehavior:AutoFocusBehavior.IsFocused="{Binding IsForceFocused,
+                                                                                             Mode=TwoWay,
+                                                                                             UpdateSourceTrigger=PropertyChanged}"
+                                           MaxLength="4"
+                                           Text="{Binding Quantity,
+                                                          Mode=TwoWay,
+                                                          UpdateSourceTrigger=PropertyChanged,
+                                                          TargetNullValue={x:Static sys:String.Empty},
+                                                          NotifyOnValidationError=True}"
+                                           Visibility="{Binding Visibility,
+                                                                ElementName=txtblQuantity,
+                                                                Mode=OneWay}"
+                                           d:LayoutOverrides="Height">
+                    <i:Interaction.Behaviors>
+                        <cpcBehavior:AutoFocusBehavior />
+                    </i:Interaction.Behaviors>
+                    <cpcControl:NumericTextBox.InputBindings>
+                        <KeyBinding Key="Enter"
+                                    Command="{Binding QuatityChangedCommand}"
+                                    CommandParameter="Enter" />
 
-
-                        <TextBlock x:Name="txtblCategory"
-                                   Margin="10,0,0,0"
-                                   HorizontalAlignment="Left"
-                                   VerticalAlignment="Center"
-                                   Style="{DynamicResource TextBlockNormal}"
-                                   Text="{DynamicResource PD_Category}"
-                                   TextWrapping="NoWrap" />
-                        <TextBlock x:Name="txtblBindingCategory"
-                                   Grid.Column="1"
-                                   HorizontalAlignment="Left"
-                                   VerticalAlignment="Center"
-                                   Style="{DynamicResource TextBlockNormal}"
-                                   Text="{Binding ProductModel.CategoryName}"
-                                   TextWrapping="NoWrap"
-                                   d:LayoutOverrides="GridBox" />
-                        <TextBlock x:Name="txtblVendor"
-                                   Grid.Row="1"
-                                   Margin="10,0,0,0"
-                                   HorizontalAlignment="Left"
-                                   VerticalAlignment="Center"
-                                   Style="{DynamicResource TextBlockNormal}"
-                                   Text="{DynamicResource C134}"
-                                   TextWrapping="NoWrap" />
-                        <TextBlock x:Name="txtblBindingVendor"
-                                   Grid.Row="1"
-                                   Grid.Column="1"
-                                   HorizontalAlignment="Left"
-                                   VerticalAlignment="Center"
-                                   Style="{DynamicResource TextBlockNormal}"
-                                   Text="{Binding ProductModel.VendorName,
-                                                  Mode=OneWay}"
-                                   TextWrapping="NoWrap" />
-                        <TextBlock x:Name="txtblDescription"
-                                   Grid.Row="2"
-                                   Margin="10,5.861,0,0"
-                                   HorizontalAlignment="Left"
-                                   VerticalAlignment="Top"
-                                   Style="{DynamicResource TextBlockNormal}"
-                                   Text="{DynamicResource C138}"
-                                   TextWrapping="NoWrap" />
-                        <Border x:Name="brdDescription"
-                                Grid.Row="2"
-                                Grid.Column="1"
-                                Grid.ColumnSpan="3"
-                                Margin="0,2,10,2"
-                                Background="White"
-                                BorderBrush="{DynamicResource TextBoxCanlendarComboboxBorderBrush}"
-                                BorderThickness="1">
-                            <ScrollViewer x:Name="slDescription">
-                                <TextBlock x:Name="txtblBindingDescription"
-                                           Margin="5"
-                                           Foreground="Black"
-                                           Style="{DynamicResource TextBlockNormal}"
-                                           Text="{Binding ProductModel.Description,
-                                                          Mode=OneWay}" />
-                            </ScrollViewer>
-                        </Border>
-                        <TextBlock x:Name="txtblAttribute"
-                                   Grid.Column="2"
-                                   Margin="0,0,10,0"
-                                   HorizontalAlignment="Right"
-                                   VerticalAlignment="Center"
-                                   Style="{DynamicResource TextBlockNormal}"
-                                   Text="{DynamicResource C116}"
-                                   TextWrapping="NoWrap" />
-                        <TextBlock x:Name="txtblBindingAttribute"
-                                   Grid.Column="3"
-                                   Margin="0"
-                                   HorizontalAlignment="Left"
-                                   VerticalAlignment="Center"
-                                   Style="{DynamicResource TextBlockNormal}"
-                                   Text="{Binding ProductModel.Attribute,
-                                                  Mode=OneWay}"
-                                   TextWrapping="NoWrap" />
-                        <TextBlock x:Name="txtblSize"
-                                   Grid.Row="1"
-                                   Grid.Column="2"
-                                   Margin="0,0,10,0"
-                                   HorizontalAlignment="Right"
-                                   VerticalAlignment="Center"
-                                   Style="{DynamicResource TextBlockNormal}"
-                                   Text="{DynamicResource C117}"
-                                   TextWrapping="NoWrap" />
-                        <TextBlock x:Name="txtblBindingSize"
-                                   Grid.Row="1"
-                                   Grid.Column="3"
-                                   Margin="0"
-                                   HorizontalAlignment="Left"
-                                   VerticalAlignment="Center"
-                                   Style="{DynamicResource TextBlockNormal}"
-                                   Text="{Binding ProductModel.Size,
-                                                  Mode=OneWay}"
-                                   TextWrapping="NoWrap" />
-                        <TextBlock x:Name="txtblQuantity"
-                                   Grid.Row="3"
-                                   Margin="10,0,0,0"
-                                   HorizontalAlignment="Left"
-                                   VerticalAlignment="Center"
-                                   Style="{DynamicResource TextBlockNormal}"
-                                   Text="{DynamicResource C120}"
-                                   TextWrapping="NoWrap">
-                            <TextBlock.Visibility>
-                                <Binding Mode="OneWay" Path="IsShowQuantity">
-                                    <Binding.Converter>
-                                        <converter:BoolToVisibilityConverter FalseToVisibility="Collapsed" />
-                                    </Binding.Converter>
-                                </Binding>
-                            </TextBlock.Visibility>
-                        </TextBlock>
-                        <!--  CPCToolkitExt_TextBoxControl:TextBoxNumberic  -->
-                        <cpcControl:NumericTextBox Grid.Row="3"
-                                                   Grid.Column="1"
-                                                   Width="100"
-                                                   Margin="0,2"
-                                                   HorizontalAlignment="Left"
-                                                   MaxLength="4"
-                                                   Text="{Binding Quantity,
-                                                                  Mode=TwoWay,
-                                                                  UpdateSourceTrigger=PropertyChanged,
-                                                                  TargetNullValue={x:Static sys:String.Empty},
-                                                                  NotifyOnValidationError=True}"
-                                                   Visibility="{Binding Visibility,
-                                                                        ElementName=txtblQuantity,
-                                                                        Mode=OneWay}"
-                                                   d:LayoutOverrides="Height">
-                            <i:Interaction.Behaviors>
-                                <cpcBehavior:AutoFocusBehavior />
-                            </i:Interaction.Behaviors>
-                            <cpcControl:NumericTextBox.InputBindings>
-                                <KeyBinding Key="Enter"
-                                            Command="{Binding QuatityChangedCommand}"
-                                            CommandParameter="Enter" />
-
-                            </cpcControl:NumericTextBox.InputBindings>
-                            <i:Interaction.Triggers>
-                                <i:EventTrigger EventName="LostFocus">
-                                    <command:EventToCommand Command="{Binding QuatityChangedCommand}" CommandParameter="Enter" />
-                                </i:EventTrigger>
-                            </i:Interaction.Triggers>
-                        </cpcControl:NumericTextBox>
-                    </Grid>
-                </GroupBox>
+                    </cpcControl:NumericTextBox.InputBindings>
+                    <i:Interaction.Triggers>
+                        <i:EventTrigger EventName="LostFocus">
+                            <command:EventToCommand Command="{Binding QuatityChangedCommand}" CommandParameter="Enter" />
+                        </i:EventTrigger>
+                    </i:Interaction.Triggers>
+                </cpcControl:NumericTextBox>
                 <CPCToolkitExt_DataGridControl:DataGridControl x:Name="dtgrdSerial"
                                                                Grid.Row="2"
                                                                Margin="0,0.2,0,0"
@@ -214,8 +116,9 @@
                                                                CanUserAddRows="False"
                                                                CanUserDeleteRows="False"
                                                                cpcBehavior:AutoFocusDatagridCellBehavior.IsFocused="{Binding IsShowQuantity,
-                                                                                                                             Mode=OneWay,UpdateSourceTrigger=PropertyChanged,
-                                                                                                                             Converter={StaticResource reserseBoolConverter}}"
+                                                                                                                             Converter={StaticResource reserseBoolConverter},
+                                                                                                                             Mode=OneWay,
+                                                                                                                             UpdateSourceTrigger=PropertyChanged}"
                                                                IsReadOnly="{Binding IsReadOnly,
                                                                                     Mode=OneWay}"
                                                                IsRollBackData="False"
@@ -230,6 +133,19 @@
                         <cpcBehavior:AutoFocusDatagridCellBehavior ControlName="txtSerialTracking" UseCondition="True" />
                     </i:Interaction.Behaviors>
                     <CPCToolkitExt_DataGridControl:DataGridControl.Columns>
+
+                        <DataGridTemplateColumn Width="50"
+                                                Header="#"
+                                                IsReadOnly="True">
+                            <DataGridTemplateColumn.CellTemplate>
+                                <DataTemplate>
+                                    <TextBlock HorizontalAlignment="Center" Text="{Binding Id}" />
+                                </DataTemplate>
+                            </DataGridTemplateColumn.CellTemplate>
+                        </DataGridTemplateColumn>
+
+
+
                         <DataGridTemplateColumn Width="*" MinWidth="90">
                             <DataGridTemplateColumn.Header>
                                 <TextBlock Text="{DynamicResource SO_TextBlock_SerialNumber}" />
@@ -284,6 +200,34 @@
                                VerticalAlignment="Center"
                                Style="{DynamicResource ButtonTextBlock}"
                                Text="{DynamicResource Button_Ok}"
+                               TextWrapping="NoWrap" />
+                </StackPanel>
+            </Button>
+            <Button x:Name="btnCancel"
+                    Width="80"
+                    Height="28"
+                    Margin="10,0,0,0"
+                    Command="{Binding CancelCommand}">
+                <Button.Visibility>
+                    <Binding Mode="OneWay" Path="IsSaleOrder">
+                        <Binding.Converter>
+                            <converter:BoolToVisibilityConverter FalseToVisibility="Visible" />
+                        </Binding.Converter>
+                    </Binding>
+                </Button.Visibility>
+                <StackPanel x:Name="stkpBtnCancel"
+                            HorizontalAlignment="Center"
+                            VerticalAlignment="Center"
+                            Orientation="Horizontal">
+                    <Rectangle x:Name="imgCancel"
+                               Width="20"
+                               Height="20"
+                               Fill="{DynamicResource Cancel}" />
+                    <TextBlock x:Name="txtblExit"
+                               Margin="5,0,0,0"
+                               VerticalAlignment="Center"
+                               Style="{DynamicResource ButtonTextBlock}"
+                               Text="Cancel"
                                TextWrapping="NoWrap" />
                 </StackPanel>
             </Button>

@@ -2600,6 +2600,24 @@ namespace CPC.POS.Model
 
         #region ManagementUOM
 
+        private bool _isDuplicateCode;
+        /// <summary>
+        /// Gets or sets the IsDuplicateCode.
+        /// </summary>
+        public bool IsDuplicateCode
+        {
+            get { return _isDuplicateCode; }
+            set
+            {
+                if (_isDuplicateCode != value)
+                {
+                    _isDuplicateCode = value;
+                    OnPropertyChanged(() => IsDuplicateCode);
+                    OnPropertyChanged(() => Code);
+                }
+            }
+        }
+
         private bool _isDuplicateUPC;
         /// <summary>
         /// Gets or sets the IsDuplicateUPC.
@@ -2613,6 +2631,7 @@ namespace CPC.POS.Model
                 {
                     _isDuplicateUPC = value;
                     OnPropertyChanged(() => IsDuplicateUPC);
+                    OnPropertyChanged(() => Barcode);
                 }
             }
         }
@@ -2630,6 +2649,7 @@ namespace CPC.POS.Model
                 {
                     _isDuplicateALU = value;
                     OnPropertyChanged(() => IsDuplicateALU);
+                    OnPropertyChanged(() => ALU);
                 }
             }
         }
@@ -2864,8 +2884,8 @@ namespace CPC.POS.Model
             this.WarrantyNumber = productModel.WarrantyNumber;
             this.WarrantyPeriod = productModel.WarrantyPeriod;
             //this.PartNumber = productModel.PartNumber;
-            //this.SellUOMId = productModel.SellUOMId;
-            //this.OrderUOMId = productModel.OrderUOMId;
+            this.SellUOMId = productModel.SellUOMId;
+            this.OrderUOMId = productModel.OrderUOMId;
             //this.IsPurge = productModel.IsPurge;
             this.VendorId = productModel.VendorId;
             this.UserAssignedCommission = productModel.UserAssignedCommission;
@@ -3054,6 +3074,8 @@ namespace CPC.POS.Model
                     case "Code":
                         if (string.IsNullOrWhiteSpace(Code))
                             message = "Code is required";
+                        else if (IsDuplicateCode)
+                            message = "Code is existed";
                         break;
                     case "ProductDepartmentId":
                         if (ProductDepartmentId == 0)
@@ -3066,6 +3088,14 @@ namespace CPC.POS.Model
                     case "ProductName":
                         if (string.IsNullOrWhiteSpace(ProductName))
                             message = "ProductName is required";
+                        break;
+                    case "Barcode":
+                        if (IsDuplicateUPC)
+                            message = "Scan code is existed";
+                        break;
+                    case "ALU":
+                        if (IsDuplicateALU)
+                            message = "ALU is existed";
                         break;
                     case "VendorId":
                         if (VendorId == 0)

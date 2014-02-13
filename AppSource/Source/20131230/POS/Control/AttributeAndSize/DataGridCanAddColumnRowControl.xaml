@@ -4,6 +4,7 @@
              xmlns:behavior="clr-namespace:CPC.Toolkit.Behavior"
              xmlns:control="clr-namespace:Xceed.Wpf.Toolkit;assembly=WPFToolkit.Extended"
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:dataGridControl="clr-namespace:CPCToolkitExt.DataGridControl;assembly=CPCToolkitExt"
              xmlns:ed="http://schemas.microsoft.com/expression/2010/drawing"
              xmlns:local="clr-namespace:CPC.POS"
              xmlns:lunaThemes="clr-namespace:Microsoft.Windows.Themes;assembly=PresentationFramework.Luna"
@@ -805,19 +806,19 @@
         <s:Int32 x:Key="SizeMaxLength">10</s:Int32>
     </UserControl.Resources>
     <Grid x:Name="grdAttributeAndSizeControl">
-        <DataGrid x:Name="dataGrid"
-                  AutoGenerateColumns="False"
-                  CanUserAddRows="False"
-                  CanUserDeleteRows="False"
-                  CanUserReorderColumns="False"
-                  CanUserResizeRows="False"
-                  CanUserSortColumns="False"
-                  ColumnHeaderStyle="{StaticResource DataGridColumnHeaderStrech_Attribute}"
-                  ItemsSource="{Binding DataRowList, ElementName=ucDataGridCanAddColumnRow}"
-                  RowHeaderStyle="{StaticResource DataGridRowHeader_Attribute}"
-                  SelectionMode="Single"
-                  SelectionUnit="Cell"
-                  Style="{StaticResource DatagridWithRowHeader_Attribute}">
+        <dataGridControl:DataGridControl x:Name="dataGrid"
+                                         AutoGenerateColumns="False"
+                                         CanUserAddRows="False"
+                                         CanUserDeleteRows="False"
+                                         CanUserReorderColumns="False"
+                                         CanUserResizeRows="False"
+                                         CanUserSortColumns="False"
+                                         ColumnHeaderStyle="{StaticResource DataGridColumnHeaderStrech_Attribute}"
+                                         ItemsSource="{Binding DataRowList, ElementName=ucDataGridCanAddColumnRow}"
+                                         RowHeaderStyle="{StaticResource DataGridRowHeader_Attribute}"
+                                         SelectionMode="Single"
+                                         SelectionUnit="Cell"
+                                         Style="{StaticResource DatagridWithRowHeader_Attribute}">
             <!--  RowHeader  -->
             <DataGrid.RowHeaderTemplate>
                 <DataTemplate>
@@ -923,6 +924,6 @@
                     </DataGridTemplateColumn.CellTemplate>
                 </DataGridTemplateColumn>
             </DataGrid.Columns>
-        </DataGrid>
+        </dataGridControl:DataGridControl>
     </Grid>
 </UserControl>

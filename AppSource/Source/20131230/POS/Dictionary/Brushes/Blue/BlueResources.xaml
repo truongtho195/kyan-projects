@@ -393,6 +393,9 @@
 	<SolidColorBrush x:Key="TextBoxCanlendarComboboxBorderBrush" Color="#FF254366"/>
 	<SolidColorBrush x:Key="TextBoxCanlendarComboboxRequiredBorderBrush" Color="Red"/>
 		<SolidColorBrush x:Key="TextBoxCanlendarComboboxTypingBackground" Color="#FFFFF500"/>
+			<Visibility x:Key="TextBoxTotalVisibility">Visible</Visibility>
+		<SolidColorBrush x:Key="TextBoxTotal_Foreground" Color="#FF00FF05"/>
+		<SolidColorBrush x:Key="TextBoxTotal_Negative_Foreground" Color="Red"/>	
 	<SolidColorBrush x:Key="Spilter_Line_Background" Color="White"/>
 	
 	<Visibility x:Key="SearchVisibility">Visible</Visibility>

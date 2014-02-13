@@ -10,10 +10,12 @@
              xmlns:pos="clr-namespace:CPC.POS"
              xmlns:s="clr-namespace:System;assembly=mscorlib"
              xmlns:textBoxToolkit="clr-namespace:CPCToolkitExt.TextBoxControl;assembly=CPCToolkitExt"
+             xmlns:converter="clr-namespace:CPC.Converter"
              x:Name="UserControl"
-             Width="343"
-             Height="182">
+             Width="353"
+             Height="232">
     <UserControl.Resources>
+        <converter:ReserseBoolConverter x:Key="reserseBoolConverter" />
         <!--  MaxLengthField  -->
         <s:Int32 x:Key="NetDueMaxLength">4</s:Int32>
         <s:Int32 x:Key="DiscountMaxLength">2</s:Int32>
@@ -39,14 +41,38 @@
                     <RowDefinition Height="25" />
                     <RowDefinition Height="25" />
                     <RowDefinition Height="25" />
+                    <RowDefinition Height="25" />
+                    <RowDefinition Height="25" />
                 </Grid.RowDefinitions>
+                <RadioButton x:Name="cbCOD"
+                             Content="COD"
+                             HorizontalAlignment="Left"
+                             VerticalAlignment="Center"
+                             Margin="0"
+                             IsChecked="{Binding IsCOD,Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}" />
+                <RadioButton x:Name="cbTerm"
+                             Content="Term"
+                             VerticalAlignment="Center"
+                             HorizontalAlignment="Left"
+                             IsChecked="{Binding IsCOD,Mode=TwoWay,UpdateSourceTrigger=PropertyChanged,Converter={StaticResource reserseBoolConverter}}"
+                             Grid.Row="1"
+                             Margin="0" />
+                <Rectangle Fill="{DynamicResource GroupboxBorder}"
+                           HorizontalAlignment="Stretch"
+                           x:Name="LineTerm"
+                           VerticalAlignment="Center"
+                           Height="1"
+                           Grid.Row="1"
+                           Margin="53,0,0,0"
+                           Grid.ColumnSpan="2" />
                 <TextBlock x:Name="txtblNetDueIn"
-                           Margin="10,0,0,0"
+                           Margin="20,0,0,0"
                            HorizontalAlignment="Left"
                            VerticalAlignment="Center"
                            Style="{DynamicResource TextBlockNormal}"
                            Text="Net Due In"
-                           TextWrapping="NoWrap" />
+                           TextWrapping="NoWrap"
+                           Grid.Row="2" />
                 <!--  TermNetDue  -->
                 <textBoxToolkit:TextBoxNumeric x:Name="txtNetDueIn"
                                                Grid.Column="1"
@@ -59,7 +85,8 @@
                                                NumericStringFormat="{}{0:N0}"
                                                Padding="2,0,2,0"
                                                TextWrapping="NoWrap"
-                                               Value="{Binding DueDays, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}">
+                                               Value="{Binding DueDays, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                               Grid.Row="2">
                     <i:Interaction.Behaviors>
                         <cpcBehavior:AutoFocusBehavior />
                     </i:Interaction.Behaviors>
@@ -71,10 +98,11 @@
                            VerticalAlignment="Center"
                            Style="{DynamicResource TextBlockNormal}"
                            Text="Days"
-                           TextWrapping="NoWrap" />
+                           TextWrapping="NoWrap"
+                           Grid.Row="2" />
                 <TextBlock x:Name="txtblDiscount"
-                           Grid.Row="1"
-                           Margin="10,0,0,0"
+                           Grid.Row="3"
+                           Margin="20,0,0,0"
                            HorizontalAlignment="Left"
                            VerticalAlignment="Center"
                            Style="{DynamicResource TextBlockNormal}"
@@ -82,7 +110,7 @@
                            TextWrapping="NoWrap" />
                 <!--  TermDiscountPercent  -->
                 <textBoxToolkit:TextBoxNumeric x:Name="txtDiscount"
-                                               Grid.Row="1"
+                                               Grid.Row="3"
                                                Grid.Column="1"
                                                Width="110"
                                                Margin="0,2"
@@ -95,7 +123,7 @@
                                                TextWrapping="NoWrap"
                                                Value="{Binding Discount, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
                 <TextBlock x:Name="txtblDiscountPercent"
-                           Grid.Row="1"
+                           Grid.Row="3"
                            Grid.Column="1"
                            Margin="120,0,0,0"
                            HorizontalAlignment="Left"
@@ -104,8 +132,8 @@
                            Text="%"
                            TextWrapping="NoWrap" />
                 <TextBlock x:Name="txtblDiscountifpaidwithin"
-                           Grid.Row="2"
-                           Margin="10,0,0,0"
+                           Grid.Row="4"
+                           Margin="20,0,0,0"
                            HorizontalAlignment="Left"
                            VerticalAlignment="Center"
                            Style="{DynamicResource TextBlockNormal}"
@@ -113,7 +141,7 @@
                            TextWrapping="NoWrap" />
                 <!--  TermPaidWithinDay  -->
                 <textBoxToolkit:TextBoxNumeric x:Name="txtDiscountifpaidwithin"
-                                               Grid.Row="2"
+                                               Grid.Row="4"
                                                Grid.Column="1"
                                                Width="110"
                                                Margin="0,2"
@@ -126,7 +154,7 @@
                                                TextWrapping="NoWrap"
                                                Value="{Binding DiscountDays, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
                 <TextBlock x:Name="txtblDiscountifpaidwithinDays"
-                           Grid.Row="2"
+                           Grid.Row="4"
                            Grid.Column="1"
                            Margin="120,0,0,0"
                            HorizontalAlignment="Left"

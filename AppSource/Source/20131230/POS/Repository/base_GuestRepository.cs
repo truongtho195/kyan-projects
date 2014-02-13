@@ -292,6 +292,11 @@ namespace CPC.POS.Repository
         }
 
 
+        public IEnumerable<base_Guest> GetRangeIEnumerable(int ignoreCount, int takeCount, string keys, Expression<Func<base_Guest, bool>> expression)
+        {
+            return UnitOfWork.GetRange<base_Guest>(ignoreCount, takeCount, keys, expression);
+        }
+
 
         public base_Guest CreateDefaultCustomer()
         {

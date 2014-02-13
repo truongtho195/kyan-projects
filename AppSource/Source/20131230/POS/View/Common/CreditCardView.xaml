@@ -97,10 +97,12 @@
                            Style="{DynamicResource TextBlockNormal}"
                            Text="{DynamicResource Text_PaymentExpireDate}"
                            TextWrapping="NoWrap" />
+                
                 <wpfControl:MaskedTextBox x:Name="txtExpDate"
                                           Grid.Row="2"
                                           Grid.Column="1"
                                           Width="87"
+                                          TextAlignment="Right"
                                           Margin="0,2"
                                           HorizontalAlignment="Left"
                                           HorizontalContentAlignment="Right"
@@ -128,6 +130,7 @@
                                           Style="{DynamicResource TextBoxCCIDStyle}"
                                           TextWrapping="NoWrap"
                                           Value="{Binding SelectedPaymentCard.CCID, Mode=TwoWay, NotifyOnValidationError=True, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True}" />
+                
                 <TextBlock x:Name="txtblName"
                            Grid.Row="3"
                            Margin="10,0,0,0"

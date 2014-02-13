@@ -7,6 +7,7 @@ using CPC.POS.Model;
 using CPC.Toolkit.Base;
 using CPC.Toolkit.Command;
 using CPCToolkitExtLibraries;
+using System.Collections.ObjectModel;
 
 namespace CPC.POS.ViewModel
 {
@@ -200,6 +201,7 @@ namespace CPC.POS.ViewModel
         {
             System.Windows.Window window = FindOwnerWindow(this);
             PaymentCardModel = ConvertObject(SelectedPaymentCard, PaymentCardModel) as base_GuestPaymentCardModel;
+            PaymentCardModel.ExpDate = string.Format("{0}/{1}", PaymentCardModel.ExpMonth.Value.ToString("0#"), PaymentCardModel.ExpYear);
             PaymentCardModel.IsTemporary = false;
             if (!PaymentCardModel.IsNew)
                 PaymentCardModel.DateUpdated = DateTime.Now;

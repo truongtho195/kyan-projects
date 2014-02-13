@@ -221,7 +221,7 @@
     <sys:String x:Key="Text_GoToVendorList">Go To Vendor List</sys:String>
     <sys:String x:Key="Text_GoToCustomerList">Go To Customer List</sys:String>
     <!--EndRegion Title -->
-    
+
     <!--  End Common Language  -->
 
     <!--  Datagrid Language  -->
@@ -519,7 +519,7 @@
     <sys:String x:Key="EM_TextBlock_DOB">DOB:</sys:String>
     <sys:String x:Key="EM_TextBlock_State">State:</sys:String>
     <sys:String x:Key="EM_TextBlock_EmergencyContact">Emergency Contact</sys:String>
-    
+
     <sys:String x:Key="EM_TextBlock_Account">Account # zh</sys:String>
     <sys:String x:Key="EM_Header_EmployeeNo">Employee #</sys:String>
     <sys:String x:Key="EM_Header_EmployeeType">Employee Type</sys:String>
@@ -531,6 +531,22 @@
     <!--  End EmployeeView  -->
 
     <!--  region ProductView  -->
+    <!--  Title  -->
+    <sys:String x:Key="PD_Title_Product">Product zh</sys:String>
+    <sys:String x:Key="PD_Title_ProductList">Product List zh</sys:String>
+    <sys:String x:Key="PD_Title_CreateNewDepartment">Create new Department zh</sys:String>
+    <sys:String x:Key="PD_Title_CreateNewCategory">Create new Category zh</sys:String>
+    <sys:String x:Key="PD_Title_CreateNewBrand">Create new Brand zh</sys:String>
+    <sys:String x:Key="PD_Title_CreateNewVendor">Create new Vendor zh</sys:String>
+    <sys:String x:Key="PD_Title_AttributeAndSize">Attribute and Size zh</sys:String>
+    <sys:String x:Key="PD_Title_ReorderPoint">Reorder Point zh</sys:String>
+    <sys:String x:Key="PD_Title_AvailableQuantities">Available Quantities zh</sys:String>
+    <sys:String x:Key="PD_Title_ManagementUOM">Management UOM zh</sys:String>
+    <sys:String x:Key="PD_Title_Pricing">Pricing zh</sys:String>
+    <sys:String x:Key="PD_Title_CreateNewUOM">Create new UOM zh</sys:String>
+    <sys:String x:Key="PD_Title_DuplicateItem">Duplicate Item zh</sys:String>
+    <sys:String x:Key="PD_Title_BuildItemGroup">Build Item Group zh</sys:String>
+    <sys:String x:Key="PD_Title_AddNewWarranty">Add new Warranty zh</sys:String>
     <!--  CheckBox  -->
     <sys:String x:Key="PD_CategoryBrand">Category/Brand zh</sys:String>
     <sys:String x:Key="PD_DescriptionStyleModel">Description/StyleModel zh</sys:String>
@@ -547,6 +563,7 @@
     <sys:String x:Key="PD_CreationDate">Creation Date zh</sys:String>
     <sys:String x:Key="PD_VendorCode">Vendor Code zh</sys:String>
     <sys:String x:Key="PD_RegPrice">Reg.Price zh</sys:String>
+    <sys:String x:Key="PD_Picture">Picture zh</sys:String>
     <!--  TabHeader  -->
     <sys:String x:Key="PD_ProductInfo">Product Info zh</sys:String>
     <sys:String x:Key="PD_Additional">Additional zh</sys:String>
@@ -812,6 +829,17 @@
     <sys:String x:Key="SO_Title_MultiTrackingSerial">Multi Tracking Serial</sys:String>
     <sys:String x:Key="SO_Title_VoidBill">Void Bill</sys:String>
     <sys:String x:Key="SO_Title_ServiceFeeDetail">Service Fee Detail</sys:String>
+    <sys:String x:Key="SO_Title_SaleOrder">Sale Order</sys:String>
+    <sys:String x:Key="SO_Title_SaleOrderList">Sale Order List</sys:String>
+    <sys:String x:Key="SO_Title_WorkOrder">Work Order</sys:String>
+    <sys:String x:Key="SO_Title_WorkOrderList">Work Order List</sys:String>
+    <sys:String x:Key="SO_Title_Layaway">Layaway</sys:String>
+    <sys:String x:Key="SO_Title_LayawayList">Layaway List</sys:String>
+    <sys:String x:Key="SO_Title_Quotation">Quotation</sys:String>
+    <sys:String x:Key="SO_Title_QuotationList">Quotation List</sys:String>
+    <sys:String x:Key="SO_Title_SaleOrderLocked">Sale Order Locked</sys:String>
+    <sys:String x:Key="SO_Title_SaleOrderLockedList">Sale Order Locked List</sys:String>
+
     <!--  #EndRegion SaleOrderView  -->
 
     <!--Begin SaleOrderSearchAdvance-->

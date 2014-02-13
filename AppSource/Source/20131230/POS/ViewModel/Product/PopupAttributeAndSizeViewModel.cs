@@ -115,6 +115,23 @@ namespace CPC.POS.ViewModel
             }
         }
 
+        private bool _isManualGenerate;
+        /// <summary>
+        /// Gets or sets the IsManualGenerate.
+        /// </summary>
+        public bool IsManualGenerate
+        {
+            get { return _isManualGenerate; }
+            set
+            {
+                if (_isManualGenerate != value)
+                {
+                    _isManualGenerate = value;
+                    OnPropertyChanged(() => IsManualGenerate);
+                }
+            }
+        }
+
         #endregion
 
         #region Constructors
@@ -149,6 +166,7 @@ namespace CPC.POS.ViewModel
                 // Create new DataGridCell model
                 DataGridCellModel dataGridCellModel = new DataGridCellModel();
                 dataGridCellModel.CellResource = productItem.Resource.ToString();
+                dataGridCellModel.Code = productItem.Code;
                 dataGridCellModel.Attribute = productItem.Size;
                 dataGridCellModel.Size = productItem.Attribute;
                 dataGridCellModel.IsNew = productItem.IsNew;
@@ -187,7 +205,7 @@ namespace CPC.POS.ViewModel
         {
             if (CellCollection == null)
                 return false;
-            return CellCollection.IsDirty &&
+            return CellCollection.IsDirty && !CellCollection.Any(x => x.IsDuplicateCode) && !CellCollection.Any(x => string.IsNullOrWhiteSpace(x.Code)) &&
                 !CellCollection.Any(x => x.IsDuplicateBarcode) && !CellCollection.Any(x => x.IsDuplicateALU);
         }
 
@@ -231,6 +249,43 @@ namespace CPC.POS.ViewModel
 
         #endregion
 
+        #region CheckCodeCommand
+
+        /// <summary>
+        /// Gets the CheckCodeCommand command.
+        /// </summary>
+        public ICommand CheckCodeCommand { get; private set; }
+
+        /// <summary>
+        /// Method to check whether the CheckCodeCommand command can be executed.
+        /// </summary>
+        /// <returns><c>true</c> if the command can be executed; otherwise <c>false</c></returns>
+        private bool OnCheckCodeCommandCanExecute(object param)
+        {
+            return IsManualGenerate;
+        }
+
+        /// <summary>
+        /// Method to invoke when the CheckCodeCommand command is executed.
+        /// </summary>
+        private void OnCheckCodeCommandExecute(object param)
+        {
+            if (SelectedProduct != null)
+            {
+                DataGridCellModel dataGridCellModel = param as DataGridCellModel;
+                dataGridCellModel.IsDuplicateCode = IsDuplicateCode(SelectedProduct, dataGridCellModel.Code);
+
+                // Check duplicate code
+                if (dataGridCellModel.IsDuplicateCode)
+                {
+                    string message = string.Format("Item Number: {0} of this product is existed.", SelectedProduct.Code);
+                    Xceed.Wpf.Toolkit.MessageBox.Show(message, "POS", MessageBoxButton.OK, MessageBoxImage.Warning);
+                }
+            }
+        }
+
+        #endregion
+
         #region CheckBarcodeCommand
 
         /// <summary>
@@ -246,12 +301,16 @@ namespace CPC.POS.ViewModel
             if (param != null)
             {
                 DataGridCellModel dataGridCellModel = param as DataGridCellModel;
-                dataGridCellModel.IsDuplicateBarcode = IsDuplicateBarcode(SelectedProduct, dataGridCellModel.Barcode);
-
-                // Check duplicate barcode
-                if (dataGridCellModel.IsDuplicateBarcode)
+                if (!string.IsNullOrWhiteSpace(dataGridCellModel.Barcode))
                 {
-                    Xceed.Wpf.Toolkit.MessageBox.Show("Barcode of this product is existed", "POS", MessageBoxButton.OK, MessageBoxImage.Warning);
+                    dataGridCellModel.IsDuplicateBarcode = IsDuplicateBarcode(SelectedProduct, dataGridCellModel.Barcode);
+
+                    // Check duplicate barcode
+                    if (dataGridCellModel.IsDuplicateBarcode)
+                    {
+                        string message = string.Format("Scan code: {0} of this product is existed.", dataGridCellModel.Barcode);
+                        Xceed.Wpf.Toolkit.MessageBox.Show(message, "POS", MessageBoxButton.OK, MessageBoxImage.Warning);
+                    }
                 }
             }
         }
@@ -278,7 +337,8 @@ namespace CPC.POS.ViewModel
                 // Check duplicate barcode
                 if (dataGridCellModel.IsDuplicateALU)
                 {
-                    Xceed.Wpf.Toolkit.MessageBox.Show("Alternate lookup of this product is existed", "POS", MessageBoxButton.OK, MessageBoxImage.Warning);
+                    string message = string.Format("ALU: {0} of this product is existed.", dataGridCellModel.ALU);
+                    Xceed.Wpf.Toolkit.MessageBox.Show(message, "POS", MessageBoxButton.OK, MessageBoxImage.Warning);
                 }
             }
         }
@@ -296,6 +356,7 @@ namespace CPC.POS.ViewModel
         {
             OkCommand = new RelayCommand(OnOkCommandExecute, OnOkCommandCanExecute);
             CancelCommand = new RelayCommand(OnCancelCommandExecute, OnCancelCommandCanExecute);
+            CheckCodeCommand = new RelayCommand<object>(OnCheckCodeCommandExecute, OnCheckCodeCommandCanExecute);
             CheckBarcodeCommand = new RelayCommand<object>(OnCheckBarcodeCommandExecute);
             CheckALUCommand = new RelayCommand<object>(OnCheckALUCommandExecute);
         }
@@ -352,8 +413,8 @@ namespace CPC.POS.ViewModel
                     SelectedProduct.ProductCollection.Remove(productModel);
             }
 
-            // Avoid product code is duplicate
-            int productCode = 0;
+            //// Avoid product code is duplicate
+            //int productCode = 0;
 
             // Update or create new product
             foreach (DataGridCellModel dataGridCellItem in CellCollection)
@@ -366,7 +427,7 @@ namespace CPC.POS.ViewModel
                 {
                     // Create new product model
                     productModel = new base_ProductModel();
-                    productModel.Code = DateTimeExt.Now.AddMilliseconds(productCode++).ToString(Define.ProductCodeFormat);
+                    //productModel.Code = DateTimeExt.Now.AddMilliseconds(productCode++).ToString(Define.ProductCodeFormat);
                     productModel.Resource = Guid.NewGuid();
                     productModel.ProductStoreCollection = new CollectionBase<base_ProductStoreModel>();
 
@@ -374,6 +435,7 @@ namespace CPC.POS.ViewModel
                     SelectedProduct.ProductCollection.Add(productModel);
                 }
 
+                productModel.Code = dataGridCellItem.Code;
                 if (SelectedStoreIndex.Equals(Define.StoreCode))
                     productModel.OnHandStore = dataGridCellItem.Value;
                 productModel.Attribute = dataGridCellItem.Size;
@@ -466,6 +528,44 @@ namespace CPC.POS.ViewModel
         }
 
         /// <summary>
+        /// Check code duplicate
+        /// </summary>
+        /// <param name="productModel"></param>
+        /// <returns></returns>
+        private bool IsDuplicateCode(base_ProductModel productModel, string code)
+        {
+            try
+            {
+                if (string.IsNullOrWhiteSpace(code))
+                    return false;
+
+                code = code.Trim().ToLower();
+
+                // Get barcode from product collection
+                IEnumerable<string> codes = CellCollection.Where(x => !string.IsNullOrWhiteSpace(x.Code)).Select(x => x.Code);
+
+                if (codes.Count(x => x.Equals(code)) > 1)
+                    return true;
+
+                // Create predicate
+                Expression<Func<base_Product, bool>> predicate = PredicateBuilder.True<base_Product>();
+
+                // Get all products that IsPurge is false
+                predicate = predicate.And(x => x.IsPurge == false && !x.Resource.Equals(productModel.Resource));
+
+                // Get all products that duplicate barcode
+                predicate = predicate.And(x => x.Code.ToLower().Equals(code));
+
+                return _productRepository.GetIQueryable(predicate).Count() > 0;
+            }
+            catch (Exception ex)
+            {
+                _log4net.Error(ex);
+                return false;
+            }
+        }
+
+        /// <summary>
         /// Check barcode duplicate
         /// </summary>
         /// <param name="productModel"></param>
@@ -476,6 +576,8 @@ namespace CPC.POS.ViewModel
             {
                 if (string.IsNullOrWhiteSpace(barcode))
                     return false;
+
+                barcode = barcode.Trim().ToLower();
 
                 // Get barcode from product collection
                 IEnumerable<string> barcodes = CellCollection.Where(x => !string.IsNullOrWhiteSpace(x.Barcode)).Select(x => x.Barcode);
@@ -520,7 +622,7 @@ namespace CPC.POS.ViewModel
             catch (Exception ex)
             {
                 _log4net.Error(ex);
-                return true;
+                return false;
             }
         }
 
@@ -535,6 +637,8 @@ namespace CPC.POS.ViewModel
             {
                 if (string.IsNullOrWhiteSpace(barcode))
                     return false;
+
+                barcode = barcode.Trim().ToLower();
 
                 // Get barcode from product collection
                 IEnumerable<string> barcodes = CellCollection.Where(x => !string.IsNullOrWhiteSpace(x.ALU)).Select(x => x.ALU);
@@ -578,7 +682,7 @@ namespace CPC.POS.ViewModel
             catch (Exception ex)
             {
                 _log4net.Error(ex);
-                return true;
+                return false;
             }
         }
 

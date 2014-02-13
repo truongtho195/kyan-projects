@@ -123,7 +123,7 @@ namespace CPC.POS.ViewModel
             if (Define.CONFIGURATION.IsAutoSearch)
             {
                 _waitingTimer = new DispatcherTimer();
-                _waitingTimer.Interval = new TimeSpan(0, 0, 0, 1);
+                _waitingTimer.Interval = new TimeSpan(0, 0, 0, 0, 100);
                 _waitingTimer.Tick += new EventHandler(_waitingTimer_Tick);
             }
         }
@@ -2411,7 +2411,7 @@ namespace CPC.POS.ViewModel
             short dueDays = _selectedPurchaseOrder.TermNetDue;
             decimal discount = _selectedPurchaseOrder.TermDiscountPercent;
             short discountDays = _selectedPurchaseOrder.TermPaidWithinDay;
-            PaymentTermViewModel paymentTermViewModel = new PaymentTermViewModel(dueDays, discount, discountDays);
+            PaymentTermViewModel paymentTermViewModel = new PaymentTermViewModel(_selectedPurchaseOrder.IsCOD, dueDays, discount, discountDays);
             bool? dialogResult = _dialogService.ShowDialog<PaymentTermView>(_ownerViewModel, paymentTermViewModel, "Add Term");
             if (dialogResult == true)
             {
@@ -2419,6 +2419,7 @@ namespace CPC.POS.ViewModel
                 _selectedPurchaseOrder.TermDiscountPercent = paymentTermViewModel.Discount;
                 _selectedPurchaseOrder.TermPaidWithinDay = paymentTermViewModel.DiscountDays;
                 _selectedPurchaseOrder.PaymentTermDescription = paymentTermViewModel.Description;
+                _selectedPurchaseOrder.IsCOD = paymentTermViewModel.IsCOD;
 
                 // Gets selected vendor.
                 base_GuestModel vendor = _vendorCollection.FirstOrDefault(x => x.Resource.ToString() == _selectedPurchaseOrder.VendorResource);
@@ -2429,6 +2430,7 @@ namespace CPC.POS.ViewModel
                     vendor.TermDiscount = _selectedPurchaseOrder.TermDiscountPercent;
                     vendor.TermPaidWithinDay = _selectedPurchaseOrder.TermPaidWithinDay;
                     vendor.PaymentTermDescription = _selectedPurchaseOrder.PaymentTermDescription;
+                    vendor.IsCOD = _selectedPurchaseOrder.IsCOD;
                 }
             }
         }
@@ -2775,6 +2777,7 @@ namespace CPC.POS.ViewModel
             if (result == true && canEdit)
             {
                 purchaseOrderDetail = selectTrackingNumberViewModel.PurchaseOrderDetailModel;
+                QuantityChanged(purchaseOrderDetail);
             }
         }
 
@@ -4815,6 +4818,8 @@ namespace CPC.POS.ViewModel
                 {
                     _selectedPurchaseOrder.HasWantReturn = purchaseOrder.HasWantReturn;
                     GetMoreInformation();
+
+                    AddProductsOutSide();
                 }
 
                 if (_selectedPurchaseOrder.HasWantReturn)
@@ -5147,6 +5152,45 @@ namespace CPC.POS.ViewModel
 
         #endregion
 
+        #region QuantityChanged
+
+        /// <summary>
+        /// quantity change in PurchaseOrderDetailModel
+        /// </summary>
+        /// <param name="purchaseOrderDetail"></param>
+        private void QuantityChanged(base_PurchaseOrderDetailModel purchaseOrderDetail)
+        {
+            purchaseOrderDetail.Amount = purchaseOrderDetail.Quantity * (purchaseOrderDetail.Price - purchaseOrderDetail.Discount);
+
+            // Calculate UnFilledQty.
+            if (purchaseOrderDetail.Quantity != 0)
+            {
+                purchaseOrderDetail.UnFilledQty = Math.Round(Math.Round((decimal)((purchaseOrderDetail.Quantity - purchaseOrderDetail.ReceivedQty) * 100) / purchaseOrderDetail.Quantity, 2) - 0.01M, 1, MidpointRounding.AwayFromZero);
+            }
+            else
+            {
+                purchaseOrderDetail.UnFilledQty = 0;
+            }
+            if (purchaseOrderDetail.UnFilledQty < 0)
+            {
+                purchaseOrderDetail.UnFilledQty = 0;
+            }
+
+            // Calculate DueQty.
+            purchaseOrderDetail.DueQty = purchaseOrderDetail.Quantity - purchaseOrderDetail.ReceivedQty;
+            if (purchaseOrderDetail.DueQty < 0)
+            {
+                purchaseOrderDetail.DueQty = 0;
+            }
+
+            // Determine full received.
+            CheckFullReceived(purchaseOrderDetail);
+
+            // Calculate order quantity of purchase order.
+            CalculateOrderQtyOfPurchaseOrder();
+        }
+        #endregion
+
         #endregion
 
         #region Override Methods
@@ -5221,8 +5265,11 @@ namespace CPC.POS.ViewModel
                 }
                 else
                 {
-                    // Forces null to create new purchase order with input product collection when WorkerRunWorkerCompleted.
-                    _oldPurchaseOrder = null;
+                    //// Forces null to create new purchase order with input product collection when WorkerRunWorkerCompleted.
+                    if (_oldPurchaseOrder.Status != (short)PurchaseStatus.Open)
+                    {
+                        _oldPurchaseOrder = null;
+                    }
                     _vendorResource = Guid.Empty;
                 }
 
@@ -5278,6 +5325,25 @@ namespace CPC.POS.ViewModel
                                 // Force calculate QuantityOnOrder of ProductStore.
                                 item.IsDirty = true;
                             }
+                        }
+                    }
+
+                    break;
+
+                case "BillStore":
+
+                    if (_storeCollection != null)
+                    {
+                        // Gets selected store.
+                        base_StoreModel store = _storeCollection.ElementAt(purchaseOrder.BillStore);
+                        if (store != null)
+                        {
+                            // Gets store's address.
+                            purchaseOrder.BillAddress = string.Format("{0}. {1}", store.City, store.Street);
+                        }
+                        else
+                        {
+                            purchaseOrder.BillAddress = null;
                         }
                     }
 
@@ -5350,15 +5416,61 @@ namespace CPC.POS.ViewModel
                     break;
 
                 case "CanReceive":
+
                     OnPropertyChanged(() => AllowPurchaseReceive);
                     OnPropertyChanged(() => AllowPurchaseOrderReturn);
+
+                    break;
+
+                case "DiscountPercent":
+
+                    _selectedPurchaseOrder.CalcDiscountAmount();
+                    _selectedPurchaseOrder.SkipDisc = false;
+                    CalculateTotalForPurchaseOrder();
+
+                    break;
+
+                case "DiscountAmount":
+                    //Calculate Tax Amount
+                    _selectedPurchaseOrder.CalcDiscountPercent();
+                    _selectedPurchaseOrder.SkipDisc = false;
+
+                    //Calculate tax after dicount amoutn change
+                    _selectedPurchaseOrder.CalcTaxAmount();
+                    _selectedPurchaseOrder.SkipTax = false;
+
+                    //Calculate subtotal
+                    CalculateTotalForPurchaseOrder();
+
                     break;
 
                 case "SubTotal":
-                case "DiscountAmount":
-                case "Freight":
-                case "TaxAmount":
 
+                    _selectedPurchaseOrder.CalcDiscountAmount();
+                    _selectedPurchaseOrder.SkipDisc = false;
+
+                    //Calculate tax after dicount amoutn change
+                    _selectedPurchaseOrder.CalcTaxAmount();
+                    _selectedPurchaseOrder.SkipTax = false;
+                    CalculateTotalForPurchaseOrder();
+
+                    break;
+
+                case "Freight":
+                    CalculateTotalForPurchaseOrder();
+                    break;
+
+                case "TaxAmount":
+                    
+                    _selectedPurchaseOrder.CalcTaxPercent();
+                    _selectedPurchaseOrder.SkipTax = false;
+                    CalculateTotalForPurchaseOrder();
+
+                    break;
+                case "TaxPercent":
+                    
+                    _selectedPurchaseOrder.CalcTaxAmount();
+                    _selectedPurchaseOrder.SkipTax = false;
                     CalculateTotalForPurchaseOrder();
 
                     break;
@@ -5444,34 +5556,7 @@ namespace CPC.POS.ViewModel
 
                 case "Quantity":
 
-                    purchaseOrderDetail.Amount = purchaseOrderDetail.Quantity * (purchaseOrderDetail.Price - purchaseOrderDetail.Discount);
-
-                    // Calculate UnFilledQty.
-                    if (purchaseOrderDetail.Quantity != 0)
-                    {
-                        purchaseOrderDetail.UnFilledQty = Math.Round(Math.Round((decimal)((purchaseOrderDetail.Quantity - purchaseOrderDetail.ReceivedQty) * 100) / purchaseOrderDetail.Quantity, 2) - 0.01M, 1, MidpointRounding.AwayFromZero);
-                    }
-                    else
-                    {
-                        purchaseOrderDetail.UnFilledQty = 0;
-                    }
-                    if (purchaseOrderDetail.UnFilledQty < 0)
-                    {
-                        purchaseOrderDetail.UnFilledQty = 0;
-                    }
-
-                    // Calculate DueQty.
-                    purchaseOrderDetail.DueQty = purchaseOrderDetail.Quantity - purchaseOrderDetail.ReceivedQty;
-                    if (purchaseOrderDetail.DueQty < 0)
-                    {
-                        purchaseOrderDetail.DueQty = 0;
-                    }
-
-                    // Determine full received.
-                    CheckFullReceived(purchaseOrderDetail);
-
-                    // Calculate order quantity of purchase order.
-                    CalculateOrderQtyOfPurchaseOrder();
+                    QuantityChanged(purchaseOrderDetail);
 
                     break;
 
@@ -5545,6 +5630,8 @@ namespace CPC.POS.ViewModel
                     break;
             }
         }
+
+
 
         #endregion
 

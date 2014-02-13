@@ -25,14 +25,16 @@ namespace CPC.Toolkit.Behavior
             if (sender is DataGrid)
             {
                 DataGrid grid = (sender as DataGrid);
-                if (grid.SelectedItem != null)
-                {
+               
                     grid.Dispatcher.BeginInvoke(new Action(delegate
                     {
                         grid.UpdateLayout();
-                        grid.ScrollIntoView(grid.SelectedItem, null);
+                        if (grid.SelectedItem != null)
+                        {
+                            grid.ScrollIntoView(grid.SelectedItem, null);
+                        }
                     }));
-                }
+                
             }
         }
     }

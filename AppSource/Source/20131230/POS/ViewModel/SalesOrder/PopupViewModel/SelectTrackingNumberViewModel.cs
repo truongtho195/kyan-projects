@@ -32,7 +32,7 @@ namespace CPC.POS.ViewModel
         private base_GuestRepository _guestRepository = new base_GuestRepository();
         private bool _acceptedClosing = false;
 
-
+        private int _itemIndex;
         #endregion
 
         #region Constructors
@@ -65,11 +65,25 @@ namespace CPC.POS.ViewModel
 
         #region Properties
 
+        #region IsSaleOrder
+        private bool _isSaleOrder;
+        /// <summary>
+        /// Gets or sets the IsSaleOrder.
+        /// </summary>
         public bool IsSaleOrder
         {
-            get;
-            set;
+            get { return _isSaleOrder; }
+            set
+            {
+                if (_isSaleOrder != value)
+                {
+                    _isSaleOrder = value;
+                    OnPropertyChanged(() => IsSaleOrder);
+                }
+            }
         }
+        #endregion
+
 
         #region SaleOrderDetailModel
         private base_SaleOrderDetailModel _saleOrderDetailModel;
@@ -94,6 +108,7 @@ namespace CPC.POS.ViewModel
 
         private void SaleOrderDetailModelChanged()
         {
+            _itemIndex = 0;
             base_Product product = _productRepository.GetProductByResource(SaleOrderDetailModel.ProductResource);
             if (product != null)
             {
@@ -120,9 +135,12 @@ namespace CPC.POS.ViewModel
                 else
                 {
                     var serialList = SaleOrderDetailModel.SerialTracking.Split(',');
+                    
                     foreach (string item in serialList.Take((int)Quantity))
                     {
+                        _itemIndex++;
                         ItemModel itemModel = new ItemModel();
+                        itemModel.Id = _itemIndex;
                         itemModel.Text = item.Trim();
                         itemModel.EndUpdate();
                         SerialTrackingCollection.Add(itemModel);
@@ -140,6 +158,7 @@ namespace CPC.POS.ViewModel
 
         private void PurchaseOrderDetailModelChanged()
         {
+            _itemIndex = 0;
             base_Product product = _productRepository.GetAll().ToList().SingleOrDefault(x => x.Resource.ToString().Equals(PurchaseOrderDetailModel.ProductResource));
             _departmentRepository.Get(x => x.ParentId == 1 && x.Id == product.ProductCategoryId);
             //Get Product 
@@ -177,7 +196,9 @@ namespace CPC.POS.ViewModel
                 var serialList = PurchaseOrderDetailModel.Serial.Split(',');
                 foreach (string item in serialList.Take((int)Quantity))
                 {
+                    _itemIndex++;
                     ItemModel itemModel = new ItemModel();
+                    itemModel.Id = _itemIndex;
                     itemModel.Text = item.Trim();
                     itemModel.EndUpdate();
                     SerialTrackingCollection.Add(itemModel);
@@ -191,13 +212,14 @@ namespace CPC.POS.ViewModel
             }
         }
 
-        private void AddRowForSerialCollection(int qty)
+        private void AddRowForSerialCollection( int qty)
         {
             if (qty > 0)
             {
                 for (int i = 0; i < qty; i++)
                 {
-                    SerialTrackingCollection.Add(new ItemModel());
+                    _itemIndex++;
+                    SerialTrackingCollection.Add(new ItemModel() { Id = _itemIndex });
                 }
             }
         }
@@ -355,6 +377,27 @@ namespace CPC.POS.ViewModel
         }
         #endregion
 
+
+        #region IsForceFocused
+        private bool _isForceFocused;
+        /// <summary>
+        /// Gets or sets the IsForceFocused.
+        /// </summary>
+        public bool IsForceFocused
+        {
+            get { return _isForceFocused; }
+            set
+            {
+                if (_isForceFocused != value)
+                {
+                    _isForceFocused = value;
+                    OnPropertyChanged(() => IsForceFocused);
+                }
+            }
+        }
+        #endregion
+
+
         #endregion
 
         #region Commands Methods
@@ -408,8 +451,9 @@ namespace CPC.POS.ViewModel
         /// </summary>
         private void OnCancelCommandExecute()
         {
+            _acceptedClosing = true;
             Window window = FindOwnerWindow(_ownerViewModel);
-
+            
             window.DialogResult = false;
         }
         #endregion
@@ -457,14 +501,19 @@ namespace CPC.POS.ViewModel
                             int numberItemAdded = (int)Quantity - SerialTrackingCollection.Count;
 
                             for (int i = 0; i < numberItemAdded; i++)
-                                SerialTrackingCollection.Add(new ItemModel());
+                            {
+                                _itemIndex++;
+                                SerialTrackingCollection.Add(new ItemModel() { Id=_itemIndex});
+                            }
 
                         }
                         else if (SerialTrackingCollection.Count > Quantity)
                         {
                             int numberItemRemove = SerialTrackingCollection.Count - (int)Quantity;
+
                             for (int i = 0; i < numberItemRemove; i++)
                                 SerialTrackingCollection.RemoveAt(SerialTrackingCollection.Count() - 1);
+                            _itemIndex -= numberItemRemove;
                         }
 
                         //Update Value
@@ -487,6 +536,8 @@ namespace CPC.POS.ViewModel
                         Quantity = (BackupObject as base_PurchaseOrderDetailModel).Quantity;
                 }), System.Windows.Threading.DispatcherPriority.Background);
             }
+            if (!IsForceFocused)
+                IsForceFocused = true;
 
         }
         #endregion

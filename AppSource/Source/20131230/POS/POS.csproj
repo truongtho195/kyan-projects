@@ -60,6 +60,9 @@
     <ApplicationIcon>POS.ico</ApplicationIcon>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="AxInterop.AcroPDFLib">
+      <HintPath>..\POSReport\bin\Debug\AxInterop.AcroPDFLib.dll</HintPath>
+    </Reference>
     <Reference Include="BarcodeLib, Version=1.0.0.14, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>bin\Debug\BarcodeLib.dll</HintPath>
@@ -68,7 +71,7 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>bin\Debug\CPCToolkitExt.dll</HintPath>
     </Reference>
-    <Reference Include="CPCToolkitExtLibraries, Version=1.2.1.0, Culture=neutral, processorArchitecture=MSIL">
+    <Reference Include="CPCToolkitExtLibraries, Version=1.2.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>bin\Debug\CPCToolkitExtLibraries.dll</HintPath>
     </Reference>
@@ -110,6 +113,10 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>bin\Debug\ICSharpCode.SharpZipLib.dll</HintPath>
     </Reference>
+    <Reference Include="Interop.AcroPDFLib">
+      <HintPath>..\POSReport\bin\Debug\Interop.AcroPDFLib.dll</HintPath>
+      <EmbedInteropTypes>True</EmbedInteropTypes>
+    </Reference>
     <Reference Include="log4net, Version=1.2.10.0, Culture=neutral, PublicKeyToken=692fbea5521e1304, processorArchitecture=x86">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>bin\Debug\log4net.dll</HintPath>
@@ -120,6 +127,8 @@
       <HintPath>bin\Debug\Messager.dll</HintPath>
     </Reference>
     <Reference Include="Microsoft.Expression.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL" />
+    <Reference Include="Microsoft.ReportViewer.Common, Version=8.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL" />
+    <Reference Include="Microsoft.ReportViewer.WinForms, Version=8.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL" />
     <Reference Include="Microsoft.Windows.Shell, Version=3.5.41019.1, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>bin\Debug\Microsoft.Windows.Shell.dll</HintPath>
@@ -165,6 +174,7 @@
     <Reference Include="System.Data" />
     <Reference Include="System.Data.Entity" />
     <Reference Include="System.Drawing" />
+    <Reference Include="System.Management" />
     <Reference Include="System.Runtime.Remoting">
       <Private>False</Private>
     </Reference>
@@ -204,6 +214,7 @@
     <Reference Include="PresentationFramework">
       <Private>True</Private>
     </Reference>
+    <Reference Include="WindowsFormsIntegration" />
     <Reference Include="WPFToolkit.Extended, Version=1.6.0.0, Culture=neutral, PublicKeyToken=3e4669d2f30244f4, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>bin\Debug\WPFToolkit.Extended.dll</HintPath>
@@ -301,6 +312,7 @@
     <Compile Include="Converter\Converter.cs" />
     <Compile Include="Converter\DecimalFormatConverter.cs" />
     <Compile Include="Converter\DiscountRateToIntegerConverter.cs" />
+    <Compile Include="Converter\ImageConverter.cs" />
     <Compile Include="Converter\IntegerToBooleanConverter.cs" />
     <Compile Include="Converter\IntergerToVisibilityConverter.cs" />
     <Compile Include="Converter\IntToCalculationConverter.cs" />
@@ -520,9 +532,11 @@
     <Compile Include="Model\Custom\CheckBoxItemModel.cs" />
     <Compile Include="Model\Custom\DepartmentRootModel.cs" />
     <Compile Include="Model\Custom\DrawerModel.cs" />
+    <Compile Include="Model\Custom\EmailModel.cs" />
     <Compile Include="Model\Custom\ItemModel.cs" />
     <Compile Include="Model\Custom\ItemSettingModel.cs" />
     <Compile Include="Model\Custom\PriceModel.cs" />
+    <Compile Include="Model\Custom\PrintedModel.cs" />
     <Compile Include="Model\Custom\ProblemDetectionModel.cs" />
     <Compile Include="Model\Custom\ProductBrandModel.cs">
       <SubType>Code</SubType>
@@ -611,6 +625,180 @@
       <DependentUpon>rptVendorProfile.rpt</DependentUpon>
       <SubType>Component</SubType>
     </Compile>
+    <Compile Include="Report\CrystalReport\Inventory\rptCategoryList.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>rptCategoryList.rpt</DependentUpon>
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Report\CrystalReport\Inventory\rptCostAdjustment.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>rptCostAdjustment.rpt</DependentUpon>
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Report\CrystalReport\Inventory\rptProductList.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>rptProductList.rpt</DependentUpon>
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Report\CrystalReport\Inventory\rptProductSummaryActivity.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>rptProductSummaryActivity.rpt</DependentUpon>
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Report\CrystalReport\Inventory\rptQuantityAdjustment.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>rptQuantityAdjustment.rpt</DependentUpon>
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Report\CrystalReport\Inventory\rptReOrderStock.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>rptReOrderStock.rpt</DependentUpon>
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Report\CrystalReport\Inventory\rptTransferHistory.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>rptTransferHistory.rpt</DependentUpon>
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Report\CrystalReport\Inventory\rptTransferHistoryDetails.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>rptTransferHistoryDetails.rpt</DependentUpon>
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Report\CrystalReport\Purchasing\rptPODetails.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>rptPODetails.rpt</DependentUpon>
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Report\CrystalReport\Purchasing\rptPOLocked.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>rptPOLocked.rpt</DependentUpon>
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Report\CrystalReport\Purchasing\rptPOSummary.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>rptPOSummary.rpt</DependentUpon>
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Report\CrystalReport\Purchasing\rptProductCost.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>rptProductCost.rpt</DependentUpon>
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Report\CrystalReport\Purchasing\rptVendorList.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>rptVendorList.rpt</DependentUpon>
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Report\CrystalReport\Purchasing\rptVendorProductList.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>rptVendorProductList.rpt</DependentUpon>
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Report\CrystalReport\Sales\rptCustomerOrderHistory.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>rptCustomerOrderHistory.rpt</DependentUpon>
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Report\CrystalReport\Sales\rptCustomerPaymentDetails.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>rptCustomerPaymentDetails.rpt</DependentUpon>
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Report\CrystalReport\Sales\rptCustomerPaymentSummary.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>rptCustomerPaymentSummary.rpt</DependentUpon>
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Report\CrystalReport\Sales\rptGiftCertificateList.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>rptGiftCertificateList.rpt</DependentUpon>
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Report\CrystalReport\Sales\rptProductCustomer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>rptProductCustomer.rpt</DependentUpon>
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Report\CrystalReport\Sales\rptSaleByProductDetails.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>rptSaleByProductDetails.rpt</DependentUpon>
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Report\CrystalReport\Sales\rptSaleByProductSummary.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>rptSaleByProductSummary.rpt</DependentUpon>
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Report\CrystalReport\Sales\rptSaleCommission.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>rptSaleCommission.rpt</DependentUpon>
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Report\CrystalReport\Sales\rptSaleCommissionDetails.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>rptSaleCommissionDetails.rpt</DependentUpon>
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Report\CrystalReport\Sales\rptSaleOrderOperational.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>rptSaleOrderOperational.rpt</DependentUpon>
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Report\CrystalReport\Sales\rptSaleOrderSummary.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>rptSaleOrderSummary.rpt</DependentUpon>
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Report\CrystalReport\Sales\rptSaleProfitSummary.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>rptSaleProfitSummary.rpt</DependentUpon>
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Report\CrystalReport\Sales\rptSaleRepresentative.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>rptSaleRepresentative.rpt</DependentUpon>
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Report\CrystalReport\Sales\rptSOLocked.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>rptSOLocked.rpt</DependentUpon>
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Report\CrystalReport\Sales\rptVoidedInvoice.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>rptVoidedInvoice.rpt</DependentUpon>
+      <SubType>Component</SubType>
+    </Compile>
     <Compile Include="Report\CrystalReport\SO\rptPaymentPlan.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
@@ -697,6 +885,13 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>PurchaseOrderDataSet.xsd</DependentUpon>
     </Compile>
+    <Compile Include="Report\DataSet\Report.cs">
+      <DependentUpon>Report.xsd</DependentUpon>
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Report\DataSet\Report.designer.cs">
+      <DependentUpon>Report.cs</DependentUpon>
+    </Compile>
     <Compile Include="Report\DBHelper.cs" />
     <Compile Include="Report\ReportSourceBehaviour.cs" />
     <Compile Include="Repository\base_CardManagementRepository.cs">
@@ -774,7 +969,10 @@
     <Compile Include="Toolkit\Behavior\DatagridScrollToViewBehaviors.cs" />
     <Compile Include="Toolkit\Behavior\MaskVisibilityBehavior.cs" />
     <Compile Include="Toolkit\Behavior\OneAutoFocusBehavior.cs" />
+    <Compile Include="Toolkit\Behavior\ReportSourceBehaviour.cs" />
+    <Compile Include="Toolkit\Behavior\TextColorControlBehavior.cs" />
     <Compile Include="Toolkit\Behavior\WindowClosingBehavior.cs" />
+    <Compile Include="Toolkit\Behavior\BindingProxy.cs" />
     <Compile Include="Ultility\Helper\CheckBoxFlagsBehaviour.cs" />
     <Compile Include="Ultility\Helper\Common.cs" />
     <Compile Include="Ultility\Helper\ControlHelper.cs" />
@@ -785,6 +983,7 @@
     <Compile Include="Ultility\Helper\RecurrencePattern.cs" />
     <Compile Include="Ultility\Helper\SetValueControlHelper.cs" />
     <Compile Include="Ultility\Helper\ToStatusModel.cs" />
+    <Compile Include="Ultility\Helper\XMLHelper.cs" />
     <Compile Include="Ultility\Singleton\Program.cs">
       <SubType>Code</SubType>
     </Compile>
@@ -1039,6 +1238,7 @@
     <Compile Include="Ultility\Validation\ValidationReloadedTracker.cs" />
     <Compile Include="Ultility\Validation\ValidationTracker.cs" />
     <Compile Include="Ultility\VisibleBinding.cs" />
+    <Compile Include="ViewModel\Common\AddNewDepartmentViewModel.cs" />
     <Compile Include="ViewModel\Common\AddNewJobTitleViewModel.cs" />
     <Compile Include="ViewModel\Common\AddNewStateViewModel.cs" />
     <Compile Include="ViewModel\Common\AttachmentViewModel.cs" />
@@ -1067,6 +1267,7 @@
     <Compile Include="ViewModel\Common\ViewProfileViewModel.cs" />
     <Compile Include="ViewModel\CompanySetting\BackupRestoreViewModel.cs" />
     <Compile Include="ViewModel\CompanySetting\CompanySettingViewModel.cs" />
+    <Compile Include="ViewModel\CompanySetting\PopupEditProductViewModel.cs" />
     <Compile Include="ViewModel\Customer\CustomerAdvanceSearchViewModel.cs" />
     <Compile Include="ViewModel\Customer\CustomerViewModel.cs" />
     <Compile Include="ViewModel\Customer\MergeCustomerViewModel.cs" />
@@ -1108,6 +1309,7 @@
     <Compile Include="ViewModel\MainViewModel.cs" />
     <Compile Include="ViewModel\Common\PopupEditProductViewModel.cs" />
     <Compile Include="ViewModel\Inventory\ProductManual\ProductManualViewModel.cs" />
+    <Compile Include="ViewModel\Product\PopupViewExistedProductViewModel.cs" />
     <Compile Include="ViewModel\Product\PopupAddNewWarrantyViewModel.cs" />
     <Compile Include="ViewModel\Product\PopupBuildItemGroupViewModel.cs" />
     <Compile Include="ViewModel\Product\PopupReorderPointViewModel.cs" />
@@ -1122,6 +1324,12 @@
     <Compile Include="ViewModel\Product\PopupProductAdvanceSearchViewModel.cs" />
     <Compile Include="ViewModel\Product\ProductViewModel.cs" />
     <Compile Include="ViewModel\Product\PopupAttributeAndSizeViewModel.cs" />
+    <Compile Include="View\CompanySetting\PopupEditStoreAddressView.xaml.cs">
+      <DependentUpon>PopupEditStoreAddressView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="View\Product\PopupViewExistedProductView.xaml.cs">
+      <DependentUpon>PopupViewExistedProductView.xaml</DependentUpon>
+    </Compile>
     <Compile Include="ViewModel\PurchaseOrder\AddSerialNumberViewModel.cs" />
     <Compile Include="ViewModel\PurchaseOrder\LockPOListViewModel.cs" />
     <Compile Include="ViewModel\PurchaseOrder\POAdvanceSearchViewModel.cs" />
@@ -1129,6 +1337,11 @@
     <Compile Include="ViewModel\PurchaseOrder\PurchaseOrderReturnViewModel.cs" />
     <Compile Include="ViewModel\PurchaseOrder\PurchaseOrderViewModel.cs" />
     <Compile Include="ViewModel\PurchaseOrder\PurchaseOrderPaymentViewModel.cs" />
+    <Compile Include="ViewModel\Report\Popup\CCToViewModel.cs" />
+    <Compile Include="ViewModel\Report\Popup\ChangeGroupViewModel.cs" />
+    <Compile Include="ViewModel\Report\Popup\FilterReportViewModel.cs" />
+    <Compile Include="ViewModel\Report\Popup\ReportViewViewModel.cs" />
+    <Compile Include="ViewModel\Report\ReportManagementViewModel.cs" />
     <Compile Include="ViewModel\Report\ReportViewModel.cs" />
     <Compile Include="ViewModel\Reward\RewardSetupViewModel.cs" />
     <Compile Include="ViewModel\SalesOrder\CardDetailViewModel.cs" />
@@ -1191,6 +1404,9 @@
     <Compile Include="ViewModel\Vendor\PopupVendorAdvanceSearchViewModel.cs" />
     <Compile Include="ViewModel\Vendor\PopupMergeVendorViewModel.cs" />
     <Compile Include="ViewModel\Vendor\VendorViewModel.cs" />
+    <Compile Include="View\Common\AddNewDepartmentView.xaml.cs">
+      <DependentUpon>AddNewDepartmentView.xaml</DependentUpon>
+    </Compile>
     <Compile Include="View\Common\AddNewJobTitleView.xaml.cs">
       <DependentUpon>AddNewJobTitleView.xaml</DependentUpon>
     </Compile>
@@ -1471,6 +1687,42 @@
     <Compile Include="View\PurchaseOrder\PurchaseOrderPaymentView.xaml.cs">
       <DependentUpon>PurchaseOrderPaymentView.xaml</DependentUpon>
     </Compile>
+    <Compile Include="View\Report\PopupForm\ChangeGroup\ChangGroupView.xaml.cs">
+      <DependentUpon>ChangGroupView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="View\Report\PopupForm\Report\ADOPDF\PDFView.xaml.cs">
+      <DependentUpon>PDFView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="View\Report\PopupForm\Report\ADOPDF\pdfViewer.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="View\Report\PopupForm\Report\ADOPDF\pdfViewer.Designer.cs">
+      <DependentUpon>pdfViewer.cs</DependentUpon>
+    </Compile>
+    <Compile Include="View\Report\PopupForm\Report\CCTo\CCToView.xaml.cs">
+      <DependentUpon>CCToView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="View\Report\PopupForm\Report\ReportPopup\CustomerPaymentOptional.xaml.cs">
+      <DependentUpon>CustomerPaymentOptional.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="View\Report\PopupForm\Report\ReportPopup\Optional.xaml.cs">
+      <DependentUpon>Optional.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="View\Report\PopupForm\Report\ReportPopup\PurchaseOptional.xaml.cs">
+      <DependentUpon>PurchaseOptional.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="View\Report\PopupForm\Report\ReportPopup\ReportOptional.xaml.cs">
+      <DependentUpon>ReportOptional.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="View\Report\PopupForm\Report\ReportView\ShowReportView.xaml.cs">
+      <DependentUpon>ShowReportView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="View\Report\PopupForm\Report\ShorcutKeys\ShortcutKeysView.xaml.cs">
+      <DependentUpon>ShortcutKeysView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="View\Report\ReportManagementView.xaml.cs">
+      <DependentUpon>ReportManagementView.xaml</DependentUpon>
+    </Compile>
     <Compile Include="View\Report\ReportWindow.xaml.cs">
       <DependentUpon>ReportWindow.xaml</DependentUpon>
     </Compile>
@@ -1692,6 +1944,122 @@
       <Generator>CrystalDecisions.VSDesigner.CodeGen.ReportCodeGenerator</Generator>
       <LastGenOutput>rptVendorProfile.cs</LastGenOutput>
     </EmbeddedResource>
+    <EmbeddedResource Include="Report\CrystalReport\Inventory\rptCategoryList.rpt">
+      <Generator>CrystalDecisions.VSDesigner.CodeGen.ReportCodeGenerator</Generator>
+      <LastGenOutput>rptCategoryList.cs</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Report\CrystalReport\Inventory\rptCostAdjustment.rpt">
+      <Generator>CrystalDecisions.VSDesigner.CodeGen.ReportCodeGenerator</Generator>
+      <LastGenOutput>rptCostAdjustment.cs</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Report\CrystalReport\Inventory\rptProductList.rpt">
+      <Generator>CrystalDecisions.VSDesigner.CodeGen.ReportCodeGenerator</Generator>
+      <LastGenOutput>rptProductList.cs</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Report\CrystalReport\Inventory\rptProductSummaryActivity.rpt">
+      <Generator>CrystalDecisions.VSDesigner.CodeGen.ReportCodeGenerator</Generator>
+      <LastGenOutput>rptProductSummaryActivity.cs</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Report\CrystalReport\Inventory\rptQuantityAdjustment.rpt">
+      <Generator>CrystalDecisions.VSDesigner.CodeGen.ReportCodeGenerator</Generator>
+      <LastGenOutput>rptQuantityAdjustment.cs</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Report\CrystalReport\Inventory\rptReOrderStock.rpt">
+      <Generator>CrystalDecisions.VSDesigner.CodeGen.ReportCodeGenerator</Generator>
+      <LastGenOutput>rptReOrderStock.cs</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Report\CrystalReport\Inventory\rptTransferHistory.rpt">
+      <Generator>CrystalDecisions.VSDesigner.CodeGen.ReportCodeGenerator</Generator>
+      <LastGenOutput>rptTransferHistory.cs</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Report\CrystalReport\Inventory\rptTransferHistoryDetails.rpt">
+      <Generator>CrystalDecisions.VSDesigner.CodeGen.ReportCodeGenerator</Generator>
+      <LastGenOutput>rptTransferHistoryDetails.cs</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Report\CrystalReport\Purchasing\rptPODetails.rpt">
+      <Generator>CrystalDecisions.VSDesigner.CodeGen.ReportCodeGenerator</Generator>
+      <LastGenOutput>rptPODetails.cs</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Report\CrystalReport\Purchasing\rptPOLocked.rpt">
+      <Generator>CrystalDecisions.VSDesigner.CodeGen.ReportCodeGenerator</Generator>
+      <LastGenOutput>rptPOLocked.cs</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Report\CrystalReport\Purchasing\rptPOSummary.rpt">
+      <Generator>CrystalDecisions.VSDesigner.CodeGen.ReportCodeGenerator</Generator>
+      <LastGenOutput>rptPOSummary.cs</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Report\CrystalReport\Purchasing\rptProductCost.rpt">
+      <Generator>CrystalDecisions.VSDesigner.CodeGen.ReportCodeGenerator</Generator>
+      <LastGenOutput>rptProductCost.cs</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Report\CrystalReport\Purchasing\rptVendorList.rpt">
+      <Generator>CrystalDecisions.VSDesigner.CodeGen.ReportCodeGenerator</Generator>
+      <LastGenOutput>rptVendorList.cs</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Report\CrystalReport\Purchasing\rptVendorProductList.rpt">
+      <Generator>CrystalDecisions.VSDesigner.CodeGen.ReportCodeGenerator</Generator>
+      <LastGenOutput>rptVendorProductList.cs</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Report\CrystalReport\Sales\rptCustomerOrderHistory.rpt">
+      <Generator>CrystalDecisions.VSDesigner.CodeGen.ReportCodeGenerator</Generator>
+      <LastGenOutput>rptCustomerOrderHistory.cs</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Report\CrystalReport\Sales\rptCustomerPaymentDetails.rpt">
+      <Generator>CrystalDecisions.VSDesigner.CodeGen.ReportCodeGenerator</Generator>
+      <LastGenOutput>rptCustomerPaymentDetails.cs</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Report\CrystalReport\Sales\rptCustomerPaymentSummary.rpt">
+      <Generator>CrystalDecisions.VSDesigner.CodeGen.ReportCodeGenerator</Generator>
+      <LastGenOutput>rptCustomerPaymentSummary.cs</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Report\CrystalReport\Sales\rptGiftCertificateList.rpt">
+      <Generator>CrystalDecisions.VSDesigner.CodeGen.ReportCodeGenerator</Generator>
+      <LastGenOutput>rptGiftCertificateList.cs</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Report\CrystalReport\Sales\rptProductCustomer.rpt">
+      <Generator>CrystalDecisions.VSDesigner.CodeGen.ReportCodeGenerator</Generator>
+      <LastGenOutput>rptProductCustomer.cs</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Report\CrystalReport\Sales\rptSaleByProductDetails.rpt">
+      <Generator>CrystalDecisions.VSDesigner.CodeGen.ReportCodeGenerator</Generator>
+      <LastGenOutput>rptSaleByProductDetails.cs</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Report\CrystalReport\Sales\rptSaleByProductSummary.rpt">
+      <Generator>CrystalDecisions.VSDesigner.CodeGen.ReportCodeGenerator</Generator>
+      <LastGenOutput>rptSaleByProductSummary.cs</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Report\CrystalReport\Sales\rptSaleCommission.rpt">
+      <Generator>CrystalDecisions.VSDesigner.CodeGen.ReportCodeGenerator</Generator>
+      <LastGenOutput>rptSaleCommission.cs</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Report\CrystalReport\Sales\rptSaleCommissionDetails.rpt">
+      <Generator>CrystalDecisions.VSDesigner.CodeGen.ReportCodeGenerator</Generator>
+      <LastGenOutput>rptSaleCommissionDetails.cs</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Report\CrystalReport\Sales\rptSaleOrderOperational.rpt">
+      <Generator>CrystalDecisions.VSDesigner.CodeGen.ReportCodeGenerator</Generator>
+      <LastGenOutput>rptSaleOrderOperational.cs</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Report\CrystalReport\Sales\rptSaleOrderSummary.rpt">
+      <Generator>CrystalDecisions.VSDesigner.CodeGen.ReportCodeGenerator</Generator>
+      <LastGenOutput>rptSaleOrderSummary.cs</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Report\CrystalReport\Sales\rptSaleProfitSummary.rpt">
+      <Generator>CrystalDecisions.VSDesigner.CodeGen.ReportCodeGenerator</Generator>
+      <LastGenOutput>rptSaleProfitSummary.cs</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Report\CrystalReport\Sales\rptSaleRepresentative.rpt">
+      <Generator>CrystalDecisions.VSDesigner.CodeGen.ReportCodeGenerator</Generator>
+      <LastGenOutput>rptSaleRepresentative.cs</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Report\CrystalReport\Sales\rptSOLocked.rpt">
+      <Generator>CrystalDecisions.VSDesigner.CodeGen.ReportCodeGenerator</Generator>
+      <LastGenOutput>rptSOLocked.cs</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Report\CrystalReport\Sales\rptVoidedInvoice.rpt">
+      <Generator>CrystalDecisions.VSDesigner.CodeGen.ReportCodeGenerator</Generator>
+      <LastGenOutput>rptVoidedInvoice.cs</LastGenOutput>
+    </EmbeddedResource>
     <EmbeddedResource Include="Report\CrystalReport\SO\rptPaymentPlan.rpt">
       <Generator>CrystalDecisions.VSDesigner.CodeGen.ReportCodeGenerator</Generator>
       <LastGenOutput>rptPaymentPlan.cs</LastGenOutput>
@@ -1740,6 +2108,9 @@
       <Generator>CrystalDecisions.VSDesigner.CodeGen.ReportCodeGenerator</Generator>
       <LastGenOutput>SOHeader.cs</LastGenOutput>
     </EmbeddedResource>
+    <EmbeddedResource Include="View\Report\PopupForm\Report\ADOPDF\pdfViewer.resx">
+      <DependentUpon>pdfViewer.cs</DependentUpon>
+    </EmbeddedResource>
     <EntityDeploy Include="Database\POS.edmx">
       <Generator>EntityModelCodeGenerator</Generator>
       <LastGenOutput>POS.Designer.cs</LastGenOutput>
@@ -1768,6 +2139,20 @@
     </None>
     <None Include="Report\DataSet\PurchaseOrderDataSet.xss">
       <DependentUpon>PurchaseOrderDataSet.xsd</DependentUpon>
+    </None>
+    <None Include="Report\DataSet\Report.xsc">
+      <DependentUpon>Report.xsd</DependentUpon>
+    </None>
+    <None Include="Report\DataSet\Report.xsd" />
+    <None Include="Report\DataSet\Report.xss">
+      <DependentUpon>Report.xsd</DependentUpon>
+    </None>
+    <None Include="Report\DataSet\TimsDataSet.xsc">
+      <DependentUpon>TimsDataSet.xsd</DependentUpon>
+    </None>
+    <None Include="Report\DataSet\TimsDataSet.xsd" />
+    <None Include="Report\DataSet\TimsDataSet.xss">
+      <DependentUpon>TimsDataSet.xsd</DependentUpon>
     </None>
     <None Include="Service References\SynchronizationService\Service.wsdl" />
     <None Include="Service References\SynchronizationService\Service.xsd">
@@ -2023,6 +2408,18 @@
       <SubType>Designer</SubType>
     </Page>
     <Page Include="Language\zh-CN.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="View\CompanySetting\PopupEditStoreAddressView.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="View\Product\PopupViewExistedProductView.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="View\Common\AddNewDepartmentView.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
@@ -2395,6 +2792,46 @@
       <SubType>Designer</SubType>
     </Page>
     <Page Include="View\PurchaseOrder\PurchaseOrderPaymentView.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="View\Report\PopupForm\ChangeGroup\ChangGroupView.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="View\Report\PopupForm\Report\ADOPDF\PDFView.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="View\Report\PopupForm\Report\CCTo\CCToView.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="View\Report\PopupForm\Report\ReportPopup\CustomerPaymentOptional.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="View\Report\PopupForm\Report\ReportPopup\Optional.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="View\Report\PopupForm\Report\ReportPopup\PurchaseOptional.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="View\Report\PopupForm\Report\ReportPopup\ReportOptional.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="View\Report\PopupForm\Report\ReportView\ShowReportView.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="View\Report\PopupForm\Report\ShorcutKeys\ShortcutKeysView.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="View\Report\ReportManagementView.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
@@ -3125,7 +3562,11 @@
       <Name>CPCDragDrop</Name>
     </ProjectReference>
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <Resource Include="Image\RibbonImages\Blue\RibbonReport.png" />
+    <Resource Include="Image\RibbonImages\Grey\RibbonReport.png" />
+    <Resource Include="Image\RibbonImages\Red\RibbonReport.png" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

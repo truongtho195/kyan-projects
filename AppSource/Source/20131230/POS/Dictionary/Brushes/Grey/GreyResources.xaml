@@ -766,6 +766,9 @@
                      Color="#FF6B6B6B" />
 	<SolidColorBrush x:Key="TextBoxCanlendarComboboxRequiredBorderBrush" Color="Red"/>
 	<SolidColorBrush x:Key="TextBoxCanlendarComboboxTypingBackground" Color="#FFFFF500"/>
+			<Visibility x:Key="TextBoxTotalVisibility">Visible</Visibility>
+		<SolidColorBrush x:Key="TextBoxTotal_Foreground" Color="#FF00FF05"/>
+		<SolidColorBrush x:Key="TextBoxTotal_Negative_Foreground" Color="Red"/>
 	<SolidColorBrush x:Key="Spilter_Line_Background"
                      Color="White" />
 	<LinearGradientBrush x:Key="Spilter_Line_Background2"

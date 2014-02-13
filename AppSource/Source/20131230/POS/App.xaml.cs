@@ -129,6 +129,9 @@ namespace CPC.POS
                     }
                 }
                 Common.JobTitles = comboItems;
+
+                LoadDepartmentColletion();
+
             }
             catch (Exception ex)
             {
@@ -137,6 +140,8 @@ namespace CPC.POS
                 throw;
             }
         }
+
+        
 
         private string FormatCurrency(string fomartCurrency, string CurrencySymbol, short? decimalPlaces)
         {
@@ -157,6 +162,32 @@ namespace CPC.POS
             else
                 format = "{" + string.Format("0:{0}#,##{1};({0}#,##{1});0", CurrencySymbol, Negativeformat) + "}";
             return format;
+        }
+
+        /// <summary>
+        /// Load Department to Common.Departments from Generic code
+        /// </summary>
+        private void LoadDepartmentColletion()
+        {
+            string deparmentCode = GenericCode.DP.ToString();
+            IList<ComboItem> departmentItems = new List<ComboItem>();
+            base_GenericCodeRepository genericCodeRepository = new base_GenericCodeRepository();
+            IList<base_GenericCode> departmentCodes = genericCodeRepository.GetAll(x => x.Code.Equals(deparmentCode));
+            if (departmentCodes != null)
+            {
+                foreach (var item in departmentCodes)
+                {
+                    ComboItem ItemDeparment = new ComboItem()
+                    {
+                        ObjValue = item.Id,
+                        Value = Convert.ToInt16(item.Id),
+                        Text = item.Name,
+                        Symbol = item.Code
+                    };
+                    departmentItems.Add(ItemDeparment);
+                }
+            }
+            Common.Departments = departmentItems;
         }
         #endregion
 

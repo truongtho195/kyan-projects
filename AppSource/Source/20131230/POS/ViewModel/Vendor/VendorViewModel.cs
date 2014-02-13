@@ -312,7 +312,7 @@ namespace CPC.POS.ViewModel
             if (Define.CONFIGURATION.IsAutoSearch)
             {
                 _waitingTimer = new DispatcherTimer();
-                _waitingTimer.Interval = new TimeSpan(0, 0, 0, 1);
+                _waitingTimer.Interval = new TimeSpan(0, 0, 0, 0, 100);
                 _waitingTimer.Tick += new EventHandler(_waitingTimer_Tick);
             }
         }
@@ -963,7 +963,7 @@ namespace CPC.POS.ViewModel
             short dueDays = SelectedVendor.TermNetDue;
             decimal discount = SelectedVendor.TermDiscount;
             short discountDays = SelectedVendor.TermPaidWithinDay;
-            PaymentTermViewModel paymentTermViewModel = new PaymentTermViewModel(dueDays, discount, discountDays);
+            PaymentTermViewModel paymentTermViewModel = new PaymentTermViewModel(SelectedVendor.IsCOD, dueDays, discount, discountDays);
             bool? dialogResult = _dialogService.ShowDialog<PaymentTermView>(_ownerViewModel, paymentTermViewModel, "Add Term");
             if (dialogResult == true)
             {
@@ -971,6 +971,7 @@ namespace CPC.POS.ViewModel
                 SelectedVendor.TermDiscount = paymentTermViewModel.Discount;
                 SelectedVendor.TermPaidWithinDay = paymentTermViewModel.DiscountDays;
                 SelectedVendor.PaymentTermDescription = paymentTermViewModel.Description;
+                SelectedVendor.IsCOD = paymentTermViewModel.IsCOD;
             }
         }
 
@@ -997,7 +998,7 @@ namespace CPC.POS.ViewModel
         /// </summary>
         private void OnPopupGuestGroupCommandExecute()
         {
-            PopupAddNewGroupViewModel viewModel = new PopupAddNewGroupViewModel();
+            PopupAddNewGroupViewModel viewModel = new PopupAddNewGroupViewModel(_vendorMark);
             bool? result = _dialogService.ShowDialog<PopupAddNewGroupView>(_ownerViewModel, viewModel, "Add new group");
             if (result.HasValue && result.Value)
             {
@@ -1105,8 +1106,9 @@ namespace CPC.POS.ViewModel
                 // Load guest group collection
                 if (GuestGroupCollection == null)
                 {
-                    GuestGroupCollection = new ObservableCollection<base_GuestGroupModel>(_guestGroupRepository.GetAll().
-                            Select(x => new base_GuestGroupModel(x) { GuestGroupResource = x.Resource.ToString() }));
+                    GuestGroupCollection = new ObservableCollection<base_GuestGroupModel>(_guestGroupRepository.
+                        GetAll(x => x.Mark.Equals(_vendorMark)).
+                        Select(x => new base_GuestGroupModel(x) { GuestGroupResource = x.Resource.ToString() }));
                 }
             }
             catch (Exception ex)
@@ -1308,12 +1310,12 @@ namespace CPC.POS.ViewModel
             if (vendorModel.IsNew)
             {
                 // Insert a new vendor
-                SaveNew();
+                SaveNew(vendorModel);
             }
             else // Vendor is edited
             {
                 // Update vendor
-                SaveUpdate();
+                SaveUpdate(vendorModel);
             }
 
             // Update StatusItem
@@ -1329,31 +1331,31 @@ namespace CPC.POS.ViewModel
         /// <summary>
         /// Save when create new Vendor
         /// </summary>
-        private void SaveNew()
+        private void SaveNew(base_GuestModel vendorModel)
         {
             try
             {
                 // Map data from model to entity
-                SelectedVendor.ToEntity();
+                vendorModel.ToEntity();
 
                 // Insert address
                 // Created by Thaipn
-                foreach (AddressControlModel addressControlModel in this.SelectedVendor.AddressControlCollection)
+                foreach (AddressControlModel addressControlModel in vendorModel.AddressControlCollection)
                 {
                     base_GuestAddressModel addressModel = new base_GuestAddressModel();
                     addressModel.DateCreated = DateTimeExt.Now;
                     addressModel.UserCreated = Define.USER.LoginName;
                     // Map date from AddressControlModel to AddressModel
                     addressModel.ToModel(addressControlModel);
-                    addressModel.GuestResource = SelectedVendor.Resource.ToString();
+                    addressModel.GuestResource = vendorModel.Resource.ToString();
 
                     // Update default address
                     if (addressModel.IsDefault)
-                        SelectedVendor.AddressModel = addressModel;
+                        vendorModel.AddressModel = addressModel;
 
                     // Map data from model to entity
                     addressModel.ToEntity();
-                    SelectedVendor.base_Guest.base_GuestAddress.Add(addressModel.base_GuestAddress);
+                    vendorModel.base_Guest.base_GuestAddress.Add(addressModel.base_GuestAddress);
 
                     // Turn off IsDirty & IsNew
                     addressModel.EndUpdate();
@@ -1363,15 +1365,15 @@ namespace CPC.POS.ViewModel
                 }
 
                 //// Save image
-                //if (SelectedVendor.PhotoCollection != null && SelectedVendor.PhotoCollection.Count > 0)
+                //if (vendorModel.PhotoCollection != null && vendorModel.PhotoCollection.Count > 0)
                 //{
-                //    foreach (base_ResourcePhotoModel photoModel in SelectedVendor.PhotoCollection.Where(x => x.IsNew))
+                //    foreach (base_ResourcePhotoModel photoModel in vendorModel.PhotoCollection.Where(x => x.IsNew))
                 //    {
                 //        //photoModel.LargePhotoFilename = new System.IO.FileInfo(photoModel.ImagePath).Name;
                 //        photoModel.LargePhotoFilename = DateTimeExt.Now.ToString(Define.GuestNoFormat) + Guid.NewGuid().ToString().Substring(0, 8) + new System.IO.FileInfo(photoModel.ImagePath).Extension;
 
                 //        // Update resource photo
-                //        photoModel.Resource = SelectedVendor.Resource.ToString();
+                //        photoModel.Resource = vendorModel.Resource.ToString();
 
                 //        // Map data from model to entity
                 //        photoModel.ToEntity();
@@ -1386,19 +1388,22 @@ namespace CPC.POS.ViewModel
                 //}
 
                 // Update default photo if it is deleted
-                SelectedVendor.PhotoDefault = SelectedVendor.PhotoCollection.FirstOrDefault();
+                if (vendorModel.PhotoCollection.Any())
+                    vendorModel.PhotoDefault = vendorModel.PhotoCollection.FirstOrDefault();
+                else
+                    vendorModel.PhotoDefault = new base_ResourcePhotoModel();
 
-                SelectedVendor.AdditionalModel.ToEntity();
-                SelectedVendor.base_Guest.base_GuestAdditional.Add(SelectedVendor.AdditionalModel.base_GuestAdditional);
+                vendorModel.AdditionalModel.ToEntity();
+                vendorModel.base_Guest.base_GuestAdditional.Add(vendorModel.AdditionalModel.base_GuestAdditional);
 
-                _guestRepository.Add(SelectedVendor.base_Guest);
+                _guestRepository.Add(vendorModel.base_Guest);
                 _guestRepository.Commit();
 
                 // Update ID from entity to model
-                SelectedVendor.Id = SelectedVendor.base_Guest.Id;
-                SelectedVendor.AdditionalModel.GuestId = SelectedVendor.base_Guest.Id;
-                SelectedVendor.AdditionalModel.Id = SelectedVendor.AdditionalModel.base_GuestAdditional.Id;
-                foreach (base_ResourcePhotoModel photoModel in SelectedVendor.PhotoCollection)
+                vendorModel.Id = vendorModel.base_Guest.Id;
+                vendorModel.AdditionalModel.GuestId = vendorModel.base_Guest.Id;
+                vendorModel.AdditionalModel.Id = vendorModel.AdditionalModel.base_GuestAdditional.Id;
+                foreach (base_ResourcePhotoModel photoModel in vendorModel.PhotoCollection)
                 {
                     photoModel.Id = photoModel.base_ResourcePhoto.Id;
 
@@ -1407,7 +1412,7 @@ namespace CPC.POS.ViewModel
                 }
 
                 // Push new vendor to collection
-                VendorCollection.Insert(0, SelectedVendor);
+                VendorCollection.Insert(0, vendorModel);
             }
             catch (Exception ex)
             {
@@ -1418,22 +1423,22 @@ namespace CPC.POS.ViewModel
         /// <summary>
         /// Update a vendor
         /// </summary>
-        private void SaveUpdate()
+        private void SaveUpdate(base_GuestModel vendorModel)
         {
             try
             {
-                SelectedVendor.DateUpdated = DateTimeExt.Now;
+                vendorModel.DateUpdated = DateTimeExt.Now;
                 if (Define.USER != null)
-                    SelectedVendor.UserUpdated = Define.USER.LoginName;
+                    vendorModel.UserUpdated = Define.USER.LoginName;
 
                 // Map data from model to entity
-                SelectedVendor.ToEntity();
+                vendorModel.ToEntity();
 
                 #region Save address
 
                 // Insert or update address
                 // Created by Thaipn
-                foreach (AddressControlModel addressControlModel in this.SelectedVendor.AddressControlCollection.Where(x => x.IsDirty))
+                foreach (AddressControlModel addressControlModel in vendorModel.AddressControlCollection.Where(x => x.IsDirty))
                 {
                     base_GuestAddressModel addressModel = new base_GuestAddressModel();
 
@@ -1444,16 +1449,16 @@ namespace CPC.POS.ViewModel
                         addressModel.UserCreated = Define.USER.LoginName;
                         // Map date from AddressControlModel to AddressModel
                         addressModel.ToModel(addressControlModel);
-                        addressModel.GuestResource = SelectedVendor.Resource.ToString();
+                        addressModel.GuestResource = vendorModel.Resource.ToString();
 
                         // Map data from model to entity
                         addressModel.ToEntity();
-                        SelectedVendor.base_Guest.base_GuestAddress.Add(addressModel.base_GuestAddress);
+                        vendorModel.base_Guest.base_GuestAddress.Add(addressModel.base_GuestAddress);
                     }
                     // Update address
                     else
                     {
-                        base_GuestAddress address = SelectedVendor.base_Guest.base_GuestAddress.SingleOrDefault(x => x.AddressTypeId == addressControlModel.AddressTypeID);
+                        base_GuestAddress address = vendorModel.base_Guest.base_GuestAddress.SingleOrDefault(x => x.AddressTypeId == addressControlModel.AddressTypeID);
                         addressModel = new base_GuestAddressModel(address);
 
                         addressModel.DateUpdated = DateTimeExt.Now;
@@ -1465,7 +1470,7 @@ namespace CPC.POS.ViewModel
 
                     // Update default address
                     if (addressModel.IsDefault)
-                        SelectedVendor.AddressModel = addressModel;
+                        vendorModel.AddressModel = addressModel;
 
                     // Turn off IsDirty & IsNew
                     addressModel.EndUpdate();
@@ -1477,11 +1482,12 @@ namespace CPC.POS.ViewModel
                 #endregion
 
                 #region Save photo
+
                 //// Remove photo were deleted
-                //if (SelectedVendor.PhotoCollection != null &&
-                //    SelectedVendor.PhotoCollection.DeletedItems != null && SelectedVendor.PhotoCollection.DeletedItems.Count > 0)
+                //if (vendorModel.PhotoCollection != null &&
+                //    vendorModel.PhotoCollection.DeletedItems != null && vendorModel.PhotoCollection.DeletedItems.Count > 0)
                 //{
-                //    foreach (base_ResourcePhotoModel photoModel in SelectedVendor.PhotoCollection.DeletedItems)
+                //    foreach (base_ResourcePhotoModel photoModel in vendorModel.PhotoCollection.DeletedItems)
                 //    {
                 //        //System.IO.FileInfo fileInfo = new System.IO.FileInfo(photoModel.ImagePath);
                 //        //fileInfo.MoveTo(photoModel.ImagePath + "temp");
@@ -1490,51 +1496,54 @@ namespace CPC.POS.ViewModel
 
                 //        _photoRepository.Delete(photoModel.base_ResourcePhoto);
                 //    }
-                //    SelectedVendor.PhotoCollection.DeletedItems.Clear();
+                //    vendorModel.PhotoCollection.DeletedItems.Clear();
                 //}
-                ////// Update photo
-                ////if (SelectedVendor.PhotoCollection != null && SelectedVendor.PhotoCollection.Count > 0)
-                ////{
-                ////    foreach (base_ResourcePhotoModel photoModel in SelectedVendor.PhotoCollection.Where(x => x.IsDirty))
-                ////    {
-                ////        //photoModel.LargePhotoFilename = new System.IO.FileInfo(photoModel.ImagePath).Name;
-                ////        photoModel.LargePhotoFilename = DateTimeExt.Now.ToString(Define.GuestNoFormat) + Guid.NewGuid().ToString().Substring(0, 8) + new System.IO.FileInfo(photoModel.ImagePath).Extension;
+                //// Update photo
+                //if (vendorModel.PhotoCollection != null && vendorModel.PhotoCollection.Count > 0)
+                //{
+                //    foreach (base_ResourcePhotoModel photoModel in vendorModel.PhotoCollection.Where(x => x.IsDirty))
+                //    {
+                //        //photoModel.LargePhotoFilename = new System.IO.FileInfo(photoModel.ImagePath).Name;
+                //        photoModel.LargePhotoFilename = DateTimeExt.Now.ToString(Define.GuestNoFormat) + Guid.NewGuid().ToString().Substring(0, 8) + new System.IO.FileInfo(photoModel.ImagePath).Extension;
 
-                ////        // Update resource photo
-                ////        if (string.IsNullOrWhiteSpace(photoModel.Resource))
-                ////            photoModel.Resource = SelectedVendor.Resource.ToString();
+                //        // Update resource photo
+                //        if (string.IsNullOrWhiteSpace(photoModel.Resource))
+                //            photoModel.Resource = vendorModel.Resource.ToString();
 
-                ////        // Map data from model to entity
-                ////        photoModel.ToEntity();
+                //        // Map data from model to entity
+                //        photoModel.ToEntity();
 
-                ////        if (photoModel.IsNew)
-                ////            _photoRepository.Add(photoModel.base_ResourcePhoto);
+                //        if (photoModel.IsNew)
+                //            _photoRepository.Add(photoModel.base_ResourcePhoto);
 
-                ////        // Copy image from client to server
-                ////        SaveImage(photoModel);
+                //        // Copy image from client to server
+                //        SaveImage(photoModel);
 
-                ////        // Turn off IsDirty & IsNew
-                ////        photoModel.EndUpdate();
-                ////    }
-                ////}
+                //        // Turn off IsDirty & IsNew
+                //        photoModel.EndUpdate();
+                //    }
+                //}
 
                 //// Update default photo if it is deleted
-                //SelectedVendor.PhotoDefault = SelectedVendor.PhotoCollection.FirstOrDefault();
+                //if (vendorModel.PhotoCollection.Any())
+                //    vendorModel.PhotoDefault = vendorModel.PhotoCollection.FirstOrDefault();
+                //else
+                //    vendorModel.PhotoDefault = new base_ResourcePhotoModel();
 
                 #endregion
 
-                SelectedVendor.AdditionalModel.GuestId = SelectedVendor.Id;
+                vendorModel.AdditionalModel.GuestId = vendorModel.Id;
 
                 // Map data from model to entity
-                SelectedVendor.AdditionalModel.ToEntity();
+                vendorModel.AdditionalModel.ToEntity();
 
-                if (SelectedVendor.base_Guest.base_GuestAdditional.Count == 0)
-                    SelectedVendor.base_Guest.base_GuestAdditional.Add(SelectedVendor.AdditionalModel.base_GuestAdditional);
+                if (vendorModel.base_Guest.base_GuestAdditional.Count == 0)
+                    vendorModel.base_Guest.base_GuestAdditional.Add(vendorModel.AdditionalModel.base_GuestAdditional);
 
                 _guestRepository.Commit();
 
-                if (SelectedVendor.AdditionalModel.IsNew)
-                    SelectedVendor.AdditionalModel.Id = SelectedVendor.AdditionalModel.base_GuestAdditional.Id;
+                if (vendorModel.AdditionalModel.IsNew)
+                    vendorModel.AdditionalModel.Id = vendorModel.AdditionalModel.base_GuestAdditional.Id;
             }
             catch (Exception ex)
             {
@@ -1814,6 +1823,7 @@ namespace CPC.POS.ViewModel
                 {
                     AddressControlModel addressControlModel = addressModel.ToAddressControlModel();
                     addressControlModel.IsDirty = false;
+                    addressControlModel.IsChangeData = false;
                     vendorModel.AddressControlCollection.Add(addressControlModel);
                 }
             }
@@ -1835,8 +1845,12 @@ namespace CPC.POS.ViewModel
                     ResourcePhotoModel.IsDirty = false;
                     ResourcePhotoModel.IsNew = false;
                     vendorModel.PhotoCollection.Add(ResourcePhotoModel);
-                    //// Set default photo
-                    vendorModel.PhotoDefault = vendorModel.PhotoCollection.FirstOrDefault();
+
+                    // Set default photo
+                    if (vendorModel.PhotoCollection.Any())
+                        vendorModel.PhotoDefault = vendorModel.PhotoCollection.FirstOrDefault();
+                    else
+                        vendorModel.PhotoDefault = new base_ResourcePhotoModel();
                 }
             }
         }
@@ -1956,7 +1970,10 @@ namespace CPC.POS.ViewModel
                         }));
 
                     // Set default photo
-                    productModel.PhotoDefault = productModel.PhotoCollection.FirstOrDefault();
+                    if (productModel.PhotoCollection.Any())
+                        productModel.PhotoDefault = productModel.PhotoCollection.FirstOrDefault();
+                    else
+                        productModel.PhotoDefault = new base_ResourcePhotoModel();
                 }
 
                 // Get category name for product
