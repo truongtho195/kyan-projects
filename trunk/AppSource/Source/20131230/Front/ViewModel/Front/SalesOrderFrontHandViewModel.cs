@@ -18,8 +18,9 @@ using System.Windows.Threading;
 using System.Windows.Data;
 using System.Windows.Controls;
 using CPC.Control;
-using Wosk;
 using System.Threading;
+using System.Windows.Interop;
+using System.Globalization;
 
 namespace CPC.POS.ViewModel
 {
@@ -839,6 +840,54 @@ namespace CPC.POS.ViewModel
         #endregion
 
 
+        #region EditProductCommand
+        /// <summary>
+        /// Gets the EditProduct Command.
+        /// <summary>
+
+        public RelayCommand<object> EditProductCommand { get; private set; }
+
+
+
+        /// <summary>
+        /// Method to check whether the EditProduct command can be executed.
+        /// </summary>
+        /// <returns><c>true</c> if the command can be executed; otherwise <c>false</c></returns>
+        private bool OnEditProductCommandCanExecute(object param)
+        {
+            return SelectedSaleOrderDetail!=null;
+        }
+
+
+        /// <summary>
+        /// Method to invoke when the EditProduct command is executed.
+        /// </summary>
+        private void OnEditProductCommandExecute(object param)
+        {
+            try
+            {
+
+                if (SelectedSaleOrderDetail.ProductModel.IsCoupon)
+                {
+                    //EditCoupon
+                    OpenCouponView(SelectedSaleOrderDetail);
+                }
+                else
+                {
+                    OpenEditProductView(SelectedSaleOrderDetail);
+                }
+            }
+            catch (Exception ex)
+            {
+                _log4net.Error(ex);
+                Xceed.Wpf.Toolkit.MessageBox.Show(ex.Message, Language.GetMsg("ErrorCaption"), MessageBoxButton.OK, MessageBoxImage.Error);
+            }
+        }
+
+     
+        #endregion
+
+
         #region ShowOnScreenKeyboardCommand
         /// <summary>
         /// Gets the ShowOnScreenKeyboard Command.
@@ -857,43 +906,24 @@ namespace CPC.POS.ViewModel
             return true;
         }
 
-        OnScreenKeyboard view;
         /// <summary>
         /// Method to invoke when the ShowOnScreenKeyboard command is executed.
         /// </summary>
         private void OnShowOnScreenKeyboardCommandExecute(object param)
         {
 
-            //Window owner = FindOwnerWindow(_ownerViewModel);
+            try
+            {
+                PricingDemoViewModel viewModel = new PricingDemoViewModel();
+                bool? result = _dialogService.ShowDialog<PricingDemoView>(_ownerViewModel, viewModel, string.Empty);
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
 
-            //keyboardView.ShowInTaskbar = false;
-            //keyboardView.Show();
 
-            OnScreenKeyboard view = new OnScreenKeyboard();
-            view.Show();
-
-
-
-           
-            ////Call Keyboard from another thread
-            //Thread newWindowThread = new Thread(new ThreadStart(() =>
-            //{
-
-            //    view = new OnScreenKeyboard();
-            //    view.ShowInTaskbar = false;
-            //    view.Topmost = true;
-            //    view.Show();
-            //    System.Windows.Threading.Dispatcher.Run();
-            //}));
-            //newWindowThread.SetApartmentState(ApartmentState.STA);
-            //newWindowThread.IsBackground = true;
-            //newWindowThread.Start();
-            //view.Owner = App.Current.MainWindow;
-            
-            
         }
-        private static AutoResetEvent s_event = new AutoResetEvent(false);
-
 
 
         #endregion
@@ -926,6 +956,7 @@ namespace CPC.POS.ViewModel
             SearchProductCommand = new RelayCommand<object>(OnSearchProductCommandExecute, OnSearchProductCommandCanExecute);
             DeleteItemCommand = new RelayCommand<object>(OnDeleteItemCommandExecute, OnDeleteItemCommandCanExecute);
             ShowOnScreenKeyboardCommand = new RelayCommand<object>(OnShowOnScreenKeyboardCommandExecute, OnShowOnScreenKeyboardCommandCanExecute);
+            EditProductCommand = new RelayCommand<object>(OnEditProductCommandExecute, OnEditProductCommandCanExecute);
         }
 
         /// <summary>
@@ -3239,6 +3270,95 @@ namespace CPC.POS.ViewModel
 
         }
 
+
+        /// <summary>
+        /// Open Popup EditProduct
+        /// </summary>
+        /// <param name="saleOrderDetailModel"></param>
+        private void OpenEditProductView(base_SaleOrderDetailModel saleOrderDetailModel)
+        {
+            base_ProductModel productModel = new base_ProductModel();
+
+            productModel.Resource = saleOrderDetailModel.ProductModel.Resource;
+            productModel.ProductUOMCollection = new CollectionBase<base_ProductUOMModel>(saleOrderDetailModel.ProductUOMCollection);
+            productModel.BaseUOMId = saleOrderDetailModel.UOMId.Value;
+            productModel.CurrentPrice = saleOrderDetailModel.SalePrice;
+            productModel.RegularPrice = saleOrderDetailModel.RegularPrice;
+            productModel.OnHandStore = saleOrderDetailModel.Quantity;
+            productModel.IsOpenItem = saleOrderDetailModel.ProductModel.IsOpenItem;
+            productModel.ProductCategoryId = saleOrderDetailModel.ProductModel.ProductCategoryId;
+            productModel.ItemTypeId = saleOrderDetailModel.ProductModel.ItemTypeId;
+
+            //Edit Promotion when item is not product in group or product group
+            bool isEditPromotion = true;
+            if (productModel.ItemTypeId.Equals((short)ItemTypes.Group))
+                isEditPromotion = false;
+            else if (!string.IsNullOrWhiteSpace(saleOrderDetailModel.ParentResource))
+                isEditPromotion = false;
+
+            FrontHandEditProductViewModel viewModel = new FrontHandEditProductViewModel(productModel, (PriceTypes)SelectedSaleOrder.PriceSchemaId, !saleOrderDetailModel.IsReadOnlyUOM, saleOrderDetailModel.PromotionId.Value, isEditPromotion);
+
+            bool? result = _dialogService.ShowDialog<FrontHandEditProductView>(_ownerViewModel, viewModel, Language.GetMsg("SO_Title_EditProduct"));
+            if (result.HasValue && result.Value)
+            {
+                BreakSODetailChange = true;
+                //Set regular property
+                saleOrderDetailModel.UOMId = viewModel.SelectedProductUOM.UOMId;
+                SetPriceUOM(saleOrderDetailModel);
+                saleOrderDetailModel.UnitName = saleOrderDetailModel.ProductUOMCollection.Single(x => x.UOMId.Equals(saleOrderDetailModel.UOMId)).Name;
+                saleOrderDetailModel.Quantity = productModel.OnHandStore;
+                saleOrderDetailModel.IsManual = viewModel.IsDiscountManual;
+
+                //Open Popup serial tracking 
+                if (saleOrderDetailModel.ProductModel != null && saleOrderDetailModel.ProductModel.IsSerialTracking)
+                    if (!saleOrderDetailModel.IsError && saleOrderDetailModel.Quantity > 0 && productModel.OnHandStore != saleOrderDetailModel.Quantity)
+                        OpenTrackingSerialNumber(saleOrderDetailModel, true);
+                    else
+                        saleOrderDetailModel.SerialTracking = string.Empty;
+
+                if (isEditPromotion)
+                {
+                    //Apply manual discount
+                    if (saleOrderDetailModel.IsManual)
+                    {
+                        saleOrderDetailModel.SalePrice = productModel.CurrentPrice;
+                        saleOrderDetailModel.RegularPrice = productModel.RegularPrice;
+                        saleOrderDetailModel.DiscountPercent = viewModel.DiscountPercent;
+                        saleOrderDetailModel.CalcDicountByPercent();
+                        //_saleOrderRepository.HandleOnSaleOrderDetailModel(SelectedSaleOrder, saleOrderDetailModel);
+                        saleOrderDetailModel.PromotionId = 0;
+                        saleOrderDetailModel.PromotionName = string.Empty;
+
+                        //CalculateDiscount(saleOrderDetailModel);
+                        BreakSODetailChange = true;
+                        _saleOrderRepository.CalcProductDiscount(SelectedSaleOrder, saleOrderDetailModel);
+                        BreakSODetailChange = false;
+                    }
+                    else
+                    {
+                        saleOrderDetailModel.PromotionId = viewModel.SelectedPromotion.Id;
+                        saleOrderDetailModel.PromotionName = viewModel.SelectedPromotion.Name;
+                        //CalculateDiscount(saleOrderDetailModel);
+
+                        BreakSODetailChange = true;
+                        _saleOrderRepository.CalcProductDiscount(SelectedSaleOrder, saleOrderDetailModel);
+                        BreakSODetailChange = false;
+                    }
+                }
+                else
+                {
+                    //_saleOrderRepository.HandleOnSaleOrderDetailModel(SelectedSaleOrder, saleOrderDetailModel);
+                }
+                _saleOrderRepository.HandleOnSaleOrderDetailModel(SelectedSaleOrder, saleOrderDetailModel);
+                CalculateMultiNPriceTax();
+
+                _saleOrderRepository.UpdateQtyOrderNRelate(SelectedSaleOrder);
+                _saleOrderRepository.CalcOnHandStore(SelectedSaleOrder, saleOrderDetailModel);
+                SelectedSaleOrder.CalcSubTotal();
+                BreakSODetailChange = false;
+            }
+        } 
+
         /// <summary>
         /// Update price when product price is 0
         /// </summary>
@@ -3593,7 +3713,31 @@ namespace CPC.POS.ViewModel
 
         private void _timer_Tick(object sender, EventArgs e)
         {
-            CurrentDateTime = DateTime.Now;
+            CurrentDateTime = GetCurrentDateTimeServer();//DateTime.Now;
+
+
+
+        }
+
+        private DateTime GetCurrentDateTimeServer()
+        {
+            string query = "Select cast(current_timestamp as varchar);";
+            
+            //string query = "Select cast(CURRENT_TIMESTAMP AT TIME ZONE 'UTC' as varchar);";
+            //string query = "Select *  FROM \"base_UOM\";";
+            DateTime currentTime = DateTime.Now;
+            try
+            {
+                lock (UnitOfWork.Locker)
+                {
+                    string currentTimeServer = UnitOfWork.ExecuteFunction<string>(query).FirstOrDefault();
+                    currentTime = DateTime.Parse(currentTimeServer);
+                }
+            }
+            catch (Exception ex)
+            {
+            }
+            return currentTime;
         }
         #endregion
 

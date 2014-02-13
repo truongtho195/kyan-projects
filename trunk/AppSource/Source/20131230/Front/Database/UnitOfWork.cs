@@ -400,7 +400,21 @@ namespace CPC.POS.Database
         public static void ExecuteQuery(string query)
         {
             _objectContext.ExecuteStoreCommand(query, null);
+        
+
         }
+
+        /// <summary>
+        /// Execute Function
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="query"></param>
+        /// <returns></returns>
+        public static IEnumerable<T> ExecuteFunction<T>(string query) where T : class
+        {
+            return _objectContext.ExecuteStoreQuery<T>(query, null);
+        }
+             
 
         #endregion
 

@@ -379,4 +379,98 @@
   	<Setter Property="FontSize" Value="11"/>
 	</Style>
   
+  <Style x:Key="ToggleButtonKeyBoardShift"
+        	TargetType="{x:Type ToggleButton}"
+               >
+        	<Setter Property="Foreground"
+        		Value="{DynamicResource ButtonKeyboardForeground}" />
+        	<Setter Property="HorizontalContentAlignment"
+        		Value="Center" />
+        	<Setter Property="VerticalContentAlignment"
+        		Value="Center" />
+        	<Setter Property="Template">
+        		<Setter.Value>
+        			<ControlTemplate TargetType="{x:Type ToggleButton}">
+        				<Grid Width="Auto"
+        					Height="Auto"
+        					x:Name="grid" Background="#02FFFFFF" Cursor="Hand">
+        					<Rectangle Stroke="{DynamicResource ButtonKeyboardBorder}"
+        						RadiusY="3"
+        						RadiusX="3"
+        						StrokeThickness="1"
+        						x:Name="bg" Opacity="1" Fill="{DynamicResource ButtonKeyboardBackground}"/>
+        					<Rectangle Stroke="{DynamicResource ButtonKeyboard_IsKeyboardFocused_Border}"
+        						RadiusY="3"
+        						RadiusX="3"
+        						StrokeThickness="1"
+        						x:Name="Focused" Opacity="0" Margin="2" StrokeDashArray="2"/>
+        					<ContentPresenter x:Name="contentPresenter" HorizontalAlignment="Center"
+        						VerticalAlignment="Center"
+        						SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}"
+        						RecognizesAccessKey="True"
+        						RenderTransformOrigin="0.5,0.5" >
+        						<ContentPresenter.RenderTransform>
+        							<TransformGroup>
+        								<ScaleTransform/>
+        								<SkewTransform/>
+        								<RotateTransform/>
+        								<TranslateTransform/>
+        							</TransformGroup>
+        						</ContentPresenter.RenderTransform>
+        					</ContentPresenter>
+							<Path x:Name="path" Fill="{DynamicResource ButtonKeyboardForeground}" Stretch="Fill" Width="17.713" Height="15.182" Data="F1M269.5,262C269.026,262,268.552,262.168,268.171,262.505L259.671,270.505C259.05,271.057,258.835,271.935,259.131,272.71C259.425,273.487,260.169,274,261,274L265,274L265,278C265,279.104,265.896,280,267,280L272,280C273.104,280,274,279.104,274,278L274,274L278,274C278.81,274,279.538,273.513,279.849,272.766C280.157,272.018,279.986,271.158,279.415,270.585L270.914,262.586C270.524,262.197,270.013,262,269.5,262 M269.5,264L278,272L272,272L272,278L267,278L267,272L261,272L269.5,264"/>
+        					<Rectangle
+        						RadiusY="3"
+        						RadiusX="3"
+        						StrokeThickness="1"
+        						x:Name="Light" Margin="1,1,1,11" Opacity="0.9" Fill="{DynamicResource ButtonKeyboardLight}" Visibility="Collapsed" d:IsHidden="True"/>
+        				</Grid>
+        				<ControlTemplate.Triggers>
+        					<Trigger Property="IsKeyboardFocused" Value="True">
+        						<Setter Property="Opacity" TargetName="bg" Value="1"/>
+        						<Setter Property="Opacity" TargetName="Focused" Value="1"/>
+        						<Setter Property="Opacity" TargetName="Light" Value="1"/>
+        						<Setter Property="Fill" TargetName="bg" Value="{DynamicResource ButtonKeyboard_IsKeyboardFocused_Background}"/>
+        						<Setter Property="Fill" TargetName="Light" Value="{DynamicResource ButtonKeyboardLight}"/>
+        					</Trigger>
+        					<Trigger Property="IsMouseOver"
+        						Value="True">
+        						<Setter Property="Opacity" TargetName="bg" Value="1"/>
+        						<Setter Property="Opacity" TargetName="Light" Value="1"/>
+        						<Setter Property="Fill" TargetName="bg" Value="{DynamicResource ButtonKeyboard_IsMouseOver_Background}"/>
+        					</Trigger>
+        					<Trigger Property="IsChecked" Value="True">
+        						<Setter Property="Fill" TargetName="bg" Value="{DynamicResource ButtonKeyboard_IsPress_Background}"/>
+        						<Setter Property="Fill" TargetName="path" Value="#FFFEFF00"/>
+        					</Trigger>
+        					<Trigger Property="IsPressed"
+        						Value="True">
+        						<Setter Property="Opacity" TargetName="bg" Value="1"/>
+        						<Setter Property="RenderTransform" TargetName="contentPresenter">
+        							<Setter.Value>
+        								<TransformGroup>
+        									<ScaleTransform/>
+        									<SkewTransform/>
+        									<RotateTransform/>
+        									<TranslateTransform X="0.5" Y="0.5"/>
+        								</TransformGroup>
+        							</Setter.Value>
+        						</Setter>
+        						<Setter Property="Opacity" TargetName="Light" Value="1"/>
+        						<Setter Property="Fill" TargetName="bg" Value="{DynamicResource ButtonKeyboard_IsPress_Background}"/>
+        					</Trigger>
+							
+        					<Trigger Property="IsEnabled" Value="False">
+        						<Setter Property="Opacity" TargetName="bg" Value="1"/>
+        						<Setter Property="Opacity" TargetName="Light" Value="1"/>
+        						<Setter Property="Fill" TargetName="bg" Value="{DynamicResource ButtonKeyboard_IsEnable_Background}"/>
+        						<Setter Property="Opacity" TargetName="grid" Value="0.5"/>
+        					</Trigger>
+        				</ControlTemplate.Triggers>
+        			</ControlTemplate>
+        		</Setter.Value>
+        	</Setter>
+        	<Setter Property="FontWeight" Value="Bold"/>
+        	<Setter Property="FontSize" Value="20"/>
+        </Style>
 </ResourceDictionary>
