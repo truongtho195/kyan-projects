@@ -133,11 +133,12 @@ namespace CPC.POS.ViewModel
         private static bool CheckConnectionDB()
         {
             bool result = false;
-
-            POSEntities objectContext = new POSEntities(ConfigurationManager.ConnectionStrings["POSDBEntities"].ConnectionString);
-
+            POSEntities objectContext= null;
             try
             {
+                objectContext = new POSEntities(ConfigurationManager.ConnectionStrings["POSDBEntities"].ConnectionString);
+
+
                 // Check connection
                 objectContext.Connection.Open();
 
@@ -152,7 +153,7 @@ namespace CPC.POS.ViewModel
             finally
             {
                 // Enforce close connnection
-                if (objectContext.Connection.State.Equals(ConnectionState.Open))
+                if (objectContext!=null &&  objectContext.Connection.State.Equals(ConnectionState.Open))
                     objectContext.Connection.Close();
             }
 
