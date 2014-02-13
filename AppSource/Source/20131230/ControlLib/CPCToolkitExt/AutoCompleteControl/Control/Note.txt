@@ -1,0 +1,172 @@
+﻿Chỉnh sửa AutoCompleteBox 28-01-2013
+
+Viết thêm 1 combobox cho phép nhập thêm item.
+Đang viết đến phần nhập thêm item.
+
+Hàm kiểm tra , add mới nhiều item trong listBox
+
+///Kiểm tra có tồn tại item mới hay ko??
+                if (this.IsExitingNewItem() && this.IsEqualContent(this.txtKeyWord.Text))
+                {
+                    //if (this.IsEqualContent(this.txtKeyWord.Text))
+                    //{
+                    this.ItemsSource[this.ItemsSource.Count - 1].IsEdit = true;
+                    this.ItemsSource[this.ItemsSource.Count - 1].Name = this.txtKeyWord.Text;
+                    this.lstContent.SelectedValue = this.ItemsSource[this.ItemsSource.Count - 1].ID;
+
+                }
+                else
+                {
+                    DataModel datamodel = this.IsTextUnit(this.txtKeyWord.Text);
+                    if (datamodel != null)
+                    {
+                        this.lstContent.SelectedValue = datamodel.ID;
+                        datamodel.IsEdit = false;
+                    }
+                    else
+                    {
+                        DataModel model = new DataModel();
+                        model.ID = int.Parse(this.ItemsSource.Max(x => x.ID).ToString()) + 1;
+                        model.Name = this.txtKeyWord.Text;
+                        model.IsNew = true;
+                        this.ItemsSource.Add(model);//(new DataModel { ID = 4, Name = this.txtKeyWord.Text, IsNew = true });
+                        this.lstContent.SelectedValue = model.ID;
+                    }
+                }
+
+******************************** Sửa ***************************************
+
++AutoCompleteBox
+
++AutoCompleteTextBox
+
++AutoCompleteTextBoxEXT
+
+ protected bool GetDataHasChildren(object data, DataSearchModel searchModel, string text)
+        {
+            try
+            {
+                //object content = null;
+                switch (searchModel.Level)
+                {
+                    ///Search data when level=0
+                    case 0:
+                        object dataLevel = data.GetType().GetProperty(searchModel.KeyName).GetValue(data, null);
+                        if (dataLevel == null) return false;
+                        else
+                            return AutoCompleteSearch.GetFilter(FilterMode, text, dataLevel.ToString());
+
+                    ///Search data when level=1
+                    case 1:
+                        object dataLevel1 = data.GetType().GetProperty(searchModel.PropertyChildren).GetValue(data, null);
+                        if (dataLevel1 == null) return false;
+                        else if (searchModel.PropertyType.Equals(CPCToolkitExtPropertyType.Collection.ToString()))
+                        {
+                            foreach (var item in (dataLevel1 as IEnumerable))
+                            {
+                                object contentLevel1 = item.GetType().GetProperty(searchModel.KeyName).GetValue(item, null);
+                                if (contentLevel1 == null) return false;
+                                if (AutoCompleteSearch.GetFilter(FilterMode, text, contentLevel1.ToString()))
+                                {
+                                    ///Set value for Current
+                                    if (string.IsNullOrEmpty(searchModel.CurrentPropertyName))
+                                        data.GetType().GetProperty(searchModel.CurrentPropertyName).SetValue(data, item, null);
+                                    return true;
+                                }
+                            }
+                            ///Set Current ==null
+                            data.GetType().GetProperty(searchModel.CurrentPropertyName).SetValue(data, null, null);
+                            return false;
+                        }
+                        else
+                        {
+                            object contentLevel1 = dataLevel1.GetType().GetProperty(searchModel.KeyName).GetValue(dataLevel1, null);
+                            if (contentLevel1 == null) return false;
+                            if (AutoCompleteSearch.GetFilter(FilterMode, text, contentLevel1.ToString()))
+                            { 
+                                ///Set value for Current
+                                if (string.IsNullOrEmpty(searchModel.CurrentPropertyName))
+                                    data.GetType().GetProperty(searchModel.CurrentPropertyName).SetValue(data, contentLevel1, null);
+                                return true;
+                            }
+                            else
+                            { 
+                                ///Set Current ==null
+                                if (string.IsNullOrEmpty(searchModel.CurrentPropertyName))
+                                    data.GetType().GetProperty(searchModel.CurrentPropertyName).SetValue(data, null, null);
+                                return false;
+                            }
+                        }
+
+                    ///Search data when level=2
+                    case 2:
+                        string[] arrayLevel = searchModel.PropertyChildren.Split('.');
+                        object dataFirstArray = data.GetType().GetProperty(arrayLevel[0]).GetValue(data, null);
+
+                        if (dataFirstArray == null) return false;
+
+                        //Level 1 is colllection
+                        else if (dataFirstArray is IEnumerable)
+                        {
+                            foreach (var itemFirstArray in (dataFirstArray as IEnumerable))
+                            {
+                                object dataItemFirstArray = itemFirstArray.GetType().GetProperty(arrayLevel[1]).GetValue(itemFirstArray, null);
+                                if (dataItemFirstArray != null)
+                                {
+                                    //Level 2 is collection
+                                    if (dataItemFirstArray is IEnumerable)
+                                    {
+                                        foreach (var itemLastArray in (dataItemFirstArray as IEnumerable))
+                                        {
+                                            //////////////************///////////////
+                                            object dataItemLastArray = itemLastArray.GetType().GetProperty(searchModel.KeyName).GetValue(itemLastArray, null);
+                                            if (dataItemLastArray != null && AutoCompleteSearch.GetFilter(FilterMode, text, dataItemLastArray.ToString()))
+                                                return true;
+                                        }
+                                    }
+                                    //Level 2 is model
+                                    else
+                                    {
+                                        //////////////************///////////////
+                                        object contentLevel2 = dataItemFirstArray.GetType().GetProperty(searchModel.KeyName).GetValue(dataItemFirstArray, null);
+                                        if (contentLevel2 != null && AutoCompleteSearch.GetFilter(FilterMode, text, contentLevel2.ToString()))
+                                            return true;
+                                    }
+                                }
+                            }
+                            return false;
+                        }
+
+                        //Level 1 is model
+                        else
+                        {
+                            object dataLevel2 = dataFirstArray.GetType().GetProperty(arrayLevel[1]).GetValue(dataFirstArray, null);
+                            if (dataLevel2 == null) return false;
+                            //Level 2 is collection
+                            else if (searchModel.PropertyType.Equals(CPCToolkitExtPropertyType.Collection.ToString()))
+                            {
+                                foreach (var itemChildren in (dataLevel2 as IEnumerable))
+                                {
+                                    object contentLevel2 = itemChildren.GetType().GetProperty(searchModel.KeyName).GetValue(itemChildren, null);
+                                    if (contentLevel2 != null && AutoCompleteSearch.GetFilter(FilterMode, text, contentLevel2.ToString()))
+                                        return true;
+                                }
+                                return false;
+                            }
+                            //Level 2 is model
+                            else
+                            {
+                                object contentLevel2 = dataLevel2.GetType().GetProperty(searchModel.KeyName).GetValue(dataLevel2, null);
+                                if (contentLevel2 == null) return false;
+                                return AutoCompleteSearch.GetFilter(FilterMode, text, contentLevel2.ToString());
+                            }
+                        }
+                }
+            }
+            catch (Exception ex)
+            {
+                System.Diagnostics.Debug.WriteLine("<<<<<<<<<<<<<<<<<<<<<<<<<<<<GetDataHasChildren>>>>>>>>>>>>>>>>>>>>>>>>>>>>" + ex.Message);
+            }
+
+            return false;
+        }

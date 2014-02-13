@@ -1,0 +1,37 @@
+﻿ItemSource: Binding collection address cho Control.
+ItemSourceCounrty: Binding collection country cho ComboBox Country.
+ItemSourceState:Binding collection State cho ComboBox State.
+DisplayMemberPathComboBoxState:chọn nội dung hiển thị trong ComboBox State.
+DisplayMemberPathComboBoxCountry:chọn nội dung hiển thị trong ComboBox Country.
+SelectedValuePathComboBoxState:nội dung cần lấy trong ComboBox State.
+SelectedValuePathComboBoxCountry:nội dung cần lấy trong ComboBox Country.
+Khi lấy dữ liệu từ Database collection address phải chứa đúng 4 item.
+Khi insert hay update database thì kiểm tra trong collection address item nào có chứa dữ liệu thì mới save.
+
+31-01-2013
+
+Sửa nhiều thứ trong phần Address.
+Thêm Số lượng loại Address.
+Rút gọn phần code trong ViewModel.
+
+**** Chưa xử lý phần bắt lỗi cho hàm IsErrors do chưa biết bắt lỗi Errors ở đâu!!
+
+Thêm DisplayDatabyAddressTypeID để chọn AddressType dc hiển thị.
+
+Thêm AddressTypeCollection vào CPCToolkitExtLibraries 
+
+Phaỉ thêm validateTemplete cho TextBox 
+
+ //#region DeepClone
+        ///// <summary>
+        ///// Copy value 
+        ///// </summary>
+        ///// <param name="obj"></param>
+        ///// <returns></returns>
+        //public static string PropertyNameofControl
+        //{
+        //    get;
+        //    set;
+        //}
+        
+        //#endregion
